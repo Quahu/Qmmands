@@ -1,0 +1,59 @@
+version: 'build-{build}'
+
+image: Visual Studio 2017 Preview
+
+branches:
+  only:
+  - master
+
+build_script:
+- ps: dotnet restore .\src\Qmmands.sln | Out-Host
+- ps: dotnet build  .\src\Qmmands.sln -c "Release" | Out-Host
+
+after_build:
+- ps: >-
+    if ($Env:APPVEYOR_REPO_TAG -eq "true")
+    {
+       $BuildNumber = ([int] $Env:APPVEYOR_BUILD_NUMBER).ToString("00000")
+       dotnet pack .\src\Qmmands -c Release -o .\..\..\artifacts --no-build --version-suffix="beta-$BuildNumber" | Out-Host
+    }
+    else
+    {
+        dotnet pack .\src\Qmmands -c Release -o .\..\..\artifacts --no-build | Out-Host
+    }
+
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+
+nuget:
+  disable_publish_on_pr: true
+
+pull_requests:
+  do_not_increment_build_number: true
+
+test: off
+
+artifacts:
+- path: .\artifacts\*.nupkg
+  name: NuGet
+  
+deploy:
+- provider: NuGet
+  server: https://www.myget.org/F/qmmands/api/v2
+  api_key:
+    secure: XW7HgRlmPz8/YHNSCAjAzBbYvgTx1dVSA+OU8AmuU6OamtFJnUr2CCAbHukPg0r7
+  skip_symbols: true
+  on:
+    branch: master
+- provider: NuGet
+  api_key:
+    secure: gQ+L4bcwYlrvt2U+QvuHtRJZ8/VyU07lUdYPlYsoRPEdmLS5kvFj/fYV/zfILUs8
+  on:
+    branch: master
+    appveyor_repo_tag: true
