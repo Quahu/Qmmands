@@ -342,6 +342,18 @@ namespace Qmmands
         }
 
         /// <summary>
+        ///     Attempts to instantiate, modify, and build a <see cref="ModuleBuilder"/> into a <see cref="Module"/>.
+        /// </summary>
+        /// <param name="builderAction"> The action to perform on the builder. </param>
+        /// <returns> A <see cref="Module"/> if succeeded. </returns>
+        public Task<Module> AddModuleAsync(Action<ModuleBuilder> builderAction)
+        {
+            var builder = new ModuleBuilder();
+            builderAction(builder);
+            return AddModuleAsync(builder);
+        }
+
+        /// <summary>
         ///     Attempts to add the specified <typeparamref name="TModule"/> type as a <see cref="Module"/>. 
         /// </summary>
         /// <typeparam name="TModule"> The type to add. </typeparam>

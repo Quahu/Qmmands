@@ -171,6 +171,18 @@ namespace Qmmands
         }
 
         /// <summary>
+        ///     Attempts to instantiate, modify, and add a <see cref="ParameterBuilder"/> to <see cref="Parameters"/>.
+        /// </summary>
+        /// <param name="builderAction"> The action to perform on the builder. </param>
+        public CommandBuilder AddParameter(Action<ParameterBuilder> builderAction)
+        {
+            var builder = new ParameterBuilder();
+            builderAction(builder);
+            Parameters.Add(builder);
+            return this;
+        }
+
+        /// <summary>
         ///     Adds a parameter to <see cref="Parameters"/>.
         /// </summary>
         public CommandBuilder AddParameter(ParameterBuilder parameter)

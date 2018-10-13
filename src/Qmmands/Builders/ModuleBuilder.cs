@@ -181,6 +181,18 @@ namespace Qmmands
         }
 
         /// <summary>
+        ///     Attempts to instantiate, modify, and add a <see cref="CommandBuilder"/> to <see cref="Commands"/>.
+        /// </summary>
+        /// <param name="builderAction"> The action to perform on the builder. </param>
+        public ModuleBuilder AddCommand(Action<CommandBuilder> builderAction)
+        {
+            var builder = new CommandBuilder();
+            builderAction(builder);
+            Commands.Add(builder);
+            return this;
+        }
+
+        /// <summary>
         ///     Adds a command to <see cref="Commands"/>.
         /// </summary>
         public ModuleBuilder AddCommand(CommandBuilder commandBuilder)
@@ -195,6 +207,18 @@ namespace Qmmands
         public ModuleBuilder AddCommands(params CommandBuilder[] commandBuilders)
         {
             Commands.AddRange(commandBuilders);
+            return this;
+        }
+
+        /// <summary>
+        ///     Attempts to instantiate, modify, and add a <see cref="ModuleBuilder"/> to <see cref="Submodules"/>.
+        /// </summary>
+        /// <param name="builderAction"> The action to perform on the builder. </param>
+        public ModuleBuilder AddSubmodule(Action<ModuleBuilder> builderAction)
+        {
+            var builder = new ModuleBuilder();
+            builderAction(builder);
+            Submodules.Add(builder);
             return this;
         }
 
