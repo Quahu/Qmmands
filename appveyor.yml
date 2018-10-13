@@ -12,7 +12,7 @@ build_script:
 
 after_build:
 - ps: >-
-    if ($Env:APPVEYOR_REPO_TAG -eq "true")
+    if ($Env:APPVEYOR_REPO_TAG -eq "false")
     {
        $BuildNumber = ([int] $Env:APPVEYOR_BUILD_NUMBER).ToString("00000")
        dotnet pack .\src\Qmmands -c Release -o .\..\..\artifacts --no-build --version-suffix="beta-$BuildNumber" | Out-Host
