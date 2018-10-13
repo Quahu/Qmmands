@@ -82,7 +82,6 @@ namespace Qmmands
         private readonly HashSet<Module> _modules;
         private readonly CommandMap _map;
         private static readonly Type _stringType = typeof(string);
-        private readonly object _moduleLock = new object();
         private readonly SemaphoreSlim _moduleSemaphore = new SemaphoreSlim(1, 1);
 
         /// <summary>
@@ -138,12 +137,9 @@ namespace Qmmands
                         yield return command;
             }
 
-            lock (_moduleLock)
-            {
-                foreach (var module in _modules)
-                    foreach (var command in GetCommands(module))
-                        yield return command;
-            }
+            foreach (var module in _modules)
+                foreach (var command in GetCommands(module))
+                    yield return command;
         }
 
         /// <summary>
@@ -163,15 +159,12 @@ namespace Qmmands
                 }
             }
 
-            lock (_moduleLock)
+            foreach (var module in _modules)
             {
-                foreach (var module in _modules)
-                {
-                    yield return module;
+                yield return module;
 
-                    foreach (var submodule in GetSubmodules(module))
-                        yield return submodule;
-                }
+                foreach (var submodule in GetSubmodules(module))
+                    yield return submodule;
             }
         }
 
