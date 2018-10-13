@@ -3,6 +3,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>7.1</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Authors>Quahu</Authors>
+    <Description>An asynchronous .NET Standard command framework.</Description>
+    <PackageTags>commands chat-commands chat-bots irc irc-bots discord bots discord-bots chat csharp dotnet</PackageTags>
+    <RepositoryUrl>https://github.com/Quahu/Qmmands</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Quahu/Qmmands</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/Quahu/Qmmands/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>Git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
