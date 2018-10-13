@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Qmmands
@@ -43,6 +44,8 @@ namespace Qmmands
         /// </summary>
         public IArgumentParser ParameterParser { get; }
 
+        internal StringComparison StringComparison { get; }
+
         /// <summary>
         ///     Fires when a command is successfully executed. Use this to handle <see cref="RunMode.Parallel"/> commands.
         /// </summary>
@@ -63,13 +66,24 @@ namespace Qmmands
         }
         private readonly AsyncEvent<Func<ExecutionFailedResult, ICommandContext, IServiceProvider, Task>> _commandErrored = new AsyncEvent<Func<ExecutionFailedResult, ICommandContext, IServiceProvider, Task>>();
 
+        /// <summary>
+        ///     Fires when a non-user instantiated <see cref="ModuleBuilder"/> is about to be built into a <see cref="Module"/>.
+        /// </summary>
+        public event Func<ModuleBuilder, Task> ModuleBuilding
+        {
+            add => _moduleBuilding.Hook(value);
+            remove => _moduleBuilding.Unhook(value);
+        }
+        private readonly AsyncEvent<Func<ModuleBuilder, Task>> _moduleBuilding = new AsyncEvent<Func<ModuleBuilder, Task>>();
+
         private readonly ConcurrentDictionary<Type, Dictionary<Type, (bool, ITypeParser)>> _parsers;
         private readonly ConcurrentDictionary<Type, IPrimitiveTypeParser> _primitiveParsers;
         private readonly Dictionary<Type, Module> _typeModules;
         private readonly HashSet<Module> _modules;
         private readonly CommandMap _map;
-        private readonly object _moduleLock = new object();
         private static readonly Type _stringType = typeof(string);
+        private readonly object _moduleLock = new object();
+        private readonly SemaphoreSlim _moduleSemaphore = new SemaphoreSlim(1, 1);
 
         /// <summary>
         ///     Initialises a new <see cref="CommandService"/> with the specified <see cref="CommandServiceConfiguration"/>.
@@ -87,6 +101,7 @@ namespace Qmmands
             Separator = configuration.Separator;
             SeparatorRequirement = configuration.SeparatorRequirement;
             ParameterParser = configuration.ArgumentParser;
+            StringComparison = CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
             _typeModules = new Dictionary<Type, Module>();
             _modules = new HashSet<Module>();
@@ -123,9 +138,12 @@ namespace Qmmands
                         yield return command;
             }
 
-            foreach (var module in _modules)
-                foreach (var command in GetCommands(module))
-                    yield return command;
+            lock (_moduleLock)
+            {
+                foreach (var module in _modules)
+                    foreach (var command in GetCommands(module))
+                        yield return command;
+            }
         }
 
         /// <summary>
@@ -145,12 +163,15 @@ namespace Qmmands
                 }
             }
 
-            foreach (var module in _modules)
+            lock (_moduleLock)
             {
-                yield return module;
+                foreach (var module in _modules)
+                {
+                    yield return module;
 
-                foreach (var submodule in GetSubmodules(module))
-                    yield return submodule;
+                    foreach (var submodule in GetSubmodules(module))
+                        yield return submodule;
+                }
             }
         }
 
@@ -268,7 +289,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="assembly"> The assembly to search. </param>
         /// <returns> A list of all found and added modules. </returns>
-        public IReadOnlyList<Module> AddModules(Assembly assembly)
+        public async Task<IReadOnlyList<Module>> AddModulesAsync(Assembly assembly)
         {
             var modules = new List<Module>();
             var types = assembly.GetExportedTypes();
@@ -283,7 +304,7 @@ namespace Qmmands
                 {
                     if (ReflectionUtils.IsValidCommandDefinition(methods[j]))
                     {
-                        modules.Add(AddModule(typeInfo.AsType()));
+                        modules.Add(await AddModuleAsync(typeInfo.AsType()));
                         break;
                     }
                 }
@@ -297,13 +318,18 @@ namespace Qmmands
         /// </summary>
         /// <param name="builder"> The builder to build. </param>
         /// <returns> A <see cref="Module"/> if succeeded. </returns>
-        public Module AddModule(ModuleBuilder builder)
+        public async Task<Module> AddModuleAsync(ModuleBuilder builder)
         {
-            lock (_moduleLock)
+            try
             {
-                var module = builder.Build(this, null, true);
+                await _moduleSemaphore.WaitAsync();
+                var module = builder.Build(this, null);
                 AddModuleInternal(module);
                 return module;
+            }
+            finally
+            {
+                _moduleSemaphore.Release();
             }
         }
 
@@ -312,23 +338,30 @@ namespace Qmmands
         /// </summary>
         /// <typeparam name="TModule"> The type to add. </typeparam>
         /// <returns> A <see cref="Module"/> if succeeded. </returns>
-        public Module AddModule<TModule>()
-            => AddModule(typeof(TModule));
+        public Task<Module> AddModuleAsync<TModule>()
+            => AddModuleAsync(typeof(TModule));
 
         /// <summary>
         ///     Attempts to add the specified <see cref="Type"/> as a <see cref="Module"/>. 
         /// </summary>
         /// <returns> A <see cref="Module"/> if succeeded. </returns>
-        public Module AddModule(Type type)
+        public async Task<Module> AddModuleAsync(Type type)
         {
-            lock (_moduleLock)
+            if (_typeModules.ContainsKey(type))
+                throw new ArgumentException($"{type.Name} has already been added as a module.", nameof(type));
+            try
             {
-                if (_typeModules.ContainsKey(type))
-                    throw new ArgumentException($"{type.Name} has already been added as a module.", nameof(type));
 
-                var module = ReflectionUtils.BuildModule(type.GetTypeInfo()).Build(this, null, false);
+                await _moduleSemaphore.WaitAsync();
+                var moduleBuilder = ReflectionUtils.BuildModule(type.GetTypeInfo());
+                await _moduleBuilding.InvokeAsync(moduleBuilder);
+                var module = moduleBuilder.Build(this, null);
                 AddModuleInternal(module);
                 return module;
+            }
+            finally
+            {
+                _moduleSemaphore.Release();
             }
         }
 
@@ -354,22 +387,23 @@ namespace Qmmands
         /// </summary>
         /// <param name="module"></param>
         /// <exception cref="ArgumentException"> The module isn't held by this instance. </exception>
-        public void RemoveModule(Module module)
+        public async Task RemoveModuleAsync(Module module)
         {
-            lock (_moduleLock)
+            void RemoveSubmodules(Module m)
             {
-                void RemoveSubmodules(Module m)
+                foreach (var submodule in m.Submodules)
                 {
-                    foreach (var submodule in m.Submodules)
-                    {
-                        _typeModules.Remove(submodule.Type);
-                        RemoveSubmodules(submodule);
-                    }
+                    _typeModules.Remove(submodule.Type);
+                    RemoveSubmodules(submodule);
                 }
+            }
 
-                if (!_modules.Contains(module))
-                    throw new ArgumentException("This module hasn't been added.", nameof(module));
+            if (!_modules.Contains(module))
+                throw new ArgumentException("This module hasn't been added.", nameof(module));
 
+            try
+            {
+                await _moduleSemaphore.WaitAsync();
                 _map.RemoveModule(module, new Stack<string>());
                 _modules.Remove(module);
                 if (module.Type != null)
@@ -377,6 +411,10 @@ namespace Qmmands
                     _typeModules.Remove(module.Type);
                     RemoveSubmodules(module);
                 }
+            }
+            finally
+            {
+                _moduleSemaphore.Release();
             }
         }
 

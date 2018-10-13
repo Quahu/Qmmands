@@ -3,7 +3,7 @@
 namespace Qmmands
 {
     /// <summary>
-    ///     Prevents <see cref="CommandService.AddModules(System.Reflection.Assembly)"/> from automatically adding the <see cref="Module"/>.
+    ///     Prevents <see cref="CommandService.AddModulesAsync(System.Reflection.Assembly)"/> from automatically adding the <see cref="Module"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class DontAutoAddAttribute : Attribute

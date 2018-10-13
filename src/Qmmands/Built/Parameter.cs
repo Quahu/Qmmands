@@ -64,7 +64,7 @@ namespace Qmmands
         /// </summary>
         public Command Command { get; }
 
-        internal Parameter(ParameterBuilder builder, Command command, bool userBuilt)
+        internal Parameter(ParameterBuilder builder, Command command)
         {
             Name = builder.Name;
             Description = builder.Description;
@@ -74,24 +74,21 @@ namespace Qmmands
             DefaultValue = builder.DefaultValue;
             Type = builder.Type;
 
-            if (userBuilt)
+            if (Type == null)
+                throw new InvalidOperationException("Parameter must have an assigned type.");
+
+            if (IsOptional)
             {
-                if (Type == null)
-                    throw new InvalidOperationException("Parameter must have an assigned type.");
-
-                if (IsOptional)
+                if (DefaultValue is null)
                 {
-                    if (DefaultValue is null)
-                    {
-                        if (Type.IsValueType && Type.GenericTypeArguments.Length > 0 && Type.GenericTypeArguments[0].IsValueType && Type != (typeof(Nullable<>).MakeGenericType(Type.GenericTypeArguments[0])))
-                            throw new InvalidOperationException(
-                                "A value type parameter can't have null as the default value.");
-                    }
-
-                    else if (DefaultValue.GetType() != Type)
+                    if (Type.IsValueType && !(Type.GenericTypeArguments.Length > 0 && Type.GenericTypeArguments[0].IsValueType && Type == (typeof(Nullable<>).MakeGenericType(Type.GenericTypeArguments[0]))))
                         throw new InvalidOperationException(
-                            $"Parameter type and default value mismatch. Expected {Type.Name}, got {DefaultValue.GetType().Name}.");
+                            "A value type parameter can't have null as the default value.");
                 }
+
+                else if (DefaultValue.GetType() != Type)
+                    throw new InvalidOperationException(
+                        $"Parameter type and default value mismatch. Expected {Type.Name}, got {DefaultValue.GetType().Name}.");
             }
 
             if (builder.CustomTypeParserType != null)

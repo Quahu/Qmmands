@@ -175,7 +175,7 @@ namespace Qmmands
             return this;
         }
 
-        internal Parameter Build(Command command, bool userBuilt)
-            => new Parameter(this, command, userBuilt);
+        internal Parameter Build(Command command)
+            => new Parameter(this, command);
     }
 }

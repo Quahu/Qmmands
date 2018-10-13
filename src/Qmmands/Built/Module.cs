@@ -73,7 +73,7 @@ namespace Qmmands
 
         internal Type Type { get; }
 
-        internal Module(CommandService service, ModuleBuilder builder, Module parent, bool userBuilt)
+        internal Module(CommandService service, ModuleBuilder builder, Module parent)
         {
             Parent = parent;
             Service = service;
@@ -113,12 +113,12 @@ namespace Qmmands
 
             var modules = new List<Module>(builder.Submodules.Count);
             for (var i = 0; i < builder.Submodules.Count; i++)
-                modules.Add(builder.Submodules[i].Build(Service, this, userBuilt));
+                modules.Add(builder.Submodules[i].Build(Service, this));
             Submodules = modules.AsReadOnly();
 
             var commands = new List<Command>(builder.Commands.Count);
             for (var i = 0; i < builder.Commands.Count; i++)
-                commands.Add(builder.Commands[i].Build(this, userBuilt));
+                commands.Add(builder.Commands[i].Build(this));
             Commands = commands.AsReadOnly();
         }
 

@@ -201,7 +201,7 @@ namespace Qmmands
             return this;
         }
 
-        internal Command Build(Module module, bool userBuilt)
+        internal Command Build(Module module)
         {
             if (module is null)
                 throw new ArgumentNullException(nameof(module), "Command's module mustn't be null.");
@@ -219,7 +219,7 @@ namespace Qmmands
                 previous = current;
             }
 
-            return new Command(this, module, userBuilt);
+            return new Command(this, module);
         }
     }
 }

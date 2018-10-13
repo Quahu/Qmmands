@@ -202,12 +202,12 @@ namespace Qmmands
             return this;
         }
 
-        internal Module Build(CommandService service, Module parent, bool userBuilt)
+        internal Module Build(CommandService service, Module parent)
         {
             if (Submodules.Count == 0 && Commands.Count == 0)
                 throw new InvalidOperationException("Command modules must have at least one submodule or command.");
 
-            return new Module(service, this, parent, userBuilt);
+            return new Module(service, this, parent);
         }
     }
 }

@@ -9,14 +9,12 @@ namespace Qmmands
         private readonly CommandService _service;
         private readonly Dictionary<string, List<Command>> _commands;
         private readonly Dictionary<string, CommandNode> _nodes;
-        private readonly StringComparison _stringComparison;
 
         public CommandNode(CommandService service)
         {
             _service = service;
             _commands = new Dictionary<string, List<Command>>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
             _nodes = new Dictionary<string, CommandNode>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
-            _stringComparison = _service.CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
 
         public IEnumerable<CommandMatch> FindCommands(Stack<string> path, string text, int startIndex)
@@ -53,7 +51,7 @@ namespace Qmmands
 
         private int GetSegment(string text, string key, int startIndex, bool checkForSeparator, out string arguments, out bool hasSeparator, out bool hasWhitespaceSeparator)
         {
-            var index = text.IndexOf(key, startIndex, _stringComparison);
+            var index = text.IndexOf(key, startIndex, _service.StringComparison);
             if (index == -1 || index != startIndex)
             {
                 arguments = null;
@@ -78,7 +76,7 @@ namespace Qmmands
                         index++;
                     }
 
-                    if (text.IndexOf(_service.Separator, index, _stringComparison) == index)
+                    if (text.IndexOf(_service.Separator, index, _service.StringComparison) == index)
                     {
                         index += _service.Separator.Length;
                         hasConfigSeparator = true;

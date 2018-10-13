@@ -76,7 +76,7 @@ namespace Qmmands
 
         internal CommandService Service => Module.Service;
 
-        internal Command(CommandBuilder builder, Module module, bool userBuilt)
+        internal Command(CommandBuilder builder, Module module)
         {
             Module = module;
 
@@ -115,7 +115,7 @@ namespace Qmmands
 
             var parameters = new List<Parameter>();
             for (var i = 0; i < builder.Parameters.Count; i++)
-                parameters.Add(builder.Parameters[i].Build(this, userBuilt));
+                parameters.Add(builder.Parameters[i].Build(this));
             Parameters = parameters.AsReadOnly();
 
             Callback = builder.Callback;
