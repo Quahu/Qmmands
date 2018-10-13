@@ -1,0 +1,27 @@
+﻿namespace Qmmands
+{
+    internal delegate bool TryParseDelegate<T>(string value, out T result);
+
+    internal class PrimitiveTypeParser<T> : IPrimitiveTypeParser where T : struct
+    {
+        private readonly TryParseDelegate<T> _tryParse;
+
+        public PrimitiveTypeParser()
+            => _tryParse = (TryParseDelegate<T>) TypeParserUtils.TryParseDelegates[typeof(T)];
+
+        public bool TryParse(string values, out T result)
+            => _tryParse(values, out result);
+
+        bool IPrimitiveTypeParser.TryParse(string value, out object result)
+        {
+            result = default;
+            if (TryParse(value, out var genericResult))
+            {
+                result = genericResult;
+                return true;
+            }
+
+            return false;
+        }
+    }
+}
