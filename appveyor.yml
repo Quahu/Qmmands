@@ -53,7 +53,7 @@ deploy:
     branch: master
 - provider: NuGet
   api_key:
-    secure: gQ+L4bcwYlrvt2U+QvuHtRJZ8/VyU07lUdYPlYsoRPEdmLS5kvFj/fYV/zfILUs8
+    secure: O7xmTfASfpU1YlRDxaLRtK0Nkjt6T03B6K4oT96B32mNTw7K0ZbC7c8/dxe9yTqW
   on:
     branch: master
     appveyor_repo_tag: true
