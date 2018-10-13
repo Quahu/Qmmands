@@ -8,28 +8,19 @@ branches:
 
 build_script:
 - ps: dotnet restore .\src\Qmmands.sln | Out-Host
-- ps: dotnet build  .\src\Qmmands.sln -c "Release" | Out-Host
+- ps: dotnet build .\src\Qmmands.sln -c "Release" --no-restore | Out-Host
 
 after_build:
 - ps: >-
     if ($Env:APPVEYOR_REPO_TAG -eq "false")
     {
        $BuildNumber = ([int] $Env:APPVEYOR_BUILD_NUMBER).ToString("00000")
-       dotnet pack .\src\Qmmands -c Release -o .\..\..\artifacts --no-build --version-suffix="nightly-$BuildNumber" | Out-Host
+       dotnet pack .\src\Qmmands -c Release -o .\..\..\artifacts --no-restore --no-build --version-suffix="nightly-$BuildNumber" | Out-Host
     }
     else
     {
-        dotnet pack .\src\Qmmands -c Release -o .\..\..\artifacts --no-build | Out-Host
+        dotnet pack .\src\Qmmands -c Release -o .\..\..\artifacts --no-restore --no-build | Out-Host
     }
-
-dotnet_csproj:
-  patch: true
-  file: '**\*.csproj'
-  version: '{version}'
-  package_version: '{version}'
-  assembly_version: '{version}'
-  file_version: '{version}'
-  informational_version: '{version}'
 
 nuget:
   disable_publish_on_pr: true
