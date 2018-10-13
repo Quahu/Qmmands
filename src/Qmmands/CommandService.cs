@@ -304,7 +304,7 @@ namespace Qmmands
                 {
                     if (ReflectionUtils.IsValidCommandDefinition(methods[j]))
                     {
-                        modules.Add(await AddModuleAsync(typeInfo.AsType()));
+                        modules.Add(await AddModuleAsync(typeInfo.AsType()).ConfigureAwait(false));
                         break;
                     }
                 }
@@ -322,7 +322,7 @@ namespace Qmmands
         {
             try
             {
-                await _moduleSemaphore.WaitAsync();
+                await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
                 var module = builder.Build(this, null);
                 AddModuleInternal(module);
                 return module;
@@ -352,9 +352,9 @@ namespace Qmmands
             try
             {
 
-                await _moduleSemaphore.WaitAsync();
+                await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
                 var moduleBuilder = ReflectionUtils.BuildModule(type.GetTypeInfo());
-                await _moduleBuilding.InvokeAsync(moduleBuilder);
+                await _moduleBuilding.InvokeAsync(moduleBuilder).ConfigureAwait(false);
                 var module = moduleBuilder.Build(this, null);
                 AddModuleInternal(module);
                 return module;
@@ -403,7 +403,7 @@ namespace Qmmands
 
             try
             {
-                await _moduleSemaphore.WaitAsync();
+                await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
                 _map.RemoveModule(module, new Stack<string>());
                 _modules.Remove(module);
                 if (module.Type != null)
@@ -573,7 +573,7 @@ namespace Qmmands
                             var list = new List<object>();
                             foreach (var argument in multipleArguments)
                             {
-                                if (!await ParseArgumentAsync(list, argument))
+                                if (!await ParseArgumentAsync(list, argument).ConfigureAwait(false))
                                 {
                                     skipOverload = true;
                                     break;
@@ -586,7 +586,7 @@ namespace Qmmands
                             parsedArguments.Add(array);
                         }
 
-                        else if (!await ParseArgumentAsync(null, kvp.Value))
+                        else if (!await ParseArgumentAsync(null, kvp.Value).ConfigureAwait(false))
                         {
                             skipOverload = true;
                             break;
@@ -600,7 +600,7 @@ namespace Qmmands
                     {
 
                         case RunMode.Sequential:
-                            return await ExecuteInternalAsync(match.Command, context, provider, parsedArguments.ToArray());
+                            return await ExecuteInternalAsync(match.Command, context, provider, parsedArguments.ToArray()).ConfigureAwait(false);
 
                         case RunMode.Parallel:
                             _ = Task.Run(() => ExecuteInternalAsync(match.Command, context, provider, parsedArguments.ToArray()));
@@ -622,13 +622,13 @@ namespace Qmmands
             try
             {
                 var result = await command.Callback(command, context, provider, arguments);
-                await _commandExecuted.InvokeAsync(command, result as CommandResult, context, provider);
+                await _commandExecuted.InvokeAsync(command, result as CommandResult, context, provider).ConfigureAwait(false);
                 return result;
             }
             catch (Exception ex)
             {
                 var result = new ExecutionFailedResult(command, CommandExecutionStep.Command, ex);
-                await _commandErrored.InvokeAsync(result, context, provider);
+                await _commandErrored.InvokeAsync(result, context, provider).ConfigureAwait(false);
                 return result;
             }
         }
