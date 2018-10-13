@@ -19,6 +19,11 @@ namespace Qmmands
         public string Description { get; set; }
 
         /// <summary>
+        ///     Gets or sets the remarks of the <see cref="Command"/>.
+        /// </summary>
+        public string Remarks { get; set; }
+
+        /// <summary>
         ///     Gets or sets the priority of the <see cref="Command"/>.
         /// </summary>
         public int Priority { get; set; }
@@ -84,6 +89,15 @@ namespace Qmmands
         public CommandBuilder WithDescription(string description)
         {
             Description = description;
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the <see cref="Remarks"/>.
+        /// </summary>
+        public CommandBuilder WithRemarks(string remarks)
+        {
+            Remarks = remarks;
             return this;
         }
 

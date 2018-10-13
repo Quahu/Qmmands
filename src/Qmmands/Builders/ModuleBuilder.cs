@@ -19,6 +19,11 @@ namespace Qmmands
         public string Description { get; set; }
 
         /// <summary>
+        ///     Gets or sets the remarks of the <see cref="Module"/>.
+        /// </summary>
+        public string Remarks { get; set; }
+
+        /// <summary>
         ///     Gets or sets the <see cref="Qmmands.RunMode"/> of the <see cref="Module"/>.
         /// </summary>
         public RunMode? RunMode { get; set; }
@@ -85,6 +90,15 @@ namespace Qmmands
         public ModuleBuilder WithDescription(string description)
         {
             Description = description;
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the <see cref="Remarks"/>.
+        /// </summary>
+        public ModuleBuilder WithRemarks(string remarks)
+        {
+            Remarks = remarks;
             return this;
         }
 

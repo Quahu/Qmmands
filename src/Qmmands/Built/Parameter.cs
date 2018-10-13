@@ -20,6 +20,11 @@ namespace Qmmands
         public string Description { get; }
 
         /// <summary>
+        ///     Gets the remarks of this <see cref="Parameter"/>.
+        /// </summary>
+        public string Remarks { get; }
+
+        /// <summary>
         ///     Gets whether this <see cref="Parameter"/> is a remainder parameter or not.
         /// </summary>
         public bool IsRemainder { get; }
@@ -68,6 +73,7 @@ namespace Qmmands
         {
             Name = builder.Name;
             Description = builder.Description;
+            Remarks = builder.Remarks;
             IsRemainder = builder.IsRemainder;
             IsMultiple = builder.IsMultiple;
             IsOptional = builder.IsOptional;

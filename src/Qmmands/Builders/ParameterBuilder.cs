@@ -19,6 +19,11 @@ namespace Qmmands
         public string Description { get; set; }
 
         /// <summary>
+        ///     Gets or sets the remarks of the <see cref="Parameter"/>.
+        /// </summary>
+        public string Remarks { get; set; }
+
+        /// <summary>
         ///     Gets or sets whether the <see cref="Parameter"/> is a remainder parameter or not.
         /// </summary>
         public bool IsRemainder { get; set; }
@@ -82,6 +87,15 @@ namespace Qmmands
         public ParameterBuilder WithDescription(string description)
         {
             Description = description;
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the <see cref="Remarks"/>.
+        /// </summary>
+        public ParameterBuilder WithRemarks(string remarks)
+        {
+            Remarks = remarks;
             return this;
         }
 

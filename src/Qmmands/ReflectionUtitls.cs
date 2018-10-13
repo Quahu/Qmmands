@@ -61,6 +61,10 @@ namespace Qmmands
                         builder.WithDescription(descriptionAttribute.Description);
                         break;
 
+                    case RemarksAttribute remarksAttribute:
+                        builder.WithRemarks(remarksAttribute.Remarks);
+                        break;
+
                     case RunModeAttribute runModeAttribute:
                         builder.WithRunMode(runModeAttribute.RunMode);
                         break;
@@ -106,6 +110,10 @@ namespace Qmmands
 
                     case DescriptionAttribute descriptionAttribute:
                         builder.WithDescription(descriptionAttribute.Description);
+                        break;
+
+                    case RemarksAttribute remarksAttribute:
+                        builder.WithRemarks(remarksAttribute.Remarks);
                         break;
 
                     case PriorityAttribute priorityAttribute:
@@ -157,6 +165,10 @@ namespace Qmmands
 
                     case DescriptionAttribute descriptionAttribute:
                         builder.WithDescription(descriptionAttribute.Description);
+                        break;
+
+                    case RemarksAttribute remarksAttribute:
+                        builder.WithRemarks(remarksAttribute.Remarks);
                         break;
 
                     case ParamArrayAttribute _:

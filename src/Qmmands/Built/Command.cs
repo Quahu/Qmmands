@@ -22,6 +22,11 @@ namespace Qmmands
         public string Description { get; }
 
         /// <summary>
+        ///     Gets the remarks of this <see cref="Command"/>.
+        /// </summary>
+        public string Remarks { get; }
+
+        /// <summary>
         ///     Gets the priority of this <see cref="Command"/>.
         /// </summary>
         public int Priority { get; }
@@ -81,6 +86,7 @@ namespace Qmmands
             Module = module;
 
             Description = builder.Description;
+            Remarks = builder.Remarks;
             Priority = builder.Priority;
             RunMode = builder.RunMode ?? module.RunMode;
             IgnoreExtraArguments = builder.IgnoreExtraArguments ?? module.IgnoreExtraArguments;

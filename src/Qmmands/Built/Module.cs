@@ -22,6 +22,11 @@ namespace Qmmands
         public string Description { get; }
 
         /// <summary>
+        ///     Gets the remarks of this <see cref="Module"/>.
+        /// </summary>
+        public string Remarks { get; }
+
+        /// <summary>
         ///     Gets the <see cref="Qmmands.RunMode"/> of this <see cref="Module"/>.
         /// </summary>
         public RunMode RunMode { get; }
@@ -80,6 +85,7 @@ namespace Qmmands
             Type = builder.Type;
 
             Description = builder.Description;
+            Remarks = builder.Remarks;
             RunMode = builder.RunMode ?? Service.DefaultRunMode;
             IgnoreExtraArguments = builder.IgnoreExtraArguments ?? Service.IgnoreExtraArguments;
             Aliases = builder.Aliases.AsReadOnly();
