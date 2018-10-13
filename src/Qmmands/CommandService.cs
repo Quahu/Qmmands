@@ -192,23 +192,20 @@ namespace Qmmands
         /// <param name="parser"> The <see cref="TypeParser{T}"/> to add for the type. </param>
         /// <param name="replacePrimitive"> Whether to replace the primitive parser. </param>
         public void AddTypeParser<T>(TypeParser<T> parser, bool replacePrimitive = false)
-        {
-            var type = typeof(T);
-            if (_parsers.TryGetValue(type, out var existingParser))
-                throw new ArgumentException($"A parser for type {type.Name} has already been added ({existingParser.GetType().Name}).", nameof(parser));
-
-            AddParserInternal(type, parser, replacePrimitive);
-        }
+            => AddParserInternal(typeof(T), parser, replacePrimitive);
 
         private void AddParserInternal(Type type, ITypeParser parser, bool replacePrimitive = false)
         {
+            if (type.IsEnum)
+                throw new ArgumentException("Custom enum type parsers aren't supported.", nameof(type));
+
             _parsers.AddOrUpdate(type,
-                new Dictionary<Type, (bool, ITypeParser)> { [parser.GetType()] = (replacePrimitive, parser) },
-                (k, v) =>
-                {
-                    v.Add(k, (replacePrimitive, parser));
-                    return v;
-                });
+            new Dictionary<Type, (bool, ITypeParser)> { [parser.GetType()] = (replacePrimitive, parser) },
+            (k, v) =>
+            {
+                v.Add(k, (replacePrimitive, parser));
+                return v;
+            });
             if (type.IsValueType)
             {
                 var nullableParser = TypeParserUtils.CreateNullableTypeParser(type, parser);
@@ -280,6 +277,17 @@ namespace Qmmands
         {
             if (_primitiveParsers.TryGetValue(type, out var typeParser))
                 return typeParser;
+
+            if (type.IsEnum)
+            {
+                var enumParser = TypeParserUtils.CreateEnumTypeParser(type.GetEnumUnderlyingType(), type, !CaseSensitive);
+                _primitiveParsers.TryAdd(type, enumParser);
+                _primitiveParsers.TryAdd(typeof(Nullable<>).MakeGenericType(type), TypeParserUtils.CreateNullableEnumTypeParser(type.GetEnumUnderlyingType(), enumParser));
+                return GetPrimitiveTypeParser(type);
+            }
+
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>) && (type = type.GetGenericArguments()[0]).IsEnum)
+                return GetPrimitiveTypeParser(type);
 
             return null;
         }

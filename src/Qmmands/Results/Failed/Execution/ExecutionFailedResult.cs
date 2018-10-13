@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace Qmmands
 {
@@ -30,6 +31,8 @@ namespace Qmmands
             Command = command;
             CommandExecutionStep = commandExecutionStep;
             Exception = exception;
+            while (Exception is TargetInvocationException)
+                Exception = Exception.InnerException;
 
             switch (CommandExecutionStep)
             {
