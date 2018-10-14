@@ -90,27 +90,20 @@ namespace Qmmands
             IgnoreExtraArguments = builder.IgnoreExtraArguments ?? Service.IgnoreExtraArguments;
             Aliases = builder.Aliases.AsReadOnly();
 
-            if (Parent is null || (Parent.FullAliases.Count == 0 && Aliases.Count == 0))
-                FullAliases = builder.Aliases.AsReadOnly();
+            var fullAliases = new List<string>();
+            if (Parent is null || Parent.FullAliases.Count == 0)
+                fullAliases.AddRange(Aliases);
+
+            else if (Aliases.Count == 0)
+                fullAliases.AddRange(Parent.FullAliases);
 
             else
             {
-                var fullAliases = new List<string>();
-                if (Parent.FullAliases.Count > 0)
-                {
-                    for (var i = 0; i < Parent.FullAliases.Count; i++)
-                        for (var j = 0; j < Aliases.Count; j++)
-                            fullAliases.Add(string.Concat(parent.FullAliases[i], Service.Separator, Aliases[j]));
-                }
-
-                else if (Aliases.Count == 0)
-                    fullAliases.AddRange(Parent.FullAliases);
-
-                else
-                    fullAliases.AddRange(Aliases);
-
-                FullAliases = fullAliases.AsReadOnly();
+                for (var i = 0; i < Parent.FullAliases.Count; i++)
+                    for (var j = 0; j < Aliases.Count; j++)
+                        fullAliases.Add(string.Concat(Parent.FullAliases[i], Service.Separator, Aliases[j]));
             }
+            FullAliases = fullAliases.AsReadOnly();
 
             Name = builder.Name ?? (FullAliases.Count > 0 ? FullAliases[0] : Type?.Name);
 
