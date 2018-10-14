@@ -147,8 +147,9 @@ namespace Qmmands
             if (Checks.Count > 0)
             {
                 var checkResults = (await Task.WhenAll(Checks.Select(x => RunCheckAsync(x, context, provider))));
-                if (!checkResults.GroupBy(x => x.Check.Group).Any(x => (x.Key == null && x.All(y => y.Error == null)) || (x.Key != null && x.Any(y => y.Error == null))))
-                    return new ChecksFailedResult(this, checkResults.Where(x => x.Error != null).ToImmutableList());
+                var failedGroups = checkResults.GroupBy(x => x.Check.Group).Where(x => x.Key == null ? x.Any(y => y.Error != null) : x.All(y => y.Error != null)).ToArray();
+                if (failedGroups.Length > 0)
+                    return new ChecksFailedResult(this, failedGroups.SelectMany(x => x).Where(x => x.Error != null).ToImmutableList());
             }
 
             return new SuccessfulResult();

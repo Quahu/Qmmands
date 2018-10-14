@@ -9,6 +9,14 @@ namespace Qmmands
     public abstract class ParameterCheckBaseAttribute : Attribute
     {
         /// <summary>
+        ///     Sets the group for this check.
+        /// </summary>
+        /// <remarks>
+        ///     Grouped checks act as if they were put side by side with the logical OR operator (||) in between.
+        /// </remarks>
+        public string Group { get; set; }
+
+        /// <summary>
         ///     A method which determines whether the <paramref name="argument"/> is valid for the <see cref="Parameter"/> in given circumstances.
         /// </summary>
         /// <param name="parameter"> The currently checked <see cref="Parameter"/>. </param>

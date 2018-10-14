@@ -13,7 +13,7 @@ namespace Qmmands
         ///     Sets the group for this check.
         /// </summary>
         /// <remarks>
-        ///     Groupped checks act as if they were put side by side with the logical OR operator (||) in between.
+        ///     Grouped checks act as if they were put side by side with the logical OR operator (||) in between.
         /// </remarks>
         public string Group { get; set; }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -447,8 +446,8 @@ namespace Qmmands
             if (matches.Length == 0)
                 return new CommandNotFoundResult();
 
-            var grouppedMatches = matches.GroupBy(x => string.Join(Separator, x.Path));
-            foreach (var group in grouppedMatches)
+            var groupedMatches = matches.GroupBy(x => string.Join(Separator, x.Path));
+            foreach (var group in groupedMatches)
             {
                 var failedOverloads = new Dictionary<Command, FailedResult>();
                 var overloadCount = 0;
@@ -457,9 +456,9 @@ namespace Qmmands
                     overloadCount++;
                     try
                     {
-                        var checkRunResult = await match.Command.RunChecksAsync(context, provider).ConfigureAwait(false);
-                        if (!checkRunResult.IsSuccessful)
-                            return checkRunResult;
+                        var checkResult = await match.Command.RunChecksAsync(context, provider).ConfigureAwait(false);
+                        if (!checkResult.IsSuccessful)
+                            return checkResult;
                     }
                     catch (Exception ex)
                     {
@@ -486,29 +485,13 @@ namespace Qmmands
                     foreach (var kvp in parseResult.Arguments)
                     {
                         var parameter = kvp.Key;
-                        async Task<bool> ParseArgumentAsync(IList list, object argument)
+                        async Task<(bool Success, object Parsed)> ParseArgumentAsync(object argument)
                         {
                             if (!(argument is string value))
-                            {
-                                if (list == null)
-                                    parsedArguments.Add(kvp.Value);
-
-                                else
-                                    list.Add(kvp.Value);
-
-                                return true;
-                            }
+                                return (true, kvp.Value);
 
                             if (parameter.Type == _stringType)
-                            {
-                                if (list == null)
-                                    parsedArguments.Add(value);
-
-                                else
-                                    list.Add(value);
-
-                                return true;
-                            }
+                                return (true, value);
 
                             IPrimitiveTypeParser primitiveParser;
                             try
@@ -523,16 +506,10 @@ namespace Qmmands
                                     if (!typeParserResult.IsSuccessful)
                                     {
                                         failedOverloads.Add(match.Command, new TypeParserFailedResult(parameter, value, typeParserResult.Error));
-                                        return false;
+                                        return (false, default);
                                     }
 
-                                    if (list == null)
-                                        parsedArguments.Add(typeParserResult.Value);
-
-                                    else
-                                        list.Add(typeParserResult.Value);
-
-                                    return true;
+                                    return (true, typeParserResult.Value);
                                 }
 
                                 var parser = GetAnyTypeParser(parameter.Type, (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null);
@@ -542,22 +519,16 @@ namespace Qmmands
                                     if (!typeParserResult.IsSuccessful)
                                     {
                                         failedOverloads.Add(match.Command, new TypeParserFailedResult(parameter, value, typeParserResult.Error));
-                                        return false;
+                                        return (false, default);
                                     }
 
-                                    if (list == null)
-                                        parsedArguments.Add(typeParserResult.Value);
-
-                                    else
-                                        list.Add(typeParserResult.Value);
-
-                                    return true;
+                                    return (true, typeParserResult.Value);
                                 }
                             }
                             catch (Exception ex)
                             {
                                 failedOverloads.Add(match.Command, new ExecutionFailedResult(match.Command, CommandExecutionStep.TypeParsing, ex));
-                                return false;
+                                return (false, default);
                             }
 
                             if (primitiveParser != null || (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null)
@@ -565,20 +536,14 @@ namespace Qmmands
                                 if (!primitiveParser.TryParse(value, out var result))
                                 {
                                     failedOverloads.Add(match.Command, new TypeParserFailedResult(parameter, value, $"Failed to parse {parameter.Type}."));
-                                    return false;
+                                    return (false, default);
                                 }
 
-                                if (list == null)
-                                    parsedArguments.Add(result);
-
-                                else
-                                    list.Add(result);
-
-                                return true;
+                                return (true, result);
                             }
 
                             failedOverloads.Add(match.Command, new TypeParserFailedResult(parameter, value, $"No type parser found for parameter {parameter} ({parameter.Type})."));
-                            return false;
+                            return (false, false);
                         }
 
                         if (kvp.Value is IEnumerable<string> multipleArguments)
@@ -586,23 +551,49 @@ namespace Qmmands
                             var list = new List<object>();
                             foreach (var argument in multipleArguments)
                             {
-                                if (!await ParseArgumentAsync(list, argument).ConfigureAwait(false))
+                                var (success, parsed) = await ParseArgumentAsync(argument).ConfigureAwait(false);
+                                if (!success)
                                 {
                                     skipOverload = true;
                                     break;
                                 }
 
+                                list.Add(parsed);
                             }
+
                             var array = Array.CreateInstance(parameter.Type, list.Count);
                             for (var i = 0; i < list.Count; i++)
                                 array.SetValue(list[i], i);
+
+                            var checkResult = await parameter.RunChecksAsync(array, context, provider);
+                            if (!checkResult.IsSuccessful)
+                            {
+                                failedOverloads.Add(match.Command, checkResult as FailedResult);
+                                skipOverload = true;
+                                break;
+                            }
+
                             parsedArguments.Add(array);
                         }
 
-                        else if (!await ParseArgumentAsync(null, kvp.Value).ConfigureAwait(false))
+                        else
                         {
-                            skipOverload = true;
-                            break;
+                            var (success, parsed) = await ParseArgumentAsync(kvp.Value).ConfigureAwait(false);
+                            if (!success)
+                            {
+                                skipOverload = true;
+                                break;
+                            }
+
+                            var checkResult = await parameter.RunChecksAsync(parsed, context, provider);
+                            if (!checkResult.IsSuccessful)
+                            {
+                                failedOverloads.Add(match.Command, checkResult as FailedResult);
+                                skipOverload = true;
+                                break;
+                            }
+
+                            parsedArguments.Add(parsed);
                         }
                     }
 

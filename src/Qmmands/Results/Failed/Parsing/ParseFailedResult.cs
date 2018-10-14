@@ -4,7 +4,7 @@ using System.Linq;
 namespace Qmmands
 {
     /// <summary>
-    ///     Represents argument parsing failure.
+    ///     Represents an argument parse failure.
     /// </summary>
     public sealed class ParseFailedResult : FailedResult
     {

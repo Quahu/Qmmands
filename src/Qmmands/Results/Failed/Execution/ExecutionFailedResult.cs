@@ -4,7 +4,7 @@ using System.Reflection;
 namespace Qmmands
 {
     /// <summary>
-    ///     Represents execution failure.
+    ///     Represents an execution failure.
     /// </summary>
     public sealed class ExecutionFailedResult : FailedResult
     {

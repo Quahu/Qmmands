@@ -1,7 +1,7 @@
 ﻿namespace Qmmands
 {
     /// <summary>
-    ///     Represents a type parse failure.
+    ///     Represents a type parser failure.
     /// </summary>
     public sealed class TypeParserFailedResult : FailedResult
     {

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Qmmands
 {
@@ -108,6 +111,37 @@ namespace Qmmands
             Attributes = builder.Attributes.AsReadOnly();
 
             Command = command;
+        }
+
+        /// <summary>
+        ///     Runs parameter checks on this <see cref="Parameter"/>.
+        /// </summary>
+        /// <param name="argument"> The parsed argument value for this <see cref="Parameter"/>. </param>
+        /// <param name="context"> The <see cref="ICommandContext"/> used for execution. </param>
+        /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
+        /// <returns>
+        ///     A <see cref="SuccessfulResult"/> if all of the checks pass, otherwise a <see cref="ChecksFailedResult"/>.
+        /// </returns>
+        public async Task<IResult> RunChecksAsync(object argument, ICommandContext context, IServiceProvider provider = null)
+        {
+            if (provider is null)
+                provider = EmptyServiceProvider.Instance;
+
+            if (Checks.Count > 0)
+            {
+                var checkResults = (await Task.WhenAll(Checks.Select(x => RunCheckAsync(x, argument, context, provider))));
+                var failedGroups = checkResults.GroupBy(x => x.Check.Group).Where(x => x.Key == null ? x.Any(y => y.Error != null) : x.All(y => y.Error != null)).ToArray();
+                if (failedGroups.Length > 0)
+                    return new ParameterChecksFailedResult(this, failedGroups.SelectMany(x => x).Where(x => x.Error != null).ToImmutableList());
+            }
+
+            return new SuccessfulResult();
+        }
+
+        private async Task<(ParameterCheckBaseAttribute Check, string Error)> RunCheckAsync(ParameterCheckBaseAttribute check, object argument, ICommandContext context, IServiceProvider provider)
+        {
+            var checkResult = await check.CheckAsync(this, argument, context, provider);
+            return (check, checkResult.Error);
         }
 
         /// <summary>
