@@ -18,6 +18,11 @@ namespace Qmmands
         /// </summary>
         /// <param name="runMode"> The <see cref="Qmmands.RunMode"/> to set. </param>
         public RunModeAttribute(RunMode runMode)
-            => RunMode = runMode;
+        {
+            if (!Enum.IsDefined(typeof(RunMode), runMode))
+                throw new ArgumentOutOfRangeException(nameof(runMode), "Invalid run mode.");
+
+            RunMode = runMode;
+        }
     }
 }

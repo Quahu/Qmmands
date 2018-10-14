@@ -23,10 +23,22 @@ namespace Qmmands
         /// </summary>
         public string Remarks { get; set; }
 
+        private RunMode? _runMode;
+
         /// <summary>
         ///     Gets or sets the <see cref="Qmmands.RunMode"/> of the <see cref="Module"/>.
         /// </summary>
-        public RunMode? RunMode { get; set; }
+        public RunMode? RunMode
+        {
+            get => _runMode;
+            set
+            {
+                if (value != null && !Enum.IsDefined(typeof(RunMode), value.Value))
+                    throw new ArgumentOutOfRangeException(nameof(value), "Invalid run mode.");
+
+                _runMode = value;
+            }
+        }
 
         /// <summary>
         ///     Gets or sets whether the <see cref="Command"/>s in the <see cref="Module"/> should ignore extra arguments or not.
@@ -241,11 +253,6 @@ namespace Qmmands
         }
 
         internal Module Build(CommandService service, Module parent)
-        {
-            if (Submodules.Count == 0 && Commands.Count == 0)
-                throw new InvalidOperationException("Command modules must have at least one submodule or command.");
-
-            return new Module(service, this, parent);
-        }
+            => new Module(service, this, parent);
     }
 }

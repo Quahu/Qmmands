@@ -35,12 +35,8 @@ namespace Qmmands
             }
         }
 
-        public static IEnumerable<MethodInfo> GetValidCommands(TypeInfo typeInfo)
-        {
-            foreach (var method in typeInfo.DeclaredMethods)
-                if (IsValidCommandDefinition(method))
-                    yield return method;
-        }
+        public static IEnumerable<MethodInfo> GetValidCommands(TypeInfo typeInfo) 
+            => typeInfo.DeclaredMethods.Where(IsValidCommandDefinition);
 
         public static ModuleBuilder BuildModule(TypeInfo typeInfo)
         {

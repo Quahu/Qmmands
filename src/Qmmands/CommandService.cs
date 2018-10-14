@@ -91,7 +91,7 @@ namespace Qmmands
         public CommandService(CommandServiceConfiguration configuration)
         {
             if (configuration == null)
-                throw new ArgumentNullException("Command service's configuration mustn't be null.", nameof(configuration));
+                throw new ArgumentNullException(nameof(configuration), "Command service's configuration mustn't be null.");
 
             CaseSensitive = configuration.CaseSensitive;
             DefaultRunMode = configuration.DefaultRunMode;
@@ -183,14 +183,22 @@ namespace Qmmands
         /// <typeparam name="T"> The type to add the <paramref name="parser"/> for. </typeparam>
         /// <param name="parser"> The <see cref="TypeParser{T}"/> to add for the type. </param>
         /// <param name="replacePrimitive"> Whether to replace the primitive parser. </param>
+        /// <exception cref="ArgumentNullException"> The type parser to add mustn't be null. </exception>
+        /// <exception cref="ArgumentException"> Custom enum type parsers aren't supported. </exception>
         public void AddTypeParser<T>(TypeParser<T> parser, bool replacePrimitive = false)
-            => AddParserInternal(typeof(T), parser, replacePrimitive);
-
-        private void AddParserInternal(Type type, ITypeParser parser, bool replacePrimitive = false)
         {
+            if (parser is null)
+                throw new ArgumentNullException(nameof(parser), "The type parser to add mustn't be null.");
+
+            var type = typeof(T);
             if (type.IsEnum)
                 throw new ArgumentException("Custom enum type parsers aren't supported.", nameof(type));
 
+            AddParserInternal(typeof(T), parser, replacePrimitive);
+        }
+
+        private void AddParserInternal(Type type, ITypeParser parser, bool replacePrimitive = false)
+        {
             _parsers.AddOrUpdate(type,
             new Dictionary<Type, (bool, ITypeParser)> { [parser.GetType()] = (replacePrimitive, parser) },
             (k, v) =>
@@ -216,8 +224,13 @@ namespace Qmmands
         /// </summary>
         /// <typeparam name="T"> The type to remove the <paramref name="parser"/> for. </typeparam>
         /// <param name="parser"> The <see cref="TypeParser{T}"/> to remove for the type. </param>
+        /// <exception cref="ArgumentNullException"> The type parser to remove mustn't be null. </exception>
+        /// <exception cref="ArgumentException"> A parser for this type hasn't been added. </exception>
         public void RemoveTypeParser<T>(TypeParser<T> parser)
         {
+            if (parser is null)
+                throw new ArgumentNullException(nameof(parser), "The type parser to remove mustn't be null.");
+
             var type = typeof(T);
             if (!_parsers.ContainsKey(type))
                 throw new ArgumentException($"A parser for type {type.Name} hasn't been added.", nameof(T));
@@ -227,25 +240,17 @@ namespace Qmmands
 
         private void RemoveParserInternal(Type type, ITypeParser parser)
         {
-            if (_parsers.TryGetValue(type, out var typeParsers))
-            {
-                typeParsers.Remove(parser.GetType());
+            if (!_parsers.TryGetValue(type, out var typeParsers))
+                return;
 
-                if (type.IsValueType)
-                    typeParsers.Remove(typeof(Nullable<>).MakeGenericType(type));
-            }
+            typeParsers.Remove(parser.GetType());
+
+            if (type.IsValueType)
+                typeParsers.Remove(typeof(Nullable<>).MakeGenericType(type));
         }
 
         internal ITypeParser GetSpecificTypeParser(Type type, Type parserType)
-        {
-            if (_parsers.TryGetValue(type, out var typeParsers))
-            {
-                if (typeParsers.TryGetValue(parserType, out var typeParser))
-                    return typeParser.Item2;
-            }
-
-            return null;
-        }
+            => _parsers.TryGetValue(type, out var typeParsers) && typeParsers.TryGetValue(parserType, out var typeParser) ? typeParser.Item2 : null;
 
         internal ITypeParser GetAnyTypeParser(Type type, bool replacing)
         {
@@ -289,8 +294,12 @@ namespace Qmmands
         /// </summary>
         /// <param name="assembly"> The assembly to search. </param>
         /// <returns> A list of all found and added modules. </returns>
+        /// <exception cref="ArgumentNullException"> The assembly to add modules from mustn't be null. </exception>
         public async Task<IReadOnlyList<Module>> AddModulesAsync(Assembly assembly)
         {
+            if (assembly is null)
+                throw new ArgumentNullException(nameof(assembly), "The assembly to add modules from mustn't be null.");
+
             var modules = new List<Module>();
             var types = assembly.GetExportedTypes();
             for (var i = 0; i < types.Length; i++)
@@ -299,15 +308,7 @@ namespace Qmmands
                 if (!ReflectionUtils.IsValidModuleDefinition(typeInfo) || typeInfo.IsNested || typeInfo.GetCustomAttribute<DontAutoAddAttribute>() != null)
                     continue;
 
-                var methods = typeInfo.GetMethods();
-                for (var j = 0; j < methods.Length; j++)
-                {
-                    if (ReflectionUtils.IsValidCommandDefinition(methods[j]))
-                    {
-                        modules.Add(await AddModuleAsync(typeInfo.AsType()).ConfigureAwait(false));
-                        break;
-                    }
-                }
+                modules.Add(await AddModuleAsync(typeInfo.AsType()).ConfigureAwait(false));
             }
 
             return modules.AsReadOnly();
@@ -318,8 +319,12 @@ namespace Qmmands
         /// </summary>
         /// <param name="builder"> The builder to build. </param>
         /// <returns> A <see cref="Module"/> if succeeded. </returns>
+        /// <exception cref="ArgumentNullException"> The module builder to add mustn't be null. </exception>
         public async Task<Module> AddModuleAsync(ModuleBuilder builder)
         {
+            if (builder == null)
+                throw new ArgumentNullException(nameof(builder), "The module builder to add mustn't be null.");
+
             try
             {
                 await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
@@ -338,8 +343,12 @@ namespace Qmmands
         /// </summary>
         /// <param name="builderAction"> The action to perform on the builder. </param>
         /// <returns> A <see cref="Module"/> if succeeded. </returns>
+        /// <exception cref="ArgumentNullException"> The module builder action mustn't be null. </exception>
         public Task<Module> AddModuleAsync(Action<ModuleBuilder> builderAction)
         {
+            if (builderAction == null)
+                throw new ArgumentNullException(nameof(builderAction), "The module builder action mustn't be null.");
+
             var builder = new ModuleBuilder();
             builderAction(builder);
             return AddModuleAsync(builder);
@@ -350,6 +359,7 @@ namespace Qmmands
         /// </summary>
         /// <typeparam name="TModule"> The type to add. </typeparam>
         /// <returns> A <see cref="Module"/> if succeeded. </returns>
+        /// <exception cref="ArgumentException"> The type has already been added as a module. </exception>
         public Task<Module> AddModuleAsync<TModule>()
             => AddModuleAsync(typeof(TModule));
 
@@ -357,10 +367,16 @@ namespace Qmmands
         ///     Attempts to add the specified <see cref="Type"/> as a <see cref="Module"/>. 
         /// </summary>
         /// <returns> A <see cref="Module"/> if succeeded. </returns>
+        /// <exception cref="ArgumentNullException"> The type to add mustn't be null. </exception>
+        /// <exception cref="ArgumentException"> The type has already been added as a module. </exception>
         public async Task<Module> AddModuleAsync(Type type)
         {
+            if (type is null)
+                throw new ArgumentNullException(nameof(type), "The type to add mustn't be null.");
+
             if (_typeModules.ContainsKey(type))
                 throw new ArgumentException($"{type.Name} has already been added as a module.", nameof(type));
+
             try
             {
 
@@ -398,9 +414,16 @@ namespace Qmmands
         ///     Removes the specified <see cref="Module"/>.
         /// </summary>
         /// <param name="module"></param>
-        /// <exception cref="ArgumentException"> The module isn't held by this instance. </exception>
+        /// <exception cref="ArgumentNullException"> The module to remove mustn't be null. </exception>
+        /// <exception cref="ArgumentException"> The module isn't held by this instance of <see cref="CommandService"/>. </exception>
         public async Task RemoveModuleAsync(Module module)
         {
+            if (module is null)
+                throw new ArgumentNullException(nameof(module), "The module to remove mustn't be null.");
+
+            if (!_modules.Contains(module))
+                throw new ArgumentException("This module hasn't been added.", nameof(module));
+
             void RemoveSubmodules(Module m)
             {
                 foreach (var submodule in m.Submodules)
@@ -409,9 +432,6 @@ namespace Qmmands
                     RemoveSubmodules(submodule);
                 }
             }
-
-            if (!_modules.Contains(module))
-                throw new ArgumentException("This module hasn't been added.", nameof(module));
 
             try
             {
@@ -436,9 +456,13 @@ namespace Qmmands
         /// <param name="input"> The input. </param>
         /// <param name="context"> The <see cref="ICommandContext"/> to use during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
-        /// <returns></returns>
+        /// <returns> An <see cref="IResult"/>. </returns>
+        /// <exception cref="ArgumentNullException"> The input mustn't be null. </exception>
         public async Task<IResult> ExecuteAsync(string input, ICommandContext context, IServiceProvider provider = null)
         {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input), "The input mustn't be null.");
+
             if (provider is null)
                 provider = EmptyServiceProvider.Instance;
 

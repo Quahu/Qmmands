@@ -12,10 +12,22 @@ namespace Qmmands
         /// </summary>
         public bool CaseSensitive { get; set; } = false;
 
+        private RunMode _defaultRunMode = RunMode.Sequential;
+
         /// <summary>
         ///     The <see cref="RunMode"/> which determines whether the commands should run sequentially or in parallel.
         /// </summary>
-        public RunMode DefaultRunMode { get; set; } = RunMode.Sequential;
+        public RunMode DefaultRunMode
+        {
+            get => _defaultRunMode;
+            set
+            {
+                if (!Enum.IsDefined(typeof(RunMode), value))
+                    throw new ArgumentOutOfRangeException(nameof(value), "Invalid run mode.");
+
+                _defaultRunMode = value;
+            }
+        }
 
         /// <summary>
         ///     The <see cref="bool"/> which determines whether the extra arguments provided should be ignored.
@@ -39,16 +51,22 @@ namespace Qmmands
             set
             {
                 if (!Enum.IsDefined(typeof(SeparatorRequirement), value))
-                    throw new ArgumentOutOfRangeException("Invalid separator requirement.", nameof(value));
+                    throw new ArgumentOutOfRangeException(nameof(value), "Invalid separator requirement.");
 
                 _separatorRequirement = value;
             }
         }
 
+        private IArgumentParser _argumentParser = new DefaultArgumentParser();
+
         /// <summary>
         ///     The raw argument parser. Defaults to <see cref="DefaultArgumentParser"/>.
         /// </summary>
-        public IArgumentParser ArgumentParser { get; set; } = new DefaultArgumentParser();
+        public IArgumentParser ArgumentParser
+        {
+            get => _argumentParser;
+            set => _argumentParser = value ?? throw new ArgumentNullException(nameof(value));
+        }
 
         /// <summary>
         ///     Initialises a new <see cref="CommandServiceConfiguration"/>.

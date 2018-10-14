@@ -24,19 +24,31 @@ namespace Qmmands
         public string Remarks { get; set; }
 
         /// <summary>
+        ///     Gets or sets whether the <see cref="Command"/> should ignore extra arguments or not.
+        /// </summary>
+        public bool? IgnoreExtraArguments { get; set; }
+
+        /// <summary>
         ///     Gets or sets the priority of the <see cref="Command"/>.
         /// </summary>
         public int Priority { get; set; }
 
+        private RunMode? _runMode;
+
         /// <summary>
         ///     Gets or sets the <see cref="Qmmands.RunMode"/> of the <see cref="Command"/>.
         /// </summary>
-        public RunMode? RunMode { get; set; }
+        public RunMode? RunMode
+        {
+            get => _runMode;
+            set
+            {
+                if (value != null && !Enum.IsDefined(typeof(RunMode), value.Value))
+                    throw new ArgumentOutOfRangeException(nameof(value), "Invalid run mode.");
 
-        /// <summary>
-        ///     Gets or sets whether the <see cref="Command"/> should ignore extra arguments or not.
-        /// </summary>
-        public bool? IgnoreExtraArguments { get; set; }
+                _runMode = value;
+            }
+        }
 
         /// <summary>
         ///     Gets the aliases of the <see cref="Command"/>.
@@ -102,6 +114,15 @@ namespace Qmmands
         }
 
         /// <summary>
+        ///     Sets the <see cref="IgnoreExtraArguments"/>.
+        /// </summary>
+        public CommandBuilder WithIgnoreExtraArguments(bool ignoreExtraArguments)
+        {
+            IgnoreExtraArguments = ignoreExtraArguments;
+            return this;
+        }
+
+        /// <summary>
         ///     Sets the <see cref="Priority"/>.
         /// </summary>
         public CommandBuilder WithPriority(int priority)
@@ -116,15 +137,6 @@ namespace Qmmands
         public CommandBuilder WithRunMode(RunMode? runMode)
         {
             RunMode = runMode;
-            return this;
-        }
-
-        /// <summary>
-        ///     Sets the <see cref="IgnoreExtraArguments"/>.
-        /// </summary>
-        public CommandBuilder WithIgnoreExtraArguments(bool ignoreExtraArguments)
-        {
-            IgnoreExtraArguments = ignoreExtraArguments;
             return this;
         }
 

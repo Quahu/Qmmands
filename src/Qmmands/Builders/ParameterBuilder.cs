@@ -24,11 +24,6 @@ namespace Qmmands
         public string Remarks { get; set; }
 
         /// <summary>
-        ///     Gets or sets whether the <see cref="Parameter"/> is a remainder parameter or not.
-        /// </summary>
-        public bool IsRemainder { get; set; }
-
-        /// <summary>
         ///     Gets or sets whether the <see cref="Parameter"/> is multiple or not.
         /// </summary>
         public bool IsMultiple { get; set; }
@@ -37,6 +32,11 @@ namespace Qmmands
         ///     Gets or sets whether the <see cref="Parameter"/> is optional or not.
         /// </summary>
         public bool IsOptional { get; set; }
+
+        /// <summary>
+        ///     Gets or sets whether the <see cref="Parameter"/> is a remainder parameter or not.
+        /// </summary>
+        public bool IsRemainder { get; set; }
 
         /// <summary>
         ///     Gets or sets the default value of the <see cref="Parameter"/>.
@@ -100,15 +100,6 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Sets the <see cref="IsRemainder"/>.
-        /// </summary>
-        public ParameterBuilder WithIsRemainder(bool isRemainder)
-        {
-            IsRemainder = isRemainder;
-            return this;
-        }
-
-        /// <summary>
         ///     Sets the <see cref="IsMultiple"/>.
         /// </summary>
         public ParameterBuilder WithIsMultiple(bool isMultiple)
@@ -123,6 +114,15 @@ namespace Qmmands
         public ParameterBuilder WithIsOptional(bool isOptional)
         {
             IsOptional = isOptional;
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the <see cref="IsRemainder"/>.
+        /// </summary>
+        public ParameterBuilder WithIsRemainder(bool isRemainder)
+        {
+            IsRemainder = isRemainder;
             return this;
         }
 

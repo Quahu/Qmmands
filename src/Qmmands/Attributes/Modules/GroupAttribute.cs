@@ -22,7 +22,7 @@ namespace Qmmands
         public GroupAttribute(params string[] aliases)
         {
             if (aliases == null)
-                throw new ArgumentNullException("Group aliases mustn't be null.", nameof(aliases));
+                throw new ArgumentNullException(nameof(aliases), "Group aliases mustn't be null.");
 
             if (aliases.Length == 0)
                 throw new ArgumentException("You must provide at least one alias for the group.", nameof(aliases));
