@@ -10,6 +10,6 @@ namespace Qmmands
         public object GetService(Type serviceType)
             => null;
 
-        public static EmptyServiceProvider Instance = new EmptyServiceProvider();
+        public static readonly EmptyServiceProvider Instance = new EmptyServiceProvider();
     }
 }

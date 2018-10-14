@@ -3,7 +3,7 @@
 namespace Qmmands
 {
     /// <summary>
-    ///     Represents a result of no overloads matching the input.
+    ///     Represents no overloads matching the input.
     /// </summary>
     public sealed class OverloadNotFoundResult : FailedResult
     {

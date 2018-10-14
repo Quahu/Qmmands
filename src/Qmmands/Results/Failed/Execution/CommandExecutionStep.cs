@@ -15,7 +15,6 @@
         /// </summary>
         ArgumentParsing,
 
-
         /// <summary>
         ///     An exception occurred during type parsing.
         /// </summary>

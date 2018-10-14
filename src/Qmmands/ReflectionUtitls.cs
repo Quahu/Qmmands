@@ -282,7 +282,7 @@ namespace Qmmands
             return async (command, context, provider, parameters) =>
             {
                 var instance = CreateProviderConstructor<IModuleBase>(command.Service, typeInfo)(provider);
-                instance.SetContext(command.Module, command, context);
+                instance.Prepare(context);
                 try
                 {
                     await instance.BeforeExecutedAsync(command);

@@ -10,6 +10,5 @@
 
         internal CommandNotFoundResult()
         { }
-
     }
 }

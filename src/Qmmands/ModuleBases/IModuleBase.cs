@@ -8,6 +8,6 @@ namespace Qmmands
 
         Task AfterExecutedAsync(Command command);
 
-        void SetContext(Module module, Command command, ICommandContext context);
+        void Prepare(ICommandContext context);
     }
 }
