@@ -589,7 +589,7 @@ namespace Qmmands
                             for (var i = 0; i < list.Count; i++)
                                 array.SetValue(list[i], i);
 
-                            var checkResult = await parameter.RunChecksAsync(array, context, provider);
+                            var checkResult = await parameter.RunChecksAsync(array, context, provider).ConfigureAwait(false);
                             if (!checkResult.IsSuccessful)
                             {
                                 failedOverloads.Add(match.Command, checkResult as FailedResult);
@@ -609,7 +609,7 @@ namespace Qmmands
                                 break;
                             }
 
-                            var checkResult = await parameter.RunChecksAsync(parsed, context, provider);
+                            var checkResult = await parameter.RunChecksAsync(parsed, context, provider).ConfigureAwait(false);
                             if (!checkResult.IsSuccessful)
                             {
                                 failedOverloads.Add(match.Command, checkResult as FailedResult);
@@ -631,7 +631,7 @@ namespace Qmmands
                             return await ExecuteInternalAsync(match.Command, context, provider, parsedArguments.ToArray()).ConfigureAwait(false);
 
                         case RunMode.Parallel:
-                            _ = Task.Run(() => ExecuteInternalAsync(match.Command, context, provider, parsedArguments.ToArray()));
+                            _ = Task.Run(() => ExecuteInternalAsync(match.Command, context, provider, parsedArguments.ToArray()).ConfigureAwait(false));
                             return new SuccessfulResult();
                     }
                 }
