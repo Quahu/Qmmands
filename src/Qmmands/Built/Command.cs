@@ -90,7 +90,7 @@ namespace Qmmands
             Priority = builder.Priority;
             RunMode = builder.RunMode ?? module.RunMode;
             IgnoreExtraArguments = builder.IgnoreExtraArguments ?? module.IgnoreExtraArguments;
-            Aliases = builder.Aliases.AsReadOnly();
+            Aliases = builder.Aliases.ToImmutableArray();
 
             var fullAliases = new List<string>();
             if (Module.FullAliases.Count == 0)
@@ -105,17 +105,17 @@ namespace Qmmands
                     for (var j = 0; j < Aliases.Count; j++)
                         fullAliases.Add(string.Concat(Module.FullAliases[i], Service.Separator, Aliases[j]));
             }
-            FullAliases = fullAliases.AsReadOnly();
+            FullAliases = fullAliases.ToImmutableArray();
 
             Name = builder.Name ?? (FullAliases.Count > 0 ? FullAliases[0] : null);
 
-            Checks = builder.Checks.AsReadOnly();
-            Attributes = builder.Attributes.AsReadOnly();
+            Checks = builder.Checks.ToImmutableArray();
+            Attributes = builder.Attributes.ToImmutableArray();
 
             var parameters = new List<Parameter>();
             for (var i = 0; i < builder.Parameters.Count; i++)
                 parameters.Add(builder.Parameters[i].Build(this));
-            Parameters = parameters.AsReadOnly();
+            Parameters = parameters.ToImmutableArray();
 
             Callback = builder.Callback;
         }
@@ -133,13 +133,13 @@ namespace Qmmands
             if (provider is null)
                 provider = EmptyServiceProvider.Instance;
 
-            var result = await Module.RunChecksAsync(context, provider);
+            var result = await Module.RunChecksAsync(context, provider).ConfigureAwait(false);
             if (!result.IsSuccessful)
                 return result;
 
             if (Checks.Count > 0)
             {
-                var checkResults = (await Task.WhenAll(Checks.Select(x => RunCheckAsync(x, context, provider))));
+                var checkResults = (await Task.WhenAll(Checks.Select(x => RunCheckAsync(x, context, provider))).ConfigureAwait(false));
                 var failedGroups = checkResults.GroupBy(x => x.Check.Group).Where(x => x.Key == null ? x.Any(y => y.Error != null) : x.All(y => y.Error != null)).ToArray();
                 if (failedGroups.Length > 0)
                     return new ChecksFailedResult(this, failedGroups.SelectMany(x => x).Where(x => x.Error != null).ToImmutableList());
@@ -150,7 +150,7 @@ namespace Qmmands
 
         private async Task<(CheckBaseAttribute Check, string Error)> RunCheckAsync(CheckBaseAttribute check, ICommandContext context, IServiceProvider provider)
         {
-            var checkResult = await check.CheckAsync(context, provider);
+            var checkResult = await check.CheckAsync(context, provider).ConfigureAwait(false);
             return (check, checkResult.Error);
         }
 

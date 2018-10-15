@@ -11,5 +11,5 @@ namespace Qmmands
     /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
     /// <param name="arguments"> The parsed arguments. </param>
     /// <returns></returns>
-    public delegate Task<IResult> CommandCallbackDelegate(Command command, ICommandContext context, IServiceProvider provider, object[] arguments);
+    public delegate Task<IResult> CommandCallbackDelegate(Command command, object[] arguments, ICommandContext context, IServiceProvider provider);
 }

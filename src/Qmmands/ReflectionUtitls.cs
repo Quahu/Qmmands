@@ -275,14 +275,14 @@ namespace Qmmands
 
         public static CommandCallbackDelegate CreateCommandCallback(TypeInfo typeInfo, MethodInfo methodInfo)
         {
-            return async (command, context, provider, parameters) =>
+            return async (command, arguments, context, provider) =>
             {
                 var instance = CreateProviderConstructor<IModuleBase>(command.Service, typeInfo)(provider);
                 instance.Prepare(context);
                 try
                 {
-                    await instance.BeforeExecutedAsync(command);
-                    var task = methodInfo.Invoke(instance, parameters) as Task;
+                    await instance.BeforeExecutedAsync(command).ConfigureAwait(false);
+                    var task = methodInfo.Invoke(instance, arguments) as Task;
                     if (task is Task<CommandResult> commandResultTask)
                         return await commandResultTask.ConfigureAwait(false);
 
@@ -294,7 +294,7 @@ namespace Qmmands
                 }
                 finally
                 {
-                    await instance.AfterExecutedAsync(command);
+                    await instance.AfterExecutedAsync(command).ConfigureAwait(false);
                     if (instance is IDisposable disposable)
                     {
                         try

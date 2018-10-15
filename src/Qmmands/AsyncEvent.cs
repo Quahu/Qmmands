@@ -9,11 +9,11 @@ namespace Qmmands
     {
         public IReadOnlyList<T> Handlers => _handlers;
 
-        private ImmutableArray<T> _handlers;
+        private ImmutableList<T> _handlers;
         private readonly object _lock = new object();
 
         public AsyncEvent()
-            => _handlers = ImmutableArray.Create<T>();
+            => _handlers = ImmutableList.Create<T>();
 
         public void Hook(T handler)
         {

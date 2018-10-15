@@ -107,8 +107,8 @@ namespace Qmmands
 
                 CustomTypeParserType = builder.CustomTypeParserType;
             }
-            Checks = builder.Checks.AsReadOnly();
-            Attributes = builder.Attributes.AsReadOnly();
+            Checks = builder.Checks.ToImmutableArray();
+            Attributes = builder.Attributes.ToImmutableArray();
 
             Command = command;
         }

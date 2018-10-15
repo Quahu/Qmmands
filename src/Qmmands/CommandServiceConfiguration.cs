@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Qmmands
 {
@@ -66,6 +67,17 @@ namespace Qmmands
         {
             get => _argumentParser;
             set => _argumentParser = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        private IReadOnlyDictionary<char, char> _quoteMap = CommandUtilities.QuoteMap;
+
+        /// <summary>
+        ///     The quotation mark map. Defaults to <see cref="CommandUtilities.QuoteMap"/>.
+        /// </summary>
+        public IReadOnlyDictionary<char, char> QuoteMap
+        {
+            get => _quoteMap;
+            set => _quoteMap = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         /// <summary>

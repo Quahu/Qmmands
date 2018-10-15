@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -42,6 +43,11 @@ namespace Qmmands
         ///     Gets the parameter parser.
         /// </summary>
         public IArgumentParser ParameterParser { get; }
+
+        /// <summary>
+        ///     Represents a map of various quotation marks used for non-remainder multi word arguments.
+        /// </summary>
+        public IReadOnlyDictionary<char, char> QuoteMap { get; }
 
         internal StringComparison StringComparison { get; }
 
@@ -99,6 +105,8 @@ namespace Qmmands
             Separator = configuration.Separator;
             SeparatorRequirement = configuration.SeparatorRequirement;
             ParameterParser = configuration.ArgumentParser;
+            QuoteMap = configuration.QuoteMap.ToImmutableDictionary();
+
             StringComparison = CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
             _typeModules = new Dictionary<Type, Module>();
@@ -328,6 +336,7 @@ namespace Qmmands
             try
             {
                 await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
+
                 var module = builder.Build(this, null);
                 AddModuleInternal(module);
                 return module;
@@ -379,8 +388,8 @@ namespace Qmmands
 
             try
             {
-
                 await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
+
                 var moduleBuilder = ReflectionUtils.BuildModule(type.GetTypeInfo());
                 await _moduleBuilding.InvokeAsync(moduleBuilder).ConfigureAwait(false);
                 var module = moduleBuilder.Build(this, null);
@@ -401,6 +410,7 @@ namespace Qmmands
                 {
                     if (submodule.Type != null)
                         _typeModules.Add(submodule.Type, submodule);
+
                     AddSubmodules(submodule);
                 }
             }
@@ -428,7 +438,9 @@ namespace Qmmands
             {
                 foreach (var submodule in m.Submodules)
                 {
-                    _typeModules.Remove(submodule.Type);
+                    if (submodule.Type != null)
+                        _typeModules.Remove(submodule.Type);
+
                     RemoveSubmodules(submodule);
                 }
             }
@@ -436,6 +448,7 @@ namespace Qmmands
             try
             {
                 await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
+
                 _map.RemoveModule(module, new Stack<string>());
                 _modules.Remove(module);
                 if (module.Type != null)
@@ -509,75 +522,15 @@ namespace Qmmands
                     foreach (var kvp in parseResult.Arguments)
                     {
                         var parameter = kvp.Key;
-                        async Task<(bool Success, object Parsed)> ParseArgumentAsync(object argument)
-                        {
-                            if (!(argument is string value))
-                                return (true, kvp.Value);
-
-                            if (parameter.Type == _stringType)
-                                return (true, value);
-
-                            IPrimitiveTypeParser primitiveParser;
-                            try
-                            {
-                                if (!(parameter.CustomTypeParserType is null))
-                                {
-                                    var customParser = GetSpecificTypeParser(parameter.Type, parameter.CustomTypeParserType);
-                                    if (customParser is null)
-                                        throw new InvalidOperationException($"Custom parser of type {parameter.CustomTypeParserType.Name} for parameter {parameter.Name} not found.");
-
-                                    var typeParserResult = await customParser.ParseAsync(value, context, provider).ConfigureAwait(false);
-                                    if (!typeParserResult.IsSuccessful)
-                                    {
-                                        failedOverloads.Add(match.Command, new TypeParserFailedResult(parameter, value, typeParserResult.Error));
-                                        return (false, default);
-                                    }
-
-                                    return (true, typeParserResult.Value);
-                                }
-
-                                var parser = GetAnyTypeParser(parameter.Type, (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null);
-                                if (!(parser is null))
-                                {
-                                    var typeParserResult = await parser.ParseAsync(value, context, provider).ConfigureAwait(false);
-                                    if (!typeParserResult.IsSuccessful)
-                                    {
-                                        failedOverloads.Add(match.Command, new TypeParserFailedResult(parameter, value, typeParserResult.Error));
-                                        return (false, default);
-                                    }
-
-                                    return (true, typeParserResult.Value);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                failedOverloads.Add(match.Command, new ExecutionFailedResult(match.Command, CommandExecutionStep.TypeParsing, ex));
-                                return (false, default);
-                            }
-
-                            if (primitiveParser != null || (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null)
-                            {
-                                if (!primitiveParser.TryParse(value, out var result))
-                                {
-                                    failedOverloads.Add(match.Command, new TypeParserFailedResult(parameter, value, $"Failed to parse {parameter.Type}."));
-                                    return (false, default);
-                                }
-
-                                return (true, result);
-                            }
-
-                            failedOverloads.Add(match.Command, new TypeParserFailedResult(parameter, value, $"No type parser found for parameter {parameter} ({parameter.Type})."));
-                            return (false, false);
-                        }
-
                         if (kvp.Value is IEnumerable<string> multipleArguments)
                         {
                             var list = new List<object>();
                             foreach (var argument in multipleArguments)
                             {
-                                var (success, parsed) = await ParseArgumentAsync(argument).ConfigureAwait(false);
-                                if (!success)
+                                var (result, parsed) = await ParseArgumentAsync(parameter, argument, context, provider).ConfigureAwait(false);
+                                if (result != null)
                                 {
+                                    failedOverloads.Add(match.Command, result);
                                     skipOverload = true;
                                     break;
                                 }
@@ -602,9 +555,10 @@ namespace Qmmands
 
                         else
                         {
-                            var (success, parsed) = await ParseArgumentAsync(kvp.Value).ConfigureAwait(false);
-                            if (!success)
+                            var (result, parsed) = await ParseArgumentAsync(parameter, kvp.Value, context, provider).ConfigureAwait(false);
+                            if (result != null)
                             {
+                                failedOverloads.Add(match.Command, result);
                                 skipOverload = true;
                                 break;
                             }
@@ -630,8 +584,11 @@ namespace Qmmands
                             return await ExecuteInternalAsync(match.Command, context, provider, parsedArguments.ToArray()).ConfigureAwait(false);
 
                         case RunMode.Parallel:
-                            _ = Task.Run(() => ExecuteInternalAsync(match.Command, context, provider, parsedArguments.ToArray()).ConfigureAwait(false));
+                            _ = Task.Run(() => ExecuteInternalAsync(match.Command, context, provider, parsedArguments.ToArray()));
                             return new SuccessfulResult();
+
+                        default:
+                            throw new InvalidOperationException("Invalid run mode.");
                     }
                 }
 
@@ -644,11 +601,159 @@ namespace Qmmands
             throw new Exception("Shouldn't happen? :^)");
         }
 
+        /// <summary>
+        ///     Attempts to parse the arguments for the provided <see cref="Command"/> and execute it.
+        /// </summary>
+        /// <param name="command"> The command to execute. </param>
+        /// <param name="rawArguments"> The raw arguments to use for this command's parameters. </param>
+        /// <param name="context"> The <see cref="ICommandContext"/> to use during execution. </param>
+        /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
+        /// <returns> An <see cref="IResult"/>. </returns>
+        /// <exception cref="ArgumentNullException"> The input mustn't be null. </exception>
+        public async Task<IResult> ExecuteAsync(Command command, string rawArguments, ICommandContext context, IServiceProvider provider = null)
+        {
+            if (command == null)
+                throw new ArgumentNullException(nameof(command), "The command mustn't be null.");
+
+            if (rawArguments == null)
+                throw new ArgumentNullException(nameof(rawArguments), "The input mustn't be null.");
+
+            if (provider is null)
+                provider = EmptyServiceProvider.Instance;
+
+            try
+            {
+                var checkResult = await command.RunChecksAsync(context, provider).ConfigureAwait(false);
+                if (!checkResult.IsSuccessful)
+                    return checkResult;
+            }
+            catch (Exception ex)
+            {
+                return new ExecutionFailedResult(command, CommandExecutionStep.Checks, ex);
+            }
+
+            ParseResult parseResult;
+            try
+            {
+                parseResult = ParameterParser.ParseRawArguments(command, rawArguments);
+                if (!parseResult.IsSuccessful)
+                    return new ParseFailedResult(command, parseResult);
+            }
+            catch (Exception ex)
+            {
+                return new ExecutionFailedResult(command, CommandExecutionStep.ArgumentParsing, ex);
+            }
+
+            var parsedArguments = new List<object>();
+            foreach (var kvp in parseResult.Arguments)
+            {
+                var parameter = kvp.Key;
+                if (kvp.Value is IEnumerable<string> multipleArguments)
+                {
+                    var list = new List<object>();
+                    foreach (var argument in multipleArguments)
+                    {
+                        var (result, parsed) = await ParseArgumentAsync(parameter, argument, context, provider).ConfigureAwait(false);
+                        if (result != null)
+                            return result;
+
+                        list.Add(parsed);
+                    }
+
+                    var array = Array.CreateInstance(parameter.Type, list.Count);
+                    for (var i = 0; i < list.Count; i++)
+                        array.SetValue(list[i], i);
+
+                    var checkResult = await parameter.RunChecksAsync(array, context, provider).ConfigureAwait(false);
+                    if (!checkResult.IsSuccessful)
+                        return checkResult as FailedResult;
+
+                    parsedArguments.Add(array);
+                }
+
+                else
+                {
+                    var (result, parsed) = await ParseArgumentAsync(parameter, kvp.Value, context, provider).ConfigureAwait(false);
+                    if (result != null)
+                        return result;
+
+                    var checkResult = await parameter.RunChecksAsync(parsed, context, provider).ConfigureAwait(false);
+                    if (!checkResult.IsSuccessful)
+                        return checkResult as FailedResult;
+
+                    parsedArguments.Add(parsed);
+                }
+            }
+
+            switch (command.RunMode)
+            {
+                case RunMode.Sequential:
+                    return await ExecuteInternalAsync(command, context, provider, parsedArguments.ToArray()).ConfigureAwait(false);
+
+                case RunMode.Parallel:
+                    _ = Task.Run(() => ExecuteInternalAsync(command, context, provider, parsedArguments.ToArray()).ConfigureAwait(false));
+                    return new SuccessfulResult();
+
+                default:
+                    throw new InvalidOperationException("Invalid run mode.");
+            }
+        }
+
+        private async Task<(FailedResult FailedResult, object Parsed)> ParseArgumentAsync(Parameter parameter, object argument, ICommandContext context, IServiceProvider provider)
+        {
+            if (!(argument is string value))
+                return (null, argument);
+
+            if (parameter.Type == _stringType)
+                return (null, value);
+
+            IPrimitiveTypeParser primitiveParser;
+            try
+            {
+                if (!(parameter.CustomTypeParserType is null))
+                {
+                    var customParser = GetSpecificTypeParser(parameter.Type, parameter.CustomTypeParserType);
+                    if (customParser is null)
+                        throw new InvalidOperationException($"Custom parser of type {parameter.CustomTypeParserType.Name} for parameter {parameter.Name} not found.");
+
+                    var typeParserResult = await customParser.ParseAsync(value, context, provider).ConfigureAwait(false);
+                    if (!typeParserResult.IsSuccessful)
+                        return (new TypeParserFailedResult(parameter, value, typeParserResult.Error), default);
+
+                    return (null, typeParserResult.Value);
+                }
+
+                var parser = GetAnyTypeParser(parameter.Type, (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null);
+                if (!(parser is null))
+                {
+                    var typeParserResult = await parser.ParseAsync(value, context, provider).ConfigureAwait(false);
+                    if (!typeParserResult.IsSuccessful)
+                        return (new TypeParserFailedResult(parameter, value, typeParserResult.Error), default);
+
+                    return (null, typeParserResult.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                return (new ExecutionFailedResult(parameter.Command, CommandExecutionStep.TypeParsing, ex), default);
+            }
+
+            if (primitiveParser != null || (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null)
+            {
+                if (!primitiveParser.TryParse(value, out var result))
+                    return (new TypeParserFailedResult(parameter, value, $"Failed to parse {parameter.Type}."), default);
+
+                return (null, result);
+            }
+
+            return (new TypeParserFailedResult(parameter, value, $"No type parser found for parameter {parameter} ({parameter.Type})."), default);
+        }
+
         private async Task<IResult> ExecuteInternalAsync(Command command, ICommandContext context, IServiceProvider provider, object[] arguments)
         {
             try
             {
-                var result = await command.Callback(command, context, provider, arguments);
+                var result = await command.Callback(command, arguments, context, provider).ConfigureAwait(false);
                 await _commandExecuted.InvokeAsync(command, result as CommandResult, context, provider).ConfigureAwait(false);
                 return result;
             }
