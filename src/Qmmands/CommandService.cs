@@ -14,7 +14,7 @@ namespace Qmmands
     public sealed class CommandService
     {
         /// <summary>
-        ///     Gets whether <see cref="FindCommands"/> is case sensitive or not.
+        ///     Gets whether <see cref="FindCommands"/> and enum type parsers are case sensitive or not.
         /// </summary>
         public bool CaseSensitive { get; }
 
@@ -626,7 +626,6 @@ namespace Qmmands
 
                     switch (match.Command.RunMode)
                     {
-
                         case RunMode.Sequential:
                             return await ExecuteInternalAsync(match.Command, context, provider, parsedArguments.ToArray()).ConfigureAwait(false);
 

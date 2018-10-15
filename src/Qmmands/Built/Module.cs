@@ -86,8 +86,8 @@ namespace Qmmands
 
             Description = builder.Description;
             Remarks = builder.Remarks;
-            RunMode = builder.RunMode ?? Service.DefaultRunMode;
-            IgnoreExtraArguments = builder.IgnoreExtraArguments ?? Service.IgnoreExtraArguments;
+            RunMode = builder.RunMode ?? Parent?.RunMode ?? Service.DefaultRunMode;
+            IgnoreExtraArguments = builder.IgnoreExtraArguments ?? Parent?.IgnoreExtraArguments ?? Service.IgnoreExtraArguments;
             Aliases = builder.Aliases.AsReadOnly();
 
             var fullAliases = new List<string>();
@@ -105,7 +105,7 @@ namespace Qmmands
             }
             FullAliases = fullAliases.AsReadOnly();
 
-            Name = builder.Name ?? (FullAliases.Count > 0 ? FullAliases[0] : Type?.Name);
+            Name = builder.Name ?? Type?.Name;
 
             Checks = builder.Checks.AsReadOnly();
             Attributes = builder.Attributes.AsReadOnly();

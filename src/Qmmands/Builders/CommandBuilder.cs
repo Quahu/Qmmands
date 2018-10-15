@@ -252,7 +252,7 @@ namespace Qmmands
             {
                 var current = Parameters[i];
                 if (previous != null && previous.IsOptional && !current.IsOptional)
-                    throw new InvalidOperationException("Optional parameters must appear after required ones.");
+                    throw new InvalidOperationException("Optional parameters mustn't appear before required ones.");
 
                 previous = current;
             }

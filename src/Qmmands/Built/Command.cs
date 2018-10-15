@@ -107,7 +107,7 @@ namespace Qmmands
             }
             FullAliases = fullAliases.AsReadOnly();
 
-            Name = builder.Name ?? (FullAliases.Count > 0 ? FullAliases[0] : module.FullAliases.FirstOrDefault());
+            Name = builder.Name ?? (FullAliases.Count > 0 ? FullAliases[0] : null);
 
             Checks = builder.Checks.AsReadOnly();
             Attributes = builder.Attributes.AsReadOnly();

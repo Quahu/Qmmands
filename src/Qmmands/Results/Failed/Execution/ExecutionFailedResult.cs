@@ -31,6 +31,7 @@ namespace Qmmands
             Command = command;
             CommandExecutionStep = commandExecutionStep;
             Exception = exception;
+
             while (Exception is TargetInvocationException)
                 Exception = Exception.InnerException;
 
