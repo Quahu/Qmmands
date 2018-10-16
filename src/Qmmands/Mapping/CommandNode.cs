@@ -105,7 +105,7 @@ namespace Qmmands
                         break;
 
                     case SeparatorRequirement.Separator:
-                        hasSeparator = hasConfigSeparator;
+                        hasSeparator = hasConfigSeparator || string.IsNullOrWhiteSpace(_service.Separator);
                         break;
 
                     default:

@@ -144,7 +144,7 @@ namespace Qmmands
                         yield return command;
             }
 
-            foreach (var module in _modules)
+            foreach (var module in _modules.ToList())
                 foreach (var command in GetCommands(module))
                     yield return command;
         }
@@ -161,12 +161,13 @@ namespace Qmmands
                 {
                     var submodule = module.Submodules[i];
                     yield return submodule;
+
                     foreach (var subsubmodule in GetSubmodules(submodule))
                         yield return subsubmodule;
                 }
             }
 
-            foreach (var module in _modules)
+            foreach (var module in _modules.ToList())
             {
                 yield return module;
 
@@ -200,9 +201,12 @@ namespace Qmmands
 
             var type = typeof(T);
             if (type.IsEnum)
-                throw new ArgumentException("Custom enum type parsers aren't supported.", nameof(type));
+                throw new ArgumentException("Cannot add custom enum type parsers.", nameof(T));
 
-            AddParserInternal(typeof(T), parser, replacePrimitive);
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                throw new ArgumentException("Cannot add custom nullable type parsers.", nameof(T));
+
+            AddParserInternal(type, parser, replacePrimitive);
         }
 
         private void AddParserInternal(Type type, ITypeParser parser, bool replacePrimitive = false)

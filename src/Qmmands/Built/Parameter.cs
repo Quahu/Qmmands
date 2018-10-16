@@ -90,14 +90,12 @@ namespace Qmmands
             {
                 if (DefaultValue is null)
                 {
-                    if (Type.IsValueType && !(Type.GenericTypeArguments.Length > 0 && Type.GenericTypeArguments[0].IsValueType && Type == (typeof(Nullable<>).MakeGenericType(Type.GenericTypeArguments[0]))))
-                        throw new InvalidOperationException(
-                            "A value type parameter can't have null as the default value.");
+                    if (Type.IsValueType && !(Type.IsGenericType && Type.GetGenericTypeDefinition() == typeof(Nullable<>)))
+                        throw new InvalidOperationException("A value type parameter can't have null as the default value.");
                 }
 
                 else if (DefaultValue.GetType() != Type)
-                    throw new InvalidOperationException(
-                        $"Parameter type and default value mismatch. Expected {Type.Name}, got {DefaultValue.GetType().Name}.");
+                    throw new InvalidOperationException($"Parameter type and default value mismatch. Expected {Type.Name}, got {DefaultValue.GetType().Name}.");
             }
 
             if (builder.CustomTypeParserType != null)
