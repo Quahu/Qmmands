@@ -50,11 +50,6 @@ namespace Qmmands
         public IReadOnlyDictionary<char, char> QuoteMap { get; }
 
         /// <summary>
-        ///     Represents a map of friendly names for <see cref="Type"/>s.
-        /// </summary>
-        public IReadOnlyDictionary<Type, string> TypeNameMap { get; }
-
-        /// <summary>
         ///     Fires when a command is successfully executed. Use this to handle <see cref="RunMode.Parallel"/> commands.
         /// </summary>
         public event Func<Command, CommandResult, ICommandContext, IServiceProvider, Task> CommandExecuted
@@ -111,7 +106,6 @@ namespace Qmmands
             SeparatorRequirement = configuration.SeparatorRequirement;
             ParameterParser = configuration.ArgumentParser;
             QuoteMap = configuration.QuoteMap.ToImmutableDictionary();
-            TypeNameMap = configuration.TypeNameMap.ToImmutableDictionary();
 
             StringComparison = CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
@@ -751,7 +745,7 @@ namespace Qmmands
             if (primitiveParser != null || (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null)
             {
                 if (!primitiveParser.TryParse(value, out var result))
-                    return (new TypeParserFailedResult(parameter, value, $"Failed to parse {parameter.FriendlyTypeName ?? parameter.Type.ToString()}."), default);
+                    return (new TypeParserFailedResult(parameter, value, $"Failed to parse {parameter.Type.Name}."), default);
 
                 return (null, result);
             }

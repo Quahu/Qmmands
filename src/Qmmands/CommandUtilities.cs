@@ -15,11 +15,6 @@ namespace Qmmands
         public static IReadOnlyDictionary<char, char> QuoteMap { get; }
 
         /// <summary>
-        ///     Represents a map of friendly names for the primitive types.
-        /// </summary>
-        public static IReadOnlyDictionary<Type, string> TypeNameMap { get; }
-
-        /// <summary>
         ///     Checks if the provided <see cref="string"/> starts with the specified <see cref="char"/> prefix.
         ///     If it does, returns a trimmed <paramref name="output"/> <see cref="string"/>.
         /// </summary>
@@ -131,23 +126,6 @@ namespace Qmmands
             quoteMapBuilder['〘'] = '〙';
             quoteMapBuilder['〚'] = '〛';
             QuoteMap = quoteMapBuilder.ToImmutable();
-
-            var typeNameBuilder = ImmutableDictionary.CreateBuilder<Type, string>();
-            typeNameBuilder[typeof(string)] = "string";
-            typeNameBuilder[typeof(char)] = "character";
-            typeNameBuilder[typeof(bool)] = "boolean";
-            typeNameBuilder[typeof(byte)] = "byte";
-            typeNameBuilder[typeof(sbyte)] = "signed byte";
-            typeNameBuilder[typeof(short)] = "short";
-            typeNameBuilder[typeof(ushort)] = "positive short";
-            typeNameBuilder[typeof(int)] = "integer";
-            typeNameBuilder[typeof(uint)] = "positive integer";
-            typeNameBuilder[typeof(long)] = "long";
-            typeNameBuilder[typeof(ulong)] = "positive long";
-            typeNameBuilder[typeof(float)] = "float";
-            typeNameBuilder[typeof(double)] = "double";
-            typeNameBuilder[typeof(decimal)] = "decimal";
-            TypeNameMap = typeNameBuilder.ToImmutable();
         }
     }
 }

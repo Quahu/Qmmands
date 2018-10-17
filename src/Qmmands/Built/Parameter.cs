@@ -72,17 +72,6 @@ namespace Qmmands
         /// </summary>
         public Command Command { get; }
 
-        /// <summary>
-        ///     Attempts to retrieve the friendly name for this <see cref="Parameter"/>'s <see cref="System.Type"/>
-        ///     from the <see cref="CommandService.TypeNameMap"/>. Defaults to <see langword="null"/>.
-        /// </summary>
-        public string FriendlyTypeName => Service.TypeNameMap.TryGetValue(Type, out var friendlyName)
-            ? friendlyName
-            : ReflectionUtils.IsNullable(Type)
-              && Service.TypeNameMap.TryGetValue(Nullable.GetUnderlyingType(Type), out friendlyName)
-                ? $"nullable {friendlyName}"
-                : null;
-
         internal CommandService Service => Command.Service;
 
         internal Parameter(ParameterBuilder builder, Command command)
