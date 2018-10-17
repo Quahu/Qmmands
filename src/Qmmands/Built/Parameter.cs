@@ -72,6 +72,19 @@ namespace Qmmands
         /// </summary>
         public Command Command { get; }
 
+        /// <summary>
+        ///     Attempts to retrieve the friendly name for this <see cref="Parameter"/>'s <see cref="System.Type"/>
+        ///     from the <see cref="CommandService.TypeNameMap"/>. Defaults to <see langword="null"/>.
+        /// </summary>
+        public string FriendlyTypeName => Service.TypeNameMap.TryGetValue(Type, out var friendlyName)
+            ? friendlyName
+            : ReflectionUtils.IsNullable(Type)
+              && Service.TypeNameMap.TryGetValue(Nullable.GetUnderlyingType(Type), out friendlyName)
+                ? $"nullable {friendlyName}"
+                : null;
+
+        internal CommandService Service => Command.Service;
+
         internal Parameter(ParameterBuilder builder, Command command)
         {
             Name = builder.Name;
@@ -90,7 +103,7 @@ namespace Qmmands
             {
                 if (DefaultValue is null)
                 {
-                    if (Type.IsValueType && !(Type.IsGenericType && Type.GetGenericTypeDefinition() == typeof(Nullable<>)))
+                    if (Type.IsValueType && !ReflectionUtils.IsNullable(Type))
                         throw new InvalidOperationException("A value type parameter can't have null as the default value.");
                 }
 

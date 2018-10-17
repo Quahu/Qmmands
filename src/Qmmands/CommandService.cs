@@ -49,7 +49,10 @@ namespace Qmmands
         /// </summary>
         public IReadOnlyDictionary<char, char> QuoteMap { get; }
 
-        internal StringComparison StringComparison { get; }
+        /// <summary>
+        ///     Represents a map of friendly names for <see cref="Type"/>s.
+        /// </summary>
+        public IReadOnlyDictionary<Type, string> TypeNameMap { get; }
 
         /// <summary>
         ///     Fires when a command is successfully executed. Use this to handle <see cref="RunMode.Parallel"/> commands.
@@ -81,6 +84,8 @@ namespace Qmmands
         }
         private readonly AsyncEvent<Func<ModuleBuilder, Task>> _moduleBuilding = new AsyncEvent<Func<ModuleBuilder, Task>>();
 
+        internal StringComparison StringComparison { get; }
+
         private readonly ConcurrentDictionary<Type, Dictionary<Type, (bool, ITypeParser)>> _parsers;
         private readonly ConcurrentDictionary<Type, IPrimitiveTypeParser> _primitiveParsers;
         private readonly Dictionary<Type, Module> _typeModules;
@@ -106,6 +111,7 @@ namespace Qmmands
             SeparatorRequirement = configuration.SeparatorRequirement;
             ParameterParser = configuration.ArgumentParser;
             QuoteMap = configuration.QuoteMap.ToImmutableDictionary();
+            TypeNameMap = configuration.TypeNameMap.ToImmutableDictionary();
 
             StringComparison = CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
@@ -118,7 +124,7 @@ namespace Qmmands
             {
                 var primitiveTypeParser = TypeParserUtils.CreatePrimitiveTypeParser(type);
                 _primitiveParsers.TryAdd(type, primitiveTypeParser);
-                _primitiveParsers.TryAdd(typeof(Nullable<>).MakeGenericType(type), TypeParserUtils.CreateNullablePrimitiveTypeParser(type, primitiveTypeParser));
+                _primitiveParsers.TryAdd(ReflectionUtils.MakeNullable(type), TypeParserUtils.CreateNullablePrimitiveTypeParser(type, primitiveTypeParser));
             }
         }
 
@@ -203,7 +209,7 @@ namespace Qmmands
             if (type.IsEnum)
                 throw new ArgumentException("Cannot add custom enum type parsers.", nameof(T));
 
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            if (ReflectionUtils.IsNullable(type))
                 throw new ArgumentException("Cannot add custom nullable type parsers.", nameof(T));
 
             AddParserInternal(type, parser, replacePrimitive);
@@ -221,7 +227,7 @@ namespace Qmmands
             if (type.IsValueType)
             {
                 var nullableParser = TypeParserUtils.CreateNullableTypeParser(type, parser);
-                _parsers.AddOrUpdate(typeof(Nullable<>).MakeGenericType(type),
+                _parsers.AddOrUpdate(ReflectionUtils.MakeNullable(type),
                     new Dictionary<Type, (bool, ITypeParser)> { [nullableParser.GetType()] = (replacePrimitive, nullableParser) },
                     (k, v) =>
                     {
@@ -258,7 +264,7 @@ namespace Qmmands
             typeParsers.Remove(parser.GetType());
 
             if (type.IsValueType)
-                typeParsers.Remove(typeof(Nullable<>).MakeGenericType(type));
+                typeParsers.Remove(ReflectionUtils.MakeNullable(type));
         }
 
         internal ITypeParser GetSpecificTypeParser(Type type, Type parserType)
@@ -291,11 +297,11 @@ namespace Qmmands
             {
                 var enumParser = TypeParserUtils.CreateEnumTypeParser(type.GetEnumUnderlyingType(), type, !CaseSensitive);
                 _primitiveParsers.TryAdd(type, enumParser);
-                _primitiveParsers.TryAdd(typeof(Nullable<>).MakeGenericType(type), TypeParserUtils.CreateNullableEnumTypeParser(type.GetEnumUnderlyingType(), enumParser));
+                _primitiveParsers.TryAdd(ReflectionUtils.MakeNullable(type), TypeParserUtils.CreateNullableEnumTypeParser(type.GetEnumUnderlyingType(), enumParser));
                 return GetPrimitiveTypeParser(type);
             }
 
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>) && (type = type.GetGenericArguments()[0]).IsEnum)
+            if (ReflectionUtils.IsNullable(type) && (type = Nullable.GetUnderlyingType(type)).IsEnum)
                 return GetPrimitiveTypeParser(type);
 
             return null;
@@ -745,7 +751,7 @@ namespace Qmmands
             if (primitiveParser != null || (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null)
             {
                 if (!primitiveParser.TryParse(value, out var result))
-                    return (new TypeParserFailedResult(parameter, value, $"Failed to parse {parameter.Type}."), default);
+                    return (new TypeParserFailedResult(parameter, value, $"Failed to parse {parameter.FriendlyTypeName ?? parameter.Type.ToString()}."), default);
 
                 return (null, result);
             }

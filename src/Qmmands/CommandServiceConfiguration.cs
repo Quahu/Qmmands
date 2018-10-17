@@ -80,6 +80,17 @@ namespace Qmmands
             set => _quoteMap = value ?? throw new ArgumentNullException(nameof(value));
         }
 
+        private IReadOnlyDictionary<Type, string> _typeNameMap = CommandUtilities.TypeNameMap;
+
+        /// <summary>
+        ///     Represents a map of friendly names for types. Defaults to <see cref="CommandUtilities.TypeNameMap"/>.
+        /// </summary>
+        public IReadOnlyDictionary<Type, string> TypeNameMap
+        {
+            get => _typeNameMap;
+            set => _typeNameMap = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
         /// <summary>
         ///     Initialises a new <see cref="CommandServiceConfiguration"/>.
         /// </summary>
@@ -89,7 +100,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Gets the default <see cref="CommandServiceConfiguration"/>.
+        ///     Gets the default <see cref="CommandServiceConfiguration"/>. The equivalent of using <see langword="new"/> <see cref="CommandServiceConfiguration()"/>.
         /// </summary>
         public static CommandServiceConfiguration Default => new CommandServiceConfiguration();
     }

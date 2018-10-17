@@ -13,6 +13,7 @@ namespace Qmmands
         private static readonly TypeInfo _commandResultTypeInfo = typeof(CommandResult).GetTypeInfo();
         private static readonly TypeInfo _taskTypeInfo = typeof(Task).GetTypeInfo();
         private static readonly TypeInfo _objectTypeInfo = typeof(object).GetTypeInfo();
+        private static readonly Type _nullableType = typeof(Nullable<>);
 
         public static bool IsValidModuleDefinition(TypeInfo typeInfo)
             => _moduleBaseTypeInfo.IsAssignableFrom(typeInfo) && !typeInfo.IsAbstract && !typeInfo.ContainsGenericParameters;
@@ -23,6 +24,12 @@ namespace Qmmands
 
         public static bool IsValidParserDefinition(Type typeInfo, Type parameterType)
             => _typeParserTypeInfo.IsAssignableFrom(typeInfo) && !typeInfo.IsAbstract && typeInfo.BaseType.GetGenericArguments().Any(x => x == parameterType);
+
+        public static bool IsNullable(Type type)
+            => type.IsGenericType && type.GetGenericTypeDefinition() == _nullableType;
+
+        public static Type MakeNullable(Type type)
+            => _nullableType.MakeGenericType(type);
 
         public static IEnumerable<TypeInfo> GetValidModules(TypeInfo typeInfo)
         {
@@ -35,7 +42,7 @@ namespace Qmmands
             }
         }
 
-        public static IEnumerable<MethodInfo> GetValidCommands(TypeInfo typeInfo) 
+        public static IEnumerable<MethodInfo> GetValidCommands(TypeInfo typeInfo)
             => typeInfo.DeclaredMethods.Where(IsValidCommandDefinition);
 
         public static ModuleBuilder BuildModule(TypeInfo typeInfo)
