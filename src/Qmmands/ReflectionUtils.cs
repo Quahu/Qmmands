@@ -290,8 +290,14 @@ namespace Qmmands
                 {
                     await instance.BeforeExecutedAsync(command).ConfigureAwait(false);
                     var task = methodInfo.Invoke(instance, arguments) as Task;
-                    if (task is Task<CommandResult> commandResultTask)
-                        return await commandResultTask.ConfigureAwait(false);
+                    if (methodInfo.ReturnType.IsConstructedGenericType && methodInfo.ReturnType.GenericTypeArguments.Length == 1 && _commandResultTypeInfo.IsAssignableFrom(methodInfo.ReturnType.GenericTypeArguments[0]))
+                    {
+                        await task.ConfigureAwait(false);
+                        var result = task.GetType().GetProperty("Result").GetValue(task) as CommandResult;
+                        if (result != null)
+                            result.Command = command;
+                        return result;
+                    }
 
                     else
                     {
