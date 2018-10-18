@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -15,12 +17,17 @@ namespace Qmmands
         private static readonly TypeInfo _objectTypeInfo = typeof(object).GetTypeInfo();
         private static readonly Type _nullableType = typeof(Nullable<>);
 
+        private static readonly ConcurrentDictionary<Type, Func<Task, IResult>> _commandResults =
+            new ConcurrentDictionary<Type, Func<Task, IResult>> { [typeof(Task)] = x => new SuccessfulResult() };
+
         public static bool IsValidModuleDefinition(TypeInfo typeInfo)
             => _moduleBaseTypeInfo.IsAssignableFrom(typeInfo) && !typeInfo.IsAbstract && !typeInfo.ContainsGenericParameters;
 
         public static bool IsValidCommandDefinition(MethodInfo methodInfo)
             => methodInfo.IsPublic && methodInfo.GetCustomAttribute<CommandAttribute>() != null
-            && methodInfo.ReturnType == _taskTypeInfo || (methodInfo.ReturnType.IsConstructedGenericType && methodInfo.ReturnType.GenericTypeArguments.Length == 1 && _commandResultTypeInfo.IsAssignableFrom(methodInfo.ReturnType.GenericTypeArguments[0]));
+               && methodInfo.ReturnType == _taskTypeInfo || (methodInfo.ReturnType.IsConstructedGenericType
+                                                             && methodInfo.ReturnType.GenericTypeArguments.Length == 1
+                                                             && _commandResultTypeInfo.IsAssignableFrom(methodInfo.ReturnType.GenericTypeArguments[0]));
 
         public static bool IsValidParserDefinition(Type typeInfo, Type parameterType)
             => _typeParserTypeInfo.IsAssignableFrom(typeInfo) && !typeInfo.IsAbstract && typeInfo.BaseType.GetGenericArguments().Any(x => x == parameterType);
@@ -239,7 +246,8 @@ namespace Qmmands
                 {
                     foreach (var property in type.DeclaredProperties)
                     {
-                        if (property.SetMethod != null && !property.SetMethod.IsStatic && property.SetMethod.IsPublic && property.GetCustomAttribute<DontAutoInjectAttribute>() == null)
+                        if (property.SetMethod != null && !property.SetMethod.IsStatic && property.SetMethod.IsPublic
+                            && property.GetCustomAttribute<DontAutoInjectAttribute>() == null)
                             yield return property;
                     }
 
@@ -281,8 +289,7 @@ namespace Qmmands
         }
 
         public static CommandCallbackDelegate CreateCommandCallback(TypeInfo typeInfo, MethodInfo methodInfo)
-        {
-            return async (command, arguments, context, provider) =>
+            => async (command, arguments, context, provider) =>
             {
                 var instance = CreateProviderConstructor<IModuleBase>(command.Service, typeInfo)(provider);
                 instance.Prepare(context);
@@ -290,20 +297,19 @@ namespace Qmmands
                 {
                     await instance.BeforeExecutedAsync(command).ConfigureAwait(false);
                     var task = methodInfo.Invoke(instance, arguments) as Task;
-                    if (methodInfo.ReturnType.IsConstructedGenericType && methodInfo.ReturnType.GenericTypeArguments.Length == 1 && _commandResultTypeInfo.IsAssignableFrom(methodInfo.ReturnType.GenericTypeArguments[0]))
-                    {
-                        await task.ConfigureAwait(false);
-                        var result = task.GetType().GetProperty("Result").GetValue(task) as CommandResult;
-                        if (result != null)
-                            result.Command = command;
-                        return result;
-                    }
+                    var resultFunc = _commandResults.GetOrAdd(methodInfo.ReturnType, _ =>
+                        {
+                            var taskParameter = Expression.Parameter(typeof(Task));
+                            return Expression.Lambda<Func<Task, IResult>>(
+                                Expression.Property(Expression.Convert(taskParameter, methodInfo.ReturnType), "Result"), taskParameter).Compile();
+                        });
 
-                    else
-                    {
-                        await task.ConfigureAwait(false);
-                        return new SuccessfulResult();
-                    }
+                    await task.ConfigureAwait(false);
+                    var result = resultFunc(task);
+                    if (result is CommandResult commandResult)
+                        commandResult.Command = command;
+
+                    return result;
                 }
                 finally
                 {
@@ -318,6 +324,5 @@ namespace Qmmands
                     }
                 }
             };
-        }
     }
 }

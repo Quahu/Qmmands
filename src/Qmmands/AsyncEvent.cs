@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Qmmands
 {
-    internal class AsyncEvent<T> where T : class
+    internal sealed class AsyncEvent<T> where T : class
     {
         public IReadOnlyList<T> Handlers => _handlers;
 

@@ -3,7 +3,7 @@
     /// <summary>
     ///     The default class for all successful results.
     /// </summary>
-    public class SuccessfulResult : IResult
+    public sealed class SuccessfulResult : IResult
     {
         /// <summary>
         ///     Gets <see langword="true"/>.
