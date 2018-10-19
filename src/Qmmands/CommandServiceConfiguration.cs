@@ -4,19 +4,19 @@ using System.Collections.Generic;
 namespace Qmmands
 {
     /// <summary>
-    ///     The configuration to use with the <see cref="CommandService"/>.
+    ///     Represents a configuration to use with the <see cref="CommandService"/>.
     /// </summary>
     public sealed class CommandServiceConfiguration
     {
         /// <summary>
-        ///     The <see cref="bool"/> which determines whether the commands should be case sensitive or not.
+        ///     The <see cref="bool"/> which determines whether the commands should be case sensitive or not. Defaults to <see langword="false"/>.
         /// </summary>
         public bool CaseSensitive { get; set; } = false;
 
         private RunMode _defaultRunMode = RunMode.Sequential;
 
         /// <summary>
-        ///     The <see cref="RunMode"/> which determines whether the commands should run sequentially or in parallel.
+        ///     The <see cref="RunMode"/> which determines whether the commands should run sequentially or in parallel. Defaults to <see cref="RunMode.Sequential"/>.
         /// </summary>
         public RunMode DefaultRunMode
         {
@@ -31,19 +31,19 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     The <see cref="bool"/> which determines whether the extra arguments provided should be ignored.
+        ///     The <see cref="bool"/> which determines whether the extra arguments provided should be ignored. Defaults to <see langword="false"/>.
         /// </summary>
         public bool IgnoreExtraArguments { get; set; } = false;
 
         /// <summary>
-        ///     The <see cref="string"/> separator to use between groups and commands.
+        ///     The <see cref="string"/> separator to use between groups and commands. Defaults to a single whitespace character.
         /// </summary>
         public string Separator { get; set; } = " ";
 
         private SeparatorRequirement _separatorRequirement = SeparatorRequirement.Separator;
 
         /// <summary>
-        ///     The <see cref="Qmmands.SeparatorRequirement"/> for group and command pathing.
+        ///     The <see cref="Qmmands.SeparatorRequirement"/> for group and command pathing. Defaults to <see cref="Qmmands.SeparatorRequirement.Separator"/>.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException"> <see langword="value"/> must be a valid <see cref="Qmmands.SeparatorRequirement"/> value. </exception>
         public SeparatorRequirement SeparatorRequirement
@@ -84,9 +84,7 @@ namespace Qmmands
         ///     Initialises a new <see cref="CommandServiceConfiguration"/>.
         /// </summary>
         public CommandServiceConfiguration()
-        {
-
-        }
+        { }
 
         /// <summary>
         ///     Gets the default <see cref="CommandServiceConfiguration"/>. The equivalent of using <see langword="new"/> <see cref="CommandServiceConfiguration()"/>.
