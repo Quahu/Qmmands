@@ -5,7 +5,7 @@ namespace Qmmands
     /// <summary>
     ///     Sets a <see cref="Qmmands.RunMode"/> for the <see cref="Module"/> or <see cref="Command"/>.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Parameter)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public sealed class RunModeAttribute : Attribute
     {
         /// <summary>

@@ -5,7 +5,7 @@ namespace Qmmands
     /// <summary>
     ///     Overwrites the type parser for the <see cref="Parameter"/>.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Parameter)]
     public sealed class OverwriteTypeParserAttribute : Attribute
     {
         /// <summary>

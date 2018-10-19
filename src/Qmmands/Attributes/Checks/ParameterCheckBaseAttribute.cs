@@ -6,6 +6,7 @@ namespace Qmmands
     /// <summary>
     ///     Adds a check to the <see cref="Parameter"/> that has to succeed before it the <see cref="Command"/> can be executed.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
     public abstract class ParameterCheckBaseAttribute : Attribute
     {
         /// <summary>

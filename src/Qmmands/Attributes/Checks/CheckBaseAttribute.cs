@@ -6,7 +6,7 @@ namespace Qmmands
     /// <summary>
     ///     Adds a check to the <see cref="Module"/> or <see cref="Command"/> that has to succeed before it can be executed.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public abstract class CheckBaseAttribute : Attribute
     {
         /// <summary>

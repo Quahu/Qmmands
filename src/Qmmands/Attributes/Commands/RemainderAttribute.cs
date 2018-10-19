@@ -10,7 +10,7 @@ namespace Qmmands
     ///     Using the <see cref="DefaultArgumentParser"/> remainder parameters can consist
     ///     of multiple words without the need of using quotation marks."/>.
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Parameter)]
     public sealed class RemainderAttribute : Attribute
     {
     }
