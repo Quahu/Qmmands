@@ -45,7 +45,12 @@ namespace Qmmands
         public IArgumentParser ParameterParser { get; }
 
         /// <summary>
-        ///     Represents a map of various quotation marks used for non-remainder multi word arguments.
+        ///     Gets the generator to use for <see cref="Cooldown"/> bucket keys.
+        /// </summary>
+        public ICooldownBucketKeyGenerator CooldownBucketKeyGenerator { get; }
+
+        /// <summary>
+        ///     Gets the map of quotation marks used for non-remainder multi word arguments.
         /// </summary>
         public IReadOnlyDictionary<char, char> QuoteMap { get; }
 
@@ -105,6 +110,7 @@ namespace Qmmands
             Separator = configuration.Separator;
             SeparatorRequirement = configuration.SeparatorRequirement;
             ParameterParser = configuration.ArgumentParser;
+            CooldownBucketKeyGenerator = configuration.CooldownBucketKeyGenerator;
             QuoteMap = configuration.QuoteMap.ToImmutableDictionary();
 
             StringComparison = CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
@@ -582,6 +588,13 @@ namespace Qmmands
                     if (skipOverload)
                         continue;
 
+                    if (match.Command.CooldownMap != null)
+                    {
+                        var bucket = match.Command.CooldownMap.GetBucket(context, provider);
+                        if (bucket.IsRateLimited(out var retryAfter))
+                            return new CommandOnCooldownResult(match.Command, retryAfter);
+                    }
+
                     switch (match.Command.RunMode)
                     {
                         case RunMode.Sequential:
@@ -687,6 +700,13 @@ namespace Qmmands
 
                     parsedArguments.Add(parsed);
                 }
+            }
+
+            if (command.CooldownMap != null)
+            {
+                var bucket = command.CooldownMap.GetBucket(context, provider);
+                if (bucket.IsRateLimited(out var retryAfter))
+                    return new CommandOnCooldownResult(command, retryAfter);
             }
 
             switch (command.RunMode)

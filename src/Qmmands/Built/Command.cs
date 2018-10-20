@@ -42,6 +42,11 @@ namespace Qmmands
         public bool IgnoreExtraArguments { get; }
 
         /// <summary>
+        ///     Gets the <see cref="Qmmands.Cooldown"/> of this <see cref="Command"/>.
+        /// </summary>
+        public Cooldown Cooldown { get; }
+
+        /// <summary>
         ///     Gets the aliases of this <see cref="Command"/>.
         /// </summary>
         public IReadOnlyList<string> Aliases { get; }
@@ -81,6 +86,8 @@ namespace Qmmands
 
         internal CommandService Service => Module.Service;
 
+        internal CooldownMap CooldownMap { get; }
+
         internal Command(CommandBuilder builder, Module module)
         {
             Module = module;
@@ -90,6 +97,7 @@ namespace Qmmands
             Priority = builder.Priority;
             RunMode = builder.RunMode ?? module.RunMode;
             IgnoreExtraArguments = builder.IgnoreExtraArguments ?? module.IgnoreExtraArguments;
+            Cooldown = builder.Cooldown;
             Aliases = builder.Aliases.ToImmutableArray();
 
             var fullAliases = new List<string>();
@@ -118,6 +126,14 @@ namespace Qmmands
             Parameters = parameters.ToImmutableArray();
 
             Callback = builder.Callback;
+
+            if (Cooldown != null)
+            {
+                if (Service.CooldownBucketKeyGenerator is null)
+                    throw new InvalidOperationException("Cooldown bucket key generator hasn't been set.");
+
+                CooldownMap = new CooldownMap(this);
+            }
         }
 
         /// <summary>
@@ -152,6 +168,36 @@ namespace Qmmands
         {
             var checkResult = await check.CheckAsync(context, provider).ConfigureAwait(false);
             return (check, checkResult.Error);
+        }
+
+        /// <summary>
+        ///     Resets all <see cref="Qmmands.Cooldown"/> buckets on this <see cref="Command"/>.
+        /// </summary>
+        public void ResetCooldown()
+        {
+            if (CooldownMap == null)
+                throw new InvalidOperationException("This command doesn't have an assigned cooldown.");
+
+            CooldownMap.Buckets.Clear();
+        }
+
+        /// <summary>
+        ///     Resets the <see cref="Qmmands.Cooldown"/> bucket with a key generated from the provided
+        ///     <see cref="ICommandContext"/> and <see cref="IServiceProvider"/> on this <see cref="Command"/>.
+        /// </summary>
+        /// <param name="context"> The <see cref="ICommandContext"/> to use for bucket key generation. </param>
+        /// <param name="context"> The <see cref="IServiceProvider"/> to use for bucket key generation. </param>
+
+        public void ResetCooldown(ICommandContext context, IServiceProvider provider = null)
+        {
+            if (CooldownMap == null)
+                throw new InvalidOperationException("This command doesn't have an assigned cooldown.");
+
+            if (provider is null)
+                provider = EmptyServiceProvider.Instance;
+
+            var bucket = CooldownMap.GetBucket(context, provider);
+            bucket.Reset();
         }
 
         /// <summary>

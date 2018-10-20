@@ -51,6 +51,11 @@ namespace Qmmands
         }
 
         /// <summary>
+        ///     Gets or sets the <see cref="Qmmands.Cooldown"/> of the <see cref="Command"/>.
+        /// </summary>
+        public Cooldown Cooldown { get; set; }
+
+        /// <summary>
         ///     Gets the aliases of the <see cref="Command"/>.
         /// </summary>
         public List<string> Aliases { get; }
@@ -137,6 +142,15 @@ namespace Qmmands
         public CommandBuilder WithRunMode(RunMode? runMode)
         {
             RunMode = runMode;
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the <see cref="Cooldown"/>.
+        /// </summary>
+        public CommandBuilder WithCooldown(Cooldown cooldown)
+        {
+            Cooldown = cooldown;
             return this;
         }
 

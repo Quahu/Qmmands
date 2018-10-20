@@ -69,6 +69,11 @@ namespace Qmmands
             set => _argumentParser = value ?? throw new ArgumentNullException(nameof(value));
         }
 
+        /// <summary>
+        ///     The generator to use for <see cref="Cooldown"/> bucket keys. Defaults to <see langword="null"/>
+        /// </summary>
+        public ICooldownBucketKeyGenerator CooldownBucketKeyGenerator { get; set; } = null;
+
         private IReadOnlyDictionary<char, char> _quoteMap = CommandUtilities.QuoteMap;
 
         /// <summary>
