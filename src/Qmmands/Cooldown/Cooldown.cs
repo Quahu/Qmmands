@@ -33,6 +33,9 @@ namespace Qmmands
             if (amount <= 0)
                 throw new ArgumentOutOfRangeException(nameof(amount), "Amount must be a positive integer.");
 
+            if (bucketType is null)
+                throw new ArgumentNullException(nameof(bucketType), "Bucket type mustn't be null.");
+
             if (!bucketType.GetType().IsEnum)
                 throw new ArgumentException("Bucket type must be an enum.", nameof(bucketType));
 

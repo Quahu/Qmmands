@@ -26,6 +26,12 @@ namespace Qmmands
         }
 
         public CooldownBucket GetBucket(Cooldown cooldown, ICommandContext context, IServiceProvider provider)
-            => Buckets.GetOrAdd(_generator.GenerateBucketKey(cooldown.BucketType, context, provider), new CooldownBucket(cooldown));
+        {
+            var key = _generator.GenerateBucketKey(cooldown.BucketType, context, provider);
+            if (key is null)
+                throw new InvalidOperationException("The generated cooldown key mustn't be null.");
+
+            return Buckets.GetOrAdd(key, new CooldownBucket(cooldown));
+        }
     }
 }
