@@ -5,6 +5,9 @@
     /// </summary>
     public sealed class TypeParserFailedResult : FailedResult
     {
+        /// <inheritdoc />
+        public override string Reason { get; }
+
         /// <summary>
         ///     Gets the <see cref="Parameter"/> the parse failed for.
         /// </summary>
@@ -14,9 +17,6 @@
         ///     Gets the value passed to the type parser.
         /// </summary>
         public string Value { get; }
-
-        /// <inheritdoc />
-        public override string Reason { get; }
 
         internal TypeParserFailedResult(Parameter parameter, string value, string reason)
         {

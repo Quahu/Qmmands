@@ -8,7 +8,7 @@ namespace Qmmands
     public sealed class OverloadNotFoundResult : FailedResult
     {
         /// <inheritdoc />
-        public override string Reason => "Failed to find a matching overload.";
+        public override string Reason { get; } = "Failed to find a matching overload.";
 
         /// <summary>
         ///     Gets the failed overloads with their respective failure reasons.
