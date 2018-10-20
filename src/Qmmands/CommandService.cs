@@ -111,7 +111,7 @@ namespace Qmmands
             SeparatorRequirement = configuration.SeparatorRequirement;
             ParameterParser = configuration.ArgumentParser;
             QuoteMap = configuration.QuoteMap.ToImmutableDictionary();
-            NullableNouns = configuration.NullableNouns.ToImmutableList();
+            NullableNouns = configuration.NullableNouns.ToImmutableArray();
 
             StringComparison = CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
