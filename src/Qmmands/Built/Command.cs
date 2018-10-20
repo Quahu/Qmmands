@@ -98,7 +98,7 @@ namespace Qmmands
             RunMode = builder.RunMode ?? module.RunMode;
             IgnoreExtraArguments = builder.IgnoreExtraArguments ?? module.IgnoreExtraArguments;
             Callback = builder.Callback;
-            Cooldowns = builder.Cooldowns.OrderByDescending(x => x.BucketType).ToImmutableArray();
+            Cooldowns = builder.Cooldowns.OrderBy(x => x.Amount).ToImmutableArray();
             Aliases = builder.Aliases.ToImmutableArray();
 
             var fullAliases = new List<string>();
@@ -131,7 +131,7 @@ namespace Qmmands
                 if (Service.CooldownBucketKeyGenerator is null)
                     throw new InvalidOperationException("Cooldown bucket key generator hasn't been set.");
 
-                CooldownMap = new CooldownMap(this);
+                CooldownMap = new CooldownMap(Service.CooldownBucketKeyGenerator);
             }
         }
 
@@ -198,6 +198,28 @@ namespace Qmmands
 
             var bucket = CooldownMap.GetBucket(cooldown, context, provider);
             bucket.Reset();
+        }
+
+        internal IResult RunCooldowns(ICommandContext context, IServiceProvider provider)
+        {
+            if (CooldownMap != null)
+            {
+                var buckets = Cooldowns.Select(x => CooldownMap.GetBucket(x, context, provider)).ToArray();
+                var rateLimited = new List<(Cooldown, TimeSpan)>(buckets.Length);
+                foreach (var bucket in buckets)
+                {
+                    if (bucket.IsRateLimited(out var retryAfter))
+                        rateLimited.Add((bucket.Cooldown, retryAfter));
+                }
+
+                if (rateLimited.Count > 0)
+                    return new CommandOnCooldownResult(this, rateLimited.ToImmutableArray());
+
+                foreach (var bucket in buckets)
+                    bucket.Decrement();
+            }
+
+            return new SuccessfulResult();
         }
 
         /// <summary>

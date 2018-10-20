@@ -42,13 +42,17 @@ namespace Qmmands
                 return true;
             }
 
+            retryAfter = default;
+            return false;
+        }
+
+        public void Decrement()
+        {
+            var now = DateTimeOffset.UtcNow;
             Interlocked.Decrement(ref _remaining);
 
             if (Remaining == 0)
                 Window = now;
-
-            retryAfter = default;
-            return false;
         }
 
         public void Reset()

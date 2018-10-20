@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Qmmands
 {
@@ -16,15 +18,17 @@ namespace Qmmands
         public Command Command { get; }
 
         /// <summary>
-        ///     Gets the <see cref="TimeSpan"/> after which it's safe to retry.
+        ///     Gets the <see cref="Cooldown"/>s and <see cref="TimeSpan"/>s after which it's safe to retry.
         /// </summary>
-        public TimeSpan RetryAfter { get; }
+        public IReadOnlyList<(Cooldown Cooldown, TimeSpan RetryAfter)> Cooldowns { get; set; }
 
-        internal CommandOnCooldownResult(Command command, Cooldown cooldown, TimeSpan retryAfter)
+        internal CommandOnCooldownResult(Command command, IReadOnlyList<(Cooldown Cooldown, TimeSpan RetryAfter)> cooldowns)
         {
             Command = command;
-            RetryAfter = retryAfter;
-            Reason = $"Command '{command.Name}' is on cooldown with the '{cooldown.BucketType}' bucket type. Retry after {retryAfter}.";
+            Cooldowns = cooldowns;
+            Reason = cooldowns.Count == 1
+                ? $"Command '{command.Name}' is on a '{cooldowns[0].Cooldown.BucketType}' cooldown. Retry after {cooldowns[0].RetryAfter}."
+                : $"Command '{command.Name}' is on multiple cooldowns: {string.Join(", ", cooldowns.Select(x => $"'{x.Cooldown.BucketType}' - retry after {x.RetryAfter}"))}";
         }
     }
 }

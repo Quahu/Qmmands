@@ -6,16 +6,16 @@ namespace Qmmands
 {
     internal sealed class CooldownMap
     {
-        private readonly Command _command;
+        private readonly ICooldownBucketKeyGenerator _generator;
         public ConcurrentDictionary<object, CooldownBucket> Buckets { get; }
 
-        internal CooldownMap(Command command)
+        internal CooldownMap(ICooldownBucketKeyGenerator generator)
         {
-            _command = command;
+            _generator = generator;
             Buckets = new ConcurrentDictionary<object, CooldownBucket>();
         }
 
-        public CooldownBucket GetBucket(Cooldown cooldown, ICommandContext context, IServiceProvider provider)
+        public void Update()
         {
             var now = DateTimeOffset.UtcNow;
             foreach (var kvp in Buckets.ToList())
@@ -23,9 +23,9 @@ namespace Qmmands
                 if (now > kvp.Value.LastCall + kvp.Value.Cooldown.Per)
                     Buckets.TryRemove(kvp.Key, out _);
             }
-
-            var key = _command.Service.CooldownBucketKeyGenerator.GenerateBucketKey(cooldown.BucketType, context, provider);
-            return Buckets.GetOrAdd(key, new CooldownBucket(cooldown));
         }
+
+        public CooldownBucket GetBucket(Cooldown cooldown, ICommandContext context, IServiceProvider provider)
+            => Buckets.GetOrAdd(_generator.GenerateBucketKey(cooldown.BucketType, context, provider), new CooldownBucket(cooldown));
     }
 }
