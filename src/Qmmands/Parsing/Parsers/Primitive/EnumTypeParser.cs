@@ -19,7 +19,7 @@ namespace Qmmands
             var names = Enum.GetNames(enumType);
             for (var i = 0; i < names.Length; i++)
             {
-                var name = ignoreCase ? names[i].ToLowerInvariant() : names[i];
+                var name = names[i];
                 var value = Enum.Parse(enumType, name, ignoreCase);
                 enumValuesByNames.Add(name, value);
 
