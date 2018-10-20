@@ -15,17 +15,17 @@ namespace Qmmands
             Buckets = new ConcurrentDictionary<object, CooldownBucket>();
         }
 
-        public CooldownBucket GetBucket(ICommandContext context, IServiceProvider provider)
+        public CooldownBucket GetBucket(Cooldown cooldown, ICommandContext context, IServiceProvider provider)
         {
             var now = DateTimeOffset.UtcNow;
             foreach (var kvp in Buckets.ToList())
             {
-                if (now > kvp.Value.Last + kvp.Value.Cooldown.Per)
+                if (now > kvp.Value.LastCall + kvp.Value.Cooldown.Per)
                     Buckets.TryRemove(kvp.Key, out _);
             }
 
-            var key = _command.Service.CooldownBucketKeyGenerator.GenerateBucketKey(_command, _command.Cooldown.BucketType, context, provider);
-            return Buckets.GetOrAdd(key, new CooldownBucket(_command.Cooldown));
+            var key = _command.Service.CooldownBucketKeyGenerator.GenerateBucketKey(cooldown.BucketType, context, provider);
+            return Buckets.GetOrAdd(key, new CooldownBucket(cooldown));
         }
     }
 }

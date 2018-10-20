@@ -5,7 +5,7 @@ namespace Qmmands
     /// <summary>
     ///     Applies a <see cref="Cooldown"/> to the <see cref="Command"/>.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public sealed class CooldownAttribute : Attribute
     {
         /// <summary>

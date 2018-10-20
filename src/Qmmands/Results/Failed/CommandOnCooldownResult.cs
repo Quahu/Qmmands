@@ -20,11 +20,11 @@ namespace Qmmands
         /// </summary>
         public TimeSpan RetryAfter { get; }
 
-        internal CommandOnCooldownResult(Command command, TimeSpan retryAfter)
+        internal CommandOnCooldownResult(Command command, Cooldown cooldown, TimeSpan retryAfter)
         {
             Command = command;
             RetryAfter = retryAfter;
-            Reason = $"Command '{command.Name}' is on cooldown with the '{command.Cooldown.BucketType}' bucket type. Retry after {retryAfter}.";
+            Reason = $"Command '{command.Name}' is on cooldown with the '{cooldown.BucketType}' bucket type. Retry after {retryAfter}.";
         }
     }
 }

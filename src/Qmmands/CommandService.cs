@@ -590,9 +590,12 @@ namespace Qmmands
 
                     if (match.Command.CooldownMap != null)
                     {
-                        var bucket = match.Command.CooldownMap.GetBucket(context, provider);
-                        if (bucket.IsRateLimited(out var retryAfter))
-                            return new CommandOnCooldownResult(match.Command, retryAfter);
+                        foreach (var cooldown in match.Command.Cooldowns)
+                        {
+                            var bucket = match.Command.CooldownMap.GetBucket(cooldown, context, provider);
+                            if (bucket.IsRateLimited(out var retryAfter))
+                                return new CommandOnCooldownResult(match.Command, cooldown, retryAfter);
+                        }
                     }
 
                     switch (match.Command.RunMode)
@@ -704,9 +707,12 @@ namespace Qmmands
 
             if (command.CooldownMap != null)
             {
-                var bucket = command.CooldownMap.GetBucket(context, provider);
-                if (bucket.IsRateLimited(out var retryAfter))
-                    return new CommandOnCooldownResult(command, retryAfter);
+                foreach (var cooldown in command.Cooldowns)
+                {
+                    var bucket = command.CooldownMap.GetBucket(cooldown, context, provider);
+                    if (bucket.IsRateLimited(out var retryAfter))
+                        return new CommandOnCooldownResult(command, cooldown, retryAfter);
+                }
             }
 
             switch (command.RunMode)
