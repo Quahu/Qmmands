@@ -42,6 +42,16 @@ namespace Qmmands
         public bool IgnoreExtraArguments { get; }
 
         /// <summary>
+        ///     Gets the callback of this <see cref="Command"/>.
+        /// </summary>
+        public CommandCallbackDelegate Callback { get; }
+
+        /// <summary>
+        ///     Gets the <see cref="Qmmands.Cooldown"/>s of this <see cref="Command"/>.
+        /// </summary>
+        public IReadOnlyList<Cooldown> Cooldowns { get; }
+
+        /// <summary>
         ///     Gets the aliases of this <see cref="Command"/>.
         /// </summary>
         public IReadOnlyList<string> Aliases { get; }
@@ -74,12 +84,9 @@ namespace Qmmands
         /// </summary>
         public Module Module { get; }
 
-        /// <summary>
-        ///     Gets the callback of this <see cref="Command"/>.
-        /// </summary>
-        public CommandCallbackDelegate Callback { get; }
-
         internal CommandService Service => Module.Service;
+
+        internal CooldownMap CooldownMap { get; }
 
         internal Command(CommandBuilder builder, Module module)
         {
@@ -90,6 +97,8 @@ namespace Qmmands
             Priority = builder.Priority;
             RunMode = builder.RunMode ?? module.RunMode;
             IgnoreExtraArguments = builder.IgnoreExtraArguments ?? module.IgnoreExtraArguments;
+            Callback = builder.Callback;
+            Cooldowns = builder.Cooldowns.OrderBy(x => x.Amount).ToImmutableArray();
             Aliases = builder.Aliases.ToImmutableArray();
 
             var fullAliases = new List<string>();
@@ -117,7 +126,13 @@ namespace Qmmands
                 parameters.Add(builder.Parameters[i].Build(this));
             Parameters = parameters.ToImmutableArray();
 
-            Callback = builder.Callback;
+            if (Cooldowns.Count != 0)
+            {
+                if (Service.CooldownBucketKeyGenerator is null)
+                    throw new InvalidOperationException("Cooldown bucket key generator hasn't been set.");
+
+                CooldownMap = new CooldownMap(Service.CooldownBucketKeyGenerator);
+            }
         }
 
         /// <summary>
@@ -152,6 +167,58 @@ namespace Qmmands
         {
             var checkResult = await check.CheckAsync(context, provider).ConfigureAwait(false);
             return (check, checkResult.Error);
+        }
+
+        /// <summary>
+        ///     Resets all <see cref="Qmmands.Cooldown"/> buckets on this <see cref="Command"/>.
+        /// </summary>
+        public void ResetCooldown()
+        {
+            if (CooldownMap == null)
+                throw new InvalidOperationException("This command doesn't have an assigned cooldown.");
+
+            CooldownMap.Buckets.Clear();
+        }
+
+        /// <summary>
+        ///     Resets the <see cref="Qmmands.Cooldown"/> bucket with a key generated from the provided
+        ///     <see cref="ICommandContext"/> and <see cref="IServiceProvider"/> on this <see cref="Command"/>.
+        /// </summary>
+        /// <param name="cooldown"> The <see cref="Cooldown"/> to reset. </param>
+        /// <param name="context"> The <see cref="ICommandContext"/> to use for bucket key generation. </param>
+        /// <param name="provider"> The <see cref="IServiceProvider"/> to use for bucket key generation. </param>
+        public void ResetCooldown(Cooldown cooldown, ICommandContext context, IServiceProvider provider = null)
+        {
+            if (CooldownMap == null)
+                throw new InvalidOperationException("This command doesn't have an assigned cooldown.");
+
+            if (provider is null)
+                provider = EmptyServiceProvider.Instance;
+
+            var bucket = CooldownMap.GetBucket(cooldown, context, provider);
+            bucket.Reset();
+        }
+
+        internal IResult RunCooldowns(ICommandContext context, IServiceProvider provider)
+        {
+            if (CooldownMap != null)
+            {
+                var buckets = Cooldowns.Select(x => CooldownMap.GetBucket(x, context, provider)).ToArray();
+                var rateLimited = new List<(Cooldown, TimeSpan)>(buckets.Length);
+                foreach (var bucket in buckets)
+                {
+                    if (bucket.IsRateLimited(out var retryAfter))
+                        rateLimited.Add((bucket.Cooldown, retryAfter));
+                }
+
+                if (rateLimited.Count > 0)
+                    return new CommandOnCooldownResult(this, rateLimited.ToImmutableArray());
+
+                foreach (var bucket in buckets)
+                    bucket.Decrement();
+            }
+
+            return new SuccessfulResult();
         }
 
         /// <summary>

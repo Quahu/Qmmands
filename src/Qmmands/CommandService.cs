@@ -45,6 +45,11 @@ namespace Qmmands
         public IArgumentParser ParameterParser { get; }
 
         /// <summary>
+        ///     Gets the generator to use for <see cref="Cooldown"/> bucket keys.
+        /// </summary>
+        public ICooldownBucketKeyGenerator CooldownBucketKeyGenerator { get; }
+
+        /// <summary>
         ///     Gets the quotation mark map used for non-remainder multi word arguments.
         /// </summary>
         public IReadOnlyDictionary<char, char> QuoteMap { get; }
@@ -110,6 +115,7 @@ namespace Qmmands
             Separator = configuration.Separator;
             SeparatorRequirement = configuration.SeparatorRequirement;
             ParameterParser = configuration.ArgumentParser;
+            CooldownBucketKeyGenerator = configuration.CooldownBucketKeyGenerator;
             QuoteMap = configuration.QuoteMap.ToImmutableDictionary();
             NullableNouns = configuration.NullableNouns.ToImmutableArray();
 
@@ -588,6 +594,10 @@ namespace Qmmands
                     if (skipOverload)
                         continue;
 
+                    var cooldownResult = match.Command.RunCooldowns(context, provider);
+                    if (!cooldownResult.IsSuccessful)
+                        return cooldownResult;
+
                     switch (match.Command.RunMode)
                     {
                         case RunMode.Sequential:
@@ -694,6 +704,10 @@ namespace Qmmands
                     parsedArguments.Add(parsed);
                 }
             }
+
+            var cooldownResult = command.RunCooldowns(context, provider);
+            if (!cooldownResult.IsSuccessful)
+                return cooldownResult;
 
             switch (command.RunMode)
             {
