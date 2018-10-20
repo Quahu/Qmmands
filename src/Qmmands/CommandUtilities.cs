@@ -31,7 +31,7 @@ namespace Qmmands
                 return false;
             }
 
-            output = input.Substring(1);
+            output = input.Substring(1).TrimStart();
             return true;
         }
 
