@@ -745,7 +745,17 @@ namespace Qmmands
             if (primitiveParser != null || (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null)
             {
                 if (!primitiveParser.TryParse(value, out var result))
-                    return (new TypeParserFailedResult(parameter, value, $"Failed to parse {parameter.Type.Name}."), default);
+                {
+                    var type = Nullable.GetUnderlyingType(parameter.Type);
+                    var friendlyName = type == null
+                        ? TypeParserUtils.FriendlyTypeNames.TryGetValue(parameter.Type, out var name)
+                            ? name
+                            : parameter.Type.Name
+                        : TypeParserUtils.FriendlyTypeNames.TryGetValue(type, out name)
+                            ? $"nullable {name}"
+                            : $"nullable {type.Name}";
+                    return (new TypeParserFailedResult(parameter, value, $"Failed to parse {friendlyName}."), default);
+                }
 
                 return (null, result);
             }
