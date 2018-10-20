@@ -187,7 +187,6 @@ namespace Qmmands
         /// <param name="cooldown"> The <see cref="Cooldown"/> to reset. </param>
         /// <param name="context"> The <see cref="ICommandContext"/> to use for bucket key generation. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use for bucket key generation. </param>
-
         public void ResetCooldown(Cooldown cooldown, ICommandContext context, IServiceProvider provider = null)
         {
             if (CooldownMap == null)
