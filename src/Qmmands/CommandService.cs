@@ -50,9 +50,14 @@ namespace Qmmands
         public ICooldownBucketKeyGenerator CooldownBucketKeyGenerator { get; }
 
         /// <summary>
-        ///     Gets the map of quotation marks used for non-remainder multi word arguments.
+        ///     Gets the quotation mark map used for non-remainder multi word arguments.
         /// </summary>
         public IReadOnlyDictionary<char, char> QuoteMap { get; }
+
+        /// <summary>
+        ///     Gets or sets the collection of nouns used for nullable value type parsing.
+        /// </summary>
+        public IReadOnlyList<string> NullableNouns { get; }
 
         /// <summary>
         ///     Fires when a command is successfully executed. Use this to handle <see cref="RunMode.Parallel"/> commands.
@@ -112,6 +117,7 @@ namespace Qmmands
             ParameterParser = configuration.ArgumentParser;
             CooldownBucketKeyGenerator = configuration.CooldownBucketKeyGenerator;
             QuoteMap = configuration.QuoteMap.ToImmutableDictionary();
+            NullableNouns = configuration.NullableNouns.ToImmutableArray();
 
             StringComparison = CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
@@ -770,8 +776,18 @@ namespace Qmmands
 
             if (primitiveParser != null || (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null)
             {
-                if (!primitiveParser.TryParse(value, out var result))
-                    return (new TypeParserFailedResult(parameter, value, $"Failed to parse {parameter.Type.Name}."), default);
+                if (!primitiveParser.TryParse(this, value, out var result))
+                {
+                    var type = Nullable.GetUnderlyingType(parameter.Type);
+                    var friendlyName = type == null
+                        ? TypeParserUtils.FriendlyTypeNames.TryGetValue(parameter.Type, out var name)
+                            ? name
+                            : parameter.Type.Name
+                        : TypeParserUtils.FriendlyTypeNames.TryGetValue(type, out name)
+                            ? $"nullable {name}"
+                            : $"nullable {type.Name}";
+                    return (new TypeParserFailedResult(parameter, value, $"Failed to parse {friendlyName}."), default);
+                }
 
                 return (null, result);
             }

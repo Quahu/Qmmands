@@ -10,7 +10,7 @@ namespace Qmmands
     public abstract class ModuleBase<TContext> : IModuleBase where TContext : class, ICommandContext
     {
         /// <summary>
-        ///     The context.
+        ///     The command context.
         /// </summary>
         protected TContext Context { get; private set; }
 

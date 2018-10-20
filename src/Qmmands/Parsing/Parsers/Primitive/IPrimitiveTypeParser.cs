@@ -2,6 +2,6 @@
 {
     internal interface IPrimitiveTypeParser
     {
-        bool TryParse(string value, out object result);
+        bool TryParse(CommandService service, string value, out object result);
     }
 }

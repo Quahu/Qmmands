@@ -19,7 +19,7 @@ namespace Qmmands
             var names = Enum.GetNames(enumType);
             for (var i = 0; i < names.Length; i++)
             {
-                var name = ignoreCase ? names[i].ToLowerInvariant() : names[i];
+                var name = names[i];
                 var value = Enum.Parse(enumType, name, ignoreCase);
                 enumValuesByNames.Add(name, value);
 
@@ -31,7 +31,7 @@ namespace Qmmands
             _enumByValues = enumValuesByValues.ToImmutable();
         }
 
-        public bool TryParse(string value, out object result)
+        public bool TryParse(CommandService service, string value, out object result)
             => !_tryParse(value, out var numericResult) ? _enumByNames.TryGetValue(value, out result) : _enumByValues.TryGetValue(numericResult, out result);
     }
 }
