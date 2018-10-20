@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Qmmands
 {
@@ -9,12 +10,10 @@ namespace Qmmands
         public NullablePrimitiveTypeParser(PrimitiveTypeParser<T> primitiveTypeParser)
             => _primitiveTypeParser = primitiveTypeParser;
 
-        public bool TryParse(string value, out T? result)
+        public bool TryParse(CommandService service, string value, out T? result)
         {
             result = new T?();
-            if (value.Equals("null", StringComparison.OrdinalIgnoreCase)
-                || value.Equals("none", StringComparison.OrdinalIgnoreCase)
-                || value.Equals("nothing", StringComparison.OrdinalIgnoreCase))
+            if (service.NullableNouns.Any(x => value.Equals(x, service.StringComparison)))
                 return true;
 
             if (_primitiveTypeParser.TryParse(value, out var primitiveResult))
@@ -26,10 +25,10 @@ namespace Qmmands
             return false;
         }
 
-        bool IPrimitiveTypeParser.TryParse(string value, out object result)
+        bool IPrimitiveTypeParser.TryParse(CommandService service, string value, out object result)
         {
             result = new T?();
-            if (TryParse(value, out var genericResult))
+            if (TryParse(service, value, out var genericResult))
             {
                 result = genericResult;
                 return true;

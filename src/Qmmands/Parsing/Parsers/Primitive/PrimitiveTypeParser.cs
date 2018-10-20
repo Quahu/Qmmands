@@ -12,7 +12,7 @@
         public bool TryParse(string values, out T result)
             => _tryParse(values, out result);
 
-        bool IPrimitiveTypeParser.TryParse(string value, out object result)
+        bool IPrimitiveTypeParser.TryParse(CommandService service, string value, out object result)
         {
             result = default;
             if (TryParse(value, out var genericResult))

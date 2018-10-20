@@ -31,7 +31,7 @@ namespace Qmmands
             _enumByValues = enumValuesByValues.ToImmutable();
         }
 
-        public bool TryParse(string value, out object result)
+        public bool TryParse(CommandService service, string value, out object result)
             => !_tryParse(value, out var numericResult) ? _enumByNames.TryGetValue(value, out result) : _enumByValues.TryGetValue(numericResult, out result);
     }
 }

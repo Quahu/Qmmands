@@ -45,9 +45,14 @@ namespace Qmmands
         public IArgumentParser ParameterParser { get; }
 
         /// <summary>
-        ///     Represents a map of various quotation marks used for non-remainder multi word arguments.
+        ///     Gets the quotation mark map used for non-remainder multi word arguments.
         /// </summary>
         public IReadOnlyDictionary<char, char> QuoteMap { get; }
+
+        /// <summary>
+        ///     Gets or sets the collection of nouns used for nullable value type parsing.
+        /// </summary>
+        public IReadOnlyList<string> NullableNouns { get; }
 
         /// <summary>
         ///     Fires when a command is successfully executed. Use this to handle <see cref="RunMode.Parallel"/> commands.
@@ -106,6 +111,7 @@ namespace Qmmands
             SeparatorRequirement = configuration.SeparatorRequirement;
             ParameterParser = configuration.ArgumentParser;
             QuoteMap = configuration.QuoteMap.ToImmutableDictionary();
+            NullableNouns = configuration.NullableNouns.ToImmutableList();
 
             StringComparison = CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
@@ -744,7 +750,7 @@ namespace Qmmands
 
             if (primitiveParser != null || (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null)
             {
-                if (!primitiveParser.TryParse(value, out var result))
+                if (!primitiveParser.TryParse(this, value, out var result))
                 {
                     var type = Nullable.GetUnderlyingType(parameter.Type);
                     var friendlyName = type == null

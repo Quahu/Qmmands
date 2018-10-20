@@ -12,7 +12,12 @@ namespace Qmmands
         /// <summary>
         ///     Represents a map of various quotation marks.
         /// </summary>
-        public static IReadOnlyDictionary<char, char> QuoteMap { get; }
+        public static IReadOnlyDictionary<char, char> DefaultQuoteMap { get; }
+
+        /// <summary>
+        ///     Represents a collection of nouns to use for nullable value type parsing.
+        /// </summary>
+        public static IReadOnlyList<string> DefaultNullableNouns { get; }
 
         /// <summary>
         ///     Checks if the provided <see cref="string"/> starts with the specified <see cref="char"/> prefix.
@@ -125,7 +130,13 @@ namespace Qmmands
             quoteMapBuilder['〖'] = '〗';
             quoteMapBuilder['〘'] = '〙';
             quoteMapBuilder['〚'] = '〛';
-            QuoteMap = quoteMapBuilder.ToImmutable();
+            DefaultQuoteMap = quoteMapBuilder.ToImmutable();
+
+            var nullableNounsBuilder = ImmutableList.CreateBuilder<string>();
+            nullableNounsBuilder.Add("null");
+            nullableNounsBuilder.Add("none");
+            nullableNounsBuilder.Add("nothing");
+            DefaultNullableNouns = nullableNounsBuilder.ToImmutable();
         }
     }
 }

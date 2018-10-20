@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 
 namespace Qmmands
 {
@@ -9,15 +9,13 @@ namespace Qmmands
         public NullableEnumTypeParser(EnumTypeParser<T> enumTypeParser)
             => _enumTypeParser = enumTypeParser;
 
-        public bool TryParse(string value, out object result)
+        public bool TryParse(CommandService service, string value, out object result)
         {
             result = null;
-            if (value.Equals("null", StringComparison.OrdinalIgnoreCase)
-                || value.Equals("none", StringComparison.OrdinalIgnoreCase)
-                || value.Equals("nothing", StringComparison.OrdinalIgnoreCase))
+            if (service.NullableNouns.Any(x => value.Equals(x, service.StringComparison)))
                 return true;
 
-            if (_enumTypeParser.TryParse(value, out var enumResult))
+            if (_enumTypeParser.TryParse(service, value, out var enumResult))
             {
                 result = enumResult;
                 return true;
@@ -26,10 +24,10 @@ namespace Qmmands
             return false;
         }
 
-        bool IPrimitiveTypeParser.TryParse(string value, out object result)
+        bool IPrimitiveTypeParser.TryParse(CommandService service, string value, out object result)
         {
             result = new T?();
-            if (TryParse(value, out var genericResult))
+            if (TryParse(service, value, out var genericResult))
             {
                 result = genericResult;
                 return true;

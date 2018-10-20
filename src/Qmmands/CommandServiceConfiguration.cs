@@ -9,14 +9,16 @@ namespace Qmmands
     public sealed class CommandServiceConfiguration
     {
         /// <summary>
-        ///     The <see cref="bool"/> which determines whether the commands should be case sensitive or not. Defaults to <see langword="false"/>.
+        ///     Gets or sets the <see cref="bool"/> which determines whether the commands should
+        ///     be case sensitive or not. Defaults to <see langword="false"/>.
         /// </summary>
         public bool CaseSensitive { get; set; } = false;
 
         private RunMode _defaultRunMode = RunMode.Sequential;
 
         /// <summary>
-        ///     The <see cref="RunMode"/> which determines whether the commands should run sequentially or in parallel. Defaults to <see cref="RunMode.Sequential"/>.
+        ///     Gets or sets the <see cref="RunMode"/> which determines whether the commands should
+        ///     run sequentially or in parallel. Defaults to <see cref="RunMode.Sequential"/>.
         /// </summary>
         public RunMode DefaultRunMode
         {
@@ -31,21 +33,26 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     The <see cref="bool"/> which determines whether the extra arguments provided should be ignored. Defaults to <see langword="false"/>.
+        ///     Gets or sets the <see cref="bool"/> which determines whether the extra arguments
+        ///     provided should be ignored. Defaults to <see langword="false"/>.
         /// </summary>
         public bool IgnoreExtraArguments { get; set; } = false;
 
         /// <summary>
-        ///     The <see cref="string"/> separator to use between groups and commands. Defaults to a single whitespace character.
+        ///     Gets or sets the <see cref="string"/> separator to use between groups and commands.
+        ///     Defaults to a single whitespace character.
         /// </summary>
         public string Separator { get; set; } = " ";
 
         private SeparatorRequirement _separatorRequirement = SeparatorRequirement.Separator;
 
         /// <summary>
-        ///     The <see cref="Qmmands.SeparatorRequirement"/> for group and command pathing. Defaults to <see cref="Qmmands.SeparatorRequirement.Separator"/>.
+        ///     Gets or sets the <see cref="Qmmands.SeparatorRequirement"/> for group and command pathing.
+        ///     Defaults to <see cref="Qmmands.SeparatorRequirement.Separator"/>.
         /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException"> <see langword="value"/> must be a valid <see cref="Qmmands.SeparatorRequirement"/> value. </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///     <see langword="value"/> must be a valid <see cref="Qmmands.SeparatorRequirement"/> value.
+        /// </exception>
         public SeparatorRequirement SeparatorRequirement
         {
             get => _separatorRequirement;
@@ -61,7 +68,7 @@ namespace Qmmands
         private IArgumentParser _argumentParser = new DefaultArgumentParser();
 
         /// <summary>
-        ///     The raw argument parser. Defaults to <see cref="DefaultArgumentParser"/>.
+        ///     Gets or sets the raw argument parser. Defaults to <see cref="DefaultArgumentParser"/>.
         /// </summary>
         public IArgumentParser ArgumentParser
         {
@@ -69,15 +76,27 @@ namespace Qmmands
             set => _argumentParser = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        private IReadOnlyDictionary<char, char> _quoteMap = CommandUtilities.QuoteMap;
+        private IReadOnlyDictionary<char, char> _quoteMap = CommandUtilities.DefaultQuoteMap;
 
         /// <summary>
-        ///     The quotation mark map. Defaults to <see cref="CommandUtilities.QuoteMap"/>.
+        ///     Gets or sets the quotation mark map. Defaults to <see cref="CommandUtilities.DefaultQuoteMap"/>.
         /// </summary>
         public IReadOnlyDictionary<char, char> QuoteMap
         {
             get => _quoteMap;
             set => _quoteMap = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        private IReadOnlyList<string> _nullableNouns = CommandUtilities.DefaultNullableNouns;
+
+        /// <summary>
+        ///     Gets or sets the collection of nouns to use for nullable value type parsing.
+        ///     Defaults to <see cref="CommandUtilities.DefaultNullableNouns"/>.
+        /// </summary>
+        public IReadOnlyList<string> NullableNouns
+        {
+            get => _nullableNouns;
+            set => _nullableNouns = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         /// <summary>
@@ -87,7 +106,8 @@ namespace Qmmands
         { }
 
         /// <summary>
-        ///     Gets the default <see cref="CommandServiceConfiguration"/>. The equivalent of using <see langword="new"/> <see cref="CommandServiceConfiguration()"/>.
+        ///     Gets the default <see cref="CommandServiceConfiguration"/>.
+        ///     The equivalent of using <see langword="new"/> <see cref="CommandServiceConfiguration()"/>.
         /// </summary>
         public static CommandServiceConfiguration Default => new CommandServiceConfiguration();
     }
