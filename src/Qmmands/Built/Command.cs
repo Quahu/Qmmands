@@ -203,6 +203,7 @@ namespace Qmmands
         {
             if (CooldownMap != null)
             {
+                CooldownMap.Update();
                 var buckets = Cooldowns.Select(x => CooldownMap.GetBucket(x, context, provider)).ToArray();
                 var rateLimited = new List<(Cooldown, TimeSpan)>(buckets.Length);
                 foreach (var bucket in buckets)
