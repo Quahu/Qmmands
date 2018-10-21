@@ -1,14 +1,14 @@
 ﻿namespace Qmmands
 {
     /// <summary>
-    ///     Represents a found <see cref="Qmmands.Command"/>, the path to it, and raw arguments.
+    ///     Represents a found <see cref="Qmmands.Module"/>, the path to it, and raw arguments.
     /// </summary>
-    public sealed class CommandMatch
+    public sealed class ModuleMatch
     {
         /// <summary>
-        ///     Gets the found <see cref="Qmmands.Command"/>.
+        ///     Gets the found <see cref="Qmmands.Module"/>.
         /// </summary>
-        public Command Command { get; }
+        public Module Module { get; }
 
         /// <summary>
         ///     Gets the matching alias.
@@ -16,7 +16,7 @@
         public string Alias { get; }
 
         /// <summary>
-        ///     Gets the path to the found <see cref="Qmmands.Command"/>.
+        ///     Gets the path to the found <see cref="Qmmands.Module"/>.
         /// </summary>
         public string[] Path { get; }
 
@@ -25,9 +25,9 @@
         /// </summary>
         public string RawArguments { get; }
 
-        internal CommandMatch(Command command, string alias, string[] path, string rawArguments)
+        internal ModuleMatch(Module module, string alias, string[] path, string rawArguments)
         {
-            Command = command;
+            Module = module;
             Alias = alias;
             Path = path;
             RawArguments = rawArguments;

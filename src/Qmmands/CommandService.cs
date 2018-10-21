@@ -195,8 +195,17 @@ namespace Qmmands
         /// <returns> An ordered enumerable of <see cref="CommandMatch"/>es. </returns>
         public IEnumerable<CommandMatch> FindCommands(string path)
             => _map.FindCommands(path).OrderByDescending(x => x.Path.Length)
-                .ThenByDescending(x => x.Command.Name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length) // a bad solution to bad people using whitespace in command names
+                .ThenByDescending(x => x.Alias.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length) // a bad solution to bad people using whitespace in aliases
                 .ThenByDescending(x => x.Command.Parameters.Count);
+
+        /// <summary>
+        ///     Attempts to find <see cref="Module"/>s matching the provided path.
+        /// </summary>
+        /// <param name="path"> The path to use for searching. </param>
+        /// <returns> An ordered enumerable of <see cref="ModuleMatch"/>es. </returns>
+        public IEnumerable<ModuleMatch> FindModules(string path)
+            => _map.FindModules(path).OrderByDescending(x => x.Path.Length)
+                .ThenByDescending(x => x.Alias.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length); // the same bad solution to bad people using whitespace in aliases
 
         /// <summary>
         ///     Adds a <see cref="TypeParser{T}"/> for the specified <typeparamref name="T"/> type.

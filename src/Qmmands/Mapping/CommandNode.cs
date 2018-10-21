@@ -8,12 +8,14 @@ namespace Qmmands
     {
         private readonly CommandService _service;
         private readonly Dictionary<string, List<Command>> _commands;
+        private readonly Dictionary<string, List<Module>> _modules;
         private readonly Dictionary<string, CommandNode> _nodes;
 
         public CommandNode(CommandService service)
         {
             _service = service;
             _commands = new Dictionary<string, List<Command>>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
+            _modules = new Dictionary<string, List<Module>>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
             _nodes = new Dictionary<string, CommandNode>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
         }
 
@@ -31,7 +33,7 @@ namespace Qmmands
                 foreach (var command in kvp.Value)
                 {
                     path.Push(kvp.Key);
-                    yield return new CommandMatch(command, path.Reverse().ToArray(), arguments);
+                    yield return new CommandMatch(command, kvp.Key, path.Reverse().ToArray(), arguments);
                     path.Pop();
                 }
             }
@@ -44,6 +46,38 @@ namespace Qmmands
 
                 path.Push(kvp.Key);
                 foreach (var match in kvp.Value.FindCommands(path, text, index))
+                    yield return match;
+                path.Pop();
+            }
+        }
+
+        public IEnumerable<ModuleMatch> FindModules(Stack<string> path, string text, int startIndex)
+        {
+            if (startIndex >= text.Length)
+                yield break;
+
+            foreach (var kvp in _modules)
+            {
+                var index = GetSegment(text, kvp.Key, startIndex, false, out var arguments, out _, out var hasWhitespaceSeparator);
+                if (index == -1 || !(hasWhitespaceSeparator || string.IsNullOrWhiteSpace(arguments)))
+                    continue;
+
+                foreach (var module in kvp.Value)
+                {
+                    path.Push(kvp.Key);
+                    yield return new ModuleMatch(module, kvp.Key, path.Reverse().ToArray(), arguments);
+                    path.Pop();
+                }
+            }
+
+            foreach (var kvp in _nodes)
+            {
+                var index = GetSegment(text, kvp.Key, startIndex, true, out _, out var hasSeparator, out _);
+                if (index == -1 || !hasSeparator)
+                    continue;
+
+                path.Push(kvp.Key);
+                foreach (var match in kvp.Value.FindModules(path, text, index))
                     yield return match;
                 path.Pop();
             }
@@ -114,6 +148,49 @@ namespace Qmmands
                 }
 
                 return index;
+            }
+        }
+
+        public void AddModule(Module module, string[] segments, int startIndex)
+        {
+            if (segments.Length == 0)
+                return;
+
+            var segment = segments[startIndex];
+            if (startIndex == segments.Length - 1)
+            {
+                if (_modules.TryGetValue(segment, out var modules))
+                    modules.Add(module);
+
+                else
+                    _modules.Add(segment, new List<Module> { module });
+            }
+
+            else
+            {
+                if (!_nodes.TryGetValue(segment, out var node))
+                {
+                    node = new CommandNode(_service);
+                    _nodes.Add(segment, node);
+                }
+
+                node.AddModule(module, segments, startIndex + 1);
+            }
+        }
+
+        public void RemoveModule(Module module, string[] segments, int startIndex)
+        {
+            var segment = segments[startIndex];
+            if (startIndex == segments.Length - 1)
+            {
+                if (_modules.TryGetValue(segment, out var modules))
+                    modules.Remove(module);
+            }
+
+            else
+            {
+                if (_nodes.TryGetValue(segment, out var node))
+                    node.RemoveModule(module, segments, startIndex + 1);
             }
         }
 

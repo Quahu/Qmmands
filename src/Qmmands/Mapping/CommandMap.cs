@@ -13,7 +13,10 @@ namespace Qmmands
         public void AddModule(Module module, Stack<string> path)
         {
             if (module.Aliases.Count == 0)
+            {
                 AddCommands(module, path);
+                AddModule(module, path.Reverse().ToArray());
+            }
 
             else
             {
@@ -21,6 +24,7 @@ namespace Qmmands
                 {
                     path.Push(alias);
                     AddCommands(module, path);
+                    AddModule(module, path.Reverse().ToArray());
                     path.Pop();
                 }
             }
@@ -29,7 +33,10 @@ namespace Qmmands
         public void RemoveModule(Module module, Stack<string> path)
         {
             if (module.Aliases.Count == 0)
+            {
                 RemoveCommands(module, path);
+                RemoveModule(module, path.Reverse().ToArray());
+            }
 
             else
             {
@@ -37,6 +44,7 @@ namespace Qmmands
                 {
                     path.Push(alias);
                     RemoveCommands(module, path);
+                    RemoveModule(module, path.Reverse().ToArray());
                     path.Pop();
                 }
             }
@@ -44,6 +52,15 @@ namespace Qmmands
 
         public IEnumerable<CommandMatch> FindCommands(string text)
             => _rootNode.FindCommands(new Stack<string>(), text, 0);
+
+        public IEnumerable<ModuleMatch> FindModules(string text)
+            => _rootNode.FindModules(new Stack<string>(), text, 0);
+
+        public void AddModule(Module module, string[] path)
+            => _rootNode.AddModule(module, path, 0);
+
+        public void RemoveModule(Module module, string[] path)
+            => _rootNode.RemoveModule(module, path, 0);
 
         public void AddCommand(Command command, string[] path)
             => _rootNode.AddCommand(command, path, 0);
