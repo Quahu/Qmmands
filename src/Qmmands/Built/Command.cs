@@ -172,7 +172,7 @@ namespace Qmmands
         /// <summary>
         ///     Resets all <see cref="Qmmands.Cooldown"/> buckets on this <see cref="Command"/>.
         /// </summary>
-        public void ResetCooldown()
+        public void ResetCooldowns()
         {
             if (CooldownMap == null)
                 throw new InvalidOperationException("This command doesn't have an assigned cooldown.");
