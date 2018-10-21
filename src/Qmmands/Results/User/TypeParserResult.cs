@@ -28,14 +28,14 @@
         ///     Initialises a new <see cref="TypeParserResult{T}"/> with the specified error reason.
         /// </summary>
         /// <param name="error"> The error reason. </param>
-        public TypeParserResult(string error) : this(false)
+        public TypeParserResult(string error)
             => Error = error;
 
         /// <summary>
         ///     Initialises a new <see cref="TypeParserResult{T}"/> with the specified value.
         /// </summary>
         /// <param name="value"></param>
-        public TypeParserResult(T value) : this(true)
+        public TypeParserResult(T value)
         {
             HasValue = true;
             Value = value;

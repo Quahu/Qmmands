@@ -11,29 +11,25 @@ namespace Qmmands
 
         public bool TryParse(CommandService service, string value, out object result)
         {
-            result = null;
+            result = new T?();
             if (service.NullableNouns.Any(x => value.Equals(x, service.StringComparison)))
                 return true;
 
-            if (_enumTypeParser.TryParse(service, value, out var enumResult))
-            {
-                result = enumResult;
-                return true;
-            }
+            if (!_enumTypeParser.TryParse(service, value, out var enumResult))
+                return false;
 
-            return false;
+            result = enumResult;
+            return true;
         }
 
         bool IPrimitiveTypeParser.TryParse(CommandService service, string value, out object result)
         {
             result = new T?();
-            if (TryParse(service, value, out var genericResult))
-            {
-                result = genericResult;
-                return true;
-            }
+            if (!TryParse(service, value, out var genericResult))
+                return false;
 
-            return false;
+            result = genericResult;
+            return true;
         }
     }
 }

@@ -16,25 +16,21 @@ namespace Qmmands
             if (service.NullableNouns.Any(x => value.Equals(x, service.StringComparison)))
                 return true;
 
-            if (_primitiveTypeParser.TryParse(value, out var primitiveResult))
-            {
-                result = primitiveResult;
-                return true;
-            }
+            if (!_primitiveTypeParser.TryParse(value, out var primitiveResult))
+                return false;
 
-            return false;
+            result = primitiveResult;
+            return true;
         }
 
         bool IPrimitiveTypeParser.TryParse(CommandService service, string value, out object result)
         {
             result = new T?();
-            if (TryParse(service, value, out var genericResult))
-            {
-                result = genericResult;
-                return true;
-            }
+            if (!TryParse(service, value, out var genericResult))
+                return false;
 
-            return false;
+            result = genericResult;
+            return true;
         }
     }
 }

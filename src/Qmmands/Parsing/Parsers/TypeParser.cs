@@ -21,7 +21,11 @@ namespace Qmmands
         async Task<TypeParserResult<object>> ITypeParser.ParseAsync(string value, ICommandContext context, IServiceProvider provider)
         {
             var result = await ParseAsync(value, context, provider).ConfigureAwait(false);
-            return result.IsSuccessful ? new TypeParserResult<object>(result.Value) : new TypeParserResult<object>(result.Error);
+            return result.IsSuccessful
+                ? result.HasValue
+                    ? new TypeParserResult<object>(result.Value)
+                    : new TypeParserResult<object>(false)
+                : new TypeParserResult<object>(result.Error);
         }
     }
 }

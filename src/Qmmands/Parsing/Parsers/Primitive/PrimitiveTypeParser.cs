@@ -15,13 +15,11 @@
         bool IPrimitiveTypeParser.TryParse(CommandService service, string value, out object result)
         {
             result = default;
-            if (TryParse(value, out var genericResult))
-            {
-                result = genericResult;
-                return true;
-            }
+            if (!TryParse(value, out var genericResult))
+                return false;
 
-            return false;
+            result = genericResult;
+            return true;
         }
     }
 }

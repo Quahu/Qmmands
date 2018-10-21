@@ -232,7 +232,7 @@ namespace Qmmands
             });
             if (type.IsValueType)
             {
-                var nullableParser = TypeParserUtils.CreateNullableTypeParser(type, parser);
+                var nullableParser = TypeParserUtils.CreateNullableTypeParser(type, this, parser);
                 _parsers.AddOrUpdate(ReflectionUtils.MakeNullable(type),
                     new Dictionary<Type, (bool, ITypeParser)> { [nullableParser.GetType()] = (replacePrimitive, nullableParser) },
                     (k, v) =>
@@ -744,7 +744,7 @@ namespace Qmmands
                     if (!typeParserResult.IsSuccessful)
                         return (new TypeParserFailedResult(parameter, value, typeParserResult.Error), default);
 
-                    return (null, typeParserResult.Value);
+                    return (null, typeParserResult.HasValue ? typeParserResult.Value : null);
                 }
 
                 var parser = GetAnyTypeParser(parameter.Type, (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null);
@@ -754,7 +754,7 @@ namespace Qmmands
                     if (!typeParserResult.IsSuccessful)
                         return (new TypeParserFailedResult(parameter, value, typeParserResult.Error), default);
 
-                    return (null, typeParserResult.Value);
+                    return (null, typeParserResult.HasValue ? typeParserResult.Value : null);
                 }
             }
             catch (Exception ex)
@@ -762,25 +762,22 @@ namespace Qmmands
                 return (new ExecutionFailedResult(parameter.Command, CommandExecutionStep.TypeParsing, ex), default);
             }
 
-            if (primitiveParser != null || (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null)
-            {
-                if (!primitiveParser.TryParse(this, value, out var result))
-                {
-                    var type = Nullable.GetUnderlyingType(parameter.Type);
-                    var friendlyName = type == null
-                        ? TypeParserUtils.FriendlyTypeNames.TryGetValue(parameter.Type, out var name)
-                            ? name
-                            : parameter.Type.Name
-                        : TypeParserUtils.FriendlyTypeNames.TryGetValue(type, out name)
-                            ? $"nullable {name}"
-                            : $"nullable {type.Name}";
-                    return (new TypeParserFailedResult(parameter, value, $"Failed to parse {friendlyName}."), default);
-                }
+            if (primitiveParser == null && (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) == null)
+                throw new InvalidOperationException($"No type parser found for parameter {parameter} ({parameter.Type}).");
 
+            if (primitiveParser.TryParse(this, value, out var result))
                 return (null, result);
-            }
 
-            return (new TypeParserFailedResult(parameter, value, $"No type parser found for parameter {parameter} ({parameter.Type})."), default);
+            var type = Nullable.GetUnderlyingType(parameter.Type);
+            var friendlyName = type == null
+                ? TypeParserUtils.FriendlyTypeNames.TryGetValue(parameter.Type, out var name)
+                    ? name
+                    : parameter.Type.Name
+                : TypeParserUtils.FriendlyTypeNames.TryGetValue(type, out name)
+                    ? $"nullable {name}"
+                    : $"nullable {type.Name}";
+
+            return (new TypeParserFailedResult(parameter, value, $"Failed to parse parameter {parameter.Name} ({friendlyName}) from the argument '{value}'."), default);
         }
 
         private async Task<IResult> ExecuteInternalAsync(Command command, ICommandContext context, IServiceProvider provider, object[] arguments)

@@ -17,13 +17,13 @@ namespace Qmmands
             => typeof(EnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new object[] { enumType, ignoreCase }) as IPrimitiveTypeParser;
 
         public static IPrimitiveTypeParser CreateNullableEnumTypeParser(Type type, IPrimitiveTypeParser enumTypeParser)
-            => typeof(NullableEnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new object[] { enumTypeParser }) as IPrimitiveTypeParser;
+            => typeof(NullableEnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new[] { enumTypeParser }) as IPrimitiveTypeParser;
 
         public static IPrimitiveTypeParser CreateNullablePrimitiveTypeParser(Type type, IPrimitiveTypeParser primitiveTypeParser)
             => typeof(NullablePrimitiveTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new[] { primitiveTypeParser }) as IPrimitiveTypeParser;
 
-        public static ITypeParser CreateNullableTypeParser(Type nullableType, ITypeParser typeParser)
-            => typeof(NullableTypeParser<>).MakeGenericType(nullableType).GetConstructors()[0].Invoke(new[] { typeParser }) as ITypeParser;
+        public static ITypeParser CreateNullableTypeParser(Type nullableType, CommandService service, ITypeParser typeParser)
+            => typeof(NullableTypeParser<>).MakeGenericType(nullableType).GetConstructors()[0].Invoke(new object[] { service, typeParser }) as ITypeParser;
 
         static TypeParserUtils()
         {
