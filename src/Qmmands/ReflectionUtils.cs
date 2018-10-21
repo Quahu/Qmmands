@@ -300,7 +300,9 @@ namespace Qmmands
                 try
                 {
                     await instance.BeforeExecutedAsync(command).ConfigureAwait(false);
-                    var task = methodInfo.Invoke(instance, arguments) as Task;
+                    if (!(methodInfo.Invoke(instance, arguments) is Task task))
+                        return new SuccessfulResult();
+
                     var resultFunc = _commandResults.GetOrAdd(methodInfo.ReturnType, _ =>
                         {
                             var taskParameter = Expression.Parameter(typeof(Task));
