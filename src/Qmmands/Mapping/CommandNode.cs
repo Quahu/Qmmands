@@ -22,28 +22,28 @@ namespace Qmmands
             if (startIndex >= text.Length)
                 yield break;
 
-            foreach (var key in _commands.Keys)
+            foreach (var kvp in _commands)
             {
-                var index = GetSegment(text, key, startIndex, false, out var arguments, out _, out var hasWhitespaceSeparator);
+                var index = GetSegment(text, kvp.Key, startIndex, false, out var arguments, out _, out var hasWhitespaceSeparator);
                 if (index == -1 || !(hasWhitespaceSeparator || string.IsNullOrWhiteSpace(arguments)))
                     continue;
 
-                foreach (var command in _commands[key])
+                foreach (var command in kvp.Value)
                 {
-                    path.Push(key);
+                    path.Push(kvp.Key);
                     yield return new CommandMatch(command, path.Reverse().ToArray(), arguments);
                     path.Pop();
                 }
             }
 
-            foreach (var key in _nodes.Keys)
+            foreach (var kvp in _nodes)
             {
-                var index = GetSegment(text, key, startIndex, true, out _, out var hasSeparator, out _);
+                var index = GetSegment(text, kvp.Key, startIndex, true, out _, out var hasSeparator, out _);
                 if (index == -1 || !hasSeparator)
                     continue;
 
-                path.Push(key);
-                foreach (var match in _nodes[key].FindCommands(path, text, index))
+                path.Push(kvp.Key);
+                foreach (var match in kvp.Value.FindCommands(path, text, index))
                     yield return match;
                 path.Pop();
             }
