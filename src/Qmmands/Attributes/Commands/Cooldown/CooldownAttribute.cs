@@ -6,7 +6,7 @@ namespace Qmmands
     ///     Applies a <see cref="Cooldown"/> to the <see cref="Command"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    public sealed class CooldownAttribute : Attribute
+    public class CooldownAttribute : Attribute
     {
         /// <summary>
         ///     Gets the amount of times the <see cref="Command"/> can be used in the given time window.
