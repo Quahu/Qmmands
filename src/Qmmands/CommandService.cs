@@ -786,7 +786,7 @@ namespace Qmmands
                     ? $"nullable {name}"
                     : $"nullable {type.Name}";
 
-            return (new TypeParserFailedResult(parameter, value, $"Failed to parse parameter {parameter.Name} ({friendlyName}) from the argument '{value}'."), default);
+            return (new TypeParserFailedResult(parameter, value, $"Failed to parse {friendlyName}."), default);
         }
 
         private async Task<IResult> ExecuteInternalAsync(Command command, ICommandContext context, IServiceProvider provider, object[] arguments)
