@@ -175,7 +175,7 @@ namespace Qmmands
         public void ResetCooldowns()
         {
             if (CooldownMap == null)
-                throw new InvalidOperationException("This command doesn't have an assigned cooldown.");
+                throw new InvalidOperationException("This command doesn't have any assigned cooldowns.");
 
             CooldownMap.Buckets.Clear();
         }
@@ -190,7 +190,7 @@ namespace Qmmands
         public void ResetCooldown(Cooldown cooldown, ICommandContext context, IServiceProvider provider = null)
         {
             if (CooldownMap == null)
-                throw new InvalidOperationException("This command doesn't have an assigned cooldown.");
+                throw new InvalidOperationException("This command doesn't have any assigned cooldowns.");
 
             if (provider is null)
                 provider = EmptyServiceProvider.Instance;
