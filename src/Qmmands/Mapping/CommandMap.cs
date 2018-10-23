@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace Qmmands
 {
@@ -10,106 +9,107 @@ namespace Qmmands
         public CommandMap(CommandService service)
             => _rootNode = new CommandNode(service);
 
-        public void AddModule(Module module, Stack<string> path)
-        {
-            if (module.Aliases.Count == 0)
-            {
-                AddCommands(module, path);
-                AddModule(module, path.Reverse().ToArray());
-            }
-
-            else
-            {
-                foreach (var alias in module.Aliases)
-                {
-                    path.Push(alias);
-                    AddCommands(module, path);
-                    AddModule(module, path.Reverse().ToArray());
-                    path.Pop();
-                }
-            }
-        }
-
-        public void RemoveModule(Module module, Stack<string> path)
-        {
-            if (module.Aliases.Count == 0)
-            {
-                RemoveCommands(module, path);
-                RemoveModule(module, path.Reverse().ToArray());
-            }
-
-            else
-            {
-                foreach (var alias in module.Aliases)
-                {
-                    path.Push(alias);
-                    RemoveCommands(module, path);
-                    RemoveModule(module, path.Reverse().ToArray());
-                    path.Pop();
-                }
-            }
-        }
-
         public IEnumerable<CommandMatch> FindCommands(string text)
-            => _rootNode.FindCommands(new Stack<string>(), text, 0);
+            => _rootNode.FindCommands(new List<string>(), text, 0);
 
         public IEnumerable<ModuleMatch> FindModules(string text)
-            => _rootNode.FindModules(new Stack<string>(), text, 0);
+            => _rootNode.FindModules(new List<string>(), text, 0);
 
-        public void AddModule(Module module, string[] path)
+        public void AddModule(Module module, IReadOnlyList<string> path)
             => _rootNode.AddModule(module, path, 0);
 
-        public void RemoveModule(Module module, string[] path)
+        public void RemoveModule(Module module, IReadOnlyList<string> path)
             => _rootNode.RemoveModule(module, path, 0);
 
-        public void AddCommand(Command command, string[] path)
+        public void AddCommand(Command command, IReadOnlyList<string> path)
             => _rootNode.AddCommand(command, path, 0);
 
-        public void RemoveCommand(Command command, string[] path)
+        public void RemoveCommand(Command command, IReadOnlyList<string> path)
             => _rootNode.RemoveCommand(command, path, 0);
 
-        private void AddCommands(Module module, Stack<string> path)
-        {
-            foreach (var command in module.Commands)
-            {
-                if (command.Aliases.Count == 0)
-                    AddCommand(command, path.Reverse().ToArray());
 
-                else
+        public void MapModule(Module module, List<string> path)
+        {
+            if (module.Aliases.Count == 0)
+            {
+                MapCommands(module, path);
+                AddModule(module, path);
+            }
+
+            else
+            {
+                foreach (var alias in module.Aliases)
                 {
-                    foreach (var alias in command.Aliases)
-                    {
-                        path.Push(alias);
-                        AddCommand(command, path.Reverse().ToArray());
-                        path.Pop();
-                    }
+                    path.Add(alias);
+                    MapCommands(module, path);
+                    AddModule(module, path);
+                    path.RemoveAt(path.Count - 1);
                 }
             }
 
-            foreach (var submodule in module.Submodules)
-                AddModule(submodule, path);
+            for (var i = 0; i < module.Submodules.Count; i++)
+                MapModule(module.Submodules[i], path);
         }
 
-        private void RemoveCommands(Module module, Stack<string> path)
+        public void UnmapModule(Module module, List<string> path)
+        {
+            if (module.Aliases.Count == 0)
+            {
+                UnmapCommands(module, path);
+                RemoveModule(module, path);
+            }
+
+            else
+            {
+                foreach (var alias in module.Aliases)
+                {
+                    path.Add(alias);
+                    UnmapCommands(module, path);
+                    RemoveModule(module, path);
+                    path.RemoveAt(path.Count - 1);
+                }
+            }
+
+            for (var i = 0; i < module.Submodules.Count; i++)
+                UnmapModule(module.Submodules[i], path);
+        }
+
+        private void MapCommands(Module module, List<string> path)
         {
             foreach (var command in module.Commands)
             {
                 if (command.Aliases.Count == 0)
-                    RemoveCommand(command, path.Reverse().ToArray());
+                    AddCommand(command, path);
 
                 else
                 {
                     foreach (var alias in command.Aliases)
                     {
-                        path.Push(alias);
-                        RemoveCommand(command, path.Reverse().ToArray());
-                        path.Pop();
+                        path.Add(alias);
+                        AddCommand(command, path);
+                        path.RemoveAt(path.Count - 1);
                     }
                 }
             }
+        }
 
-            foreach (var submodule in module.Submodules)
-                RemoveModule(submodule, path);
+        private void UnmapCommands(Module module, List<string> path)
+        {
+            foreach (var command in module.Commands)
+            {
+                if (command.Aliases.Count == 0)
+                    RemoveCommand(command, path);
+
+                else
+                {
+                    foreach (var alias in command.Aliases)
+                    {
+                        path.Add(alias);
+                        RemoveCommand(command, path);
+                        path.RemoveAt(path.Count - 1);
+                    }
+                }
+            }
         }
     }
 }

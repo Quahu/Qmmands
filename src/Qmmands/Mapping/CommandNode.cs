@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Qmmands
 {
@@ -19,7 +18,7 @@ namespace Qmmands
             _nodes = new Dictionary<string, CommandNode>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
         }
 
-        public IEnumerable<CommandMatch> FindCommands(Stack<string> path, string text, int startIndex)
+        public IEnumerable<CommandMatch> FindCommands(List<string> path, string text, int startIndex)
         {
             if (startIndex >= text.Length)
                 yield break;
@@ -32,9 +31,9 @@ namespace Qmmands
 
                 foreach (var command in kvp.Value)
                 {
-                    path.Push(kvp.Key);
-                    yield return new CommandMatch(command, kvp.Key, path.Reverse().ToArray(), arguments);
-                    path.Pop();
+                    path.Add(kvp.Key);
+                    yield return new CommandMatch(command, kvp.Key, path, arguments);
+                    path.RemoveAt(path.Count - 1);
                 }
             }
 
@@ -44,14 +43,14 @@ namespace Qmmands
                 if (index == -1 || !hasSeparator)
                     continue;
 
-                path.Push(kvp.Key);
+                path.Add(kvp.Key);
                 foreach (var match in kvp.Value.FindCommands(path, text, index))
                     yield return match;
-                path.Pop();
+                path.RemoveAt(path.Count - 1);
             }
         }
 
-        public IEnumerable<ModuleMatch> FindModules(Stack<string> path, string text, int startIndex)
+        public IEnumerable<ModuleMatch> FindModules(List<string> path, string text, int startIndex)
         {
             if (startIndex >= text.Length)
                 yield break;
@@ -64,9 +63,9 @@ namespace Qmmands
 
                 foreach (var module in kvp.Value)
                 {
-                    path.Push(kvp.Key);
-                    yield return new ModuleMatch(module, kvp.Key, path.Reverse().ToArray(), arguments);
-                    path.Pop();
+                    path.Add(kvp.Key);
+                    yield return new ModuleMatch(module, kvp.Key, path, arguments);
+                    path.RemoveAt(path.Count - 1);
                 }
             }
 
@@ -76,10 +75,10 @@ namespace Qmmands
                 if (index == -1 || !hasSeparator)
                     continue;
 
-                path.Push(kvp.Key);
+                path.Add(kvp.Key);
                 foreach (var match in kvp.Value.FindModules(path, text, index))
                     yield return match;
-                path.Pop();
+                path.RemoveAt(path.Count - 1);
             }
         }
 
@@ -151,13 +150,13 @@ namespace Qmmands
             }
         }
 
-        public void AddModule(Module module, string[] segments, int startIndex)
+        public void AddModule(Module module, IReadOnlyList<string> segments, int startIndex)
         {
-            if (segments.Length == 0)
+            if (segments.Count == 0)
                 return;
 
             var segment = segments[startIndex];
-            if (startIndex == segments.Length - 1)
+            if (startIndex == segments.Count - 1)
             {
                 if (_modules.TryGetValue(segment, out var modules))
                     modules.Add(module);
@@ -178,10 +177,13 @@ namespace Qmmands
             }
         }
 
-        public void RemoveModule(Module module, string[] segments, int startIndex)
+        public void RemoveModule(Module module, IReadOnlyList<string> segments, int startIndex)
         {
+            if (segments.Count == 0)
+                return;
+
             var segment = segments[startIndex];
-            if (startIndex == segments.Length - 1)
+            if (startIndex == segments.Count - 1)
             {
                 if (_modules.TryGetValue(segment, out var modules))
                     modules.Remove(module);
@@ -194,13 +196,13 @@ namespace Qmmands
             }
         }
 
-        public void AddCommand(Command command, string[] segments, int startIndex)
+        public void AddCommand(Command command, IReadOnlyList<string> segments, int startIndex)
         {
-            if (segments.Length == 0)
+            if (segments.Count == 0)
                 throw new InvalidOperationException("Cannot add commands to the root node.");
 
             var segment = segments[startIndex];
-            if (startIndex == segments.Length - 1)
+            if (startIndex == segments.Count - 1)
             {
                 if (_commands.TryGetValue(segment, out var commands))
                     commands.Add(command);
@@ -221,10 +223,10 @@ namespace Qmmands
             }
         }
 
-        public void RemoveCommand(Command command, string[] segments, int startIndex)
+        public void RemoveCommand(Command command, IReadOnlyList<string> segments, int startIndex)
         {
             var segment = segments[startIndex];
-            if (startIndex == segments.Length - 1)
+            if (startIndex == segments.Count - 1)
             {
                 if (_commands.TryGetValue(segment, out var commands))
                     commands.Remove(command);

@@ -194,7 +194,7 @@ namespace Qmmands
         /// <param name="path"> The path to use for searching. </param>
         /// <returns> An ordered enumerable of <see cref="CommandMatch"/>es. </returns>
         public IEnumerable<CommandMatch> FindCommands(string path)
-            => _map.FindCommands(path).OrderByDescending(x => x.Path.Length)
+            => _map.FindCommands(path).OrderByDescending(x => x.Path.Count)
                 .ThenByDescending(x => x.Alias.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length) // a bad solution to bad people using whitespace in aliases
                 .ThenByDescending(x => x.Command.Parameters.Count);
 
@@ -204,7 +204,7 @@ namespace Qmmands
         /// <param name="path"> The path to use for searching. </param>
         /// <returns> An ordered enumerable of <see cref="ModuleMatch"/>es. </returns>
         public IEnumerable<ModuleMatch> FindModules(string path)
-            => _map.FindModules(path).OrderByDescending(x => x.Path.Length)
+            => _map.FindModules(path).OrderByDescending(x => x.Path.Count)
                 .ThenByDescending(x => x.Alias.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length); // the same bad solution to bad people using whitespace in aliases
 
         /// <summary>
@@ -440,7 +440,7 @@ namespace Qmmands
                 }
             }
 
-            _map.AddModule(module, new Stack<string>());
+            _map.MapModule(module, new List<string>());
             _modules.Add(module);
             AddSubmodules(module);
         }
@@ -474,7 +474,7 @@ namespace Qmmands
             {
                 await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
 
-                _map.RemoveModule(module, new Stack<string>());
+                _map.UnmapModule(module, new List<string>());
                 _modules.Remove(module);
                 if (module.Type != null)
                 {
@@ -504,12 +504,7 @@ namespace Qmmands
             if (provider is null)
                 provider = EmptyServiceProvider.Instance;
 
-            var matches = FindCommands(input).ToArray();
-            if (matches.Length == 0)
-                return new CommandNotFoundResult();
-
-            var groupedMatches = matches.GroupBy(x => string.Join(Separator, x.Path));
-            foreach (var group in groupedMatches)
+            foreach (var group in FindCommands(input).GroupBy(x => string.Join(Separator, x.Path)))
             {
                 var failedOverloads = new Dictionary<Command, FailedResult>();
                 var overloadCount = 0;
@@ -542,8 +537,9 @@ namespace Qmmands
                         return new ExecutionFailedResult(match.Command, CommandExecutionStep.ArgumentParsing, ex);
                     }
 
-                    var parsedArguments = new List<object>();
+                    var parsedArguments = new object[parseResult.Arguments.Count];
                     var skipOverload = false;
+                    var index = 0;
                     foreach (var kvp in parseResult.Arguments)
                     {
                         var parameter = kvp.Key;
@@ -575,7 +571,7 @@ namespace Qmmands
                                 break;
                             }
 
-                            parsedArguments.Add(array);
+                            parsedArguments[index++] = array;
                         }
 
                         else
@@ -596,7 +592,7 @@ namespace Qmmands
                                 break;
                             }
 
-                            parsedArguments.Add(parsed);
+                            parsedArguments[index++] = parsed;
                         }
                     }
 
@@ -610,10 +606,10 @@ namespace Qmmands
                     switch (match.Command.RunMode)
                     {
                         case RunMode.Sequential:
-                            return await ExecuteInternalAsync(match.Command, context, provider, parsedArguments.ToArray()).ConfigureAwait(false);
+                            return await ExecuteInternalAsync(match.Command, context, provider, parsedArguments).ConfigureAwait(false);
 
                         case RunMode.Parallel:
-                            _ = Task.Run(() => ExecuteInternalAsync(match.Command, context, provider, parsedArguments.ToArray()));
+                            _ = Task.Run(() => ExecuteInternalAsync(match.Command, context, provider, parsedArguments));
                             return new SuccessfulResult();
 
                         default:
@@ -627,7 +623,7 @@ namespace Qmmands
                 return overloadCount == 1 ? failedOverloads.First().Value : new OverloadNotFoundResult(failedOverloads);
             }
 
-            throw new Exception("Shouldn't happen? :^)");
+            return new CommandNotFoundResult();
         }
 
         /// <summary>
@@ -673,7 +669,8 @@ namespace Qmmands
                 return new ExecutionFailedResult(command, CommandExecutionStep.ArgumentParsing, ex);
             }
 
-            var parsedArguments = new List<object>();
+            var parsedArguments = new object[parseResult.Arguments.Count];
+            var index = 0;
             foreach (var kvp in parseResult.Arguments)
             {
                 var parameter = kvp.Key;
@@ -697,7 +694,7 @@ namespace Qmmands
                     if (!checkResult.IsSuccessful)
                         return checkResult as FailedResult;
 
-                    parsedArguments.Add(array);
+                    parsedArguments[index++] = array;
                 }
 
                 else
@@ -710,7 +707,7 @@ namespace Qmmands
                     if (!checkResult.IsSuccessful)
                         return checkResult as FailedResult;
 
-                    parsedArguments.Add(parsed);
+                    parsedArguments[index++] = parsed;
                 }
             }
 
@@ -721,10 +718,10 @@ namespace Qmmands
             switch (command.RunMode)
             {
                 case RunMode.Sequential:
-                    return await ExecuteInternalAsync(command, context, provider, parsedArguments.ToArray()).ConfigureAwait(false);
+                    return await ExecuteInternalAsync(command, context, provider, parsedArguments).ConfigureAwait(false);
 
                 case RunMode.Parallel:
-                    _ = Task.Run(() => ExecuteInternalAsync(command, context, provider, parsedArguments.ToArray()).ConfigureAwait(false));
+                    _ = Task.Run(() => ExecuteInternalAsync(command, context, provider, parsedArguments).ConfigureAwait(false));
                     return new SuccessfulResult();
 
                 default:

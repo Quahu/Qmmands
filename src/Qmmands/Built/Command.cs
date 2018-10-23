@@ -154,7 +154,7 @@ namespace Qmmands
 
             if (Checks.Count > 0)
             {
-                var checkResults = (await Task.WhenAll(Checks.Select(x => RunCheckAsync(x, context, provider))).ConfigureAwait(false));
+                var checkResults = await Task.WhenAll(Checks.Select(x => RunCheckAsync(x, context, provider))).ConfigureAwait(false);
                 var failedGroups = checkResults.GroupBy(x => x.Check.Group).Where(x => x.Key == null ? x.Any(y => y.Error != null) : x.All(y => y.Error != null)).ToArray();
                 if (failedGroups.Length > 0)
                     return new ChecksFailedResult(this, failedGroups.SelectMany(x => x).Where(x => x.Error != null).ToImmutableList());
@@ -206,8 +206,9 @@ namespace Qmmands
                 CooldownMap.Update();
                 var buckets = Cooldowns.Select(x => CooldownMap.GetBucket(x, context, provider)).ToArray();
                 var rateLimited = new List<(Cooldown, TimeSpan)>(buckets.Length);
-                foreach (var bucket in buckets)
+                for (var i = 0; i < buckets.Length; i++)
                 {
+                    var bucket = buckets[i];
                     if (bucket.IsRateLimited(out var retryAfter))
                         rateLimited.Add((bucket.Cooldown, retryAfter));
                 }
@@ -215,8 +216,8 @@ namespace Qmmands
                 if (rateLimited.Count > 0)
                     return new CommandOnCooldownResult(this, rateLimited.ToImmutableArray());
 
-                foreach (var bucket in buckets)
-                    bucket.Decrement();
+                for (var i = 0; i < buckets.Length; i++)
+                    buckets[i].Decrement();
             }
 
             return new SuccessfulResult();
