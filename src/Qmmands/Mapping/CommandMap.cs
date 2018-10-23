@@ -38,9 +38,9 @@ namespace Qmmands
 
             else
             {
-                foreach (var alias in module.Aliases)
+                for (var i = 0; i < module.Aliases.Count; i++)
                 {
-                    path.Add(alias);
+                    path.Add(module.Aliases[i]);
                     MapCommands(module, path);
                     AddModule(module, path);
                     path.RemoveAt(path.Count - 1);
@@ -61,9 +61,9 @@ namespace Qmmands
 
             else
             {
-                foreach (var alias in module.Aliases)
+                for (var i = 0; i < module.Aliases.Count; i++)
                 {
-                    path.Add(alias);
+                    path.Add(module.Aliases[i]);
                     UnmapCommands(module, path);
                     RemoveModule(module, path);
                     path.RemoveAt(path.Count - 1);
@@ -83,9 +83,9 @@ namespace Qmmands
 
                 else
                 {
-                    foreach (var alias in command.Aliases)
+                    for (var i = 0; i < command.Aliases.Count; i++)
                     {
-                        path.Add(alias);
+                        path.Add(command.Aliases[i]);
                         AddCommand(command, path);
                         path.RemoveAt(path.Count - 1);
                     }
@@ -102,9 +102,9 @@ namespace Qmmands
 
                 else
                 {
-                    foreach (var alias in command.Aliases)
+                    for (var i = 0; i < command.Aliases.Count; i++)
                     {
-                        path.Add(alias);
+                        path.Add(command.Aliases[i]);
                         RemoveCommand(command, path);
                         path.RemoveAt(path.Count - 1);
                     }

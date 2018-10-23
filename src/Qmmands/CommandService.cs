@@ -543,12 +543,12 @@ namespace Qmmands
                     foreach (var kvp in parseResult.Arguments)
                     {
                         var parameter = kvp.Key;
-                        if (kvp.Value is IEnumerable<string> multipleArguments)
+                        if (kvp.Value is List<string> multipleArguments)
                         {
-                            var list = new List<object>();
-                            foreach (var argument in multipleArguments)
+                            var array = Array.CreateInstance(parameter.Type, multipleArguments.Count);
+                            for (var i = 0; i < multipleArguments.Count; i++)
                             {
-                                var (result, parsed) = await ParseArgumentAsync(parameter, argument, context, provider).ConfigureAwait(false);
+                                var (result, parsed) = await ParseArgumentAsync(parameter, multipleArguments[i], context, provider).ConfigureAwait(false);
                                 if (result != null)
                                 {
                                     failedOverloads.Add(match.Command, result);
@@ -556,12 +556,8 @@ namespace Qmmands
                                     break;
                                 }
 
-                                list.Add(parsed);
+                                array.SetValue(parsed, i);
                             }
-
-                            var array = Array.CreateInstance(parameter.Type, list.Count);
-                            for (var i = 0; i < list.Count; i++)
-                                array.SetValue(list[i], i);
 
                             var checkResult = await parameter.RunChecksAsync(array, context, provider).ConfigureAwait(false);
                             if (!checkResult.IsSuccessful)
@@ -674,21 +670,17 @@ namespace Qmmands
             foreach (var kvp in parseResult.Arguments)
             {
                 var parameter = kvp.Key;
-                if (kvp.Value is IEnumerable<string> multipleArguments)
+                if (kvp.Value is List<string> multipleArguments)
                 {
-                    var list = new List<object>();
-                    foreach (var argument in multipleArguments)
+                    var array = Array.CreateInstance(parameter.Type, multipleArguments.Count);
+                    for (var i = 0; i < multipleArguments.Count; i++)
                     {
-                        var (result, parsed) = await ParseArgumentAsync(parameter, argument, context, provider).ConfigureAwait(false);
+                        var (result, parsed) = await ParseArgumentAsync(parameter, multipleArguments[i], context, provider).ConfigureAwait(false);
                         if (result != null)
                             return result;
 
-                        list.Add(parsed);
+                        array.SetValue(parsed, i);
                     }
-
-                    var array = Array.CreateInstance(parameter.Type, list.Count);
-                    for (var i = 0; i < list.Count; i++)
-                        array.SetValue(list[i], i);
 
                     var checkResult = await parameter.RunChecksAsync(array, context, provider).ConfigureAwait(false);
                     if (!checkResult.IsSuccessful)

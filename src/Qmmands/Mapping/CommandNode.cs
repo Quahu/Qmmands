@@ -9,6 +9,7 @@ namespace Qmmands
         private readonly Dictionary<string, List<Command>> _commands;
         private readonly Dictionary<string, List<Module>> _modules;
         private readonly Dictionary<string, CommandNode> _nodes;
+        private readonly bool _isNullSeparator;
 
         public CommandNode(CommandService service)
         {
@@ -16,6 +17,7 @@ namespace Qmmands
             _commands = new Dictionary<string, List<Command>>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
             _modules = new Dictionary<string, List<Module>>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
             _nodes = new Dictionary<string, CommandNode>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
+            _isNullSeparator = string.IsNullOrWhiteSpace(_service.Separator);
         }
 
         public IEnumerable<CommandMatch> FindCommands(List<string> path, string text, int startIndex)
@@ -98,7 +100,7 @@ namespace Qmmands
                 index = index + key.Length;
                 var hasConfigSeparator = false;
                 hasWhitespaceSeparator = false;
-                if (!string.IsNullOrWhiteSpace(_service.Separator) && checkForSeparator)
+                if (!_isNullSeparator && checkForSeparator)
                 {
                     for (var i = index; i < text.Length; i++)
                     {
@@ -138,7 +140,7 @@ namespace Qmmands
                         break;
 
                     case SeparatorRequirement.Separator:
-                        hasSeparator = hasConfigSeparator || string.IsNullOrWhiteSpace(_service.Separator);
+                        hasSeparator = hasConfigSeparator || _isNullSeparator;
                         break;
 
                     default:
@@ -189,11 +191,8 @@ namespace Qmmands
                     modules.Remove(module);
             }
 
-            else
-            {
-                if (_nodes.TryGetValue(segment, out var node))
-                    node.RemoveModule(module, segments, startIndex + 1);
-            }
+            else if (_nodes.TryGetValue(segment, out var node))
+                node.RemoveModule(module, segments, startIndex + 1);
         }
 
         public void AddCommand(Command command, IReadOnlyList<string> segments, int startIndex)
@@ -232,11 +231,8 @@ namespace Qmmands
                     commands.Remove(command);
             }
 
-            else
-            {
-                if (_nodes.TryGetValue(segment, out var node))
-                    node.RemoveCommand(command, segments, startIndex + 1);
-            }
+            else if (_nodes.TryGetValue(segment, out var node))
+                node.RemoveCommand(command, segments, startIndex + 1);
         }
     }
 }

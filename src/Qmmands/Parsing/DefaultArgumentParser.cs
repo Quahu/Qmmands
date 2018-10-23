@@ -37,9 +37,10 @@ namespace Qmmands
 
             for (var currentPosition = 0; currentPosition < rawArguments.Length; currentPosition++)
             {
-                var character = rawArguments[currentPosition];
+                char character;
                 if (currentParameter == null)
                 {
+                    character = rawArguments[currentPosition];
                     if (char.IsWhiteSpace(character))
                     {
                         whitespaceSeparated = true;
@@ -70,10 +71,11 @@ namespace Qmmands
 
                 if (currentParameter.IsRemainder)
                 {
-                    argumentBuilder.Append(character);
-                    continue;
+                    argumentBuilder.Append(rawArguments.Substring(currentPosition));
+                    break;
                 }
 
+                character = rawArguments[currentPosition];
                 if (isEscaping)
                 {
                     argumentBuilder.Append(character);
