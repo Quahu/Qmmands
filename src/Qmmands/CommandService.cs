@@ -537,63 +537,12 @@ namespace Qmmands
                         return new ExecutionFailedResult(match.Command, CommandExecutionStep.ArgumentParsing, ex);
                     }
 
-                    var parsedArguments = new object[parseResult.Arguments.Count];
-                    var skipOverload = false;
-                    var index = 0;
-                    foreach (var kvp in parseResult.Arguments)
+                    var (result, parsedArguments) = await CreateArgumentsAsync(parseResult, context, provider);
+                    if (result != null)
                     {
-                        var parameter = kvp.Key;
-                        if (kvp.Value is List<string> multipleArguments)
-                        {
-                            var array = Array.CreateInstance(parameter.Type, multipleArguments.Count);
-                            for (var i = 0; i < multipleArguments.Count; i++)
-                            {
-                                var (result, parsed) = await ParseArgumentAsync(parameter, multipleArguments[i], context, provider).ConfigureAwait(false);
-                                if (result != null)
-                                {
-                                    failedOverloads.Add(match.Command, result);
-                                    skipOverload = true;
-                                    break;
-                                }
-
-                                array.SetValue(parsed, i);
-                            }
-
-                            var checkResult = await parameter.RunChecksAsync(array, context, provider).ConfigureAwait(false);
-                            if (!checkResult.IsSuccessful)
-                            {
-                                failedOverloads.Add(match.Command, checkResult as FailedResult);
-                                skipOverload = true;
-                                break;
-                            }
-
-                            parsedArguments[index++] = array;
-                        }
-
-                        else
-                        {
-                            var (result, parsed) = await ParseArgumentAsync(parameter, kvp.Value, context, provider).ConfigureAwait(false);
-                            if (result != null)
-                            {
-                                failedOverloads.Add(match.Command, result);
-                                skipOverload = true;
-                                break;
-                            }
-
-                            var checkResult = await parameter.RunChecksAsync(parsed, context, provider).ConfigureAwait(false);
-                            if (!checkResult.IsSuccessful)
-                            {
-                                failedOverloads.Add(match.Command, checkResult as FailedResult);
-                                skipOverload = true;
-                                break;
-                            }
-
-                            parsedArguments[index++] = parsed;
-                        }
-                    }
-
-                    if (skipOverload)
+                        failedOverloads.Add(match.Command, result);
                         continue;
+                    }
 
                     var cooldownResult = match.Command.RunCooldowns(context, provider);
                     if (!cooldownResult.IsSuccessful)
@@ -665,43 +614,9 @@ namespace Qmmands
                 return new ExecutionFailedResult(command, CommandExecutionStep.ArgumentParsing, ex);
             }
 
-            var parsedArguments = new object[parseResult.Arguments.Count];
-            var index = 0;
-            foreach (var kvp in parseResult.Arguments)
-            {
-                var parameter = kvp.Key;
-                if (kvp.Value is List<string> multipleArguments)
-                {
-                    var array = Array.CreateInstance(parameter.Type, multipleArguments.Count);
-                    for (var i = 0; i < multipleArguments.Count; i++)
-                    {
-                        var (result, parsed) = await ParseArgumentAsync(parameter, multipleArguments[i], context, provider).ConfigureAwait(false);
-                        if (result != null)
-                            return result;
-
-                        array.SetValue(parsed, i);
-                    }
-
-                    var checkResult = await parameter.RunChecksAsync(array, context, provider).ConfigureAwait(false);
-                    if (!checkResult.IsSuccessful)
-                        return checkResult as FailedResult;
-
-                    parsedArguments[index++] = array;
-                }
-
-                else
-                {
-                    var (result, parsed) = await ParseArgumentAsync(parameter, kvp.Value, context, provider).ConfigureAwait(false);
-                    if (result != null)
-                        return result;
-
-                    var checkResult = await parameter.RunChecksAsync(parsed, context, provider).ConfigureAwait(false);
-                    if (!checkResult.IsSuccessful)
-                        return checkResult as FailedResult;
-
-                    parsedArguments[index++] = parsed;
-                }
-            }
+            var (result, parsedArguments) = await CreateArgumentsAsync(parseResult, context, provider);
+            if (result != null)
+                return result;
 
             var cooldownResult = command.RunCooldowns(context, provider);
             if (!cooldownResult.IsSuccessful)
@@ -719,6 +634,52 @@ namespace Qmmands
                 default:
                     throw new InvalidOperationException("Invalid run mode.");
             }
+        }
+
+        private async Task<(FailedResult FailedResult, object[] ParsedArguments)> CreateArgumentsAsync(ParseResult parseResult, ICommandContext context, IServiceProvider provider)
+        {
+            var parsedArguments = new object[parseResult.Arguments.Count];
+            if (parseResult.Arguments.Count == 0)
+                return (default, parsedArguments);
+
+            var index = 0;
+            foreach (var kvp in parseResult.Arguments)
+            {
+                var parameter = kvp.Key;
+                if (kvp.Value is List<string> multipleArguments)
+                {
+                    var array = Array.CreateInstance(parameter.Type, multipleArguments.Count);
+                    for (var i = 0; i < multipleArguments.Count; i++)
+                    {
+                        var (result, parsed) = await ParseArgumentAsync(parameter, multipleArguments[i], context, provider).ConfigureAwait(false);
+                        if (result != null)
+                            return (result, default);
+
+                        array.SetValue(parsed, i);
+                    }
+
+                    var checkResult = await parameter.RunChecksAsync(array, context, provider).ConfigureAwait(false);
+                    if (!checkResult.IsSuccessful)
+                        return (checkResult as FailedResult, default);
+
+                    parsedArguments[index++] = array;
+                }
+
+                else
+                {
+                    var (result, parsed) = await ParseArgumentAsync(parameter, kvp.Value, context, provider).ConfigureAwait(false);
+                    if (result != null)
+                        return (result, default);
+
+                    var checkResult = await parameter.RunChecksAsync(parsed, context, provider).ConfigureAwait(false);
+                    if (!checkResult.IsSuccessful)
+                        return (checkResult as FailedResult, default);
+
+                    parsedArguments[index++] = parsed;
+                }
+            }
+
+            return (default, parsedArguments);
         }
 
         private async Task<(FailedResult FailedResult, object Parsed)> ParseArgumentAsync(Parameter parameter, object argument, ICommandContext context, IServiceProvider provider)

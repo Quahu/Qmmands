@@ -16,7 +16,7 @@ namespace Qmmands
         public Command Command { get; }
 
         /// <summary>
-        ///     Gets the <see cref="Parameter"/> the parse failed on, can be null depending on the <see cref="ParseFailure"/>.
+        ///     Gets the <see cref="Parameter"/> the parse failed on, can be <see langword="null"/> depending on the <see cref="Qmmands.ParseFailure"/>.
         /// </summary>
         public Parameter Parameter { get; }
 
@@ -36,7 +36,7 @@ namespace Qmmands
         public ParseFailure? ParseFailure { get; }
 
         /// <summary>
-        ///     Gets the position (index) at which the parsing failed, can be null depending on the <see cref="ParseFailure"/>. 
+        ///     Gets the position (index) at which the parsing failed, can be <see langword="null"/> depending on the <see cref="Qmmands.ParseFailure"/>. 
         /// </summary>
         public int? FailurePosition { get; }
 

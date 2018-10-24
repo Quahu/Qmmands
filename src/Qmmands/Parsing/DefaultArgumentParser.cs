@@ -136,20 +136,23 @@ namespace Qmmands
             if (currentParameter != null)
                 NextParameter();
 
-            foreach (var parameter in command.Parameters.Except(arguments.Keys))
+            if (arguments.Count != command.Parameters.Count)
             {
-                if (parameter.IsMultiple)
+                foreach (var parameter in command.Parameters.Skip(arguments.Count))
                 {
-                    arguments.Add(parameter, new List<string>());
-                    break;
+                    if (parameter.IsMultiple)
+                    {
+                        arguments.Add(parameter, new List<string>());
+                        break;
+                    }
+
+                    if (!parameter.IsOptional)
+                        return new ParseResult(command, parameter, rawArguments, arguments, ParseFailure.TooFewArguments, null);
+
+                    arguments.Add(parameter, parameter.DefaultValue);
                 }
 
-                if (!parameter.IsOptional)
-                    return new ParseResult(command, parameter, rawArguments, arguments, ParseFailure.TooFewArguments, null);
-
-                arguments.Add(parameter, parameter.DefaultValue);
             }
-
             return new ParseResult(command, rawArguments, arguments);
         }
     }
