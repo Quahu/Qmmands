@@ -171,6 +171,37 @@ namespace Qmmands
             return false;
         }
 
+        /// <summary>
+        ///     Recursively gets all of the checks the specified <see cref="Module"/>
+        ///     will require to pass before one of its <see cref="Command"/>s can be executed.
+        /// </summary>
+        /// <param name="module"> The <see cref="Module"/> to get the checks for. </param>
+        /// <returns> An enumerator of all checks. </returns>
+        public static IEnumerable<CheckBaseAttribute> GetAllChecks(Module module)
+        {
+            if (module.Parent != null)
+                foreach (var check in GetAllChecks(module.Parent))
+                    yield return check;
+
+            for (var i = 0; i < module.Checks.Count; i++)
+                yield return module.Checks[i];
+        }
+
+        /// <summary>
+        ///     Recursively gets all of the checks the specified <see cref="Command"/>
+        ///     will require to pass before one of it can be executed.
+        /// </summary>
+        /// <param name="command"> The <see cref="Command"/> to get the checks for. </param>
+        /// <returns> An enumerator of all checks. </returns>
+        public static IEnumerable<CheckBaseAttribute> GetAllChecks(Command command)
+        {
+            foreach (var check in GetAllChecks(command.Module))
+                yield return check;
+
+            for (var i = 0; i < command.Checks.Count; i++)
+                yield return command.Checks[i];
+        }
+
         static CommandUtilities()
         {
             var quoteMapBuilder = ImmutableDictionary.CreateBuilder<char, char>();
