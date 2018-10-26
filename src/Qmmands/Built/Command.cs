@@ -199,7 +199,16 @@ namespace Qmmands
             bucket.Reset();
         }
 
-        internal IResult RunCooldowns(ICommandContext context, IServiceProvider provider)
+
+        /// <summary>
+        ///     Runs cooldowns on this command.
+        /// </summary>
+        /// <param name="context"> The <see cref="ICommandContext"/> used for execution. </param>
+        /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
+        /// <returns>
+        ///     A <see cref="SuccessfulResult"/> if no buckets are ratelimited, otherwise a <see cref="CommandOnCooldownResult"/>.
+        /// </returns>
+        public IResult RunCooldowns(ICommandContext context, IServiceProvider provider)
         {
             if (CooldownMap != null)
             {
