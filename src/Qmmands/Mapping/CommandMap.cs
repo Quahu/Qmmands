@@ -33,6 +33,10 @@ namespace Qmmands
             if (module.Aliases.Count == 0)
             {
                 MapCommands(module, path);
+
+                for (var j = 0; j < module.Submodules.Count; j++)
+                    MapModule(module.Submodules[j], path);
+
                 AddModule(module, path);
             }
 
@@ -57,6 +61,10 @@ namespace Qmmands
             if (module.Aliases.Count == 0)
             {
                 UnmapCommands(module, path);
+
+                for (var j = 0; j < module.Submodules.Count; j++)
+                    UnmapModule(module.Submodules[j], path);
+
                 RemoveModule(module, path);
             }
 
