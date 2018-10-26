@@ -55,7 +55,7 @@ namespace Qmmands
         public IReadOnlyDictionary<char, char> QuoteMap { get; }
 
         /// <summary>
-        ///     Gets or sets the collection of nouns used for nullable value type parsing.
+        ///     Gets the collection of nouns used for nullable value type parsing.
         /// </summary>
         public IReadOnlyList<string> NullableNouns { get; }
 

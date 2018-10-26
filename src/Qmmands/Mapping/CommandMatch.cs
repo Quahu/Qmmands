@@ -14,7 +14,7 @@ namespace Qmmands
         public Command Command { get; }
 
         /// <summary>
-        ///     Gets the matching alias.
+        ///     Gets the matched alias.
         /// </summary>
         public string Alias { get; }
 
