@@ -10,7 +10,12 @@ namespace Qmmands
     public abstract class CheckBaseAttribute : Attribute
     {
         /// <summary>
-        ///     Sets the group for this check.
+        ///     Gets or sets the name of this check.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the group for this check.
         /// </summary>
         /// <remarks>
         ///     Grouped checks act as if they were put side by side with the logical OR operator (||) in between.
