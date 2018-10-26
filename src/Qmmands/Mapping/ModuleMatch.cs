@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Qmmands
 {
@@ -31,7 +32,7 @@ namespace Qmmands
         {
             Module = module;
             Alias = alias;
-            Path = path;
+            Path = path.ToImmutableArray();
             RawArguments = rawArguments;
         }
     }

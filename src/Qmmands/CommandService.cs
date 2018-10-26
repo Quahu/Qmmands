@@ -291,7 +291,7 @@ namespace Qmmands
             {
                 if (replacing)
                 {
-                    var filtered = typeParsers.Where(x => x.Value.Item1).ToArray();
+                    var filtered = typeParsers.Where(x => x.Value.Item1).ToImmutableArray();
                     if (filtered.Length > 0)
                         return filtered[0].Value.Item2;
                 }
@@ -504,7 +504,11 @@ namespace Qmmands
             if (provider is null)
                 provider = EmptyServiceProvider.Instance;
 
-            foreach (var group in FindCommands(input).GroupBy(x => string.Join(Separator, x.Path)))
+            var matches = FindCommands(input).ToImmutableArray();
+            if (matches.Length == 0)
+                return new CommandNotFoundResult();
+
+            foreach (var group in matches.GroupBy(x => string.Join(Separator, x.Path)))
             {
                 var failedOverloads = new Dictionary<Command, FailedResult>();
                 var overloadCount = 0;

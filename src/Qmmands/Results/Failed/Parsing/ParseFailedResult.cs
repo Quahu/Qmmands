@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Qmmands
@@ -64,7 +65,7 @@ namespace Qmmands
                     break;
 
                 case ParseFailure.TooFewArguments:
-                    var missingParameters = Command.Parameters.SkipWhile(x => x != Parameter).Where(x => !x.IsOptional).Select(x => $"'{x}'").ToArray();
+                    var missingParameters = Command.Parameters.SkipWhile(x => x != Parameter).Where(x => !x.IsOptional).Select(x => $"'{x}'").ToImmutableArray();
                     Reason = $"Required {(missingParameters.Length == 1 ? "parameter" : "parameters")} " +
                              $"{string.Join(", ", missingParameters)} {(missingParameters.Length == 1 ? "is" : "are")} missing.";
                     break;
