@@ -42,13 +42,14 @@ namespace Qmmands
                 {
                     path.Add(module.Aliases[i]);
                     MapCommands(module, path);
+
+                    for (var j = 0; j < module.Submodules.Count; j++)
+                        MapModule(module.Submodules[j], path);
+
                     AddModule(module, path);
                     path.RemoveAt(path.Count - 1);
                 }
             }
-
-            for (var i = 0; i < module.Submodules.Count; i++)
-                MapModule(module.Submodules[i], path);
         }
 
         public void UnmapModule(Module module, List<string> path)
@@ -65,13 +66,14 @@ namespace Qmmands
                 {
                     path.Add(module.Aliases[i]);
                     UnmapCommands(module, path);
+
+                    for (var j = 0; j < module.Submodules.Count; j++)
+                        UnmapModule(module.Submodules[j], path);
+
                     RemoveModule(module, path);
                     path.RemoveAt(path.Count - 1);
                 }
             }
-
-            for (var i = 0; i < module.Submodules.Count; i++)
-                UnmapModule(module.Submodules[i], path);
         }
 
         private void MapCommands(Module module, List<string> path)
