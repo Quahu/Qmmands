@@ -12,7 +12,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets or sets the name of this check.
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         /// <summary>
         ///     Gets or sets the group for this check.
