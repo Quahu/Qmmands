@@ -313,7 +313,7 @@ namespace Qmmands
                 var enumParser = TypeParserUtils.CreateEnumTypeParser(type.GetEnumUnderlyingType(), type, !CaseSensitive);
                 _primitiveParsers.TryAdd(type, enumParser);
                 _primitiveParsers.TryAdd(ReflectionUtils.MakeNullable(type), TypeParserUtils.CreateNullableEnumTypeParser(type.GetEnumUnderlyingType(), enumParser));
-                return GetPrimitiveTypeParser(type);
+                return enumParser;
             }
 
             if (ReflectionUtils.IsNullable(type) && (type = Nullable.GetUnderlyingType(type)).IsEnum)
