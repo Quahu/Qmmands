@@ -100,6 +100,9 @@ namespace Qmmands
                     throw new InvalidOperationException($"Parameter type and default value mismatch. Expected {Type.Name}, got {DefaultValue.GetType().Name}.");
             }
 
+            if (Type.IsEnum)
+                _ = Service.GetPrimitiveTypeParser(Type);
+
             if (builder.CustomTypeParserType != null)
             {
                 if (!ReflectionUtils.IsValidParserDefinition(builder.CustomTypeParserType.GetTypeInfo(), Type))
