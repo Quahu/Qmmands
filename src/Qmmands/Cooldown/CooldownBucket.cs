@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Qmmands
 {
-    internal sealed class CooldownBucket : ICloneable
+    internal sealed class CooldownBucket
     {
         public Cooldown Cooldown { get; }
 
@@ -61,11 +61,5 @@ namespace Qmmands
             LastCall = default;
             Window = default;
         }
-
-        public CooldownBucket Clone()
-            => MemberwiseClone() as CooldownBucket;
-
-        object ICloneable.Clone()
-            => Clone();
     }
 }
