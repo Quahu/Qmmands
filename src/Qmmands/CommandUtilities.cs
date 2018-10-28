@@ -273,7 +273,7 @@ namespace Qmmands
             quoteMapBuilder['〚'] = '〛';
             DefaultQuoteMap = quoteMapBuilder.ToImmutable();
 
-            var nullableNounsBuilder = ImmutableList.CreateBuilder<string>();
+            var nullableNounsBuilder = ImmutableArray.CreateBuilder<string>();
             nullableNounsBuilder.Add("null");
             nullableNounsBuilder.Add("none");
             nullableNounsBuilder.Add("nothing");
