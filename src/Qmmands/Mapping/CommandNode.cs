@@ -9,7 +9,7 @@ namespace Qmmands
         private readonly Dictionary<string, List<Command>> _commands;
         private readonly Dictionary<string, List<Module>> _modules;
         private readonly Dictionary<string, CommandNode> _nodes;
-        private readonly bool _isNullSeparator;
+        private readonly bool _isNullOrWhitespaceSeparator;
 
         public CommandNode(CommandService service)
         {
@@ -17,7 +17,7 @@ namespace Qmmands
             _commands = new Dictionary<string, List<Command>>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
             _modules = new Dictionary<string, List<Module>>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
             _nodes = new Dictionary<string, CommandNode>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
-            _isNullSeparator = string.IsNullOrWhiteSpace(_service.Separator);
+            _isNullOrWhitespaceSeparator = string.IsNullOrWhiteSpace(_service.Separator);
         }
 
         public IEnumerable<CommandMatch> FindCommands(List<string> path, string text, int startIndex)
@@ -100,7 +100,7 @@ namespace Qmmands
                 index = index + key.Length;
                 var hasConfigSeparator = false;
                 hasWhitespaceSeparator = false;
-                if (!_isNullSeparator && checkForSeparator)
+                if (!_isNullOrWhitespaceSeparator && checkForSeparator)
                 {
                     for (var i = index; i < text.Length; i++)
                     {
@@ -140,7 +140,7 @@ namespace Qmmands
                         break;
 
                     case SeparatorRequirement.Separator:
-                        hasSeparator = hasConfigSeparator || _isNullSeparator;
+                        hasSeparator = _isNullOrWhitespaceSeparator ? hasConfigSeparator || hasWhitespaceSeparator : hasConfigSeparator;
                         break;
 
                     default:
