@@ -76,6 +76,8 @@ namespace Qmmands
 
         internal Parameter(ParameterBuilder builder, Command command)
         {
+            Command = command;
+            
             Name = builder.Name;
             Description = builder.Description;
             Remarks = builder.Remarks;
@@ -112,8 +114,6 @@ namespace Qmmands
             }
             Checks = builder.Checks.ToImmutableArray();
             Attributes = builder.Attributes.ToImmutableArray();
-
-            Command = command;
         }
 
         /// <summary>
