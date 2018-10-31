@@ -10,12 +10,13 @@ namespace Qmmands
         /// <summary>
         ///     Returns a <see cref="Cooldown"/> bucket key generated using the specified <paramref name="bucketType"/>.
         /// </summary>
+        /// <param name="command"> The <see cref="Command"/> to generate the bucket key for. </param>
         /// <param name="bucketType"> The <see langword="enum"/> bucket type. </param>
         /// <param name="context"> The <see cref="ICommandContext"/> used for execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
         /// <returns>
         ///     The <see cref="Cooldown"/> bucket key.
         /// </returns>
-        object GenerateBucketKey(object bucketType, ICommandContext context, IServiceProvider provider);
+        object GenerateBucketKey(Command command, object bucketType, ICommandContext context, IServiceProvider provider);
     }
 }

@@ -131,7 +131,7 @@ namespace Qmmands
                 if (Service.CooldownBucketKeyGenerator is null)
                     throw new InvalidOperationException("Cooldown bucket key generator hasn't been set.");
 
-                CooldownMap = new CooldownMap(Service.CooldownBucketKeyGenerator);
+                CooldownMap = new CooldownMap(this, Service.CooldownBucketKeyGenerator);
             }
         }
 

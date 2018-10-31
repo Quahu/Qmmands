@@ -6,11 +6,14 @@ namespace Qmmands
 {
     internal sealed class CooldownMap
     {
-        private readonly ICooldownBucketKeyGenerator _generator;
         public ConcurrentDictionary<object, CooldownBucket> Buckets { get; }
 
-        internal CooldownMap(ICooldownBucketKeyGenerator generator)
+        private readonly Command _command;
+        private readonly ICooldownBucketKeyGenerator _generator;
+
+        internal CooldownMap(Command command, ICooldownBucketKeyGenerator generator)
         {
+            _command = command;
             _generator = generator;
             Buckets = new ConcurrentDictionary<object, CooldownBucket>();
         }
@@ -27,7 +30,7 @@ namespace Qmmands
 
         public CooldownBucket GetBucket(Cooldown cooldown, ICommandContext context, IServiceProvider provider)
         {
-            var key = _generator.GenerateBucketKey(cooldown.BucketType, context, provider);
+            var key = _generator.GenerateBucketKey(_command, cooldown.BucketType, context, provider);
             if (key is null)
                 throw new InvalidOperationException("The generated cooldown key mustn't be null.");
 
