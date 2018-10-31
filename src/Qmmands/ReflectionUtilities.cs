@@ -297,9 +297,20 @@ namespace Qmmands
             {
                 var instance = CreateProviderConstructor<IModuleBase>(command.Service, typeInfo)(provider);
                 instance.Prepare(context);
+
+                var executeAfter = true;
                 try
                 {
-                    await instance.BeforeExecutedAsync(command).ConfigureAwait(false);
+                    try
+                    {
+                        await instance.BeforeExecutedAsync(command).ConfigureAwait(false);
+                    }
+                    catch (Exception ex)
+                    {
+                        executeAfter = false;
+                        return new ExecutionFailedResult(command, CommandExecutionStep.BeforeExecuted, ex);
+                    }
+
                     if (!(methodInfo.Invoke(instance, arguments) is Task task))
                         return new SuccessfulResult();
 
@@ -319,7 +330,9 @@ namespace Qmmands
                 }
                 finally
                 {
-                    await instance.AfterExecutedAsync(command).ConfigureAwait(false);
+                    if (executeAfter)
+                        await instance.AfterExecutedAsync(command).ConfigureAwait(false);
+
                     if (instance is IDisposable disposable)
                     {
                         try

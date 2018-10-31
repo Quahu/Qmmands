@@ -21,6 +21,11 @@
         TypeParsing,
 
         /// <summary>
+        ///     An exception occcured in <see cref="ModuleBase{TContext}.BeforeExecutedAsync(Command)"/>.
+        /// </summary>
+        BeforeExecuted,
+
+        /// <summary>
         ///     An execution occurred when executing the command.
         /// </summary>
         Command

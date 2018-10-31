@@ -542,7 +542,9 @@ namespace Qmmands
                     }
                     catch (Exception ex)
                     {
-                        return new ExecutionFailedResult(match.Command, CommandExecutionStep.Checks, ex);
+                        var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.Checks, ex);
+                        await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+                        return executionFailedResult;
                     }
 
                     ParseResult parseResult;
@@ -557,14 +559,26 @@ namespace Qmmands
                     }
                     catch (Exception ex)
                     {
-                        return new ExecutionFailedResult(match.Command, CommandExecutionStep.ArgumentParsing, ex);
+                        var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.ArgumentParsing, ex);
+                        await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+                        return executionFailedResult;
                     }
 
-                    var (result, parsedArguments) = await CreateArgumentsAsync(parseResult, context, provider);
-                    if (result != null)
+                    object[] parsedArguments = null;
+                    try
                     {
-                        failedOverloads.Add(match.Command, result);
-                        continue;
+                        var result = await CreateArgumentsAsync(parseResult, context, provider);
+                        if (result.FailedResult != null)
+                        {
+                            failedOverloads.Add(match.Command, result.FailedResult);
+                            continue;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.TypeParsing, ex);
+                        await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+                        return executionFailedResult;
                     }
 
                     var cooldownResult = match.Command.RunCooldowns(context, provider);
@@ -622,7 +636,9 @@ namespace Qmmands
             }
             catch (Exception ex)
             {
-                return new ExecutionFailedResult(command, CommandExecutionStep.Checks, ex);
+                var executionFailedResult = new ExecutionFailedResult(command, CommandExecutionStep.Checks, ex);
+                await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+                return executionFailedResult;
             }
 
             ParseResult parseResult;
@@ -634,12 +650,24 @@ namespace Qmmands
             }
             catch (Exception ex)
             {
-                return new ExecutionFailedResult(command, CommandExecutionStep.ArgumentParsing, ex);
+                var executionFailedResult = new ExecutionFailedResult(command, CommandExecutionStep.ArgumentParsing, ex);
+                await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+                return executionFailedResult;
             }
 
-            var (result, parsedArguments) = await CreateArgumentsAsync(parseResult, context, provider);
-            if (result != null)
-                return result;
+            object[] parsedArguments = null;
+            try
+            {
+                var result = await CreateArgumentsAsync(parseResult, context, provider);
+                if (result.FailedResult != null)
+                    return result.FailedResult;
+            }
+            catch (Exception ex)
+            {
+                var executionFailedResult = new ExecutionFailedResult(command, CommandExecutionStep.TypeParsing, ex);
+                await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+                return executionFailedResult;
+            }
 
             var cooldownResult = command.RunCooldowns(context, provider);
             if (!cooldownResult.IsSuccessful)
@@ -714,34 +742,27 @@ namespace Qmmands
                 return (null, value);
 
             IPrimitiveTypeParser primitiveParser;
-            try
+            if (!(parameter.CustomTypeParserType is null))
             {
-                if (!(parameter.CustomTypeParserType is null))
-                {
-                    var customParser = GetSpecificTypeParser(parameter.Type, parameter.CustomTypeParserType);
-                    if (customParser is null)
-                        throw new InvalidOperationException($"Custom parser of type {parameter.CustomTypeParserType.Name} for parameter {parameter.Name} not found.");
+                var customParser = GetSpecificTypeParser(parameter.Type, parameter.CustomTypeParserType);
+                if (customParser is null)
+                    throw new InvalidOperationException($"Custom parser of type {parameter.CustomTypeParserType.Name} for parameter {parameter.Name} not found.");
 
-                    var typeParserResult = await customParser.ParseAsync(value, context, provider).ConfigureAwait(false);
-                    if (!typeParserResult.IsSuccessful)
-                        return (new TypeParserFailedResult(parameter, value, typeParserResult.Error), default);
+                var typeParserResult = await customParser.ParseAsync(value, context, provider).ConfigureAwait(false);
+                if (!typeParserResult.IsSuccessful)
+                    return (new TypeParserFailedResult(parameter, value, typeParserResult.Error), default);
 
-                    return (null, typeParserResult.HasValue ? typeParserResult.Value : null);
-                }
-
-                var parser = GetAnyTypeParser(parameter.Type, (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null);
-                if (!(parser is null))
-                {
-                    var typeParserResult = await parser.ParseAsync(value, context, provider).ConfigureAwait(false);
-                    if (!typeParserResult.IsSuccessful)
-                        return (new TypeParserFailedResult(parameter, value, typeParserResult.Error), default);
-
-                    return (null, typeParserResult.HasValue ? typeParserResult.Value : null);
-                }
+                return (null, typeParserResult.HasValue ? typeParserResult.Value : null);
             }
-            catch (Exception ex)
+
+            var parser = GetAnyTypeParser(parameter.Type, (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null);
+            if (!(parser is null))
             {
-                return (new ExecutionFailedResult(parameter.Command, CommandExecutionStep.TypeParsing, ex), default);
+                var typeParserResult = await parser.ParseAsync(value, context, provider).ConfigureAwait(false);
+                if (!typeParserResult.IsSuccessful)
+                    return (new TypeParserFailedResult(parameter, value, typeParserResult.Error), default);
+
+                return (null, typeParserResult.HasValue ? typeParserResult.Value : null);
             }
 
             if (primitiveParser == null && (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) == null)
@@ -767,7 +788,12 @@ namespace Qmmands
             try
             {
                 var result = await command.Callback(command, arguments, context, provider).ConfigureAwait(false);
-                await _commandExecuted.InvokeAsync(command, result as CommandResult, context, provider).ConfigureAwait(false);
+                if (result is CommandResult commandResult)
+                    await _commandExecuted.InvokeAsync(command, commandResult, context, provider).ConfigureAwait(false);
+
+                else if (result is ExecutionFailedResult executionFailedResult)
+                    await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+
                 return result;
             }
             catch (Exception ex)
