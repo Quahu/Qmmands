@@ -573,6 +573,8 @@ namespace Qmmands
                             failedOverloads.Add(match.Command, result.FailedResult);
                             continue;
                         }
+
+                        parsedArguments = result.ParsedArguments;
                     }
                     catch (Exception ex)
                     {
@@ -661,6 +663,8 @@ namespace Qmmands
                 var result = await CreateArgumentsAsync(parseResult, context, provider);
                 if (result.FailedResult != null)
                     return result.FailedResult;
+
+                parsedArguments = result.ParsedArguments;
             }
             catch (Exception ex)
             {
