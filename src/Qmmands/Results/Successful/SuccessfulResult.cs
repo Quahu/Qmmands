@@ -1,7 +1,7 @@
 ﻿namespace Qmmands
 {
     /// <summary>
-    ///     The default class for all successful results.
+    ///     Represents a successful outcome.
     /// </summary>
     public sealed class SuccessfulResult : IResult
     {
