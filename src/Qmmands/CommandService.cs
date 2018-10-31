@@ -130,7 +130,7 @@ namespace Qmmands
             {
                 var primitiveTypeParser = TypeParserUtils.CreatePrimitiveTypeParser(type);
                 _primitiveParsers.TryAdd(type, primitiveTypeParser);
-                _primitiveParsers.TryAdd(ReflectionUtils.MakeNullable(type), TypeParserUtils.CreateNullablePrimitiveTypeParser(type, primitiveTypeParser));
+                _primitiveParsers.TryAdd(ReflectionUtilities.MakeNullable(type), TypeParserUtils.CreateNullablePrimitiveTypeParser(type, primitiveTypeParser));
             }
         }
 
@@ -144,7 +144,7 @@ namespace Qmmands
         ///     Enumerates through all of the added <see cref="Module"/>s and yields all found <see cref="Command"/>s.
         /// </summary>
         /// <returns> An enumerable with all <see cref="Command"/>s. </returns>
-        public IEnumerable<Command> GetCommands()
+        public IEnumerable<Command> GetAllCommands()
         {
             IEnumerable<Command> GetCommands(Module module)
             {
@@ -165,7 +165,7 @@ namespace Qmmands
         ///     Enumerates through all of the added <see cref="Module"/>s yields them.
         /// </summary>
         /// <returns> An enumerable with all <see cref="Module"/>s. </returns>
-        public IEnumerable<Module> GetModules()
+        public IEnumerable<Module> GetAllModules()
         {
             IEnumerable<Module> GetSubmodules(Module module)
             {
@@ -224,7 +224,7 @@ namespace Qmmands
             if (type.IsEnum)
                 throw new ArgumentException("Cannot add custom enum type parsers.", nameof(T));
 
-            if (ReflectionUtils.IsNullable(type))
+            if (ReflectionUtilities.IsNullable(type))
                 throw new ArgumentException("Cannot add custom nullable type parsers.", nameof(T));
 
             AddParserInternal(type, parser, replacePrimitive);
@@ -242,7 +242,7 @@ namespace Qmmands
             if (type.IsValueType)
             {
                 var nullableParser = TypeParserUtils.CreateNullableTypeParser(type, this, parser);
-                _parsers.AddOrUpdate(ReflectionUtils.MakeNullable(type),
+                _parsers.AddOrUpdate(ReflectionUtilities.MakeNullable(type),
                     new Dictionary<Type, (bool, ITypeParser)> { [nullableParser.GetType()] = (replacePrimitive, nullableParser) },
                     (k, v) =>
                     {
@@ -279,7 +279,7 @@ namespace Qmmands
             typeParsers.Remove(parser.GetType());
 
             if (type.IsValueType)
-                typeParsers.Remove(ReflectionUtils.MakeNullable(type));
+                typeParsers.Remove(ReflectionUtilities.MakeNullable(type));
         }
 
         internal ITypeParser GetSpecificTypeParser(Type type, Type parserType)
@@ -312,11 +312,11 @@ namespace Qmmands
             {
                 var enumParser = TypeParserUtils.CreateEnumTypeParser(type.GetEnumUnderlyingType(), type, !CaseSensitive);
                 _primitiveParsers.TryAdd(type, enumParser);
-                _primitiveParsers.TryAdd(ReflectionUtils.MakeNullable(type), TypeParserUtils.CreateNullableEnumTypeParser(type.GetEnumUnderlyingType(), enumParser));
+                _primitiveParsers.TryAdd(ReflectionUtilities.MakeNullable(type), TypeParserUtils.CreateNullableEnumTypeParser(type.GetEnumUnderlyingType(), enumParser));
                 return enumParser;
             }
 
-            if (ReflectionUtils.IsNullable(type) && (type = Nullable.GetUnderlyingType(type)).IsEnum)
+            if (ReflectionUtilities.IsNullable(type) && (type = Nullable.GetUnderlyingType(type)).IsEnum)
                 return GetPrimitiveTypeParser(type);
 
             return null;
@@ -338,7 +338,7 @@ namespace Qmmands
             for (var i = 0; i < types.Length; i++)
             {
                 var typeInfo = types[i].GetTypeInfo();
-                if (!ReflectionUtils.IsValidModuleDefinition(typeInfo) || typeInfo.IsNested || typeInfo.GetCustomAttribute<DontAutoAddAttribute>() != null)
+                if (!ReflectionUtilities.IsValidModuleDefinition(typeInfo) || typeInfo.IsNested || typeInfo.GetCustomAttribute<DontAutoAddAttribute>() != null)
                     continue;
 
                 modules.Add(await AddModuleAsync(typeInfo.AsType()).ConfigureAwait(false));
@@ -361,7 +361,6 @@ namespace Qmmands
             try
             {
                 await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
-
                 var module = builder.Build(this, null);
                 AddModuleInternal(module);
                 return module;
@@ -414,8 +413,7 @@ namespace Qmmands
             try
             {
                 await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
-
-                var moduleBuilder = ReflectionUtils.BuildModule(type.GetTypeInfo());
+                var moduleBuilder = ReflectionUtilities.BuildModule(type.GetTypeInfo());
                 await _moduleBuilding.InvokeAsync(moduleBuilder).ConfigureAwait(false);
                 var module = moduleBuilder.Build(this, null);
                 AddModuleInternal(module);
@@ -459,6 +457,36 @@ namespace Qmmands
             if (!_modules.Contains(module))
                 throw new ArgumentException("This module hasn't been added.", nameof(module));
 
+            try
+            {
+                await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
+                RemoveModuleInternal(module);
+            }
+            finally
+            {
+                _moduleSemaphore.Release();
+            }
+        }
+
+        /// <summary>
+        ///     Removes all added <see cref="Module"/>s.
+        /// </summary>
+        public async Task RemoveAllModulesAsync()
+        {
+            try
+            {
+                await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
+                foreach (var module in _modules.ToImmutableArray())
+                    RemoveModuleInternal(module);
+            }
+            finally
+            {
+                _moduleSemaphore.Release();
+            }
+        }
+
+        private void RemoveModuleInternal(Module module)
+        {
             void RemoveSubmodules(Module m)
             {
                 foreach (var submodule in m.Submodules)
@@ -470,21 +498,12 @@ namespace Qmmands
                 }
             }
 
-            try
+            _map.UnmapModule(module, new List<string>());
+            _modules.Remove(module);
+            if (module.Type != null)
             {
-                await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
-
-                _map.UnmapModule(module, new List<string>());
-                _modules.Remove(module);
-                if (module.Type != null)
-                {
-                    _typeModules.Remove(module.Type);
-                    RemoveSubmodules(module);
-                }
-            }
-            finally
-            {
-                _moduleSemaphore.Release();
+                _typeModules.Remove(module.Type);
+                RemoveSubmodules(module);
             }
         }
 

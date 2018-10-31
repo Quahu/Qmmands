@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Qmmands
 {
-    internal static class ReflectionUtils
+    internal static class ReflectionUtilities
     {
         private static readonly TypeInfo _typeParserTypeInfo = typeof(ITypeParser).GetTypeInfo();
         private static readonly TypeInfo _moduleBaseTypeInfo = typeof(IModuleBase).GetTypeInfo();

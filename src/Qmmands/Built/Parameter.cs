@@ -94,7 +94,7 @@ namespace Qmmands
             {
                 if (DefaultValue is null)
                 {
-                    if (Type.IsValueType && !ReflectionUtils.IsNullable(Type))
+                    if (Type.IsValueType && !ReflectionUtilities.IsNullable(Type))
                         throw new InvalidOperationException("A value type parameter can't have null as the default value.");
                 }
 
@@ -107,7 +107,7 @@ namespace Qmmands
 
             if (builder.CustomTypeParserType != null)
             {
-                if (!ReflectionUtils.IsValidParserDefinition(builder.CustomTypeParserType.GetTypeInfo(), Type))
+                if (!ReflectionUtilities.IsValidParserDefinition(builder.CustomTypeParserType.GetTypeInfo(), Type))
                     throw new InvalidOperationException($"{builder.CustomTypeParserType.Name} isn't a valid type parser for {this} ({Type.Name}).");
 
                 CustomTypeParserType = builder.CustomTypeParserType;
