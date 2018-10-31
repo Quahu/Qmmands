@@ -156,7 +156,7 @@ namespace Qmmands
                         yield return command;
             }
 
-            foreach (var module in _modules.ToList())
+            foreach (var module in _modules.ToImmutableArray())
                 foreach (var command in GetCommands(module))
                     yield return command;
         }
@@ -179,7 +179,7 @@ namespace Qmmands
                 }
             }
 
-            foreach (var module in _modules.ToList())
+            foreach (var module in _modules.ToImmutableArray())
             {
                 yield return module;
 
