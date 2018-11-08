@@ -792,11 +792,12 @@ namespace Qmmands
             try
             {
                 var result = await command.Callback(command, arguments, context, provider).ConfigureAwait(false);
-                if (result is CommandResult commandResult)
-                    await _commandExecuted.InvokeAsync(command, commandResult, context, provider).ConfigureAwait(false);
 
-                else if (result is ExecutionFailedResult executionFailedResult)
+                if (result is ExecutionFailedResult executionFailedResult)
                     await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+                
+                else
+                    await _commandExecuted.InvokeAsync(command, result as CommandResult, context, provider).ConfigureAwait(false);
 
                 return result;
             }
