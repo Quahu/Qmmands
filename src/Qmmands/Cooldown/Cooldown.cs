@@ -28,10 +28,22 @@ namespace Qmmands
         /// <param name="amount"> The starting uses amount. </param>
         /// <param name="per"> The use time window. </param>
         /// <param name="bucketType"> The <see langword="enum"/> bucket type. </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///     Amount and per must be positive values.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     Bucket type mustn't be <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     Bucket type must be an <see langword="enum"/>.
+        /// </exception>
         public Cooldown(int amount, TimeSpan per, object bucketType)
         {
             if (amount <= 0)
                 throw new ArgumentOutOfRangeException(nameof(amount), "Amount must be a positive integer.");
+
+            if (per <= TimeSpan.Zero)
+                throw new ArgumentOutOfRangeException(nameof(per), "Per must be a positive time span.");
 
             if (bucketType is null)
                 throw new ArgumentNullException(nameof(bucketType), "Bucket type mustn't be null.");
