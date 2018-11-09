@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -195,6 +195,7 @@ namespace Qmmands
         /// <returns> An ordered enumerable of <see cref="CommandMatch"/>es. </returns>
         public IEnumerable<CommandMatch> FindCommands(string path)
             => _map.FindCommands(path).OrderByDescending(x => x.Path.Count)
+                .ThenByDescending(x => x.Command.Priority)
                 .ThenByDescending(x => x.Alias.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length) // a bad solution to bad people using whitespace in aliases
                 .ThenByDescending(x => x.Command.Parameters.Count);
 
@@ -520,6 +521,9 @@ namespace Qmmands
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input mustn't be null.");
 
+            if (context is null)
+                throw new ArgumentNullException(nameof(context), "The context mustn't be null.");
+
             if (provider is null)
                 provider = EmptyServiceProvider.Instance;
 
@@ -527,87 +531,80 @@ namespace Qmmands
             if (matches.Length == 0)
                 return new CommandNotFoundResult();
 
-            foreach (var group in matches.GroupBy(x => string.Join(Separator, x.Path)))
+            var failedOverloads = new Dictionary<Command, FailedResult>();
+            foreach (var match in matches.GroupBy(x => string.Join(Separator, x.Path)).First())
             {
-                var failedOverloads = new Dictionary<Command, FailedResult>();
-                var overloadCount = 0;
-                foreach (var match in group.OrderByDescending(x => x.Command.Priority))
+                try
                 {
-                    overloadCount++;
-                    try
+                    var checkResult = await match.Command.RunChecksAsync(context, provider).ConfigureAwait(false);
+                    if (!checkResult.IsSuccessful)
                     {
-                        var checkResult = await match.Command.RunChecksAsync(context, provider).ConfigureAwait(false);
-                        if (!checkResult.IsSuccessful)
-                            return checkResult;
-                    }
-                    catch (Exception ex)
-                    {
-                        var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.Checks, ex);
-                        await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
-                        return executionFailedResult;
-                    }
-
-                    ParseResult parseResult;
-                    try
-                    {
-                        parseResult = ParameterParser.ParseRawArguments(match.Command, match.RawArguments);
-                        if (!parseResult.IsSuccessful)
-                        {
-                            failedOverloads.Add(match.Command, new ParseFailedResult(match.Command, parseResult));
-                            continue;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.ArgumentParsing, ex);
-                        await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
-                        return executionFailedResult;
-                    }
-
-                    object[] parsedArguments = null;
-                    try
-                    {
-                        var result = await CreateArgumentsAsync(parseResult, context, provider);
-                        if (result.FailedResult != null)
-                        {
-                            failedOverloads.Add(match.Command, result.FailedResult);
-                            continue;
-                        }
-
-                        parsedArguments = result.ParsedArguments;
-                    }
-                    catch (Exception ex)
-                    {
-                        var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.TypeParsing, ex);
-                        await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
-                        return executionFailedResult;
-                    }
-
-                    var cooldownResult = match.Command.RunCooldowns(context, provider);
-                    if (!cooldownResult.IsSuccessful)
-                        return cooldownResult;
-
-                    switch (match.Command.RunMode)
-                    {
-                        case RunMode.Sequential:
-                            return await ExecuteInternalAsync(match.Command, context, provider, parsedArguments).ConfigureAwait(false);
-
-                        case RunMode.Parallel:
-                            _ = Task.Run(() => ExecuteInternalAsync(match.Command, context, provider, parsedArguments));
-                            return new SuccessfulResult();
-
-                        default:
-                            throw new InvalidOperationException("Invalid run mode.");
+                        failedOverloads.Add(match.Command, checkResult as FailedResult);
+                        continue;
                     }
                 }
+                catch (Exception ex)
+                {
+                    var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.Checks, ex);
+                    await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+                    return executionFailedResult;
+                }
 
-                if (failedOverloads.Count <= 0)
-                    continue;
+                ParseResult parseResult;
+                try
+                {
+                    parseResult = ParameterParser.ParseRawArguments(match.Command, match.RawArguments);
+                    if (!parseResult.IsSuccessful)
+                    {
+                        failedOverloads.Add(match.Command, new ParseFailedResult(match.Command, parseResult));
+                        continue;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.ArgumentParsing, ex);
+                    await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+                    return executionFailedResult;
+                }
 
-                return overloadCount == 1 ? failedOverloads.First().Value : new OverloadNotFoundResult(failedOverloads);
+                object[] parsedArguments = null;
+                try
+                {
+                    var result = await CreateArgumentsAsync(parseResult, context, provider);
+                    if (result.FailedResult != null)
+                    {
+                        failedOverloads.Add(match.Command, result.FailedResult);
+                        continue;
+                    }
+
+                    parsedArguments = result.ParsedArguments;
+                }
+                catch (Exception ex)
+                {
+                    var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.TypeParsing, ex);
+                    await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+                    return executionFailedResult;
+                }
+
+                var cooldownResult = match.Command.RunCooldowns(context, provider);
+                if (!cooldownResult.IsSuccessful)
+                    return cooldownResult;
+
+                switch (match.Command.RunMode)
+                {
+                    case RunMode.Sequential:
+                        return await ExecuteInternalAsync(match.Command, context, provider, parsedArguments).ConfigureAwait(false);
+
+                    case RunMode.Parallel:
+                        _ = Task.Run(() => ExecuteInternalAsync(match.Command, context, provider, parsedArguments));
+                        return new SuccessfulResult();
+
+                    default:
+                        throw new InvalidOperationException("Invalid run mode.");
+                }
             }
 
-            return new CommandNotFoundResult();
+            return failedOverloads.Count == 1 ? failedOverloads.First().Value : new OverloadsFailedResult(failedOverloads);
         }
 
         /// <summary>
@@ -792,7 +789,6 @@ namespace Qmmands
             try
             {
                 var result = await command.Callback(command, arguments, context, provider).ConfigureAwait(false);
-
                 if (result is ExecutionFailedResult executionFailedResult)
                     await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
                 
