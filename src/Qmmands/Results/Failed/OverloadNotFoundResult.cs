@@ -3,9 +3,9 @@
 namespace Qmmands
 {
     /// <summary>
-    ///     Represents no overloads matching the input.
+    ///     Represents multiple failed overloads.
     /// </summary>
-    public sealed class OverloadNotFoundResult : FailedResult
+    public sealed class OverloadsFailedResult : FailedResult
     {
         /// <inheritdoc />
         public override string Reason { get; } = "Failed to find a matching overload.";
@@ -15,7 +15,7 @@ namespace Qmmands
         /// </summary>
         public IReadOnlyDictionary<Command, FailedResult> FailedOverloads { get; }
 
-        internal OverloadNotFoundResult(IReadOnlyDictionary<Command, FailedResult> failedOverloads)
+        internal OverloadsFailedResult(IReadOnlyDictionary<Command, FailedResult> failedOverloads)
             => FailedOverloads = failedOverloads;
     }
 }
