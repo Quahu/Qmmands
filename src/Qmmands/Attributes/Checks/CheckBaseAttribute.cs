@@ -4,18 +4,18 @@ using System.Threading.Tasks;
 namespace Qmmands
 {
     /// <summary>
-    ///     Adds a check to the <see cref="Module"/> or <see cref="Command"/> that has to succeed before it can be executed.
+    ///     Represents a <see cref="Qmmands.Module"/> or <see cref="Qmmands.Command"/> check that has to succeed before it can be executed.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public abstract class CheckBaseAttribute : Attribute
     {
         /// <summary>
-        ///     The <see cref="Qmmands.Module"/> this <see cref="CheckBaseAttribute"/> is for.
+        ///     Gets the <see cref="Qmmands.Module"/> this <see cref="CheckBaseAttribute"/> is for.
         /// </summary>
         public Module Module { get; internal set; }
 
         /// <summary>
-        ///     The <see cref="Qmmands.Command"/> this <see cref="CheckBaseAttribute"/> is for.
+        ///     Gets the <see cref="Qmmands.Command"/> this <see cref="CheckBaseAttribute"/> is for.
         ///     <see langword="null"/> if this check is for a module.
         /// </summary>
         public Command Command { get; internal set; }

@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 namespace Qmmands
 {
     /// <summary>
-    ///     Adds a check to the <see cref="Parameter"/> that has to succeed before it the <see cref="Command"/> can be executed.
+    ///     Represents a <see cref="Qmmands.Parameter"/> check that has to succeed before the <see cref="Command"/> can be executed.
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
     public abstract class ParameterCheckBaseAttribute : Attribute
     {
         /// <summary>
-        ///     The <see cref="Qmmands.Parameter"/> this <see cref="ParameterCheckBaseAttribute"/> is for.
+        ///     Gets the <see cref="Qmmands.Parameter"/> this <see cref="ParameterCheckBaseAttribute"/> is for.
         /// </summary>
         public Parameter Parameter { get; internal set; }
 
