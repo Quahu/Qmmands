@@ -107,6 +107,8 @@ namespace Qmmands
 
             Name = builder.Name ?? Type?.Name;
 
+            for (var i = 0; i < builder.Checks.Count; i++)
+                builder.Checks[i].Module = this;
             Checks = builder.Checks.ToImmutableArray();
             Attributes = builder.Attributes.ToImmutableArray();
 

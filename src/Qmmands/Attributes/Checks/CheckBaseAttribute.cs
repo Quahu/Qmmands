@@ -10,9 +10,15 @@ namespace Qmmands
     public abstract class CheckBaseAttribute : Attribute
     {
         /// <summary>
-        ///     Gets or sets the name of this check.
+        ///     The <see cref="Qmmands.Module"/> this <see cref="CheckBaseAttribute"/> is for.
         /// </summary>
-        public virtual string Name { get; set; }
+        public Module Module { get; internal set; }
+
+        /// <summary>
+        ///     The <see cref="Qmmands.Command"/> this <see cref="CheckBaseAttribute"/> is for.
+        ///     <see langword="null"/> if this check is for a module.
+        /// </summary>
+        public Command Command { get; internal set; }
 
         /// <summary>
         ///     Gets or sets the group for this check.

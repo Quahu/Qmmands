@@ -112,6 +112,9 @@ namespace Qmmands
 
                 CustomTypeParserType = builder.CustomTypeParserType;
             }
+
+            for (var i = 0; i < builder.Checks.Count; i++)
+                builder.Checks[i].Parameter = this;
             Checks = builder.Checks.ToImmutableArray();
             Attributes = builder.Attributes.ToImmutableArray();
         }
@@ -143,7 +146,7 @@ namespace Qmmands
 
         private async Task<(ParameterCheckBaseAttribute Check, string Error)> RunCheckAsync(ParameterCheckBaseAttribute check, object argument, ICommandContext context, IServiceProvider provider)
         {
-            var checkResult = await check.CheckAsync(this, argument, context, provider).ConfigureAwait(false);
+            var checkResult = await check.CheckAsync(argument, context, provider).ConfigureAwait(false);
             return (check, checkResult.Error);
         }
 

@@ -10,9 +10,9 @@ namespace Qmmands
     public abstract class ParameterCheckBaseAttribute : Attribute
     {
         /// <summary>
-        ///     Gets or sets the name of this check.
+        ///     The <see cref="Qmmands.Parameter"/> this <see cref="ParameterCheckBaseAttribute"/> is for.
         /// </summary>
-        public virtual string Name { get; set; }
+        public Parameter Parameter { get; internal set; }
 
         /// <summary>
         ///     Gets or sets the group for this check.
@@ -25,11 +25,10 @@ namespace Qmmands
         /// <summary>
         ///     A method which determines whether the <paramref name="argument"/> is valid for the <see cref="Parameter"/> in given circumstances.
         /// </summary>
-        /// <param name="parameter"> The currently checked <see cref="Parameter"/>. </param>
         /// <param name="argument"> The value given to this <see cref="Parameter"/>. </param>
         /// <param name="context"> The <see cref="ICommandContext"/> used during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> used during execution. </param>
         /// <returns></returns>
-        public abstract Task<CheckResult> CheckAsync(Parameter parameter, object argument, ICommandContext context, IServiceProvider provider);
+        public abstract Task<CheckResult> CheckAsync(object argument, ICommandContext context, IServiceProvider provider);
     }
 }
