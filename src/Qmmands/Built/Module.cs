@@ -74,15 +74,19 @@ namespace Qmmands
         /// </summary>
         public Module Parent { get; }
 
-        internal CommandService Service { get; }
+        /// <summary>
+        ///     Gets the <see cref="System.Type"/> this <see cref="Module"/> was built from.
+        ///     <see langword="null"/> if it was built from a <see cref="ModuleBuilder"/>.
+        /// </summary>
+        public Type Type { get; }
 
-        internal Type Type { get; }
+        internal CommandService Service { get; }
 
         internal Module(CommandService service, ModuleBuilder builder, Module parent)
         {
             Parent = parent;
-            Service = service;
             Type = builder.Type;
+            Service = service;
 
             Description = builder.Description;
             Remarks = builder.Remarks;
