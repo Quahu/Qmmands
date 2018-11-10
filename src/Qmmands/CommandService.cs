@@ -392,14 +392,9 @@ namespace Qmmands
         ///     Adds the specified <see cref="Module"/>.
         /// </summary>
         /// <param name="module"> The <see cref="Module"/> to add. </param>
-        /// <param name="rebuild"> 
-        ///     Whether to rebuild the <see cref="Module"/> from the <see cref="Type"/> it was built from.
-        ///     Not usable with <see cref="Module"/>s that were built using the <see cref="ModuleBuilder"/>.
-        /// </param>
-        /// <returns> The original or the rebuilt <see cref="Module"/>. </returns>
         /// <exception cref="ArgumentNullException"> The module to add mustn't be null. </exception>
         /// <exception cref="ArgumentException"> The module is already held by this instance of <see cref="CommandService"/>. </exception>
-        public async Task<Module> AddModuleAsync(Module module, bool rebuild = false)
+        public async Task AddModuleAsync(Module module)
         {
             if (module == null)
                 throw new ArgumentNullException(nameof(module), "The module to add mustn't be null.");
@@ -407,26 +402,14 @@ namespace Qmmands
             if (_modules.Contains(module))
                 throw new ArgumentException("This module has already been added.", nameof(module));
 
-            if (rebuild)
+            try
             {
-                if (module.Type == null)
-                    throw new InvalidOperationException("This module hasn't been built from a module builder.");
-
-                return await AddModuleAsync(module.Type);
+                await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
+                AddModuleInternal(module);
             }
-
-            else
+            finally
             {
-                try
-                {
-                    await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
-                    AddModuleInternal(module);
-                    return module;
-                }
-                finally
-                {
-                    _moduleSemaphore.Release();
-                }
+                _moduleSemaphore.Release();
             }
         }
 
