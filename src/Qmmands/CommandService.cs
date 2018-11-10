@@ -537,8 +537,11 @@ namespace Qmmands
                 try
                 {
                     var checkResult = await match.Command.RunChecksAsync(context, provider).ConfigureAwait(false);
-                    if (!checkResult.IsSuccessful)
+                    if (checkResult is ChecksFailedResult checksFailedResult)
                     {
+                        if (checksFailedResult.Module != null)
+                            return checksFailedResult;
+
                         failedOverloads.Add(match.Command, checkResult as FailedResult);
                         continue;
                     }
@@ -791,7 +794,7 @@ namespace Qmmands
                 var result = await command.Callback(command, arguments, context, provider).ConfigureAwait(false);
                 if (result is ExecutionFailedResult executionFailedResult)
                     await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
-                
+
                 else
                     await _commandExecuted.InvokeAsync(command, result as CommandResult, context, provider).ConfigureAwait(false);
 
