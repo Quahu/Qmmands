@@ -389,6 +389,48 @@ namespace Qmmands
         }
 
         /// <summary>
+        ///     Adds the specified <see cref="Module"/>.
+        /// </summary>
+        /// <param name="module"> The <see cref="Module"/> to add. </param>
+        /// <param name="rebuild"> 
+        ///     Whether to rebuild the <see cref="Module"/> from the <see cref="Type"/> it was built from.
+        ///     Not usable with <see cref="Module"/>s that were built using the <see cref="ModuleBuilder"/>.
+        /// </param>
+        /// <returns> The original or the rebuilt <see cref="Module"/>. </returns>
+        /// <exception cref="ArgumentNullException"> The module to add mustn't be null. </exception>
+        /// <exception cref="ArgumentException"> The module is already held by this instance of <see cref="CommandService"/>. </exception>
+        public async Task<Module> AddModuleAsync(Module module, bool rebuild = false)
+        {
+            if (module == null)
+                throw new ArgumentNullException(nameof(module), "The module to add mustn't be null.");
+
+            if (_modules.Contains(module))
+                throw new ArgumentException("This module has already been added.", nameof(module));
+
+            if (rebuild)
+            {
+                if (module.Type == null)
+                    throw new InvalidOperationException("This module hasn't been built from a module builder.");
+
+                return await AddModuleAsync(module.Type);
+            }
+
+            else
+            {
+                try
+                {
+                    await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
+                    AddModuleInternal(module);
+                    return module;
+                }
+                finally
+                {
+                    _moduleSemaphore.Release();
+                }
+            }
+        }
+
+        /// <summary>
         ///     Attempts to add the specified <typeparamref name="TModule"/> type as a <see cref="Module"/>. 
         /// </summary>
         /// <typeparam name="TModule"> The type to add. </typeparam>
@@ -452,7 +494,7 @@ namespace Qmmands
         /// <exception cref="ArgumentException"> The module isn't held by this instance of <see cref="CommandService"/>. </exception>
         public async Task RemoveModuleAsync(Module module)
         {
-            if (module is null)
+            if (module == null)
                 throw new ArgumentNullException(nameof(module), "The module to remove mustn't be null.");
 
             if (!_modules.Contains(module))
@@ -626,6 +668,9 @@ namespace Qmmands
 
             if (rawArguments == null)
                 throw new ArgumentNullException(nameof(rawArguments), "The input mustn't be null.");
+
+            if (context is null)
+                throw new ArgumentNullException(nameof(context), "The context mustn't be null.");
 
             if (provider is null)
                 provider = EmptyServiceProvider.Instance;
