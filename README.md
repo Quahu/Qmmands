@@ -18,6 +18,21 @@ There's currently no official documentation for Qmmands other than the very bare
 
 ### Extremely basic usage example
 ```cs
+// CommandHandler.cs
+private readonly CommandService _service = new CommandService();
+
+// Imagine this being a message callback, whether it'd be from an IRC bot,
+// a Discord bot, or any other chat based commands bot.
+private async Task MessageReceivedAsync(Message message)
+{
+    if (!CommandUtilities.HasPrefix(message.Content, '!', false, out string output))
+        return;
+        
+    IResult result = await _service.ExecuteAsync(output, new CommandContext(message));
+    if (!result.IsSuccessful)
+        await message.Channel.SendMessageAsync((result as FailedResult).Reason); 
+}
+
 // CommandContext.cs
 public sealed class CommandContext : ICommandContext
 {
@@ -58,20 +73,5 @@ public sealed class CommandModule : ModuleBase<CommandContext>
     [Description("Echoes given text.")]
     public Task EchoAsync([Remainder] string text)
       => Context.Channel.SendMessageAsync(text);
-}
-
-// CommandHandler.cs
-private readonly CommandService _service = new CommandService();
-
-// Imagine this being a message callback, whether it'd be from an IRC bot,
-// a Discord bot, or any other chat based commands bot.
-private async Task MessageReceivedAsync(Message message)
-{
-    if (!CommandUtilities.HasPrefix(Message.Content, '!', false, out string output))
-        return;
-        
-    var result = await _service.ExecuteAsync(output, new CommandContext(message));
-    if (!result.IsSuccessful)
-        await message.Channel.SendMessageAsync((result as FailedResult).Reason); 
 }
 ```
