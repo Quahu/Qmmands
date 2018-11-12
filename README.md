@@ -12,11 +12,11 @@ There's currently no official documentation for Qmmands other than the very bare
 [![The Lab](https://discordapp.com/api/guilds/416256456505950215/embed.png?style=banner2)](https://discord.gg/eUMSXGZ)
 
 
-### Community example:
+### Community Examples:
 * [Kiritsu](https://github.com/Kiritsu)'s Discord bot: [FoxBot](https://github.com/Kiritsu/FoxBot) (DSharpPlus)
 * [popstars](https://github.com/popstars)' Discord bot: [Popstar](https://github.com/popstars/Popstar) (Discord.Net)
 
-### Extremely basic usage example
+### Extremely Basic Usage Example
 ```cs
 // CommandHandler.cs
 private readonly CommandService _service = new CommandService();
