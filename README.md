@@ -13,8 +13,8 @@ There's currently no official documentation for Qmmands other than the very bare
 
 
 ### Community example:
-* [Kiritsu](https://github.com/Kiritsu)'s Discord bot: [FoxBot](https://github.com/Kiritsu/FoxBot)
-
+* [Kiritsu](https://github.com/Kiritsu)'s Discord bot: [FoxBot](https://github.com/Kiritsu/FoxBot) (DSharpPlus)
+* [popstars](https://github.com/popstars)' Discord bot: [Popstar](https://github.com/popstars/Popstar) (Discord.Net)
 
 ### Extremely basic usage example
 ```cs
