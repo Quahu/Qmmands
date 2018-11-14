@@ -14,7 +14,7 @@ There's currently no official documentation for Qmmands other than the very bare
 
 ### Community Examples:
 * [Kiritsu](https://github.com/Kiritsu)'s Discord bot: [FoxBot](https://github.com/Kiritsu/FoxBot) (DSharpPlus)
-* [pyjamaclub](https://github.com/pyjamaclub)'s Discord bot: [Popstar](https://github.com/pyjamaclub/Popstar) (Discord.Net)
+* [pyjamaclub](https://github.com/pyjamaclub)'s Discord bot: [Pyjama Guardian](https://github.com/pyjamaclub/PyjamaGuardian) (Discord.Net)
 
 ### Extremely Basic Usage Example
 ```cs
