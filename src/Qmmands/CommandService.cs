@@ -89,6 +89,16 @@ namespace Qmmands
         }
         private readonly AsyncEvent<Func<ModuleBuilder, Task>> _moduleBuilding = new AsyncEvent<Func<ModuleBuilder, Task>>();
 
+        /// <summary>
+        ///     Fires when all non-user instantiated <see cref="ModuleBuilder"/> has been built into a <see cref="Module"/>.
+        /// </summary>
+        public event Func<Task> AllModulesBuilt
+        {
+            add => _allModulesBuilt.Hook(value);
+            remove => _allModulesBuilt.Unhook(value);
+        }
+        private readonly AsyncEvent<Func<Task>> _allModulesBuilt = new AsyncEvent<Func<Task>>();
+
         internal StringComparison StringComparison { get; }
 
         private readonly ConcurrentDictionary<Type, Dictionary<Type, (bool, ITypeParser)>> _parsers;
@@ -345,6 +355,7 @@ namespace Qmmands
                 modules.Add(await AddModuleAsync(typeInfo.AsType()).ConfigureAwait(false));
             }
 
+            await _allModulesBuilt.InvokeAsync().ConfigureAwait(false);
             return modules.AsReadOnly();
         }
 
