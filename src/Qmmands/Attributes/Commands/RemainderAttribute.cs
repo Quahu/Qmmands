@@ -12,6 +12,5 @@ namespace Qmmands
     /// </remarks>
     [AttributeUsage(AttributeTargets.Parameter)]
     public sealed class RemainderAttribute : Attribute
-    {
-    }
+    { }
 }

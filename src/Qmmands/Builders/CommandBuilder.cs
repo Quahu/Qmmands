@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Qmmands
 {
@@ -56,7 +57,7 @@ namespace Qmmands
         public CommandCallbackDelegate Callback { get; set; }
 
         /// <summary>
-        ///     Gets the <see cref="Qmmands.Cooldown"/>s of the <see cref="Command"/>.
+        ///     Gets the <see cref="Cooldown"/>s of the <see cref="Command"/>.
         /// </summary>
         public List<Cooldown> Cooldowns { get; }
 
@@ -174,14 +175,11 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Adds aliases to <see cref="Aliases"/>.
+        ///     Adds an alias to <see cref="Aliases"/>.
         /// </summary>
-        public CommandBuilder AddAliases(IEnumerable<string> aliases)
+        public CommandBuilder AddAlias(string alias)
         {
-            foreach (var alias in aliases)
-                if (!string.IsNullOrWhiteSpace(alias) && !Aliases.Contains(alias))
-                    Aliases.Add(alias.Trim());
-
+            Aliases.Add(alias);
             return this;
         }
 
@@ -190,10 +188,7 @@ namespace Qmmands
         /// </summary>
         public CommandBuilder AddAliases(params string[] aliases)
         {
-            for (var i = 0; i < aliases.Length; i++)
-                if (!string.IsNullOrWhiteSpace(aliases[i]) && !Aliases.Contains(aliases[i]))
-                    Aliases.Add(aliases[i].Trim());
-
+            Aliases.AddRange(aliases);
             return this;
         }
 
@@ -270,6 +265,12 @@ namespace Qmmands
 
             if (Callback is null)
                 throw new InvalidOperationException("Command's callback mustn't be null.");
+
+            var aliases = Aliases.ToImmutableArray();
+            Aliases.Clear();
+            for (var i = 0; i < aliases.Length; i++)
+                if (!string.IsNullOrWhiteSpace(aliases[i]) && !Aliases.Contains(aliases[i]))
+                    Aliases.Add(aliases[i].Trim());
 
             ParameterBuilder previous = null;
             for (var i = 0; i < Parameters.Count; i++)

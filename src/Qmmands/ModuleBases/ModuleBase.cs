@@ -17,18 +17,18 @@ namespace Qmmands
         /// <summary>
         ///     Fires before a <see cref="Command"/> in this <see cref="Module"/> is executed.
         /// </summary>
-        /// <param name="command"> The currently executed <see cref="Command"/>. </param>
+        /// <param name="command"> The about to be executed <see cref="Command"/>. </param>
         protected virtual Task BeforeExecutedAsync(Command command)
             => Task.CompletedTask;
 
         /// <summary>
         ///     Fires after a <see cref="Command"/> in this <see cref="Module"/> is executed.
         /// </summary>
-        /// <param name="command"> The currently executed <see cref="Command"/>. </param>
+        /// <param name="command"> The executed <see cref="Command"/>. </param>
         protected virtual Task AfterExecutedAsync(Command command)
             => Task.CompletedTask;
 
-        internal void Prepare(ICommandContext context) 
+        internal void Prepare(ICommandContext context)
             => Context = context as TContext ?? throw new InvalidOperationException($"Unable to set the context. Expected {typeof(TContext).Name}, got {context.GetType().Name}.");
 
         Task IModuleBase.BeforeExecutedAsync(Command command)

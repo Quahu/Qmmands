@@ -643,7 +643,9 @@ namespace Qmmands
         /// <param name="context"> The <see cref="ICommandContext"/> to use during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns> An <see cref="IResult"/>. </returns>
-        /// <exception cref="ArgumentNullException"> The input mustn't be null. </exception>
+        /// <exception cref="ArgumentNullException"> The command mustn't be null. </exception>
+        /// <exception cref="ArgumentNullException"> The raw arguments mustn't be null. </exception>
+        /// <exception cref="ArgumentNullException"> The context mustn't be null. </exception>
         public async Task<IResult> ExecuteAsync(Command command, string rawArguments, ICommandContext context, IServiceProvider provider = null)
         {
             if (command == null)

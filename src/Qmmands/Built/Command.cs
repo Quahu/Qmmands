@@ -47,7 +47,7 @@ namespace Qmmands
         public CommandCallbackDelegate Callback { get; }
 
         /// <summary>
-        ///     Gets the <see cref="Qmmands.Cooldown"/>s of this <see cref="Command"/>.
+        ///     Gets the <see cref="Cooldown"/>s of this <see cref="Command"/>.
         /// </summary>
         public IReadOnlyList<Cooldown> Cooldowns { get; }
 
@@ -101,7 +101,7 @@ namespace Qmmands
             Cooldowns = builder.Cooldowns.OrderBy(x => x.Amount).ToImmutableArray();
             Aliases = builder.Aliases.ToImmutableArray();
 
-            var fullAliases = new List<string>();
+            var fullAliases = ImmutableArray.CreateBuilder<string>();
             if (Module.FullAliases.Count == 0)
                 fullAliases.AddRange(Aliases);
 
@@ -114,7 +114,7 @@ namespace Qmmands
                     for (var j = 0; j < Aliases.Count; j++)
                         fullAliases.Add(string.Concat(Module.FullAliases[i], Service.Separator, Aliases[j]));
             }
-            FullAliases = fullAliases.ToImmutableArray();
+            FullAliases = fullAliases.ToImmutable();
 
             Name = builder.Name ?? (FullAliases.Count > 0 ? FullAliases[0] : null);
 
@@ -127,10 +127,10 @@ namespace Qmmands
             Checks = builder.Checks.ToImmutableArray();
             Attributes = builder.Attributes.ToImmutableArray();
 
-            var parameters = new List<Parameter>();
+            var parameters = ImmutableArray.CreateBuilder<Parameter>();
             for (var i = 0; i < builder.Parameters.Count; i++)
                 parameters.Add(builder.Parameters[i].Build(this));
-            Parameters = parameters.ToImmutableArray();
+            Parameters = parameters.ToImmutable();
 
             if (Cooldowns.Count != 0)
             {
@@ -176,7 +176,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Resets all <see cref="Qmmands.Cooldown"/> buckets on this <see cref="Command"/>.
+        ///     Resets all <see cref="Cooldown"/> buckets on this <see cref="Command"/>.
         /// </summary>
         public void ResetCooldowns()
         {
@@ -187,7 +187,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Resets the <see cref="Qmmands.Cooldown"/> bucket with a key generated from the provided
+        ///     Resets the <see cref="Cooldown"/> bucket with a key generated from the provided
         ///     <see cref="ICommandContext"/> and <see cref="IServiceProvider"/> on this <see cref="Command"/>.
         /// </summary>
         /// <param name="cooldown"> The <see cref="Cooldown"/> to reset. </param>
@@ -202,7 +202,7 @@ namespace Qmmands
                 provider = EmptyServiceProvider.Instance;
 
             var bucket = CooldownMap.GetBucket(cooldown, context, provider);
-            bucket.Reset();
+            bucket?.Reset();
         }
 
 
@@ -214,17 +214,20 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="SuccessfulResult"/> if no buckets are ratelimited, otherwise a <see cref="CommandOnCooldownResult"/>.
         /// </returns>
-        public IResult RunCooldowns(ICommandContext context, IServiceProvider provider)
+        public IResult RunCooldowns(ICommandContext context, IServiceProvider provider = null)
         {
             if (CooldownMap != null)
             {
+                if (provider is null)
+                    provider = EmptyServiceProvider.Instance;
+
                 CooldownMap.Update();
                 var buckets = Cooldowns.Select(x => CooldownMap.GetBucket(x, context, provider)).ToImmutableArray();
                 var rateLimited = new List<(Cooldown, TimeSpan)>(buckets.Length);
                 for (var i = 0; i < buckets.Length; i++)
                 {
                     var bucket = buckets[i];
-                    if (bucket.IsRateLimited(out var retryAfter))
+                    if (bucket != null && bucket.IsRateLimited(out var retryAfter))
                         rateLimited.Add((bucket.Cooldown, retryAfter));
                 }
 
@@ -232,17 +235,32 @@ namespace Qmmands
                     return new CommandOnCooldownResult(this, rateLimited.ToImmutableArray());
 
                 for (var i = 0; i < buckets.Length; i++)
-                    buckets[i].Decrement();
+                    buckets[i]?.Decrement();
             }
 
             return new SuccessfulResult();
         }
 
+
         /// <summary>
-        ///     Returns this <see cref="Command"/>'s name or calls <see cref="object.ToString"/> if the name is null.
+        ///     Attempts to parse the raw arguments for this <see cref="Command"/> and execute it.
+        ///     Short for <see cref="CommandService.ExecuteAsync(Command, string, ICommandContext, IServiceProvider)"/>
+        /// </summary>
+        /// <param name="rawArguments"> The raw arguments to use for this command's parameters. </param>
+        /// <param name="context"> The <see cref="ICommandContext"/> to use during execution. </param>
+        /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
+        /// <returns> An <see cref="IResult"/>. </returns>
+        /// <exception cref="ArgumentNullException"> The command mustn't be null. </exception>
+        /// <exception cref="ArgumentNullException"> The raw arguments mustn't be null. </exception>
+        /// <exception cref="ArgumentNullException"> The context mustn't be null. </exception>
+        public Task<IResult> ExecuteAsync(string rawArguments, ICommandContext context, IServiceProvider provider = null)
+            => Service.ExecuteAsync(this, rawArguments, context, provider);
+
+        /// <summary>
+        ///     Returns <see cref="Name"/> or calls <see cref="object.ToString"/> if it's <see langword="null"/>.
         /// </summary>
         /// <returns>
-        ///     A <see cref="string"/> representing this command.
+        ///     A <see cref="string"/> representing this <see cref="Command"/>.
         /// </returns>
         public override string ToString()
             => Name ?? base.ToString();

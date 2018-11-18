@@ -94,7 +94,7 @@ namespace Qmmands
             IgnoreExtraArguments = builder.IgnoreExtraArguments ?? Parent?.IgnoreExtraArguments ?? Service.IgnoreExtraArguments;
             Aliases = builder.Aliases.ToImmutableArray();
 
-            var fullAliases = new List<string>();
+            var fullAliases = ImmutableArray.CreateBuilder<string>();
             if (Parent is null || Parent.FullAliases.Count == 0)
                 fullAliases.AddRange(Aliases);
 
@@ -107,7 +107,7 @@ namespace Qmmands
                     for (var j = 0; j < Aliases.Count; j++)
                         fullAliases.Add(string.Concat(Parent.FullAliases[i], Service.Separator, Aliases[j]));
             }
-            FullAliases = fullAliases.ToImmutableArray();
+            FullAliases = fullAliases.ToImmutable();
 
             Name = builder.Name ?? Type?.Name;
 
@@ -116,15 +116,15 @@ namespace Qmmands
             Checks = builder.Checks.ToImmutableArray();
             Attributes = builder.Attributes.ToImmutableArray();
 
-            var modules = new List<Module>(builder.Submodules.Count);
+            var modules = ImmutableArray.CreateBuilder<Module>(builder.Submodules.Count);
             for (var i = 0; i < builder.Submodules.Count; i++)
                 modules.Add(builder.Submodules[i].Build(Service, this));
-            Submodules = modules.ToImmutableArray();
+            Submodules = modules.ToImmutable();
 
-            var commands = new List<Command>(builder.Commands.Count);
+            var commands = ImmutableArray.CreateBuilder<Command>(builder.Commands.Count);
             for (var i = 0; i < builder.Commands.Count; i++)
                 commands.Add(builder.Commands[i].Build(this));
-            Commands = commands.ToImmutableArray();
+            Commands = commands.ToImmutable();
         }
 
         /// <summary>
@@ -165,10 +165,10 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Returns this <see cref="Module"/>'s name or calls <see cref="object.ToString"/> if the name is null.
+        ///     Returns <see cref="Name"/> or calls <see cref="object.ToString"/> if it's <see langword="null"/>.
         /// </summary>
         /// <returns>
-        ///     A <see cref="string"/> representing this command.
+        ///     A <see cref="string"/> representing this <see cref="Module"/>.
         /// </returns>
         public override string ToString()
             => Name ?? base.ToString();

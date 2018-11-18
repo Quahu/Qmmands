@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Qmmands
 {
@@ -133,14 +134,11 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Adds aliases to <see cref="Aliases"/>.
+        ///     Adds an alias to <see cref="Aliases"/>.
         /// </summary>
-        public ModuleBuilder AddAliases(IEnumerable<string> aliases)
+        public ModuleBuilder AddAlias(string alias)
         {
-            foreach (var alias in aliases)
-                if (!string.IsNullOrWhiteSpace(alias) && !Aliases.Contains(alias))
-                    Aliases.Add(alias.Trim());
-
+            Aliases.Add(alias);
             return this;
         }
 
@@ -149,10 +147,7 @@ namespace Qmmands
         /// </summary>
         public ModuleBuilder AddAliases(params string[] aliases)
         {
-            for (var i = 0; i < aliases.Length; i++)
-                if (!string.IsNullOrWhiteSpace(aliases[i]) && !Aliases.Contains(aliases[i]))
-                    Aliases.Add(aliases[i].Trim());
-
+            Aliases.AddRange(aliases);
             return this;
         }
 
@@ -253,6 +248,14 @@ namespace Qmmands
         }
 
         internal Module Build(CommandService service, Module parent)
-            => new Module(service, this, parent);
+        {
+            var aliases = Aliases.ToImmutableArray();
+            Aliases.Clear();
+            for (var i = 0; i < aliases.Length; i++)
+                if (!string.IsNullOrWhiteSpace(aliases[i]) && !Aliases.Contains(aliases[i]))
+                    Aliases.Add(aliases[i].Trim());
+
+            return new Module(service, this, parent);
+        }
     }
 }

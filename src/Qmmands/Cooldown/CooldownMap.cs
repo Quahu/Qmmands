@@ -32,7 +32,7 @@ namespace Qmmands
         {
             var key = _generator.GenerateBucketKey(_command, cooldown.BucketType, context, provider);
             if (key is null)
-                throw new InvalidOperationException("The generated cooldown key mustn't be null.");
+                return null;
 
             return Buckets.GetOrAdd(key, new CooldownBucket(cooldown));
         }
