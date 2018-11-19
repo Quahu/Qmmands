@@ -268,6 +268,86 @@ namespace Qmmands
                 yield return command.Checks[i];
         }
 
+        /// <summary>
+        ///     Recursively gets all of the <see cref="Command"/>s in the specified <see cref="Module"/> and its submodules.
+        /// </summary>
+        /// <returns> An enumerator of all <see cref="Command"/>s. </returns>
+        public static IEnumerable<Command> GetAllCommands(Module module)
+        {
+            IEnumerable<Command> GetCommands(Module rModule)
+            {
+                for (var i = 0; i < rModule.Commands.Count; i++)
+                    yield return rModule.Commands[i];
+
+                for (var i = 0; i < rModule.Submodules.Count; i++)
+                    foreach (var command in GetCommands(rModule.Submodules[i]))
+                        yield return command;
+            }
+
+            foreach (var command in GetCommands(module))
+                yield return command;
+        }
+
+        /// <summary>
+        ///     Recursively gets all of the <see cref="CommandBuilder"/>s in the specified <see cref="ModuleBuilder"/> and its submodules.
+        /// </summary>
+        /// <returns> An enumerator of all <see cref="CommandBuilder"/>s. </returns>
+        public static IEnumerable<CommandBuilder> GetAllCommands(ModuleBuilder moduleBuilder)
+        {
+            IEnumerable<CommandBuilder> GetCommands(ModuleBuilder rModuleBuilder)
+            {
+                for (var i = 0; i < rModuleBuilder.Commands.Count; i++)
+                    yield return rModuleBuilder.Commands[i];
+
+                for (var i = 0; i < rModuleBuilder.Submodules.Count; i++)
+                    foreach (var command in GetCommands(rModuleBuilder.Submodules[i]))
+                        yield return command;
+            }
+
+            foreach (var command in GetCommands(moduleBuilder))
+                yield return command;
+        }
+
+        /// <summary>
+        ///     Recursively gets all of the submodules in the specified <see cref="Module"/> and its submodules.
+        /// </summary>
+        /// <returns> An enumerator of all <see cref="Module"/>s. </returns>
+        public static IEnumerable<Module> GetAllSubmodules(Module module)
+        {
+            IEnumerable<Module> GetModules(Module rModule)
+            {
+                for (var i = 0; i < rModule.Submodules.Count; i++)
+                    yield return rModule.Submodules[i];
+
+                for (var i = 0; i < rModule.Submodules.Count; i++)
+                    foreach (var command in GetModules(rModule.Submodules[i]))
+                        yield return command;
+            }
+
+            foreach (var submodule in GetModules(module))
+                yield return submodule;
+        }
+
+        /// <summary>
+        ///     Recursively gets all of the submodules in the specified <see cref="ModuleBuilder"/> and its submodules.
+        /// </summary>
+        /// <returns> An enumerator of all <see cref="ModuleBuilder"/>s. </returns>
+        public static IEnumerable<ModuleBuilder> GetAllSubmodules(ModuleBuilder moduleBuilder)
+        {
+            IEnumerable<ModuleBuilder> GetModules(ModuleBuilder rModuleBuilder)
+            {
+                for (var i = 0; i < rModuleBuilder.Submodules.Count; i++)
+                    yield return rModuleBuilder.Submodules[i];
+
+                for (var i = 0; i < rModuleBuilder.Submodules.Count; i++)
+                    foreach (var command in GetModules(rModuleBuilder.Submodules[i]))
+                        yield return command;
+            }
+
+            foreach (var submodule in GetModules(moduleBuilder))
+                yield return submodule;
+        }
+
         static CommandUtilities()
         {
             var quoteMapBuilder = ImmutableDictionary.CreateBuilder<char, char>();
