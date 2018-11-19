@@ -25,9 +25,9 @@ namespace Qmmands
 
         public static bool IsValidCommandDefinition(MethodInfo methodInfo)
             => methodInfo.IsPublic && methodInfo.GetCustomAttribute<CommandAttribute>() != null
-               && methodInfo.ReturnType == _taskTypeInfo || (methodInfo.ReturnType.IsConstructedGenericType
+               && (methodInfo.ReturnType == _taskTypeInfo || (methodInfo.ReturnType.IsConstructedGenericType
                                                              && methodInfo.ReturnType.GenericTypeArguments.Length == 1
-                                                             && _commandResultTypeInfo.IsAssignableFrom(methodInfo.ReturnType.GenericTypeArguments[0]));
+                                                             && _commandResultTypeInfo.IsAssignableFrom(methodInfo.ReturnType.GenericTypeArguments[0])));
 
         public static bool IsValidParserDefinition(Type typeInfo, Type parameterType)
             => _typeParserTypeInfo.IsAssignableFrom(typeInfo) && !typeInfo.IsAbstract && typeInfo.BaseType.GetGenericArguments().Any(x => x == parameterType);
