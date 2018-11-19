@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -116,7 +117,7 @@ namespace Qmmands
             SeparatorRequirement = configuration.SeparatorRequirement;
             ParameterParser = configuration.ArgumentParser;
             CooldownBucketKeyGenerator = configuration.CooldownBucketKeyGenerator;
-            QuoteMap = configuration.QuoteMap.ToImmutableDictionary();
+            QuoteMap = new ReadOnlyDictionary<char, char>(configuration.QuoteMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
             NullableNouns = configuration.NullableNouns.ToImmutableArray();
 
             StringComparison = CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;

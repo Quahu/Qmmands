@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 
 namespace Qmmands
 {
@@ -350,74 +351,75 @@ namespace Qmmands
 
         static CommandUtilities()
         {
-            var quoteMapBuilder = ImmutableDictionary.CreateBuilder<char, char>();
-            quoteMapBuilder['"'] = '"';
-            quoteMapBuilder['«'] = '»';
-            quoteMapBuilder['‘'] = '’';
-            quoteMapBuilder['“'] = '”';
-            quoteMapBuilder['„'] = '‟';
-            quoteMapBuilder['‹'] = '›';
-            quoteMapBuilder['‚'] = '‛';
-            quoteMapBuilder['《'] = '》';
-            quoteMapBuilder['〈'] = '〉';
-            quoteMapBuilder['「'] = '」';
-            quoteMapBuilder['『'] = '』';
-            quoteMapBuilder['〝'] = '〞';
-            quoteMapBuilder['﹁'] = '﹂';
-            quoteMapBuilder['﹃'] = '﹄';
-            quoteMapBuilder['＂'] = '＂';
-            quoteMapBuilder['＇'] = '＇';
-            quoteMapBuilder['｢'] = '｣';
-            quoteMapBuilder['('] = ')';
-            quoteMapBuilder['༺'] = '༻';
-            quoteMapBuilder['༼'] = '༽';
-            quoteMapBuilder['᚛'] = '᚜';
-            quoteMapBuilder['⁅'] = '⁆';
-            quoteMapBuilder['⌈'] = '⌉';
-            quoteMapBuilder['⌊'] = '⌋';
-            quoteMapBuilder['❨'] = '❩';
-            quoteMapBuilder['❪'] = '❫';
-            quoteMapBuilder['❬'] = '❭';
-            quoteMapBuilder['❮'] = '❯';
-            quoteMapBuilder['❰'] = '❱';
-            quoteMapBuilder['❲'] = '❳';
-            quoteMapBuilder['❴'] = '❵';
-            quoteMapBuilder['⟅'] = '⟆';
-            quoteMapBuilder['⟦'] = '⟧';
-            quoteMapBuilder['⟨'] = '⟩';
-            quoteMapBuilder['⟪'] = '⟫';
-            quoteMapBuilder['⟬'] = '⟭';
-            quoteMapBuilder['⟮'] = '⟯';
-            quoteMapBuilder['⦃'] = '⦄';
-            quoteMapBuilder['⦅'] = '⦆';
-            quoteMapBuilder['⦇'] = '⦈';
-            quoteMapBuilder['⦉'] = '⦊';
-            quoteMapBuilder['⦋'] = '⦌';
-            quoteMapBuilder['⦍'] = '⦎';
-            quoteMapBuilder['⦏'] = '⦐';
-            quoteMapBuilder['⦑'] = '⦒';
-            quoteMapBuilder['⦓'] = '⦔';
-            quoteMapBuilder['⦕'] = '⦖';
-            quoteMapBuilder['⦗'] = '⦘';
-            quoteMapBuilder['⧘'] = '⧙';
-            quoteMapBuilder['⧚'] = '⧛';
-            quoteMapBuilder['⧼'] = '⧽';
-            quoteMapBuilder['⸂'] = '⸃';
-            quoteMapBuilder['⸄'] = '⸅';
-            quoteMapBuilder['⸉'] = '⸊';
-            quoteMapBuilder['⸌'] = '⸍';
-            quoteMapBuilder['⸜'] = '⸝';
-            quoteMapBuilder['⸠'] = '⸡';
-            quoteMapBuilder['⸢'] = '⸣';
-            quoteMapBuilder['⸤'] = '⸥';
-            quoteMapBuilder['⸦'] = '⸧';
-            quoteMapBuilder['⸨'] = '⸩';
-            quoteMapBuilder['【'] = '】';
-            quoteMapBuilder['〔'] = '〕';
-            quoteMapBuilder['〖'] = '〗';
-            quoteMapBuilder['〘'] = '〙';
-            quoteMapBuilder['〚'] = '〛';
-            DefaultQuoteMap = quoteMapBuilder.ToImmutable();
+            DefaultQuoteMap = new ReadOnlyDictionary<char, char>(new Dictionary<char, char>
+            {
+                ['"'] = '"',
+                ['«'] = '»',
+                ['‘'] = '’',
+                ['“'] = '”',
+                ['„'] = '‟',
+                ['‹'] = '›',
+                ['‚'] = '‛',
+                ['《'] = '》',
+                ['〈'] = '〉',
+                ['「'] = '」',
+                ['『'] = '』',
+                ['〝'] = '〞',
+                ['﹁'] = '﹂',
+                ['﹃'] = '﹄',
+                ['＂'] = '＂',
+                ['＇'] = '＇',
+                ['｢'] = '｣',
+                ['('] = ')',
+                ['༺'] = '༻',
+                ['༼'] = '༽',
+                ['᚛'] = '᚜',
+                ['⁅'] = '⁆',
+                ['⌈'] = '⌉',
+                ['⌊'] = '⌋',
+                ['❨'] = '❩',
+                ['❪'] = '❫',
+                ['❬'] = '❭',
+                ['❮'] = '❯',
+                ['❰'] = '❱',
+                ['❲'] = '❳',
+                ['❴'] = '❵',
+                ['⟅'] = '⟆',
+                ['⟦'] = '⟧',
+                ['⟨'] = '⟩',
+                ['⟪'] = '⟫',
+                ['⟬'] = '⟭',
+                ['⟮'] = '⟯',
+                ['⦃'] = '⦄',
+                ['⦅'] = '⦆',
+                ['⦇'] = '⦈',
+                ['⦉'] = '⦊',
+                ['⦋'] = '⦌',
+                ['⦍'] = '⦎',
+                ['⦏'] = '⦐',
+                ['⦑'] = '⦒',
+                ['⦓'] = '⦔',
+                ['⦕'] = '⦖',
+                ['⦗'] = '⦘',
+                ['⧘'] = '⧙',
+                ['⧚'] = '⧛',
+                ['⧼'] = '⧽',
+                ['⸂'] = '⸃',
+                ['⸄'] = '⸅',
+                ['⸉'] = '⸊',
+                ['⸌'] = '⸍',
+                ['⸜'] = '⸝',
+                ['⸠'] = '⸡',
+                ['⸢'] = '⸣',
+                ['⸤'] = '⸥',
+                ['⸦'] = '⸧',
+                ['⸨'] = '⸩',
+                ['【'] = '】',
+                ['〔'] = '〕',
+                ['〖'] = '〗',
+                ['〘'] = '〙',
+                ['〚'] = '〛'
+            });
 
             var nullableNounsBuilder = ImmutableArray.CreateBuilder<string>();
             nullableNounsBuilder.Add("null");
