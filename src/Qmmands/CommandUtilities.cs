@@ -20,8 +20,19 @@ namespace Qmmands
         public static IReadOnlyList<string> DefaultNullableNouns { get; }
 
         /// <summary>
-        ///     Checks if the provided <see cref="string"/> starts with any of the specified <see cref="char"/> prefixes.
-        ///     If it does, returns <see langword="true"/> and the trimmed <paramref name="output"/> <see cref="string"/>.
+        ///     Checks if the provided <see cref="string"/> starts with the specified <see cref="char"/> prefix.
+        ///     If it does, returns <see langword="true"/> and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="string"/> to check. </param>
+        /// <param name="prefix"> The <see cref="char"/> prefix to check for. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        public static bool HasPrefix(string input, char prefix, out string output)
+            => HasPrefix(input, prefix, false, out output);
+
+        /// <summary>
+        ///     Checks if the provided <see cref="string"/> starts with the specified <see cref="char"/> prefix.
+        ///     If it does, returns <see langword="true"/> and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefix"> The <see cref="char"/> prefix to check for. </param>
@@ -41,9 +52,20 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Checks if the provided <see cref="string"/> starts with the specified <see cref="char"/> prefix.
-        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/> <see cref="char"/>,
-        ///     and the trimmed <paramref name="output"/> <see cref="string"/>.
+        ///     Checks if the provided <see cref="string"/> starts with any of the specified <see cref="char"/> prefixes.
+        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="string"/> to check. </param>
+        /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
+        /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix wasn't found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        public static bool HasAnyPrefix(string input, IReadOnlyList<char> prefixes, out char prefix, out string output)
+            => HasAnyPrefix(input, prefixes, false, out prefix, out output);
+
+        /// <summary>
+        ///     Checks if the provided <see cref="string"/> starts with any of the specified <see cref="char"/> prefixes.
+        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
@@ -69,9 +91,20 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Checks if the provided <see cref="string"/> starts with the specified <see cref="char"/> prefix.
-        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/> <see cref="char"/>,
-        ///     and the trimmed <paramref name="output"/> <see cref="string"/>.
+        ///     Checks if the provided <see cref="string"/> starts with any of the specified <see cref="char"/> prefixes.
+        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="string"/> to check. </param>
+        /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
+        /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix wasn't found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        public static bool HasAnyPrefix(string input, IEnumerable<char> prefixes, out char prefix, out string output)
+            => HasAnyPrefix(input, prefixes, false, out prefix, out output);
+
+        /// <summary>
+        ///     Checks if the provided <see cref="string"/> starts with any of the specified <see cref="char"/> prefixes.
+        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
@@ -97,7 +130,18 @@ namespace Qmmands
 
         /// <summary>
         ///     Checks if the provided <see cref="string"/> starts with the specified <see cref="string"/> prefix.
-        ///     If it does, returns <see langword="true"/> and the trimmed <paramref name="output"/> <see cref="string"/>.
+        ///     If it does, returns <see langword="true"/> and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="string"/> to check. </param>
+        /// <param name="prefix"> The <see cref="string"/> prefix to check for. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        public static bool HasPrefix(string input, string prefix, out string output)
+            => HasPrefix(input, prefix, StringComparison.Ordinal, out output);
+
+        /// <summary>
+        ///     Checks if the provided <see cref="string"/> starts with the specified <see cref="string"/> prefix.
+        ///     If it does, returns <see langword="true"/> and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefix"> The <see cref="string"/> prefix to check for. </param>
@@ -118,8 +162,19 @@ namespace Qmmands
 
         /// <summary>
         ///     Checks if the provided <see cref="string"/> starts with any of the specified <see cref="string"/> prefixes.
-        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/> <see cref="string"/>,
-        ///     and the trimmed <paramref name="output"/> <see cref="string"/>.
+        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="string"/> to check. </param>
+        /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>
+        /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix isn't found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        public static bool HasAnyPrefix(string input, IReadOnlyList<string> prefixes, out string prefix, out string output)
+            => HasAnyPrefix(input, prefixes, StringComparison.Ordinal, out prefix, out output);
+
+        /// <summary>
+        ///     Checks if the provided <see cref="string"/> starts with any of the specified <see cref="string"/> prefixes.
+        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>
@@ -146,8 +201,19 @@ namespace Qmmands
 
         /// <summary>
         ///     Checks if the provided <see cref="string"/> starts with any of the specified <see cref="string"/> prefixes.
-        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/> <see cref="string"/>,
-        ///     and the trimmed <paramref name="output"/> <see cref="string"/>.
+        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="string"/> to check. </param>
+        /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>
+        /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix isn't found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        public static bool HasAnyPrefix(string input, IEnumerable<string> prefixes, out string prefix, out string output)
+            => HasAnyPrefix(input, prefixes, StringComparison.Ordinal, out prefix, out output);
+
+        /// <summary>
+        ///     Checks if the provided <see cref="string"/> starts with any of the specified <see cref="string"/> prefixes.
+        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>

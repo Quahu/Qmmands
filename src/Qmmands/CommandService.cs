@@ -541,6 +541,7 @@ namespace Qmmands
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns> An <see cref="IResult"/>. </returns>
         /// <exception cref="ArgumentNullException"> The input mustn't be null. </exception>
+        /// <exception cref="ArgumentNullException"> The context mustn't be null. </exception>
         public async Task<IResult> ExecuteAsync(string input, ICommandContext context, IServiceProvider provider = null)
         {
             if (input == null)
@@ -731,7 +732,7 @@ namespace Qmmands
             foreach (var kvp in parseResult.Arguments)
             {
                 var parameter = kvp.Key;
-                if (kvp.Value is List<string> multipleArguments)
+                if (kvp.Value is IReadOnlyList<string> multipleArguments)
                 {
                     var array = Array.CreateInstance(parameter.Type, multipleArguments.Count);
                     for (var i = 0; i < multipleArguments.Count; i++)
