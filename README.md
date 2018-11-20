@@ -6,6 +6,8 @@ An asynchronous .NET Standard 2.0 command framework no one asked for.
 [![MyGet](https://img.shields.io/myget/qmmands/vpre/Qmmands.svg?style=flat-square&label=myget)](https://www.myget.org/gallery/qmmands)
 [![The Lab](https://img.shields.io/discord/416256456505950215.svg?style=flat-square&label=Discord)](https://discord.gg/eUMSXGZ)
 
+Inspired by [Discord.Net.Commands](https://github.com/RogueException/Discord.Net/tree/dev/src/Discord.Net.Commands) and [DSharpPlus.CommandsNext](https://github.com/DSharpPlus/DSharpPlus/tree/master/DSharpPlus.CommandsNext).
+
 Qmmands can be pulled from NuGet. For nightly builds add `https://www.myget.org/F/qmmands/api/v3/index.json` (the nightly feed) to your project's package sources.
 
 ## Documentation
