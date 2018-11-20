@@ -6,6 +6,8 @@ An asynchronous .NET Standard 2.0 command framework no one asked for.
 [![MyGet](https://img.shields.io/myget/qmmands/vpre/Qmmands.svg?style=flat-square&label=myget)](https://www.myget.org/gallery/qmmands)
 [![The Lab](https://img.shields.io/discord/416256456505950215.svg?style=flat-square&label=Discord)](https://discord.gg/eUMSXGZ)
 
+Qmmands can be pulled from NuGet. For nightly builds add `https://www.myget.org/F/qmmands/api/v3/index.json` (the nightly feed) to your project's package sources.
+
 ## Documentation
 There's currently no official documentation for Qmmands other than the very barebones example at the bottom and the bundled XML docstrings. For support you should hop in my Discord guild:
 
@@ -25,7 +27,7 @@ private readonly CommandService _service = new CommandService();
 // a Discord bot, or any other chat based commands bot.
 private async Task MessageReceivedAsync(Message message)
 {
-    if (!CommandUtilities.HasPrefix(message.Content, '!', false, out string output))
+    if (!CommandUtilities.HasPrefix(message.Content, '!', out string output))
         return;
         
     IResult result = await _service.ExecuteAsync(output, new CommandContext(message));
