@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -53,7 +54,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the quotation mark map used for non-remainder multi word arguments.
         /// </summary>
-        public IReadOnlyDictionary<char, char> QuoteMap { get; }
+        public IReadOnlyDictionary<char, char> QuotationMarkMap { get; }
 
         /// <summary>
         ///     Gets the collection of nouns used for nullable value type parsing.
@@ -65,30 +66,69 @@ namespace Qmmands
         /// </summary>
         public event Func<Command, CommandResult, ICommandContext, IServiceProvider, Task> CommandExecuted
         {
-            add => _commandExecuted.Hook(value);
-            remove => _commandExecuted.Unhook(value);
+            add
+            {
+                lock (_handlerLock)
+                    CommandExecutedHandlers = CommandExecutedHandlers.Add(value);
+            }
+            remove
+            {
+                lock (_handlerLock)
+                    CommandExecutedHandlers = CommandExecutedHandlers.Remove(value);
+            }
         }
-        private readonly AsyncEvent<Func<Command, CommandResult, ICommandContext, IServiceProvider, Task>> _commandExecuted = new AsyncEvent<Func<Command, CommandResult, ICommandContext, IServiceProvider, Task>>();
+
+        /// <summary>
+        ///     Gets the <see cref="CommandExecuted"/> event handlers.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public ImmutableArray<Func<Command, CommandResult, ICommandContext, IServiceProvider, Task>> CommandExecutedHandlers { get; private set; } = ImmutableArray<Func<Command, CommandResult, ICommandContext, IServiceProvider, Task>>.Empty;
 
         /// <summary>
         ///     Fires when a command fails to execute. Use this to handle <see cref="RunMode.Parallel"/> commands.
         /// </summary>
         public event Func<ExecutionFailedResult, ICommandContext, IServiceProvider, Task> CommandErrored
         {
-            add => _commandErrored.Hook(value);
-            remove => _commandErrored.Unhook(value);
+            add
+            {
+                lock (_handlerLock)
+                    CommandErroredHandlers = CommandErroredHandlers.Add(value);
+            }
+            remove
+            {
+                lock (_handlerLock)
+                    CommandErroredHandlers = CommandErroredHandlers.Remove(value);
+            }
         }
-        private readonly AsyncEvent<Func<ExecutionFailedResult, ICommandContext, IServiceProvider, Task>> _commandErrored = new AsyncEvent<Func<ExecutionFailedResult, ICommandContext, IServiceProvider, Task>>();
+
+        /// <summary>
+        ///     Gets the <see cref="CommandErroredHandlers"/> event handlers.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public ImmutableArray<Func<ExecutionFailedResult, ICommandContext, IServiceProvider, Task>> CommandErroredHandlers { get; private set; } = ImmutableArray<Func<ExecutionFailedResult, ICommandContext, IServiceProvider, Task>>.Empty;
 
         /// <summary>
         ///     Fires when a non-user instantiated <see cref="ModuleBuilder"/> is about to be built into a <see cref="Module"/>.
         /// </summary>
         public event Func<ModuleBuilder, Task> ModuleBuilding
         {
-            add => _moduleBuilding.Hook(value);
-            remove => _moduleBuilding.Unhook(value);
+            add
+            {
+                lock (_handlerLock)
+                    ModuleBuildingHandlers = ModuleBuildingHandlers.Add(value);
+            }
+            remove
+            {
+                lock (_handlerLock)
+                    ModuleBuildingHandlers = ModuleBuildingHandlers.Add(value);
+            }
         }
-        private readonly AsyncEvent<Func<ModuleBuilder, Task>> _moduleBuilding = new AsyncEvent<Func<ModuleBuilder, Task>>();
+
+        /// <summary>
+        ///     Gets the <see cref="ModuleBuilding"/> event handlers.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public ImmutableArray<Func<ModuleBuilder, Task>> ModuleBuildingHandlers { get; private set; } = ImmutableArray<Func<ModuleBuilder, Task>>.Empty;
 
         internal StringComparison StringComparison { get; }
 
@@ -99,6 +139,7 @@ namespace Qmmands
         private readonly CommandMap _map;
         private static readonly Type _stringType = typeof(string);
         private readonly SemaphoreSlim _moduleSemaphore = new SemaphoreSlim(1, 1);
+        private readonly object _handlerLock = new object();
 
         /// <summary>
         ///     Initialises a new <see cref="CommandService"/> with the specified <see cref="CommandServiceConfiguration"/>.
@@ -117,7 +158,7 @@ namespace Qmmands
             SeparatorRequirement = configuration.SeparatorRequirement;
             ParameterParser = configuration.ArgumentParser;
             CooldownBucketKeyGenerator = configuration.CooldownBucketKeyGenerator;
-            QuoteMap = new ReadOnlyDictionary<char, char>(configuration.QuoteMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+            QuotationMarkMap = new ReadOnlyDictionary<char, char>(configuration.QuoteMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
             NullableNouns = configuration.NullableNouns.ToImmutableArray();
 
             StringComparison = CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
@@ -197,7 +238,6 @@ namespace Qmmands
         public IEnumerable<CommandMatch> FindCommands(string path)
             => _map.FindCommands(path).OrderByDescending(x => x.Path.Count)
                 .ThenByDescending(x => x.Command.Priority)
-                .ThenByDescending(x => x.Alias.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length) // a bad solution to bad people using whitespace in aliases
                 .ThenByDescending(x => x.Command.Parameters.Count);
 
         /// <summary>
@@ -206,8 +246,7 @@ namespace Qmmands
         /// <param name="path"> The path to use for searching. </param>
         /// <returns> An ordered enumerable of <see cref="ModuleMatch"/>es. </returns>
         public IEnumerable<ModuleMatch> FindModules(string path)
-            => _map.FindModules(path).OrderByDescending(x => x.Path.Count)
-                .ThenByDescending(x => x.Alias.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length); // the same bad solution to bad people using whitespace in aliases
+            => _map.FindModules(path).OrderByDescending(x => x.Path.Count);
 
         /// <summary>
         ///     Adds a <see cref="TypeParser{T}"/> for the specified <typeparamref name="T"/> type.
@@ -236,9 +275,9 @@ namespace Qmmands
         {
             _parsers.AddOrUpdate(type,
             new Dictionary<Type, (bool, ITypeParser)> { [parser.GetType()] = (replacePrimitive, parser) },
-            (k, v) =>
+            (_, v) =>
             {
-                v.Add(k, (replacePrimitive, parser));
+                v.Add(parser.GetType(), (replacePrimitive, parser));
                 return v;
             });
             if (type.IsValueType)
@@ -246,9 +285,9 @@ namespace Qmmands
                 var nullableParser = TypeParserUtils.CreateNullableTypeParser(type, this, parser);
                 _parsers.AddOrUpdate(ReflectionUtilities.MakeNullable(type),
                     new Dictionary<Type, (bool, ITypeParser)> { [nullableParser.GetType()] = (replacePrimitive, nullableParser) },
-                    (k, v) =>
+                    (_, v) =>
                     {
-                        v.Add(k, (replacePrimitive, nullableParser));
+                        v.Add(nullableParser.GetType(), (replacePrimitive, nullableParser));
                         return v;
                     });
             }
@@ -441,7 +480,7 @@ namespace Qmmands
             {
                 await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
                 var moduleBuilder = ReflectionUtilities.BuildModule(type.GetTypeInfo());
-                await _moduleBuilding.InvokeAsync(moduleBuilder).ConfigureAwait(false);
+                await InvokeModuleBuildingHandlersAsync(moduleBuilder).ConfigureAwait(false);
                 var module = moduleBuilder.Build(this, null);
                 AddModuleInternal(module);
                 return module;
@@ -576,7 +615,7 @@ namespace Qmmands
                 catch (Exception ex)
                 {
                     var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.Checks, ex);
-                    await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+                    await InvokeCommandErroredHandlersAsync(executionFailedResult, context, provider).ConfigureAwait(false);
                     return executionFailedResult;
                 }
 
@@ -593,14 +632,14 @@ namespace Qmmands
                 catch (Exception ex)
                 {
                     var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.ArgumentParsing, ex);
-                    await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+                    await InvokeCommandErroredHandlersAsync(executionFailedResult, context, provider).ConfigureAwait(false);
                     return executionFailedResult;
                 }
 
                 object[] parsedArguments = null;
                 try
                 {
-                    var result = await CreateArgumentsAsync(parseResult, context, provider);
+                    var result = await CreateArgumentsAsync(parseResult, context, provider).ConfigureAwait(false);
                     if (result.FailedResult != null)
                     {
                         failedOverloads.Add(match.Command, result.FailedResult);
@@ -612,7 +651,7 @@ namespace Qmmands
                 catch (Exception ex)
                 {
                     var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.TypeParsing, ex);
-                    await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+                    await InvokeCommandErroredHandlersAsync(executionFailedResult, context, provider).ConfigureAwait(false);
                     return executionFailedResult;
                 }
 
@@ -671,7 +710,7 @@ namespace Qmmands
             catch (Exception ex)
             {
                 var executionFailedResult = new ExecutionFailedResult(command, CommandExecutionStep.Checks, ex);
-                await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+                await InvokeCommandErroredHandlersAsync(executionFailedResult, context, provider).ConfigureAwait(false);
                 return executionFailedResult;
             }
 
@@ -685,14 +724,14 @@ namespace Qmmands
             catch (Exception ex)
             {
                 var executionFailedResult = new ExecutionFailedResult(command, CommandExecutionStep.ArgumentParsing, ex);
-                await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+                await InvokeCommandErroredHandlersAsync(executionFailedResult, context, provider).ConfigureAwait(false);
                 return executionFailedResult;
             }
 
             object[] parsedArguments = null;
             try
             {
-                var result = await CreateArgumentsAsync(parseResult, context, provider);
+                var result = await CreateArgumentsAsync(parseResult, context, provider).ConfigureAwait(false);
                 if (result.FailedResult != null)
                     return result.FailedResult;
 
@@ -701,7 +740,7 @@ namespace Qmmands
             catch (Exception ex)
             {
                 var executionFailedResult = new ExecutionFailedResult(command, CommandExecutionStep.TypeParsing, ex);
-                await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+                await InvokeCommandErroredHandlersAsync(executionFailedResult, context, provider).ConfigureAwait(false);
                 return executionFailedResult;
             }
 
@@ -715,7 +754,7 @@ namespace Qmmands
                     return await ExecuteInternalAsync(command, context, provider, parsedArguments).ConfigureAwait(false);
 
                 case RunMode.Parallel:
-                    _ = Task.Run(() => ExecuteInternalAsync(command, context, provider, parsedArguments).ConfigureAwait(false));
+                    _ = Task.Run(() => ExecuteInternalAsync(command, context, provider, parsedArguments));
                     return new SuccessfulResult();
 
                 default:
@@ -825,18 +864,62 @@ namespace Qmmands
             {
                 var result = await command.Callback(command, arguments, context, provider).ConfigureAwait(false);
                 if (result is ExecutionFailedResult executionFailedResult)
-                    await _commandErrored.InvokeAsync(executionFailedResult, context, provider);
+                    await InvokeCommandErroredHandlersAsync(executionFailedResult, context, provider).ConfigureAwait(false);
 
                 else
-                    await _commandExecuted.InvokeAsync(command, result as CommandResult, context, provider).ConfigureAwait(false);
+                {
+                    if (result is CommandResult commandResult)
+                        commandResult.Command = command;
+
+                    await InvokeCommandExecutedHandlersAsync(command, result as CommandResult, context, provider).ConfigureAwait(false);
+                }
 
                 return result;
             }
             catch (Exception ex)
             {
                 var result = new ExecutionFailedResult(command, CommandExecutionStep.Command, ex);
-                await _commandErrored.InvokeAsync(result, context, provider).ConfigureAwait(false);
+                await InvokeCommandErroredHandlersAsync(result, context, provider).ConfigureAwait(false);
                 return result;
+            }
+        }
+
+        private async Task InvokeCommandExecutedHandlersAsync(Command command, CommandResult result, ICommandContext context, IServiceProvider provider)
+        {
+            var handlers = CommandExecutedHandlers;
+            for (var i = 0; i < handlers.Length; i++)
+            {
+                try
+                {
+                    await handlers[i].Invoke(command, result, context, provider).ConfigureAwait(false);
+                }
+                catch { }
+            }
+        }
+
+        private async Task InvokeCommandErroredHandlersAsync(ExecutionFailedResult result, ICommandContext context, IServiceProvider provider)
+        {
+            var handlers = CommandErroredHandlers;
+            for (var i = 0; i < handlers.Length; i++)
+            {
+                try
+                {
+                    await handlers[i].Invoke(result, context, provider).ConfigureAwait(false);
+                }
+                catch { }
+            }
+        }
+
+        private async Task InvokeModuleBuildingHandlersAsync(ModuleBuilder builder)
+        {
+            var handlers = ModuleBuildingHandlers;
+            for (var i = 0; i < handlers.Length; i++)
+            {
+                try
+                {
+                    await handlers[i].Invoke(builder).ConfigureAwait(false);
+                }
+                catch { }
             }
         }
     }

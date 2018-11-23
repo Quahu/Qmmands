@@ -252,8 +252,22 @@ namespace Qmmands
             var aliases = Aliases.ToImmutableArray();
             Aliases.Clear();
             for (var i = 0; i < aliases.Length; i++)
-                if (!string.IsNullOrWhiteSpace(aliases[i]) && !Aliases.Contains(aliases[i]))
-                    Aliases.Add(aliases[i].Trim());
+            {
+                var alias = aliases[i];
+                if (alias == null)
+                    continue;
+
+                if (!Aliases.Contains(aliases[i]))
+                {
+                    if (alias.IndexOf(' ') != -1)
+                        throw new InvalidOperationException("Command's aliases mustn't contain whitespace.");
+
+                    if (alias.IndexOf(service.Separator) != -1)
+                        throw new InvalidOperationException("Command's aliases mustn't contain the separator.");
+
+                    Aliases.Add(alias.Trim());
+                }
+            }
 
             return new Module(service, this, parent);
         }

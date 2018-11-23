@@ -13,12 +13,12 @@ namespace Qmmands
         /// <summary>
         ///     Represents a map of various quotation marks.
         /// </summary>
-        public static IReadOnlyDictionary<char, char> DefaultQuoteMap { get; }
+        public static readonly IReadOnlyDictionary<char, char> DefaultQuotationMarkMap;
 
         /// <summary>
         ///     Represents a collection of nouns to use for nullable value type parsing.
         /// </summary>
-        public static IReadOnlyList<string> DefaultNullableNouns { get; }
+        public static readonly IReadOnlyList<string> DefaultNullableNouns;
 
         /// <summary>
         ///     Checks if the provided <see cref="string"/> starts with the specified <see cref="char"/> prefix.
@@ -351,80 +351,19 @@ namespace Qmmands
 
         static CommandUtilities()
         {
-            DefaultQuoteMap = new ReadOnlyDictionary<char, char>(new Dictionary<char, char>
+            DefaultQuotationMarkMap = new ReadOnlyDictionary<char, char>(new Dictionary<char, char>
             {
                 ['"'] = '"',
-                ['«'] = '»',
-                ['‘'] = '’',
                 ['“'] = '”',
-                ['„'] = '‟',
-                ['‹'] = '›',
-                ['‚'] = '‛',
-                ['《'] = '》',
-                ['〈'] = '〉',
-                ['「'] = '」',
-                ['『'] = '』',
-                ['〝'] = '〞',
-                ['﹁'] = '﹂',
-                ['﹃'] = '﹄',
-                ['＂'] = '＂',
-                ['＇'] = '＇',
-                ['｢'] = '｣',
-                ['('] = ')',
-                ['༺'] = '༻',
-                ['༼'] = '༽',
-                ['᚛'] = '᚜',
-                ['⁅'] = '⁆',
-                ['⌈'] = '⌉',
-                ['⌊'] = '⌋',
-                ['❨'] = '❩',
-                ['❪'] = '❫',
-                ['❬'] = '❭',
-                ['❮'] = '❯',
-                ['❰'] = '❱',
-                ['❲'] = '❳',
-                ['❴'] = '❵',
-                ['⟅'] = '⟆',
-                ['⟦'] = '⟧',
-                ['⟨'] = '⟩',
-                ['⟪'] = '⟫',
-                ['⟬'] = '⟭',
-                ['⟮'] = '⟯',
-                ['⦃'] = '⦄',
-                ['⦅'] = '⦆',
-                ['⦇'] = '⦈',
-                ['⦉'] = '⦊',
-                ['⦋'] = '⦌',
-                ['⦍'] = '⦎',
-                ['⦏'] = '⦐',
-                ['⦑'] = '⦒',
-                ['⦓'] = '⦔',
-                ['⦕'] = '⦖',
-                ['⦗'] = '⦘',
-                ['⧘'] = '⧙',
-                ['⧚'] = '⧛',
-                ['⧼'] = '⧽',
-                ['⸂'] = '⸃',
-                ['⸄'] = '⸅',
-                ['⸉'] = '⸊',
-                ['⸌'] = '⸍',
-                ['⸜'] = '⸝',
-                ['⸠'] = '⸡',
-                ['⸢'] = '⸣',
-                ['⸤'] = '⸥',
-                ['⸦'] = '⸧',
-                ['⸨'] = '⸩',
-                ['【'] = '】',
-                ['〔'] = '〕',
-                ['〖'] = '〗',
-                ['〘'] = '〙',
-                ['〚'] = '〛'
+                ['„'] = '‟'
             });
 
             var nullableNounsBuilder = ImmutableArray.CreateBuilder<string>();
-            nullableNounsBuilder.Add("null");
+            nullableNounsBuilder.Add("nil");
             nullableNounsBuilder.Add("none");
             nullableNounsBuilder.Add("nothing");
+            nullableNounsBuilder.Add("null");
+            nullableNounsBuilder.Add("undefined");
             DefaultNullableNouns = nullableNounsBuilder.ToImmutable();
         }
     }

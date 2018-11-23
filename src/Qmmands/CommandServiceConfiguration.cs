@@ -81,10 +81,10 @@ namespace Qmmands
         /// </summary>
         public ICooldownBucketKeyGenerator CooldownBucketKeyGenerator { get; set; } = null;
 
-        private IReadOnlyDictionary<char, char> _quoteMap = CommandUtilities.DefaultQuoteMap;
+        private IReadOnlyDictionary<char, char> _quoteMap = CommandUtilities.DefaultQuotationMarkMap;
 
         /// <summary>
-        ///     Gets or sets the quotation mark map. Defaults to <see cref="CommandUtilities.DefaultQuoteMap"/>.
+        ///     Gets or sets the quotation mark map. Defaults to <see cref="CommandUtilities.DefaultQuotationMarkMap"/>.
         /// </summary>
         public IReadOnlyDictionary<char, char> QuoteMap
         {

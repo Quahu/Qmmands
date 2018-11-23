@@ -322,24 +322,25 @@ namespace Qmmands
                         });
 
                     await task.ConfigureAwait(false);
-                    var result = resultFunc(task);
-                    if (result is CommandResult commandResult)
-                        commandResult.Command = command;
-
-                    return result;
+                    return resultFunc(task);
                 }
                 finally
                 {
-                    if (executeAfter)
-                        await instance.AfterExecutedAsync(command).ConfigureAwait(false);
-
-                    if (instance is IDisposable disposable)
+                    try
                     {
-                        try
+                        if (executeAfter)
+                            await instance.AfterExecutedAsync(command).ConfigureAwait(false);
+                    }
+                    finally
+                    {
+                        if (instance is IDisposable disposable)
                         {
-                            disposable.Dispose();
+                            try
+                            {
+                                disposable.Dispose();
+                            }
+                            catch { }
                         }
-                        catch { }
                     }
                 }
             };

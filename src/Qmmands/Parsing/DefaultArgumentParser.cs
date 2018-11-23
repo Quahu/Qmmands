@@ -48,7 +48,7 @@ namespace Qmmands
                     }
 
                     else if (currentPosition != 0 && !whitespaceSeparated)
-                        return new ParseResult(command, null, rawArguments, arguments, command.Service.QuoteMap.TryGetValue(character, out expectedQuote) && rawArguments.IndexOf(expectedQuote, currentPosition + 1) == -1 ? ParseFailure.UnexpectedQuote : ParseFailure.NoWhitespaceBetweenArguments, currentPosition);
+                        return new ParseResult(command, null, rawArguments, arguments, command.Service.QuotationMarkMap.TryGetValue(character, out expectedQuote) && rawArguments.IndexOf(expectedQuote, currentPosition + 1) == -1 ? ParseFailure.UnexpectedQuote : ParseFailure.NoWhitespaceBetweenArguments, currentPosition);
 
                     else
                     {
@@ -92,13 +92,13 @@ namespace Qmmands
                         continue;
                     }
 
-                    if (character == '\\' && currentPosition + 1 < rawArguments.Length && command.Service.QuoteMap.ContainsKey(rawArguments[currentPosition + 1]))
+                    if (character == '\\' && currentPosition + 1 < rawArguments.Length && command.Service.QuotationMarkMap.ContainsKey(rawArguments[currentPosition + 1]))
                     {
                         isEscaping = true;
                         continue;
                     }
 
-                    if (command.Service.QuoteMap.TryGetValue(character, out expectedQuote))
+                    if (command.Service.QuotationMarkMap.TryGetValue(character, out expectedQuote))
                     {
                         if (currentPosition != 0 && !whitespaceSeparated)
                             return new ParseResult(command, currentParameter, rawArguments, arguments, rawArguments.IndexOf(expectedQuote, currentPosition + 1) == -1 ? ParseFailure.UnexpectedQuote : ParseFailure.NoWhitespaceBetweenArguments, currentPosition);
