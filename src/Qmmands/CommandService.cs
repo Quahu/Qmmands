@@ -262,9 +262,6 @@ namespace Qmmands
                 throw new ArgumentNullException(nameof(parser), "The type parser to add mustn't be null.");
 
             var type = typeof(T);
-            if (type.IsEnum)
-                throw new ArgumentException("Cannot add custom enum type parsers.", nameof(T));
-
             if (ReflectionUtilities.IsNullable(type))
                 throw new ArgumentException("Cannot add custom nullable type parsers.", nameof(T));
 
