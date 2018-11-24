@@ -200,7 +200,7 @@ namespace Qmmands
                         builder.WithIsRemainder(true);
                         break;
 
-                    case OverwriteTypeParserAttribute overwriteTypeParserAttribute:
+                    case OverrideTypeParserAttribute overwriteTypeParserAttribute:
                         builder.CustomTypeParserType = overwriteTypeParserAttribute.CustomTypeParserType;
                         break;
 
