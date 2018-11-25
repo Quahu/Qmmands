@@ -168,11 +168,11 @@ namespace Qmmands
             _map = new CommandMap(this);
             _parsers = new ConcurrentDictionary<Type, Dictionary<Type, (bool, ITypeParser)>>();
             _primitiveParsers = new ConcurrentDictionary<Type, IPrimitiveTypeParser>();
-            foreach (var type in TypeParserUtils.TryParseDelegates.Keys)
+            foreach (var type in ReflectionUtilities.TryParseDelegates.Keys)
             {
-                var primitiveTypeParser = TypeParserUtils.CreatePrimitiveTypeParser(type);
+                var primitiveTypeParser = ReflectionUtilities.CreatePrimitiveTypeParser(type);
                 _primitiveParsers.TryAdd(type, primitiveTypeParser);
-                _primitiveParsers.TryAdd(ReflectionUtilities.MakeNullable(type), TypeParserUtils.CreateNullablePrimitiveTypeParser(type, primitiveTypeParser));
+                _primitiveParsers.TryAdd(ReflectionUtilities.MakeNullable(type), ReflectionUtilities.CreateNullablePrimitiveTypeParser(type, primitiveTypeParser));
             }
         }
 
@@ -279,7 +279,7 @@ namespace Qmmands
             });
             if (type.IsValueType)
             {
-                var nullableParser = TypeParserUtils.CreateNullableTypeParser(type, this, parser);
+                var nullableParser = ReflectionUtilities.CreateNullableTypeParser(type, this, parser);
                 _parsers.AddOrUpdate(ReflectionUtilities.MakeNullable(type),
                     new Dictionary<Type, (bool, ITypeParser)> { [nullableParser.GetType()] = (replacePrimitive, nullableParser) },
                     (_, v) =>
@@ -350,9 +350,9 @@ namespace Qmmands
 
             if (type.IsEnum)
             {
-                var enumParser = TypeParserUtils.CreateEnumTypeParser(type.GetEnumUnderlyingType(), type, !CaseSensitive);
+                var enumParser = ReflectionUtilities.CreateEnumTypeParser(type.GetEnumUnderlyingType(), type, !CaseSensitive);
                 _primitiveParsers.TryAdd(type, enumParser);
-                _primitiveParsers.TryAdd(ReflectionUtilities.MakeNullable(type), TypeParserUtils.CreateNullableEnumTypeParser(type.GetEnumUnderlyingType(), enumParser));
+                _primitiveParsers.TryAdd(ReflectionUtilities.MakeNullable(type), ReflectionUtilities.CreateNullableEnumTypeParser(type.GetEnumUnderlyingType(), enumParser));
                 return enumParser;
             }
 
@@ -847,10 +847,10 @@ namespace Qmmands
 
             var type = Nullable.GetUnderlyingType(parameter.Type);
             var friendlyName = type == null
-                ? TypeParserUtils.FriendlyTypeNames.TryGetValue(parameter.Type, out var name)
+                ? ReflectionUtilities.FriendlyTypeNames.TryGetValue(parameter.Type, out var name)
                     ? name
                     : parameter.Type.Name
-                : TypeParserUtils.FriendlyTypeNames.TryGetValue(type, out name)
+                : ReflectionUtilities.FriendlyTypeNames.TryGetValue(type, out name)
                     ? $"nullable {name}"
                     : $"nullable {type.Name}";
 

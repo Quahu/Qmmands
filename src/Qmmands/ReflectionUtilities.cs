@@ -274,7 +274,7 @@ namespace Qmmands
 
                 do
                 {
-                    foreach (var property in typeInfo .DeclaredProperties)
+                    foreach (var property in typeInfo.DeclaredProperties)
                     {
                         if (property.SetMethod != null && !property.SetMethod.IsStatic && property.SetMethod.IsPublic && property.GetCustomAttribute<DontAutoInjectAttribute>() == null)
                             property.SetValue(instance, GetDependency(provider, property.PropertyType));
@@ -340,6 +340,62 @@ namespace Qmmands
                         }
                     }
                 }
+            };
+        }
+
+        public static IReadOnlyDictionary<Type, Delegate> TryParseDelegates { get; }
+
+        public static IReadOnlyDictionary<Type, string> FriendlyTypeNames { get; }
+
+        public static IPrimitiveTypeParser CreatePrimitiveTypeParser(Type type)
+            => Activator.CreateInstance(typeof(PrimitiveTypeParser<>).MakeGenericType(type)) as IPrimitiveTypeParser;
+
+        public static IPrimitiveTypeParser CreateEnumTypeParser(Type type, Type enumType, bool ignoreCase)
+            => typeof(EnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new object[] { enumType, ignoreCase }) as IPrimitiveTypeParser;
+
+        public static IPrimitiveTypeParser CreateNullableEnumTypeParser(Type type, IPrimitiveTypeParser enumTypeParser)
+            => typeof(NullableEnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new[] { enumTypeParser }) as IPrimitiveTypeParser;
+
+        public static IPrimitiveTypeParser CreateNullablePrimitiveTypeParser(Type type, IPrimitiveTypeParser primitiveTypeParser)
+            => typeof(NullablePrimitiveTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new[] { primitiveTypeParser }) as IPrimitiveTypeParser;
+
+        public static ITypeParser CreateNullableTypeParser(Type nullableType, CommandService service, ITypeParser typeParser)
+            => typeof(NullableTypeParser<>).MakeGenericType(nullableType).GetConstructors()[0].Invoke(new object[] { service, typeParser }) as ITypeParser;
+
+        static ReflectionUtilities()
+        {
+            TryParseDelegates = new Dictionary<Type, Delegate>
+            {
+                [typeof(char)] = (TryParseDelegate<char>) char.TryParse,
+                [typeof(bool)] = (TryParseDelegate<bool>) bool.TryParse,
+                [typeof(byte)] = (TryParseDelegate<byte>) byte.TryParse,
+                [typeof(sbyte)] = (TryParseDelegate<sbyte>) sbyte.TryParse,
+                [typeof(short)] = (TryParseDelegate<short>) short.TryParse,
+                [typeof(ushort)] = (TryParseDelegate<ushort>) ushort.TryParse,
+                [typeof(int)] = (TryParseDelegate<int>) int.TryParse,
+                [typeof(uint)] = (TryParseDelegate<uint>) uint.TryParse,
+                [typeof(long)] = (TryParseDelegate<long>) long.TryParse,
+                [typeof(ulong)] = (TryParseDelegate<ulong>) ulong.TryParse,
+                [typeof(float)] = (TryParseDelegate<float>) float.TryParse,
+                [typeof(double)] = (TryParseDelegate<double>) double.TryParse,
+                [typeof(decimal)] = (TryParseDelegate<decimal>) decimal.TryParse
+            };
+
+            FriendlyTypeNames = new Dictionary<Type, string>
+            {
+                [typeof(char)] = "char",
+                [typeof(bool)] = "bool",
+                [typeof(byte)] = "byte",
+                [typeof(sbyte)] = "signed byte",
+                [typeof(short)] = "short",
+                [typeof(ushort)] = "unsigned short",
+                [typeof(int)] = "int",
+                [typeof(uint)] = "unsigned int",
+                [typeof(long)] = "long",
+                [typeof(ulong)] = "unsigned long",
+                [typeof(float)] = "float",
+                [typeof(double)] = "double",
+                [typeof(decimal)] = "decimal"
             };
         }
     }

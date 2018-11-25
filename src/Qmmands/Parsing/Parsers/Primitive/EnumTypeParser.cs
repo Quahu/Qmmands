@@ -11,7 +11,7 @@ namespace Qmmands
 
         public EnumTypeParser(Type enumType, bool ignoreCase)
         {
-            _tryParse = (TryParseDelegate<T>) TypeParserUtils.TryParseDelegates[typeof(T)];
+            _tryParse = (TryParseDelegate<T>) ReflectionUtilities.TryParseDelegates[typeof(T)];
             _enumByNames = new Dictionary<string, object>(ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
             _enumByValues = new Dictionary<T, object>();
 

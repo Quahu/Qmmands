@@ -7,7 +7,7 @@
         private readonly TryParseDelegate<T> _tryParse;
 
         public PrimitiveTypeParser()
-            => _tryParse = (TryParseDelegate<T>) TypeParserUtils.TryParseDelegates[typeof(T)];
+            => _tryParse = (TryParseDelegate<T>) ReflectionUtilities.TryParseDelegates[typeof(T)];
 
         public bool TryParse(string values, out T result)
             => _tryParse(values, out result);
