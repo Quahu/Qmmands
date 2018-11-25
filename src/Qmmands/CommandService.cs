@@ -822,7 +822,7 @@ namespace Qmmands
 
                 var typeParserResult = await customParser.ParseAsync(value, context, provider).ConfigureAwait(false);
                 if (!typeParserResult.IsSuccessful)
-                    return (new TypeParserFailedResult(parameter, value, typeParserResult.Error), default);
+                    return (new TypeParserFailedResult(parameter, value, typeParserResult.Reason), default);
 
                 return (null, typeParserResult.HasValue ? typeParserResult.Value : null);
             }
@@ -832,7 +832,7 @@ namespace Qmmands
             {
                 var typeParserResult = await parser.ParseAsync(value, context, provider).ConfigureAwait(false);
                 if (!typeParserResult.IsSuccessful)
-                    return (new TypeParserFailedResult(parameter, value, typeParserResult.Error), default);
+                    return (new TypeParserFailedResult(parameter, value, typeParserResult.Reason), default);
 
                 return (null, typeParserResult.HasValue ? typeParserResult.Value : null);
             }

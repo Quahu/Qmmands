@@ -7,12 +7,12 @@
     public sealed class TypeParserResult<T> : IResult
     {
         /// <inheritdoc />
-        public bool IsSuccessful => Error == null;
+        public bool IsSuccessful => Reason == null;
 
         /// <summary>
         ///     Gets the error reason. Null if <see cref="IsSuccessful"/> is <see langword="true"/>.
         /// </summary>
-        public string Error { get; }
+        public string Reason { get; }
 
         /// <summary>
         ///     Gets whether this result has a parsed value or not.
@@ -27,14 +27,14 @@
         /// <summary>
         ///     Initialises a new <see cref="TypeParserResult{T}"/> with the specified error reason.
         /// </summary>
-        /// <param name="error"> The error reason. </param>
-        public TypeParserResult(string error)
-            => Error = error;
+        /// <param name="reason"> The error reason. </param>
+        public TypeParserResult(string reason)
+            => Reason = reason;
 
         /// <summary>
-        ///     Initialises a new <see cref="TypeParserResult{T}"/> with the specified value.
+        ///     Initialises a new <see cref="TypeParserResult{T}"/> with the specified parsed value.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value"> The parsed value. </param>
         public TypeParserResult(T value)
         {
             HasValue = true;
@@ -43,5 +43,21 @@
 
         internal TypeParserResult(bool hasValue)
             => HasValue = hasValue;
+
+        /// <summary>
+        ///     Initialises a new successful <see cref="TypeParserResult{T}"/> with the specified parsed value.
+        /// </summary>
+        /// <param name="value"> The parsed value. </param>
+        /// <returns> A <see cref="TypeParserResult{T}"/>. </returns>
+        public static TypeParserResult<T> Successful(T value)
+            => new TypeParserResult<T>(value);
+
+        /// <summary>
+        ///     Initialises a new unsuccessful <see cref="TypeParserResult{T}"/> with the specified error reason.
+        /// </summary>
+        /// <param name="reason"> The error reason. </param>
+        /// <returns> A <see cref="TypeParserResult{T}"/>. </returns>
+        public static TypeParserResult<T> Unsuccesful(string reason)
+            => new TypeParserResult<T>(reason);
     }
 }

@@ -25,7 +25,7 @@ namespace Qmmands
                 ? result.HasValue
                     ? new TypeParserResult<object>(result.Value)
                     : new TypeParserResult<object>(false)
-                : new TypeParserResult<object>(result.Error);
+                : new TypeParserResult<object>(result.Reason);
         }
     }
 }

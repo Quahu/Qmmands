@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -172,7 +172,7 @@ namespace Qmmands
         private async Task<(CheckBaseAttribute Check, string Error)> RunCheckAsync(CheckBaseAttribute check, ICommandContext context, IServiceProvider provider)
         {
             var checkResult = await check.CheckAsync(context, provider).ConfigureAwait(false);
-            return (check, checkResult.Error);
+            return (check, checkResult.Reason);
         }
 
         /// <summary>
