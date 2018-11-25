@@ -20,7 +20,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the <see cref="Cooldown"/>s and <see cref="TimeSpan"/>s after which it's safe to retry.
         /// </summary>
-        public IReadOnlyList<(Cooldown Cooldown, TimeSpan RetryAfter)> Cooldowns { get; set; }
+        public IReadOnlyList<(Cooldown Cooldown, TimeSpan RetryAfter)> Cooldowns { get; }
 
         internal CommandOnCooldownResult(Command command, IReadOnlyList<(Cooldown Cooldown, TimeSpan RetryAfter)> cooldowns)
         {
