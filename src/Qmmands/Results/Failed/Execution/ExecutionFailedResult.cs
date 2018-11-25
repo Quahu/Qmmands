@@ -46,7 +46,11 @@ namespace Qmmands
                     break;
 
                 case CommandExecutionStep.TypeParsing:
-                    Reason = $"An exception occurred while type parsing arguments for {command}.";
+                    Reason = $"An exception occurred while type parsing arguments for {Command}.";
+                    break;
+
+                case CommandExecutionStep.BeforeExecuted:
+                    Reason = $"An exception occurred while calling before executed for {Command}.";
                     break;
 
                 case CommandExecutionStep.Command:

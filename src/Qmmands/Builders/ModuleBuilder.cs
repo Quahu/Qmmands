@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
@@ -260,10 +260,10 @@ namespace Qmmands
                 if (!Aliases.Contains(aliases[i]))
                 {
                     if (alias.IndexOf(' ') != -1)
-                        throw new InvalidOperationException("Command's aliases mustn't contain whitespace.");
+                        throw new InvalidOperationException($"Command's aliases mustn't contain whitespace. ({alias})");
 
                     if (alias.IndexOf(service.Separator) != -1)
-                        throw new InvalidOperationException("Command's aliases mustn't contain the separator.");
+                        throw new InvalidOperationException($"Command's aliases mustn't contain the separator. ({alias})");
 
                     Aliases.Add(alias.Trim());
                 }

@@ -71,7 +71,7 @@ namespace Qmmands
                     break;
 
                 case ParseFailure.TooManyArguments:
-                    Reason = $"{Command} doesn't take this many arguments.";
+                    Reason = "Too many arguments provided.";
                     break;
             }
         }

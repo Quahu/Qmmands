@@ -29,14 +29,14 @@ namespace Qmmands
         {
             Command = command;
             FailedChecks = failedChecks;
-            Reason = $"One or more checks failed for the command '{Command.Name}'.";
+            Reason = $"{(FailedChecks.Count == 1 ? "One check" : "Multiple checks")} failed for the command '{Command}'.";
         }
 
         internal ChecksFailedResult(Module module, IReadOnlyList<(CheckBaseAttribute Check, string Error)> failedChecks)
         {
             Module = module;
             FailedChecks = failedChecks;
-            Reason = $"One or more checks failed for the module '{Module.Name}'.";
+            Reason = $"{(FailedChecks.Count == 1 ? "One check" : "Multiple checks")} failed for the module '{Module}'.";
         }
     }
 }
