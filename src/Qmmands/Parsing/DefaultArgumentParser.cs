@@ -1,11 +1,22 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
 namespace Qmmands
 {
-    internal sealed class DefaultArgumentParser : IArgumentParser
+    /// <summary>
+    ///     The default argument parser used by the <see cref="CommandService"/>.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public sealed class DefaultArgumentParser : IArgumentParser
     {
+        /// <summary>
+        ///     Attempts to parse raw arguments for the specified command.
+        /// </summary>
+        /// <param name="command"> The <see cref="Command"/> to parse raw arguments for. </param>
+        /// <param name="rawArguments"> The raw arguments. </param>
+        /// <returns> A <see cref="ParseResult"/>. </returns>
         public ParseResult ParseRawArguments(Command command, string rawArguments)
         {
             Parameter currentParameter = null;
