@@ -12,7 +12,7 @@ namespace Qmmands
         ///     Gets or sets the <see cref="bool"/> which determines whether the commands should
         ///     be case sensitive or not. Defaults to <see langword="false"/>.
         /// </summary>
-        public bool CaseSensitive { get; set; } = false;
+        public bool CaseSensitive { get; set; }
 
         private RunMode _defaultRunMode = RunMode.Sequential;
 
@@ -36,15 +36,13 @@ namespace Qmmands
         ///     Gets or sets the <see cref="bool"/> which determines whether the extra arguments
         ///     provided should be ignored. Defaults to <see langword="false"/>.
         /// </summary>
-        public bool IgnoreExtraArguments { get; set; } = false;
+        public bool IgnoreExtraArguments { get; set; }
 
         /// <summary>
         ///     Gets or sets the <see cref="string"/> separator to use between groups and commands.
-        ///     Defaults to a single whitespace character.
+        ///     Defaults to a single whitespace.
         /// </summary>
         public string Separator { get; set; } = " ";
-
-        private SeparatorRequirement _separatorRequirement = SeparatorRequirement.Separator;
 
         /// <summary>
         ///     Gets or sets the <see cref="Qmmands.SeparatorRequirement"/> for group and command pathing.
@@ -64,45 +62,30 @@ namespace Qmmands
                 _separatorRequirement = value;
             }
         }
-
-        private IArgumentParser _argumentParser = new DefaultArgumentParser();
-
-        /// <summary>
-        ///     Gets or sets the raw argument parser. Defaults to <see cref="DefaultArgumentParser"/>.
-        /// </summary>
-        public IArgumentParser ArgumentParser
-        {
-            get => _argumentParser;
-            set => _argumentParser = value ?? throw new ArgumentNullException(nameof(value));
-        }
+        private SeparatorRequirement _separatorRequirement = SeparatorRequirement.Separator;
 
         /// <summary>
-        ///     The generator to use for <see cref="Cooldown"/> bucket keys. Defaults to <see langword="null"/>
+        ///     Gets or sets the raw argument parser.
+        ///     If <see langword="null"/>, will default to <see cref="DefaultArgumentParser"/>.
         /// </summary>
-        public ICooldownBucketKeyGenerator CooldownBucketKeyGenerator { get; set; } = null;
-
-        private IReadOnlyDictionary<char, char> _quoteMap = CommandUtilities.DefaultQuotationMarkMap;
+        public IArgumentParser ArgumentParser { get; set; }
 
         /// <summary>
-        ///     Gets or sets the quotation mark map. Defaults to <see cref="CommandUtilities.DefaultQuotationMarkMap"/>.
+        ///     The generator to use for <see cref="Cooldown"/> bucket keys. Defaults to <see langword="null"/>.
         /// </summary>
-        public IReadOnlyDictionary<char, char> QuoteMap
-        {
-            get => _quoteMap;
-            set => _quoteMap = value ?? throw new ArgumentNullException(nameof(value));
-        }
+        public ICooldownBucketKeyGenerator CooldownBucketKeyGenerator { get; set; }
 
-        private IReadOnlyList<string> _nullableNouns = CommandUtilities.DefaultNullableNouns;
+        /// <summary>
+        ///     Gets or sets the quotation mark map.
+        ///     If <see langword="null"/>, will default to <see cref="CommandUtilities.DefaultQuotationMarkMap"/>.
+        /// </summary>
+        public IReadOnlyDictionary<char, char> QuoteMap { get; set; }
 
         /// <summary>
         ///     Gets or sets the collection of nouns to use for nullable value type parsing.
-        ///     Defaults to <see cref="CommandUtilities.DefaultNullableNouns"/>.
+        ///     If <see langword="null"/>, will default to <see cref="CommandUtilities.DefaultNullableNouns"/>.
         /// </summary>
-        public IReadOnlyList<string> NullableNouns
-        {
-            get => _nullableNouns;
-            set => _nullableNouns = value ?? throw new ArgumentNullException(nameof(value));
-        }
+        public IReadOnlyList<string> NullableNouns { get; set; }
 
         /// <summary>
         ///     Initialises a new <see cref="CommandServiceConfiguration"/>.

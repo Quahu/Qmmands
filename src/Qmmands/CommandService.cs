@@ -17,12 +17,12 @@ namespace Qmmands
     public sealed class CommandService
     {
         /// <summary>
-        ///     Gets whether <see cref="FindCommands"/> and enum type parsers are case sensitive or not.
+        ///     Gets whether <see cref="FindCommands"/> and primitive <see langword="enum"/> type parsers are case sensitive or not.
         /// </summary>
         public bool CaseSensitive { get; }
 
         /// <summary>
-        ///     Gets the default <see cref="RunMode"/> for commands.
+        ///     Gets the default <see cref="RunMode"/> for commands and modules.
         /// </summary>
         public RunMode DefaultRunMode { get; }
 
@@ -42,9 +42,9 @@ namespace Qmmands
         public SeparatorRequirement SeparatorRequirement { get; }
 
         /// <summary>
-        ///     Gets the parameter parser.
+        ///     Gets the argument parser.
         /// </summary>
-        public IArgumentParser ParameterParser { get; }
+        public IArgumentParser ArgumentParser { get; }
 
         /// <summary>
         ///     Gets the generator to use for <see cref="Cooldown"/> bucket keys.
@@ -156,10 +156,10 @@ namespace Qmmands
             IgnoreExtraArguments = configuration.IgnoreExtraArguments;
             Separator = configuration.Separator;
             SeparatorRequirement = configuration.SeparatorRequirement;
-            ParameterParser = configuration.ArgumentParser;
+            ArgumentParser = configuration.ArgumentParser ?? new DefaultArgumentParser();
             CooldownBucketKeyGenerator = configuration.CooldownBucketKeyGenerator;
-            QuotationMarkMap = new ReadOnlyDictionary<char, char>(configuration.QuoteMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
-            NullableNouns = configuration.NullableNouns.ToImmutableArray();
+            QuotationMarkMap = configuration.QuoteMap != null ? new ReadOnlyDictionary<char, char>(configuration.QuoteMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value)) : CommandUtilities.DefaultQuotationMarkMap;
+            NullableNouns = configuration.NullableNouns != null ? configuration.NullableNouns.ToImmutableArray() : CommandUtilities.DefaultNullableNouns;
 
             StringComparison = CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
@@ -619,7 +619,7 @@ namespace Qmmands
                 ParseResult parseResult;
                 try
                 {
-                    parseResult = ParameterParser.ParseRawArguments(match.Command, match.RawArguments);
+                    parseResult = ArgumentParser.ParseRawArguments(match.Command, match.RawArguments);
                     if (!parseResult.IsSuccessful)
                     {
                         failedOverloads.Add(match.Command, new ParseFailedResult(match.Command, parseResult));
@@ -714,7 +714,7 @@ namespace Qmmands
             ParseResult parseResult;
             try
             {
-                parseResult = ParameterParser.ParseRawArguments(command, rawArguments);
+                parseResult = ArgumentParser.ParseRawArguments(command, rawArguments);
                 if (!parseResult.IsSuccessful)
                     return new ParseFailedResult(command, parseResult);
             }
