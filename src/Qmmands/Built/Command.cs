@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -152,7 +152,7 @@ namespace Qmmands
         public async Task<IResult> RunChecksAsync(ICommandContext context, IServiceProvider provider = null)
         {
             if (provider is null)
-                provider = EmptyServiceProvider.Instance;
+                provider = DummyServiceProvider.Instance;
 
             var result = await Module.RunChecksAsync(context, provider).ConfigureAwait(false);
             if (!result.IsSuccessful)
@@ -199,7 +199,7 @@ namespace Qmmands
                 throw new InvalidOperationException("This command doesn't have any assigned cooldowns.");
 
             if (provider is null)
-                provider = EmptyServiceProvider.Instance;
+                provider = DummyServiceProvider.Instance;
 
             var bucket = CooldownMap.GetBucket(cooldown, context, provider);
             bucket?.Reset();
@@ -219,7 +219,7 @@ namespace Qmmands
             if (CooldownMap != null)
             {
                 if (provider is null)
-                    provider = EmptyServiceProvider.Instance;
+                    provider = DummyServiceProvider.Instance;
 
                 CooldownMap.Update();
                 var buckets = Cooldowns.Select(x => CooldownMap.GetBucket(x, context, provider)).ToImmutableArray();

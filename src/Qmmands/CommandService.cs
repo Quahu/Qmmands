@@ -588,7 +588,7 @@ namespace Qmmands
                 throw new ArgumentNullException(nameof(context), "The context mustn't be null.");
 
             if (provider is null)
-                provider = EmptyServiceProvider.Instance;
+                provider = DummyServiceProvider.Instance;
 
             var matches = FindCommands(input).ToImmutableArray();
             if (matches.Length == 0)
@@ -696,7 +696,7 @@ namespace Qmmands
                 throw new ArgumentNullException(nameof(context), "The context mustn't be null.");
 
             if (provider is null)
-                provider = EmptyServiceProvider.Instance;
+                provider = DummyServiceProvider.Instance;
 
             try
             {

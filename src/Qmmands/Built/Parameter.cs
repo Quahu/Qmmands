@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -131,7 +131,7 @@ namespace Qmmands
         public async Task<IResult> RunChecksAsync(object argument, ICommandContext context, IServiceProvider provider = null)
         {
             if (provider is null)
-                provider = EmptyServiceProvider.Instance;
+                provider = DummyServiceProvider.Instance;
 
             if (Checks.Count > 0)
             {
