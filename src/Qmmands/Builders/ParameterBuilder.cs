@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Qmmands
 {
     /// <summary>
-    ///     Allows for building <see cref="Parameter"/> objects using the <see cref="CommandService"/>.
+    ///     Allows for building <see cref="Parameter"/>s using the <see cref="CommandService"/>.
     /// </summary>
     public sealed class ParameterBuilder
     {

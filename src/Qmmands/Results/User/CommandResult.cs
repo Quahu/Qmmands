@@ -9,7 +9,7 @@
         public abstract bool IsSuccessful { get; }
 
         /// <summary>
-        ///     The <see cref="Qmmands.Command"/> this result came from.
+        ///     The <see cref="Qmmands.Command"/> this result was returned by.
         /// </summary>
         public Command Command { get; internal set; }
     }

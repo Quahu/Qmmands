@@ -20,7 +20,7 @@ namespace Qmmands
             => IgnoreExtraArguments = true;
 
         /// <summary>
-        /// Initialises a new <see cref="IgnoreExtraArgumentsAttribute"/> with the specified <paramref name="ignoreExtraArguments"/>.
+        ///     Initialises a new <see cref="IgnoreExtraArgumentsAttribute"/> with the specified <paramref name="ignoreExtraArguments"/>.
         /// </summary>
         /// <param name="ignoreExtraArguments"> The ignore extra arguments value to set. </param>
         public IgnoreExtraArgumentsAttribute(bool ignoreExtraArguments)

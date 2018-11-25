@@ -17,7 +17,7 @@ namespace Qmmands
         ///     Initialises a new <see cref="OverrideTypeParserAttribute"/> with the specified custom type parser's <see cref="Type"/>.
         /// </summary>
         /// <param name="customTypeParserType"> The custom parser's <see cref="Type"/> to overwrite with. </param>
-        public OverrideTypeParserAttribute(Type customTypeParserType) 
+        public OverrideTypeParserAttribute(Type customTypeParserType)
             => CustomTypeParserType = customTypeParserType;
     }
 }

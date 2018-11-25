@@ -17,6 +17,9 @@ namespace Qmmands
         ///     Initialises a new <see cref="RunModeAttribute"/> with the specified <see cref="Qmmands.RunMode"/>.
         /// </summary>
         /// <param name="runMode"> The <see cref="Qmmands.RunMode"/> to set. </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///     Invalid run mode.
+        /// </exception>
         public RunModeAttribute(RunMode runMode)
         {
             if (!Enum.IsDefined(typeof(RunMode), runMode))

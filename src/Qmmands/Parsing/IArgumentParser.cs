@@ -1,25 +1,16 @@
 ﻿namespace Qmmands
 {
     /// <summary>
-    ///     The default interface for raw argument parsers. You'd rather not touch this.
-    /// <para>
-    /// ​
-    /// </para>
-    /// <para>
-    /// ​
-    /// </para>
-    /// <para>
-    ///     Trust me.
-    /// </para>
+    ///     The default interface for raw argument parsers.
     /// </summary>
     public interface IArgumentParser
     {
         /// <summary>
-        ///     No documentation, I'm done. No sane person would even try to use this anyways.
+        ///     Attempts to parse raw arguments for the specified command.
         /// </summary>
-        /// <param name="command"></param>
-        /// <param name="rawArguments"></param>
-        /// <returns></returns>
+        /// <param name="command"> The <see cref="Command"/> to parse raw arguments for. </param>
+        /// <param name="rawArguments"> The raw arguments. </param>
+        /// <returns> A <see cref="ParseResult"/>. </returns>
         ParseResult ParseRawArguments(Command command, string rawArguments);
     }
 }

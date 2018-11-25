@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace Qmmands
 {
     /// <summary>
-    ///     Allows for building <see cref="Command"/> objects using the <see cref="CommandService"/>.
+    ///     Allows for building <see cref="Command"/>s using the <see cref="CommandService"/>.
     /// </summary>
     public sealed class CommandBuilder
     {

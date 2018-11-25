@@ -3,13 +3,13 @@
 namespace Qmmands
 {
     /// <summary>
-    ///     Adds group aliases to the module.
+    ///     Marks the class as a group <see cref="Module"/> with the given aliases.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class GroupAttribute : Attribute
     {
         /// <summary>
-        ///     Gets this group's aliases.
+        ///     Gets the aliases.
         /// </summary>
         public string[] Aliases { get; }
 
@@ -17,8 +17,12 @@ namespace Qmmands
         ///     Initialises a new <see cref="GroupAttribute"/> with the specified <paramref name="aliases"/>.
         /// </summary>
         /// <param name="aliases"> The aliases to set. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="aliases"/> mustn't be null. </exception>
-        /// <exception cref="ArgumentException"> <paramref name="aliases"/> must contain at least one alias. </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="aliases"/> mustn't be null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="aliases"/> must contain at least one alias.
+        /// </exception>
         public GroupAttribute(params string[] aliases)
         {
             if (aliases == null)

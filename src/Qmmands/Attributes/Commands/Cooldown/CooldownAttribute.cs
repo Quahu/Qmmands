@@ -30,6 +30,9 @@ namespace Qmmands
         /// <param name="per"> The use time window. </param>
         /// <param name="cooldownMeasure"> The <see cref="CooldownMeasure"/> to convert <paramref name="per"/> with. </param>
         /// <param name="bucketType"> The bucket type. Has to be an <see langword="enum"/>. </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///     Not a valid cooldown measure.
+        /// </exception>
         public CooldownAttribute(int amount, double per, CooldownMeasure cooldownMeasure, object bucketType)
         {
             Amount = amount;
