@@ -3,7 +3,7 @@
   <PropertyGroup>
     <VersionPrefix>1.0.3</VersionPrefix>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>7.1</LangVersion>
+    <LangVersion>7.3</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>Quahu</Authors>
     <Description>An asynchronous .NET Standard command framework.</Description>

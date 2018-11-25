@@ -132,7 +132,7 @@ namespace Qmmands
 
         internal StringComparison StringComparison { get; }
 
-        private readonly ConcurrentDictionary<Type, Dictionary<Type, (bool, ITypeParser)>> _parsers;
+        private readonly ConcurrentDictionary<Type, Dictionary<Type, (bool ReplacingPrimitive, ITypeParser Instance)>> _parsers;
         private readonly ConcurrentDictionary<Type, IPrimitiveTypeParser> _primitiveParsers;
         private readonly Dictionary<Type, Module> _typeModules;
         private readonly HashSet<Module> _modules;
@@ -321,21 +321,23 @@ namespace Qmmands
         }
 
         internal ITypeParser GetSpecificTypeParser(Type type, Type parserType)
-            => _parsers.TryGetValue(type, out var typeParsers) && typeParsers.TryGetValue(parserType, out var typeParser) ? typeParser.Item2 : null;
+            => _parsers.TryGetValue(type, out var typeParsers) && typeParsers.TryGetValue(parserType, out var typeParser) ? typeParser.Instance : null;
 
-        internal ITypeParser GetAnyTypeParser(Type type, bool replacing)
+        internal ITypeParser GetAnyTypeParser(Type type, bool replacingPrimitive)
         {
             if (_parsers.TryGetValue(type, out var typeParsers))
             {
-                if (replacing)
+                if (replacingPrimitive)
                 {
-                    var filtered = typeParsers.Where(x => x.Value.Item1).ToImmutableArray();
-                    if (filtered.Length > 0)
-                        return filtered[0].Value.Item2;
+                    foreach (var parser in typeParsers.Values)
+                    {
+                        if (parser.ReplacingPrimitive)
+                            return parser.Instance;
+                    }
                 }
 
                 else
-                    return typeParsers.First().Value.Item2;
+                    return typeParsers.First().Value.Instance;
             }
 
             return null;

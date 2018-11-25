@@ -17,20 +17,23 @@ namespace Qmmands
         private static readonly TypeInfo _objectTypeInfo = typeof(object).GetTypeInfo();
         private static readonly Type _nullableType = typeof(Nullable<>);
 
-        private static readonly ConcurrentDictionary<Type, Func<Task, IResult>> _commandResults =
-            new ConcurrentDictionary<Type, Func<Task, IResult>> { [typeof(Task)] = x => new SuccessfulResult() };
+        private static readonly ConcurrentDictionary<Type, Func<Task, IResult>> _commandResultFuncs =
+            new ConcurrentDictionary<Type, Func<Task, IResult>>
+            {
+                [typeof(Task)] = x => new SuccessfulResult()
+            };
 
         public static bool IsValidModuleDefinition(TypeInfo typeInfo)
             => _moduleBaseTypeInfo.IsAssignableFrom(typeInfo) && !typeInfo.IsAbstract && !typeInfo.ContainsGenericParameters;
 
         public static bool IsValidCommandDefinition(MethodInfo methodInfo)
             => methodInfo.IsPublic && methodInfo.GetCustomAttribute<CommandAttribute>() != null
-               && (methodInfo.ReturnType == _taskTypeInfo || (methodInfo.ReturnType.IsConstructedGenericType
+               && (methodInfo.ReturnType == _taskTypeInfo || methodInfo.ReturnType.IsConstructedGenericType
                                                              && methodInfo.ReturnType.GenericTypeArguments.Length == 1
-                                                             && _commandResultTypeInfo.IsAssignableFrom(methodInfo.ReturnType.GenericTypeArguments[0])));
+                                                             && _commandResultTypeInfo.IsAssignableFrom(methodInfo.ReturnType.GenericTypeArguments[0]));
 
-        public static bool IsValidParserDefinition(Type typeInfo, Type parameterType)
-            => _typeParserTypeInfo.IsAssignableFrom(typeInfo) && !typeInfo.IsAbstract && typeInfo.BaseType.GetGenericArguments().Any(x => x == parameterType);
+        public static bool IsValidParserDefinition(Type parserType, Type parameterType)
+            => _typeParserTypeInfo.IsAssignableFrom(parserType) && !parserType.IsAbstract && parserType.BaseType.GetGenericArguments().Any(x => x == parameterType);
 
         public static bool IsNullable(Type type)
             => type.IsGenericType && type.GetGenericTypeDefinition() == _nullableType;
@@ -55,7 +58,7 @@ namespace Qmmands
         public static ModuleBuilder BuildModule(TypeInfo typeInfo)
         {
             if (!IsValidModuleDefinition(typeInfo))
-                throw new ArgumentException($"{typeInfo.Name} mustn't be abstract, have generic parameters, and must inherit ModuleBase.", nameof(typeInfo));
+                throw new ArgumentException($"{typeInfo.Name} mustn't be abstract, mustn't have generic parameters, and must inherit ModuleBase.", nameof(typeInfo));
 
             var builder = new ModuleBuilder(typeInfo);
             var attributes = typeInfo.GetCustomAttributes(false);
@@ -244,22 +247,6 @@ namespace Qmmands
                 throw new InvalidOperationException($"Failed to create {typeInfo}, dependency {type.Name} wasn't found.");
             }
 
-            IEnumerable<PropertyInfo> GetInjectableProperties(TypeInfo type)
-            {
-                do
-                {
-                    foreach (var property in type.DeclaredProperties)
-                    {
-                        if (property.SetMethod != null && !property.SetMethod.IsStatic && property.SetMethod.IsPublic
-                            && property.GetCustomAttribute<DontAutoInjectAttribute>() == null)
-                            yield return property;
-                    }
-
-                    type = type.BaseType.GetTypeInfo();
-                }
-                while (type != _objectTypeInfo);
-            }
-
             return (provider) =>
             {
                 var constructors = typeInfo.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
@@ -285,15 +272,25 @@ namespace Qmmands
                     throw new InvalidOperationException($"Failed to instantiate {typeInfo.Name}. See the inner exception for more details.", ex);
                 }
 
-                foreach (var property in GetInjectableProperties(typeInfo))
-                    property.SetValue(instance, GetDependency(provider, property.PropertyType));
+                do
+                {
+                    foreach (var property in typeInfo .DeclaredProperties)
+                    {
+                        if (property.SetMethod != null && !property.SetMethod.IsStatic && property.SetMethod.IsPublic && property.GetCustomAttribute<DontAutoInjectAttribute>() == null)
+                            property.SetValue(instance, GetDependency(provider, property.PropertyType));
+                    }
+
+                    typeInfo = typeInfo.BaseType.GetTypeInfo();
+                }
+                while (typeInfo != _objectTypeInfo);
 
                 return instance;
             };
         }
 
         public static CommandCallbackDelegate CreateCommandCallback(TypeInfo typeInfo, MethodInfo methodInfo)
-            => async (command, arguments, context, provider) =>
+        {
+            return async (command, arguments, context, provider) =>
             {
                 var instance = CreateProviderConstructor<IModuleBase>(command.Service, typeInfo)(provider);
                 instance.Prepare(context);
@@ -314,7 +311,7 @@ namespace Qmmands
                     if (!(methodInfo.Invoke(instance, arguments) is Task task))
                         return new SuccessfulResult();
 
-                    var resultFunc = _commandResults.GetOrAdd(methodInfo.ReturnType, _ =>
+                    var resultFunc = _commandResultFuncs.GetOrAdd(methodInfo.ReturnType, _ =>
                         {
                             var taskParameter = Expression.Parameter(typeof(Task));
                             return Expression.Lambda<Func<Task, IResult>>(
@@ -344,5 +341,6 @@ namespace Qmmands
                     }
                 }
             };
+        }
     }
 }
