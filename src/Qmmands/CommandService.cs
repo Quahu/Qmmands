@@ -393,6 +393,15 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The assembly to add modules from mustn't be null.
         /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map commands to the root node.
+        /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map multiple overloads with the same signature.
+        /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
+        /// </exception>
         public async Task<IReadOnlyList<Module>> AddModulesAsync(Assembly assembly)
         {
             if (assembly is null)
@@ -420,6 +429,15 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The module builder to add mustn't be null.
         /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map commands to the root node.
+        /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map multiple overloads with the same signature.
+        /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
+        /// </exception>
         public async Task<Module> AddModuleAsync(ModuleBuilder builder)
         {
             if (builder == null)
@@ -446,6 +464,15 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException"> 
         ///     The module builder action mustn't be null.
         /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map commands to the root node.
+        /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map multiple overloads with the same signature.
+        /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
+        /// </exception>
         public Task<Module> AddModuleAsync(Action<ModuleBuilder> builderAction)
         {
             if (builderAction == null)
@@ -464,7 +491,16 @@ namespace Qmmands
         ///     The module to add mustn't be null.
         /// </exception>
         /// <exception cref="ArgumentException">
-        ///     The module is already held by this instance of <see cref="CommandService"/>.
+        ///     This module has already been added.
+        /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map commands to the root node.
+        /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map multiple overloads with the same signature.
+        /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
         /// </exception>
         public async Task AddModuleAsync(Module module)
         {
@@ -492,7 +528,16 @@ namespace Qmmands
         /// <returns> A <see cref="Module"/> if succeeded. </returns>
         /// <exception cref="ArgumentException">
         ///     The type has already been added as a module.
-        ///     </exception>
+        /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map commands to the root node.
+        /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map multiple overloads with the same signature.
+        /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
+        /// </exception>
         public Task<Module> AddModuleAsync<TModule>()
             => AddModuleAsync(typeof(TModule));
 
@@ -505,6 +550,15 @@ namespace Qmmands
         /// </exception>
         /// <exception cref="ArgumentException">
         ///     The type has already been added as a module.
+        /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map commands to the root node.
+        /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map multiple overloads with the same signature.
+        /// </exception>
+        /// <exception cref="CommandMappingException">
+        ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
         /// </exception>
         public async Task<Module> AddModuleAsync(Type type)
         {

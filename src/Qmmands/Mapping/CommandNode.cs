@@ -198,7 +198,7 @@ namespace Qmmands
         public void AddCommand(Command command, IReadOnlyList<string> segments, int startIndex)
         {
             if (segments.Count == 0)
-                throw new InvalidOperationException("Cannot add commands to the root node.");
+                throw new CommandMappingException(command, null, "Cannot map commands to the root node.");
 
             var segment = segments[startIndex];
             if (startIndex == segments.Count - 1)
@@ -213,10 +213,10 @@ namespace Qmmands
                         if (signature.Identifier == otherSignature.Identifier)
                         {
                             if (signature.HasRemainder == otherSignature.HasRemainder)
-                                throw new InvalidOperationException($"Cannot add multiple overloads with the same signature ({command}).");
+                                throw new CommandMappingException(command, segment, $"Cannot map multiple overloads with the same signature.");
 
                             else if (!signature.HasRemainder && command.IgnoreExtraArguments || !otherSignature.HasRemainder && otherCommand.IgnoreExtraArguments)
-                                throw new InvalidOperationException($"Cannot add multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments ({command}).");
+                                throw new CommandMappingException(command, segment, $"Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.");
                         }
                     }
 
