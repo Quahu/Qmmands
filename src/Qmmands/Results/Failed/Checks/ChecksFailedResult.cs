@@ -3,7 +3,7 @@
 namespace Qmmands
 {
     /// <summary>
-    ///     Represents a <see cref="Qmmands.Command"/>'s/<see cref="Qmmands.Module"/>'s checks failure.
+    ///     Represents a <see cref="Qmmands.Command"/>'s or a <see cref="Qmmands.Module"/>'s checks failure.
     /// </summary>
     public sealed class ChecksFailedResult : FailedResult
     {

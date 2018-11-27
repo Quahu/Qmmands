@@ -99,7 +99,7 @@ namespace Qmmands
                 }
 
                 else if (DefaultValue.GetType() != Type)
-                    throw new InvalidOperationException($"Parameter type and default value mismatch. Expected {Type.Name}, got {DefaultValue.GetType().Name}.");
+                    throw new InvalidOperationException($"Parameter type and default value mismatch. Expected {Type}, got {DefaultValue.GetType()}.");
             }
 
             if (Type.IsEnum)
@@ -108,7 +108,7 @@ namespace Qmmands
             if (builder.CustomTypeParserType != null)
             {
                 if (!ReflectionUtilities.IsValidParserDefinition(builder.CustomTypeParserType.GetTypeInfo(), Type))
-                    throw new InvalidOperationException($"{builder.CustomTypeParserType.Name} isn't a valid type parser for {this} ({Type.Name}).");
+                    throw new InvalidOperationException($"{builder.CustomTypeParserType.Name} isn't a valid type parser for parameter of type {Type}.");
 
                 CustomTypeParserType = builder.CustomTypeParserType;
             }

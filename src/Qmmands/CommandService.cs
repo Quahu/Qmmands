@@ -145,11 +145,13 @@ namespace Qmmands
         ///     Initialises a new <see cref="CommandService"/> with the specified <see cref="CommandServiceConfiguration"/>.
         /// </summary>
         /// <param name="configuration"> The <see cref="CommandServiceConfiguration"/> to use. </param>
-        /// <exception cref="ArgumentNullException"> Command service's configuration mustn't be null. </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The configuration mustn't be null.
+        /// </exception>
         public CommandService(CommandServiceConfiguration configuration)
         {
             if (configuration == null)
-                throw new ArgumentNullException(nameof(configuration), "Command service's configuration mustn't be null.");
+                throw new ArgumentNullException(nameof(configuration), "The configuration mustn't be null.");
 
             CaseSensitive = configuration.CaseSensitive;
             DefaultRunMode = configuration.DefaultRunMode;
@@ -236,17 +238,30 @@ namespace Qmmands
         /// <param name="path"> The path to use for searching. </param>
         /// <returns> An ordered enumerable of <see cref="CommandMatch"/>es. </returns>
         public IEnumerable<CommandMatch> FindCommands(string path)
-            => _map.FindCommands(path).OrderByDescending(x => x.Path.Count)
+        {
+            if (path == null)
+                throw new ArgumentNullException(nameof(path), "The path to find commands for mustn't be null.");
+
+            return _map.FindCommands(path).OrderByDescending(x => x.Path.Count)
                 .ThenByDescending(x => x.Command.Priority)
                 .ThenByDescending(x => x.Command.Parameters.Count);
+        }
 
         /// <summary>
         ///     Attempts to find <see cref="Module"/>s matching the provided path.
         /// </summary>
         /// <param name="path"> The path to use for searching. </param>
         /// <returns> An ordered enumerable of <see cref="ModuleMatch"/>es. </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The path to find modules for mustn't be null.
+        /// </exception>
         public IEnumerable<ModuleMatch> FindModules(string path)
-            => _map.FindModules(path).OrderByDescending(x => x.Path.Count);
+        {
+            if (path == null)
+                throw new ArgumentNullException(nameof(path), "The path to find modules for mustn't be null.");
+
+            return _map.FindModules(path).OrderByDescending(x => x.Path.Count);
+        }
 
         /// <summary>
         ///     Adds a <see cref="TypeParser{T}"/> for the specified <typeparamref name="T"/> type.
@@ -254,8 +269,12 @@ namespace Qmmands
         /// <typeparam name="T"> The type to add the <paramref name="parser"/> for. </typeparam>
         /// <param name="parser"> The <see cref="TypeParser{T}"/> to add for the type. </param>
         /// <param name="replacePrimitive"> Whether to replace the primitive parser. </param>
-        /// <exception cref="ArgumentNullException"> The type parser to add mustn't be null. </exception>
-        /// <exception cref="ArgumentException"> Custom enum type parsers aren't supported. </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The type parser to add mustn't be null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     Custom enum type parsers aren't supported.
+        /// </exception>
         public void AddTypeParser<T>(TypeParser<T> parser, bool replacePrimitive = false)
         {
             if (parser is null)
@@ -295,8 +314,12 @@ namespace Qmmands
         /// </summary>
         /// <typeparam name="T"> The type to remove the <paramref name="parser"/> for. </typeparam>
         /// <param name="parser"> The <see cref="TypeParser{T}"/> to remove for the type. </param>
-        /// <exception cref="ArgumentNullException"> The type parser to remove mustn't be null. </exception>
-        /// <exception cref="ArgumentException"> A parser for this type hasn't been added. </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The type parser to remove mustn't be null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     A parser for this type hasn't been added.
+        /// </exception>
         public void RemoveTypeParser<T>(TypeParser<T> parser)
         {
             if (parser is null)
@@ -304,7 +327,7 @@ namespace Qmmands
 
             var type = typeof(T);
             if (!_parsers.ContainsKey(type))
-                throw new ArgumentException($"A parser for type {type.Name} hasn't been added.", nameof(T));
+                throw new ArgumentException($"A type parser for type {type} hasn't been added.", nameof(T));
 
             RemoveParserInternal(type, parser);
         }
@@ -367,7 +390,9 @@ namespace Qmmands
         /// </summary>
         /// <param name="assembly"> The assembly to search. </param>
         /// <returns> A list of all found and added modules. </returns>
-        /// <exception cref="ArgumentNullException"> The assembly to add modules from mustn't be null. </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The assembly to add modules from mustn't be null.
+        /// </exception>
         public async Task<IReadOnlyList<Module>> AddModulesAsync(Assembly assembly)
         {
             if (assembly is null)
@@ -392,7 +417,9 @@ namespace Qmmands
         /// </summary>
         /// <param name="builder"> The builder to build. </param>
         /// <returns> A <see cref="Module"/> if succeeded. </returns>
-        /// <exception cref="ArgumentNullException"> The module builder to add mustn't be null. </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The module builder to add mustn't be null.
+        /// </exception>
         public async Task<Module> AddModuleAsync(ModuleBuilder builder)
         {
             if (builder == null)
@@ -416,7 +443,9 @@ namespace Qmmands
         /// </summary>
         /// <param name="builderAction"> The action to perform on the builder. </param>
         /// <returns> A <see cref="Module"/> if succeeded. </returns>
-        /// <exception cref="ArgumentNullException"> The module builder action mustn't be null. </exception>
+        /// <exception cref="ArgumentNullException"> 
+        ///     The module builder action mustn't be null.
+        /// </exception>
         public Task<Module> AddModuleAsync(Action<ModuleBuilder> builderAction)
         {
             if (builderAction == null)
@@ -431,8 +460,12 @@ namespace Qmmands
         ///     Adds the specified <see cref="Module"/>.
         /// </summary>
         /// <param name="module"> The <see cref="Module"/> to add. </param>
-        /// <exception cref="ArgumentNullException"> The module to add mustn't be null. </exception>
-        /// <exception cref="ArgumentException"> The module is already held by this instance of <see cref="CommandService"/>. </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The module to add mustn't be null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     The module is already held by this instance of <see cref="CommandService"/>.
+        /// </exception>
         public async Task AddModuleAsync(Module module)
         {
             if (module == null)
@@ -457,7 +490,9 @@ namespace Qmmands
         /// </summary>
         /// <typeparam name="TModule"> The type to add. </typeparam>
         /// <returns> A <see cref="Module"/> if succeeded. </returns>
-        /// <exception cref="ArgumentException"> The type has already been added as a module. </exception>
+        /// <exception cref="ArgumentException">
+        ///     The type has already been added as a module.
+        ///     </exception>
         public Task<Module> AddModuleAsync<TModule>()
             => AddModuleAsync(typeof(TModule));
 
@@ -465,8 +500,12 @@ namespace Qmmands
         ///     Attempts to add the specified <see cref="Type"/> as a <see cref="Module"/>. 
         /// </summary>
         /// <returns> A <see cref="Module"/> if succeeded. </returns>
-        /// <exception cref="ArgumentNullException"> The type to add mustn't be null. </exception>
-        /// <exception cref="ArgumentException"> The type has already been added as a module. </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The type to add mustn't be null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     The type has already been added as a module.
+        /// </exception>
         public async Task<Module> AddModuleAsync(Type type)
         {
             if (type is null)
@@ -512,8 +551,12 @@ namespace Qmmands
         ///     Removes the specified <see cref="Module"/>.
         /// </summary>
         /// <param name="module"></param>
-        /// <exception cref="ArgumentNullException"> The module to remove mustn't be null. </exception>
-        /// <exception cref="ArgumentException"> The module isn't held by this instance of <see cref="CommandService"/>. </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The module to remove mustn't be null.
+        ///     </exception>
+        /// <exception cref="ArgumentException">
+        ///     The module isn't held by this instance of <see cref="CommandService"/>.
+        ///     </exception>
         public async Task RemoveModuleAsync(Module module)
         {
             if (module == null)
@@ -579,8 +622,12 @@ namespace Qmmands
         /// <param name="context"> The <see cref="ICommandContext"/> to use during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns> An <see cref="IResult"/>. </returns>
-        /// <exception cref="ArgumentNullException"> The input mustn't be null. </exception>
-        /// <exception cref="ArgumentNullException"> The context mustn't be null. </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The input mustn't be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The context mustn't be null.
+        /// </exception>
         public async Task<IResult> ExecuteAsync(string input, ICommandContext context, IServiceProvider provider = null)
         {
             if (input == null)
@@ -683,9 +730,15 @@ namespace Qmmands
         /// <param name="context"> The <see cref="ICommandContext"/> to use during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns> An <see cref="IResult"/>. </returns>
-        /// <exception cref="ArgumentNullException"> The command mustn't be null. </exception>
-        /// <exception cref="ArgumentNullException"> The raw arguments mustn't be null. </exception>
-        /// <exception cref="ArgumentNullException"> The context mustn't be null. </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The command mustn't be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The raw arguments mustn't be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The context mustn't be null.
+        /// </exception>
         public async Task<IResult> ExecuteAsync(Command command, string rawArguments, ICommandContext context, IServiceProvider provider = null)
         {
             if (command == null)
