@@ -7,7 +7,7 @@ namespace Qmmands
     /// <summary>
     ///     Represents an argument parse failure.
     /// </summary>
-    public sealed class ParseFailedResult : FailedResult
+    public sealed class ArgumentParseFailedResult : FailedResult
     {
         /// <inheritdoc />
         public override string Reason { get; }
@@ -33,16 +33,16 @@ namespace Qmmands
         public IReadOnlyDictionary<Parameter, object> Arguments { get; set; }
 
         /// <summary>
-        ///     Gets the <see cref="Qmmands.ParseFailure"/> that occurred.
+        ///     Gets the <see cref="Qmmands.ArgumentParserFailure"/> that occurred.
         /// </summary>
-        public ParseFailure ParseFailure { get; }
+        public ArgumentParserFailure ParseFailure { get; }
 
         /// <summary>
         ///     Gets the position (index) at which the parsing failed, can be null depending on the <see cref="ParseFailure"/>. 
         /// </summary>
         public int? Position { get; }
 
-        internal ParseFailedResult(Command command, ParseResult parseResult)
+        internal ArgumentParseFailedResult(Command command, ArgumentParserResult parseResult)
         {
             Command = command;
             Parameter = parseResult.Parameter;
@@ -52,25 +52,25 @@ namespace Qmmands
             Position = parseResult.FailurePosition;
             switch (parseResult.ParseFailure)
             {
-                case ParseFailure.UnclosedQuote:
+                case ArgumentParserFailure.UnclosedQuote:
                     Reason = "A quotation mark was left unclosed.";
                     break;
 
-                case ParseFailure.UnexpectedQuote:
+                case ArgumentParserFailure.UnexpectedQuote:
                     Reason = "Encountered an unexpected quotation mark.";
                     break;
 
-                case ParseFailure.NoWhitespaceBetweenArguments:
+                case ArgumentParserFailure.NoWhitespaceBetweenArguments:
                     Reason = "Whitespace is required between arguments.";
                     break;
 
-                case ParseFailure.TooFewArguments:
+                case ArgumentParserFailure.TooFewArguments:
                     var missingParameters = Command.Parameters.SkipWhile(x => x != Parameter).Where(x => !x.IsOptional).Select(x => $"'{x}'").ToImmutableArray();
                     Reason = $"Required {(missingParameters.Length == 1 ? "parameter" : "parameters")} " +
                              $"{string.Join(", ", missingParameters)} {(missingParameters.Length == 1 ? "is" : "are")} missing.";
                     break;
 
-                case ParseFailure.TooManyArguments:
+                case ArgumentParserFailure.TooManyArguments:
                     Reason = "Too many arguments provided.";
                     break;
             }

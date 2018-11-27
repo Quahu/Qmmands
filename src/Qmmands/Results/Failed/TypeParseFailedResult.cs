@@ -1,9 +1,9 @@
 ﻿namespace Qmmands
 {
     /// <summary>
-    ///     Represents a type parser failure.
+    ///     Represents a type parse failure.
     /// </summary>
-    public sealed class TypeParserFailedResult : FailedResult
+    public sealed class TypeParseFailedResult : FailedResult
     {
         /// <inheritdoc />
         public override string Reason { get; }
@@ -18,7 +18,7 @@
         /// </summary>
         public string Value { get; }
 
-        internal TypeParserFailedResult(Parameter parameter, string value, string reason)
+        internal TypeParseFailedResult(Parameter parameter, string value, string reason)
         {
             Parameter = parameter;
             Value = value;

@@ -3,7 +3,7 @@
     /// <summary>
     ///     Represents the reason why the argument parsing failed.
     /// </summary>
-    public enum ParseFailure
+    public enum ArgumentParserFailure
     {
         /// <summary>
         ///     The <see cref="IArgumentParser"/> wasn't able to find a matching closing quote.

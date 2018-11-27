@@ -16,8 +16,8 @@ namespace Qmmands
         /// </summary>
         /// <param name="command"> The <see cref="Command"/> to parse raw arguments for. </param>
         /// <param name="rawArguments"> The raw arguments. </param>
-        /// <returns> A <see cref="ParseResult"/>. </returns>
-        public ParseResult ParseRawArguments(Command command, string rawArguments)
+        /// <returns> A <see cref="ArgumentParserResult"/>. </returns>
+        public ArgumentParserResult ParseRawArguments(Command command, string rawArguments)
         {
             Parameter currentParameter = null;
             Parameter multipleParameter = null;
@@ -59,7 +59,7 @@ namespace Qmmands
                     }
 
                     else if (currentPosition != 0 && !whitespaceSeparated)
-                        return new ParseResult(command, null, rawArguments, arguments, command.Service.QuotationMarkMap.TryGetValue(character, out expectedQuote) && rawArguments.IndexOf(expectedQuote, currentPosition + 1) == -1 ? ParseFailure.UnexpectedQuote : ParseFailure.NoWhitespaceBetweenArguments, currentPosition);
+                        return new ArgumentParserResult(command, null, rawArguments, arguments, command.Service.QuotationMarkMap.TryGetValue(character, out expectedQuote) && rawArguments.IndexOf(expectedQuote, currentPosition + 1) == -1 ? ArgumentParserFailure.UnexpectedQuote : ArgumentParserFailure.NoWhitespaceBetweenArguments, currentPosition);
 
                     else
                     {
@@ -70,7 +70,7 @@ namespace Qmmands
                                 break;
 
                             else
-                                return new ParseResult(command, null, rawArguments, arguments, ParseFailure.TooManyArguments, currentPosition);
+                                return new ArgumentParserResult(command, null, rawArguments, arguments, ArgumentParserFailure.TooManyArguments, currentPosition);
                         }
 
                         else if (currentParameter.IsMultiple)
@@ -112,7 +112,7 @@ namespace Qmmands
                     if (command.Service.QuotationMarkMap.TryGetValue(character, out expectedQuote))
                     {
                         if (currentPosition != 0 && !whitespaceSeparated)
-                            return new ParseResult(command, currentParameter, rawArguments, arguments, rawArguments.IndexOf(expectedQuote, currentPosition + 1) == -1 ? ParseFailure.UnexpectedQuote : ParseFailure.NoWhitespaceBetweenArguments, currentPosition);
+                            return new ArgumentParserResult(command, currentParameter, rawArguments, arguments, rawArguments.IndexOf(expectedQuote, currentPosition + 1) == -1 ? ArgumentParserFailure.UnexpectedQuote : ArgumentParserFailure.NoWhitespaceBetweenArguments, currentPosition);
 
                         currentQuote = character;
                         whitespaceSeparated = false;
@@ -142,7 +142,7 @@ namespace Qmmands
             }
 
             if (currentQuote != '\0')
-                return new ParseResult(command, currentParameter, rawArguments, arguments, ParseFailure.UnclosedQuote, rawArguments.LastIndexOf(currentQuote));
+                return new ArgumentParserResult(command, currentParameter, rawArguments, arguments, ArgumentParserFailure.UnclosedQuote, rawArguments.LastIndexOf(currentQuote));
 
             if (currentParameter != null)
                 NextParameter();
@@ -158,13 +158,13 @@ namespace Qmmands
                     }
 
                     if (!parameter.IsOptional)
-                        return new ParseResult(command, parameter, rawArguments, arguments, ParseFailure.TooFewArguments, null);
+                        return new ArgumentParserResult(command, parameter, rawArguments, arguments, ArgumentParserFailure.TooFewArguments, null);
 
                     arguments.Add(parameter, parameter.DefaultValue);
                 }
 
             }
-            return new ParseResult(command, rawArguments, arguments);
+            return new ArgumentParserResult(command, rawArguments, arguments);
         }
     }
 }

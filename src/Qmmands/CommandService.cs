@@ -618,13 +618,13 @@ namespace Qmmands
                     return executionFailedResult;
                 }
 
-                ParseResult parseResult;
+                ArgumentParserResult parseResult;
                 try
                 {
                     parseResult = ArgumentParser.ParseRawArguments(match.Command, match.RawArguments);
                     if (!parseResult.IsSuccessful)
                     {
-                        failedOverloads.Add(match.Command, new ParseFailedResult(match.Command, parseResult));
+                        failedOverloads.Add(match.Command, new ArgumentParseFailedResult(match.Command, parseResult));
                         continue;
                     }
                 }
@@ -713,12 +713,12 @@ namespace Qmmands
                 return executionFailedResult;
             }
 
-            ParseResult parseResult;
+            ArgumentParserResult parseResult;
             try
             {
                 parseResult = ArgumentParser.ParseRawArguments(command, rawArguments);
                 if (!parseResult.IsSuccessful)
-                    return new ParseFailedResult(command, parseResult);
+                    return new ArgumentParseFailedResult(command, parseResult);
             }
             catch (Exception ex)
             {
@@ -761,7 +761,7 @@ namespace Qmmands
             }
         }
 
-        private async Task<(FailedResult FailedResult, object[] ParsedArguments)> CreateArgumentsAsync(ParseResult parseResult, ICommandContext context, IServiceProvider provider)
+        private async Task<(FailedResult FailedResult, object[] ParsedArguments)> CreateArgumentsAsync(ArgumentParserResult parseResult, ICommandContext context, IServiceProvider provider)
         {
             var parsedArguments = new object[parseResult.Arguments.Count];
             if (parseResult.Arguments.Count == 0)
@@ -824,7 +824,7 @@ namespace Qmmands
 
                 var typeParserResult = await customParser.ParseAsync(value, context, provider).ConfigureAwait(false);
                 if (!typeParserResult.IsSuccessful)
-                    return (new TypeParserFailedResult(parameter, value, typeParserResult.Reason), default);
+                    return (new TypeParseFailedResult(parameter, value, typeParserResult.Reason), default);
 
                 return (null, typeParserResult.HasValue ? typeParserResult.Value : null);
             }
@@ -834,7 +834,7 @@ namespace Qmmands
             {
                 var typeParserResult = await parser.ParseAsync(value, context, provider).ConfigureAwait(false);
                 if (!typeParserResult.IsSuccessful)
-                    return (new TypeParserFailedResult(parameter, value, typeParserResult.Reason), default);
+                    return (new TypeParseFailedResult(parameter, value, typeParserResult.Reason), default);
 
                 return (null, typeParserResult.HasValue ? typeParserResult.Value : null);
             }
@@ -854,7 +854,7 @@ namespace Qmmands
                     ? $"nullable {name}"
                     : $"nullable {type.Name}";
 
-            return (new TypeParserFailedResult(parameter, value, $"Failed to parse {friendlyName}."), default);
+            return (new TypeParseFailedResult(parameter, value, $"Failed to parse {friendlyName}."), default);
         }
 
         private async Task<IResult> ExecuteInternalAsync(Command command, ICommandContext context, IServiceProvider provider, object[] arguments)
