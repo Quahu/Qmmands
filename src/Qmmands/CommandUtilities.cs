@@ -21,6 +21,11 @@ namespace Qmmands
         public static readonly IReadOnlyList<string> DefaultNullableNouns;
 
         /// <summary>
+        ///     The friendly names used for primitive <see cref="Type"/>s by <see cref="ArgumentParseFailedResult.Reason"/>. 
+        /// </summary>
+        public static readonly IReadOnlyDictionary<Type, string> FriendlyPrimitiveTypeNames;
+
+        /// <summary>
         ///     Checks if the provided <see cref="string"/> starts with the specified <see cref="char"/> prefix.
         ///     If it does, returns <see langword="true"/> and the trimmed <paramref name="output"/>.
         /// </summary>
@@ -365,6 +370,23 @@ namespace Qmmands
             nullableNounsBuilder.Add("null");
             nullableNounsBuilder.Add("undefined");
             DefaultNullableNouns = nullableNounsBuilder.ToImmutable();
+
+            FriendlyPrimitiveTypeNames = new ReadOnlyDictionary<Type, string>(new Dictionary<Type, string>
+            {
+                [typeof(char)] = "char",
+                [typeof(bool)] = "bool",
+                [typeof(byte)] = "byte",
+                [typeof(sbyte)] = "signed byte",
+                [typeof(short)] = "short",
+                [typeof(ushort)] = "unsigned short",
+                [typeof(int)] = "int",
+                [typeof(uint)] = "unsigned int",
+                [typeof(long)] = "long",
+                [typeof(ulong)] = "unsigned long",
+                [typeof(float)] = "float",
+                [typeof(double)] = "double",
+                [typeof(decimal)] = "decimal"
+            });
         }
     }
 }

@@ -900,10 +900,10 @@ namespace Qmmands
 
             var type = Nullable.GetUnderlyingType(parameter.Type);
             var friendlyName = type == null
-                ? ReflectionUtilities.FriendlyTypeNames.TryGetValue(parameter.Type, out var name)
+                ? CommandUtilities.FriendlyPrimitiveTypeNames.TryGetValue(parameter.Type, out var name)
                     ? name
                     : parameter.Type.Name
-                : ReflectionUtilities.FriendlyTypeNames.TryGetValue(type, out name)
+                : CommandUtilities.FriendlyPrimitiveTypeNames.TryGetValue(type, out name)
                     ? $"nullable {name}"
                     : $"nullable {type.Name}";
 

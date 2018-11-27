@@ -343,9 +343,7 @@ namespace Qmmands
             };
         }
 
-        public static IReadOnlyDictionary<Type, Delegate> TryParseDelegates { get; }
-
-        public static IReadOnlyDictionary<Type, string> FriendlyTypeNames { get; }
+        public static readonly IReadOnlyDictionary<Type, Delegate> TryParseDelegates;
 
         public static IPrimitiveTypeParser CreatePrimitiveTypeParser(Type type)
             => Activator.CreateInstance(typeof(PrimitiveTypeParser<>).MakeGenericType(type)) as IPrimitiveTypeParser;
@@ -379,23 +377,6 @@ namespace Qmmands
                 [typeof(float)] = (TryParseDelegate<float>) float.TryParse,
                 [typeof(double)] = (TryParseDelegate<double>) double.TryParse,
                 [typeof(decimal)] = (TryParseDelegate<decimal>) decimal.TryParse
-            };
-
-            FriendlyTypeNames = new Dictionary<Type, string>
-            {
-                [typeof(char)] = "char",
-                [typeof(bool)] = "bool",
-                [typeof(byte)] = "byte",
-                [typeof(sbyte)] = "signed byte",
-                [typeof(short)] = "short",
-                [typeof(ushort)] = "unsigned short",
-                [typeof(int)] = "int",
-                [typeof(uint)] = "unsigned int",
-                [typeof(long)] = "long",
-                [typeof(ulong)] = "unsigned long",
-                [typeof(float)] = "float",
-                [typeof(double)] = "double",
-                [typeof(decimal)] = "decimal"
             };
         }
     }
