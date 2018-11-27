@@ -10,7 +10,7 @@
         /// </summary>
         /// <param name="command"> The <see cref="Command"/> to parse raw arguments for. </param>
         /// <param name="rawArguments"> The raw arguments. </param>
-        /// <returns> A <see cref="ArgumentParserResult"/>. </returns>
+        /// <returns> An <see cref="ArgumentParserResult"/>. </returns>
         ArgumentParserResult ParseRawArguments(Command command, string rawArguments);
     }
 }

@@ -16,7 +16,8 @@ namespace Qmmands
         public Command Command { get; }
 
         /// <summary>
-        ///     Gets the <see cref="Parameter"/> the parse failed on, can be <see langword="null"/> depending on the <see cref="Qmmands.ArgumentParserFailure"/>.
+        ///     Gets the <see cref="Parameter"/> the parse failed on.
+        ///     Can be <see langword="null"/> depending on the <see cref="ArgumentParserFailure"/>.
         /// </summary>
         public Parameter Parameter { get; }
 
@@ -33,7 +34,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the <see cref="Qmmands.ArgumentParserFailure"/>.
         /// </summary>
-        public ArgumentParserFailure? ParseFailure { get; }
+        public ArgumentParserFailure? ArgumentParserFailure { get; }
 
         /// <summary>
         ///     Gets the position (index) at which the parsing failed, can be <see langword="null"/> depending on the <see cref="Qmmands.ArgumentParserFailure"/>. 
@@ -43,7 +44,7 @@ namespace Qmmands
         /// <summary>
         ///     Initialises a new failed <see cref="ArgumentParserResult"/>.
         /// </summary>
-        /// <param name="command"> The command the parse failed for. </param>
+        /// <param name="command"> The <see cref="Qmmands.Command"/> the parse failed for. </param>
         /// <param name="parameter"> The parameter the parse failed for. </param>
         /// <param name="rawArguments"> The raw arguments. </param>
         /// <param name="arguments"> The parsed arguments. </param>
@@ -56,14 +57,14 @@ namespace Qmmands
             Parameter = parameter;
             RawArguments = rawArguments;
             Arguments = arguments;
-            ParseFailure = parseFailure;
+            ArgumentParserFailure = parseFailure;
             FailurePosition = failurePosition;
         }
 
         /// <summary>
         ///     Initialises a new successful <see cref="ArgumentParserResult"/>.
         /// </summary>
-        /// <param name="command"> The command the parse succeeded for. </param>
+        /// <param name="command"> The <see cref="Qmmands.Command"/> the parse succeeded for. </param>
         /// <param name="rawArguments"> The raw arguments. </param>
         /// <param name="arguments"> The parsed arguments. </param>
         public ArgumentParserResult(Command command, string rawArguments, IReadOnlyDictionary<Parameter, object> arguments) : this()

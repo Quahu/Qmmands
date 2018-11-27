@@ -57,7 +57,7 @@
         /// </summary>
         /// <param name="reason"> The error reason. </param>
         /// <returns> A <see cref="TypeParserResult{T}"/>. </returns>
-        public static TypeParserResult<T> Unsuccesful(string reason)
+        public static TypeParserResult<T> Unsuccessful(string reason)
             => new TypeParserResult<T>(reason);
     }
 }

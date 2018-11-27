@@ -141,7 +141,7 @@ namespace Qmmands
                 if (parameter.IsRemainder)
                     hasRemainder = true;
 
-                sb.Append(parameter.Type).Append(',');
+                sb.Append(parameter.Type).Append(';');
             }
             Parameters = parameters.ToImmutable();
             SignatureIdentifier = (hasRemainder, sb.ToString());

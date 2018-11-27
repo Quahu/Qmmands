@@ -16,7 +16,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="command"> The <see cref="Command"/> to parse raw arguments for. </param>
         /// <param name="rawArguments"> The raw arguments. </param>
-        /// <returns> A <see cref="ArgumentParserResult"/>. </returns>
+        /// <returns> An <see cref="ArgumentParserResult"/>. </returns>
         public ArgumentParserResult ParseRawArguments(Command command, string rawArguments)
         {
             Parameter currentParameter = null;
@@ -66,7 +66,7 @@ namespace Qmmands
                         currentParameter = arguments.Count < command.Parameters.Count && command.Parameters.Count > 0 ? command.Parameters.ElementAt(arguments.Count) : multipleParameter;
                         if (currentParameter == null)
                         {
-                            if (command.Service.IgnoreExtraArguments)
+                            if (command.IgnoreExtraArguments)
                                 break;
 
                             else
@@ -75,9 +75,7 @@ namespace Qmmands
 
                         else if (currentParameter.IsMultiple)
                             multipleParameter = currentParameter;
-
                     }
-
                 }
 
                 if (currentParameter.IsRemainder)
@@ -162,8 +160,8 @@ namespace Qmmands
 
                     arguments.Add(parameter, parameter.DefaultValue);
                 }
-
             }
+
             return new ArgumentParserResult(command, rawArguments, arguments);
         }
     }
