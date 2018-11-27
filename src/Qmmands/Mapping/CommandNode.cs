@@ -204,7 +204,24 @@ namespace Qmmands
             if (startIndex == segments.Count - 1)
             {
                 if (_commands.TryGetValue(segment, out var commands))
+                {
+                    for (var i = 0; i < commands.Count; i++)
+                    {
+                        var otherCommand = commands[i];
+                        var signature = command.SignatureIdentifier;
+                        var otherSignature = otherCommand.SignatureIdentifier;
+                        if (signature.Identifier == otherSignature.Identifier)
+                        {
+                            if (signature.HasRemainder == otherSignature.HasRemainder)
+                                throw new InvalidOperationException($"Cannot add multiple overloads with the same signature ({command}).");
+
+                            else if (!signature.HasRemainder && command.IgnoreExtraArguments || !otherSignature.HasRemainder && otherCommand.IgnoreExtraArguments)
+                                throw new InvalidOperationException($"Cannot add multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments ({command}).");
+                        }
+                    }
+
                     commands.Add(command);
+                }
 
                 else
                     _commands.Add(segment, new List<Command> { command });

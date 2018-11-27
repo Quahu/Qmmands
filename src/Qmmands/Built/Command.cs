@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Qmmands
@@ -84,6 +85,8 @@ namespace Qmmands
         /// </summary>
         public Module Module { get; }
 
+        internal (bool HasRemainder, string Identifier) SignatureIdentifier { get; }
+
         internal CommandService Service => Module.Service;
 
         internal CooldownMap CooldownMap { get; }
@@ -127,10 +130,21 @@ namespace Qmmands
             Checks = builder.Checks.ToImmutableArray();
             Attributes = builder.Attributes.ToImmutableArray();
 
+            var hasRemainder = false;
+            var sb = new StringBuilder();
             var parameters = ImmutableArray.CreateBuilder<Parameter>();
             for (var i = 0; i < builder.Parameters.Count; i++)
-                parameters.Add(builder.Parameters[i].Build(this));
+            {
+                var parameter = builder.Parameters[i].Build(this);
+                parameters.Add(parameter);
+
+                if (parameter.IsRemainder)
+                    hasRemainder = true;
+
+                sb.Append(parameter.Type).Append(',');
+            }
             Parameters = parameters.ToImmutable();
+            SignatureIdentifier = (hasRemainder, sb.ToString());
 
             if (Cooldowns.Count != 0)
             {
