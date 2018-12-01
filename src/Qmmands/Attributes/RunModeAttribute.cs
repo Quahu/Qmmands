@@ -9,7 +9,7 @@ namespace Qmmands
     public sealed class RunModeAttribute : Attribute
     {
         /// <summary>
-        ///     Gets the run mode.
+        ///     Gets the <see cref="Qmmands.RunMode"/>.
         /// </summary>
         public RunMode RunMode { get; }
 

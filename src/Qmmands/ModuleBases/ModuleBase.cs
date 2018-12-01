@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Qmmands
 {
     /// <summary>
-    ///     Makes the parent class a <see cref="Module"/> that can be added to the <see cref="CommandService"/>.
+    ///     Makes the inheriting class a <see cref="Module"/> that can be added to the <see cref="CommandService"/>.
     /// </summary>
     /// <typeparam name="TContext"> The <see cref="ICommandContext"/> this <see cref="Module"/> will use. </typeparam>
     public abstract class ModuleBase<TContext> : IModuleBase where TContext : class, ICommandContext
@@ -29,7 +29,7 @@ namespace Qmmands
             => Task.CompletedTask;
 
         internal void Prepare(ICommandContext context)
-            => Context = context as TContext ?? throw new InvalidOperationException($"Unable to set the context. Expected {typeof(TContext).Name}, got {context.GetType().Name}.");
+            => Context = context as TContext ?? throw new InvalidOperationException($"Unable to set the context. Expected {typeof(TContext)}, got {context.GetType()}.");
 
         Task IModuleBase.BeforeExecutedAsync(Command command)
             => BeforeExecutedAsync(command);

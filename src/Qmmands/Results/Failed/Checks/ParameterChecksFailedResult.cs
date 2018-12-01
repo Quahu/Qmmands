@@ -24,7 +24,7 @@ namespace Qmmands
         {
             Parameter = parameter;
             FailedChecks = failedChecks;
-            Reason = $"{(FailedChecks.Count == 1 ? "One check" : "Multiple checks")} failed for the parameter '{Parameter.Name}' in the command '{Parameter.Command}'.";
+            Reason = $"{(FailedChecks.Count == 1 ? "One check" : "Multiple checks")} failed for the parameter {Parameter.Name} in the command {Parameter.Command}.";
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Qmmands
 
         /// <summary>
         ///     Gets the <see cref="Qmmands.Command"/> this <see cref="CheckBaseAttribute"/> is for.
-        ///     <see langword="null"/> if this check is for a module.
+        ///     <see langword="null"/> if this check is for a <see cref="Qmmands.Module"/>.
         /// </summary>
         public Command Command { get; internal set; }
 
@@ -33,7 +33,9 @@ namespace Qmmands
         /// </summary>
         /// <param name="context"> The <see cref="ICommandContext"/> used during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> used during execution. </param>
-        /// <returns> A <see cref="CheckResult"/> which determines whether this check failed or succeeded. </returns>
+        /// <returns>
+        ///     A <see cref="CheckResult"/> which determines whether this <see cref="CheckBaseAttribute"/> succeeded or not.
+        /// </returns>
         public abstract Task<CheckResult> CheckAsync(ICommandContext context, IServiceProvider provider);
     }
 }

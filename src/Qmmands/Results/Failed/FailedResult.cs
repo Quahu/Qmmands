@@ -18,7 +18,9 @@
         /// <summary>
         ///     Returns <see cref="Reason"/>.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        ///     The <see cref="Reason"/>.
+        /// </returns>
         public override string ToString()
             => Reason;
     }

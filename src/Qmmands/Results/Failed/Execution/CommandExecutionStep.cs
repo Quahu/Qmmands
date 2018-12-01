@@ -6,7 +6,7 @@
     public enum CommandExecutionStep
     {
         /// <summary>
-        ///     An exception occurred while handling command checks.
+        ///     An exception occurred while handling the <see cref="Qmmands.Command"/>'s checks.
         /// </summary>
         Checks,
 
@@ -26,7 +26,7 @@
         BeforeExecuted,
 
         /// <summary>
-        ///     An execution occurred when executing the command.
+        ///     An execution occurred when executing the <see cref="Command"/>.
         /// </summary>
         Command
     }

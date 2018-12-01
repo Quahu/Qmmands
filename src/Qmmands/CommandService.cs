@@ -187,7 +187,9 @@ namespace Qmmands
         /// <summary>
         ///     Enumerates through all of the added <see cref="Module"/>s and yields all found <see cref="Command"/>s.
         /// </summary>
-        /// <returns> An enumerable with all <see cref="Command"/>s. </returns>
+        /// <returns>
+        ///     An enumerable with all <see cref="Command"/>s.
+        /// </returns>
         public IEnumerable<Command> GetAllCommands()
         {
             IEnumerable<Command> GetCommands(Module module)
@@ -208,7 +210,9 @@ namespace Qmmands
         /// <summary>
         ///     Enumerates through all of the added <see cref="Module"/>s yields them.
         /// </summary>
-        /// <returns> An enumerable with all <see cref="Module"/>s. </returns>
+        /// <returns>
+        ///     An enumerable with all <see cref="Module"/>s.
+        /// </returns>
         public IEnumerable<Module> GetAllModules()
         {
             IEnumerable<Module> GetSubmodules(Module module)
@@ -236,7 +240,9 @@ namespace Qmmands
         ///     Attempts to find <see cref="Command"/>s matching the provided path.
         /// </summary>
         /// <param name="path"> The path to use for searching. </param>
-        /// <returns> An ordered enumerable of <see cref="CommandMatch"/>es. </returns>
+        /// <returns>
+        ///     An ordered enumerable of <see cref="CommandMatch"/>es.
+        /// </returns>
         public IEnumerable<CommandMatch> FindCommands(string path)
         {
             if (path == null)
@@ -251,7 +257,9 @@ namespace Qmmands
         ///     Attempts to find <see cref="Module"/>s matching the provided path.
         /// </summary>
         /// <param name="path"> The path to use for searching. </param>
-        /// <returns> An ordered enumerable of <see cref="ModuleMatch"/>es. </returns>
+        /// <returns>
+        ///     An ordered enumerable of <see cref="ModuleMatch"/>es.
+        /// </returns>
         /// <exception cref="ArgumentNullException">
         ///     The path to find modules for mustn't be null.
         /// </exception>
@@ -264,10 +272,10 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Adds a <see cref="TypeParser{T}"/> for the specified <typeparamref name="T"/> type.
+        ///     Adds a <see cref="TypeParser{T}"/> for the specified <typeparamref name="T"/> <see cref="Type"/>.
         /// </summary>
         /// <typeparam name="T"> The type to add the <paramref name="parser"/> for. </typeparam>
-        /// <param name="parser"> The <see cref="TypeParser{T}"/> to add for the type. </param>
+        /// <param name="parser"> The <see cref="TypeParser{T}"/> to add for the <see cref="Type"/>. </param>
         /// <param name="replacePrimitive"> Whether to replace the primitive parser. </param>
         /// <exception cref="ArgumentNullException">
         ///     The type parser to add mustn't be null.
@@ -296,6 +304,7 @@ namespace Qmmands
                 v.Add(parser.GetType(), (replacePrimitive, parser));
                 return v;
             });
+
             if (type.IsValueType)
             {
                 var nullableParser = ReflectionUtilities.CreateNullableTypeParser(type, this, parser);
@@ -310,10 +319,10 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Removes a <see cref="TypeParser{T}"/> for the specified <typeparamref name="T"/>.
+        ///     Removes a <see cref="TypeParser{T}"/> for the specified <typeparamref name="T"/> <see cref="Type"/>.
         /// </summary>
-        /// <typeparam name="T"> The type to remove the <paramref name="parser"/> for. </typeparam>
-        /// <param name="parser"> The <see cref="TypeParser{T}"/> to remove for the type. </param>
+        /// <typeparam name="T"> The <see cref="Type"/> to remove the <paramref name="parser"/> for. </typeparam>
+        /// <param name="parser"> The <see cref="TypeParser{T}"/> to remove for the <see cref="Type"/>. </param>
         /// <exception cref="ArgumentNullException">
         ///     The type parser to remove mustn't be null.
         /// </exception>
@@ -389,7 +398,9 @@ namespace Qmmands
         ///     Attempts to add all valid <see cref="Module"/>s and <see cref="Command"/>s found in the provided <see cref="Assembly"/>.
         /// </summary>
         /// <param name="assembly"> The assembly to search. </param>
-        /// <returns> A list of all found and added modules. </returns>
+        /// <returns>
+        ///     An <see cref="IReadOnlyList{Module}"/> of all found and added <see cref="Module"/>s.
+        /// </returns>
         /// <exception cref="ArgumentNullException">
         ///     The assembly to add modules from mustn't be null.
         /// </exception>
@@ -425,7 +436,9 @@ namespace Qmmands
         ///     Attempts to build the specified <see cref="ModuleBuilder"/> into a <see cref="Module"/>.
         /// </summary>
         /// <param name="builder"> The builder to build. </param>
-        /// <returns> A <see cref="Module"/> if succeeded. </returns>
+        /// <returns>
+        ///     A <see cref="Module"/>.
+        /// </returns>
         /// <exception cref="ArgumentNullException">
         ///     The module builder to add mustn't be null.
         /// </exception>
@@ -460,7 +473,9 @@ namespace Qmmands
         ///     Attempts to instantiate, modify, and build a <see cref="ModuleBuilder"/> into a <see cref="Module"/>.
         /// </summary>
         /// <param name="builderAction"> The action to perform on the builder. </param>
-        /// <returns> A <see cref="Module"/> if succeeded. </returns>
+        /// <returns>
+        ///     A <see cref="Module"/>.
+        /// </returns>
         /// <exception cref="ArgumentNullException"> 
         ///     The module builder action mustn't be null.
         /// </exception>
@@ -507,6 +522,9 @@ namespace Qmmands
             if (module == null)
                 throw new ArgumentNullException(nameof(module), "The module to add mustn't be null.");
 
+            if (module.Parent != null)
+                throw new ArgumentException("The module to add mustn't be a nested module.", nameof(module));
+
             if (_modules.Contains(module))
                 throw new ArgumentException("This module has already been added.", nameof(module));
 
@@ -522,10 +540,12 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Attempts to add the specified <typeparamref name="TModule"/> type as a <see cref="Module"/>. 
+        ///     Attempts to add the specified <typeparamref name="TModule"/> <see cref="Type"/> as a <see cref="Module"/>. 
         /// </summary>
-        /// <typeparam name="TModule"> The type to add. </typeparam>
-        /// <returns> A <see cref="Module"/> if succeeded. </returns>
+        /// <typeparam name="TModule"> The <see cref="Type"/> to add. </typeparam>
+        /// <returns>
+        ///     A <see cref="Module"/>.
+        /// </returns>
         /// <exception cref="ArgumentException">
         ///     The type has already been added as a module.
         /// </exception>
@@ -544,7 +564,7 @@ namespace Qmmands
         /// <summary>
         ///     Attempts to add the specified <see cref="Type"/> as a <see cref="Module"/>. 
         /// </summary>
-        /// <returns> A <see cref="Module"/> if succeeded. </returns>
+        /// <returns> A <see cref="Module"/>. </returns>
         /// <exception cref="ArgumentNullException">
         ///     The type to add mustn't be null.
         /// </exception>
@@ -566,7 +586,7 @@ namespace Qmmands
                 throw new ArgumentNullException(nameof(type), "The type to add mustn't be null.");
 
             if (_typeModules.ContainsKey(type))
-                throw new ArgumentException($"{type.Name} has already been added as a module.", nameof(type));
+                throw new ArgumentException($"{type} has already been added as a module.", nameof(type));
 
             try
             {
@@ -604,13 +624,13 @@ namespace Qmmands
         /// <summary>
         ///     Removes the specified <see cref="Module"/>.
         /// </summary>
-        /// <param name="module"></param>
+        /// <param name="module"> The <see cref="Module"/> to remove. </param>
         /// <exception cref="ArgumentNullException">
         ///     The module to remove mustn't be null.
-        ///     </exception>
+        /// </exception>
         /// <exception cref="ArgumentException">
-        ///     The module isn't held by this instance of <see cref="CommandService"/>.
-        ///     </exception>
+        ///     This module hasn't been added.
+        /// </exception>
         public async Task RemoveModuleAsync(Module module)
         {
             if (module == null)
@@ -779,8 +799,8 @@ namespace Qmmands
         /// <summary>
         ///     Attempts to parse the arguments for the provided <see cref="Command"/> and execute it.
         /// </summary>
-        /// <param name="command"> The command to execute. </param>
-        /// <param name="rawArguments"> The raw arguments to use for this command's parameters. </param>
+        /// <param name="command"> The <see cref="Command"/> to execute. </param>
+        /// <param name="rawArguments"> The raw arguments to use for this <see cref="Command"/>'s parameters. </param>
         /// <param name="context"> The <see cref="ICommandContext"/> to use during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns> An <see cref="IResult"/>. </returns>

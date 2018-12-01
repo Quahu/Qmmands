@@ -32,7 +32,9 @@ namespace Qmmands
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefix"> The <see cref="char"/> prefix to check for. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
-        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
         public static bool HasPrefix(string input, char prefix, out string output)
             => HasPrefix(input, prefix, false, out output);
 
@@ -44,7 +46,9 @@ namespace Qmmands
         /// <param name="prefix"> The <see cref="char"/> prefix to check for. </param>
         /// <param name="ignoreCase"> Whether to ignore casing or not. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
-        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
         public static bool HasPrefix(string input, char prefix, bool ignoreCase, out string output)
         {
             if (input.Length == 0 || input[0] != (ignoreCase ? char.ToLowerInvariant(prefix) : prefix))
@@ -65,7 +69,9 @@ namespace Qmmands
         /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
         /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix wasn't found. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
-        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
         public static bool HasAnyPrefix(string input, IReadOnlyList<char> prefixes, out char prefix, out string output)
             => HasAnyPrefix(input, prefixes, false, out prefix, out output);
 
@@ -78,7 +84,9 @@ namespace Qmmands
         /// <param name="ignoreCase"> Whether to ignore casing or not. </param>
         /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix wasn't found. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
-        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
         public static bool HasAnyPrefix(string input, IReadOnlyList<char> prefixes, bool ignoreCase, out char prefix, out string output)
         {
             for (var i = 0; i < prefixes.Count; i++)
@@ -104,7 +112,9 @@ namespace Qmmands
         /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
         /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix wasn't found. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
-        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
         public static bool HasAnyPrefix(string input, IEnumerable<char> prefixes, out char prefix, out string output)
             => HasAnyPrefix(input, prefixes, false, out prefix, out output);
 
@@ -117,7 +127,9 @@ namespace Qmmands
         /// <param name="ignoreCase"> Whether to ignore casing or not. </param>
         /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix wasn't found. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
-        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
         public static bool HasAnyPrefix(string input, IEnumerable<char> prefixes, bool ignoreCase, out char prefix, out string output)
         {
             foreach (var currentPrefix in prefixes)
@@ -141,7 +153,9 @@ namespace Qmmands
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefix"> The <see cref="string"/> prefix to check for. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
-        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
         public static bool HasPrefix(string input, string prefix, out string output)
             => HasPrefix(input, prefix, StringComparison.Ordinal, out output);
 
@@ -153,7 +167,9 @@ namespace Qmmands
         /// <param name="prefix"> The <see cref="string"/> prefix to check for. </param>
         /// <param name="stringComparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
-        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
         public static bool HasPrefix(string input, string prefix, StringComparison stringComparison, out string output)
         {
             if (!input.StartsWith(prefix, stringComparison))
@@ -174,7 +190,9 @@ namespace Qmmands
         /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>
         /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix isn't found. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
-        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
         public static bool HasAnyPrefix(string input, IReadOnlyList<string> prefixes, out string prefix, out string output)
             => HasAnyPrefix(input, prefixes, StringComparison.Ordinal, out prefix, out output);
 
@@ -187,7 +205,9 @@ namespace Qmmands
         /// <param name="stringComparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
         /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix isn't found. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
-        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
         public static bool HasAnyPrefix(string input, IReadOnlyList<string> prefixes, StringComparison stringComparison, out string prefix, out string output)
         {
             for (var i = 0; i < prefixes.Count; i++)
@@ -213,7 +233,9 @@ namespace Qmmands
         /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>
         /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix isn't found. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
-        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
         public static bool HasAnyPrefix(string input, IEnumerable<string> prefixes, out string prefix, out string output)
             => HasAnyPrefix(input, prefixes, StringComparison.Ordinal, out prefix, out output);
 
@@ -226,7 +248,9 @@ namespace Qmmands
         /// <param name="stringComparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
         /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix isn't found. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
-        /// <returns> A <see cref="bool"/> which determines whether the prefix was found or not. </returns>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
         public static bool HasAnyPrefix(string input, IEnumerable<string> prefixes, StringComparison stringComparison, out string prefix, out string output)
         {
             foreach (var currentPrefix in prefixes)
@@ -248,7 +272,9 @@ namespace Qmmands
         ///     will require to pass before one of its <see cref="Command"/>s can be executed.
         /// </summary>
         /// <param name="module"> The <see cref="Module"/> to get the checks for. </param>
-        /// <returns> An enumerator of all checks. </returns>
+        /// <returns>
+        ///     An enumerator of all <see cref="CheckBaseAttribute"/>s.
+        /// </returns>
         public static IEnumerable<CheckBaseAttribute> GetAllChecks(Module module)
         {
             if (module.Parent != null)
@@ -264,7 +290,9 @@ namespace Qmmands
         ///     will require to pass before one of it can be executed.
         /// </summary>
         /// <param name="command"> The <see cref="Command"/> to get the checks for. </param>
-        /// <returns> An enumerator of all checks. </returns>
+        /// <returns>
+        ///     An enumerator of all <see cref="CheckBaseAttribute"/>s.
+        /// </returns>
         public static IEnumerable<CheckBaseAttribute> GetAllChecks(Command command)
         {
             foreach (var check in GetAllChecks(command.Module))
@@ -277,7 +305,9 @@ namespace Qmmands
         /// <summary>
         ///     Recursively gets all of the <see cref="Command"/>s in the specified <see cref="Module"/> and its submodules.
         /// </summary>
-        /// <returns> An enumerator of all <see cref="Command"/>s. </returns>
+        /// <returns>
+        ///     An enumerator of all <see cref="Command"/>s.
+        /// </returns>
         public static IEnumerable<Command> GetAllCommands(Module module)
         {
             IEnumerable<Command> GetCommands(Module rModule)
@@ -297,7 +327,9 @@ namespace Qmmands
         /// <summary>
         ///     Recursively gets all of the <see cref="CommandBuilder"/>s in the specified <see cref="ModuleBuilder"/> and its submodules.
         /// </summary>
-        /// <returns> An enumerator of all <see cref="CommandBuilder"/>s. </returns>
+        /// <returns>
+        ///     An enumerator of all <see cref="CommandBuilder"/>s.
+        /// </returns>
         public static IEnumerable<CommandBuilder> GetAllCommands(ModuleBuilder moduleBuilder)
         {
             IEnumerable<CommandBuilder> GetCommands(ModuleBuilder rModuleBuilder)
@@ -317,7 +349,9 @@ namespace Qmmands
         /// <summary>
         ///     Recursively gets all of the submodules in the specified <see cref="Module"/> and its submodules.
         /// </summary>
-        /// <returns> An enumerator of all <see cref="Module"/>s. </returns>
+        /// <returns>
+        ///     An enumerator of all <see cref="Module"/>s.
+        /// </returns>
         public static IEnumerable<Module> GetAllSubmodules(Module module)
         {
             IEnumerable<Module> GetModules(Module rModule)
@@ -337,7 +371,9 @@ namespace Qmmands
         /// <summary>
         ///     Recursively gets all of the submodules in the specified <see cref="ModuleBuilder"/> and its submodules.
         /// </summary>
-        /// <returns> An enumerator of all <see cref="ModuleBuilder"/>s. </returns>
+        /// <returns>
+        ///     An enumerator of all <see cref="ModuleBuilder"/>s.
+        /// </returns>
         public static IEnumerable<ModuleBuilder> GetAllSubmodules(ModuleBuilder moduleBuilder)
         {
             IEnumerable<ModuleBuilder> GetModules(ModuleBuilder rModuleBuilder)

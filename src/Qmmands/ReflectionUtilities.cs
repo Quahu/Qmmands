@@ -58,7 +58,7 @@ namespace Qmmands
         public static ModuleBuilder BuildModule(TypeInfo typeInfo)
         {
             if (!IsValidModuleDefinition(typeInfo))
-                throw new ArgumentException($"{typeInfo.Name} mustn't be abstract, mustn't have generic parameters, and must inherit ModuleBase.", nameof(typeInfo));
+                throw new ArgumentException($"{typeInfo} mustn't be abstract, mustn't have generic parameters, and must inherit ModuleBase.", nameof(typeInfo));
 
             var builder = new ModuleBuilder(typeInfo);
             var attributes = typeInfo.GetCustomAttributes(false);
@@ -190,7 +190,7 @@ namespace Qmmands
 
                     case ParamArrayAttribute _:
                         if (!last)
-                            throw new InvalidOperationException($"A params array parameter must be the last parameter in a command. Parameter: {parameterInfo.Name} in {parameterInfo.Member.Name} in {parameterInfo.Member.DeclaringType.Name}.");
+                            throw new InvalidOperationException($"A params array parameter must be the last parameter in a command. Parameter: {parameterInfo.Name} in {parameterInfo.Member.Name} in {parameterInfo.Member.DeclaringType}.");
 
                         builder.WithIsMultiple(true)
                             .WithType(parameterInfo.ParameterType.GetElementType());
@@ -198,7 +198,7 @@ namespace Qmmands
 
                     case RemainderAttribute _:
                         if (!last)
-                            throw new InvalidOperationException($"A remainder parameter must be the last parameter in a command. Parameter: {parameterInfo.Name} in {parameterInfo.Member.Name} in {parameterInfo.Member.DeclaringType.Name}.");
+                            throw new InvalidOperationException($"A remainder parameter must be the last parameter in a command. Parameter: {parameterInfo.Name} in {parameterInfo.Member.Name} in {parameterInfo.Member.DeclaringType}.");
 
                         builder.WithIsRemainder(true);
                         break;
@@ -244,17 +244,17 @@ namespace Qmmands
                 if (!(service is null))
                     return service;
 
-                throw new InvalidOperationException($"Failed to create {typeInfo}, dependency {type.Name} wasn't found.");
+                throw new InvalidOperationException($"Failed to instantiate {typeInfo}, dependency of type {type} wasn't found.");
             }
 
             return (provider) =>
             {
                 var constructors = typeInfo.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
                 if (constructors.Length == 0)
-                    throw new InvalidOperationException($"{typeInfo.Name} has no public non-static constructors.");
+                    throw new InvalidOperationException($"{typeInfo} has no public non-static constructors.");
 
                 if (constructors.Length > 1)
-                    throw new InvalidOperationException($"{typeInfo.Name} has multiple public constructors.");
+                    throw new InvalidOperationException($"{typeInfo} has multiple public constructors.");
 
                 var constructor = constructors[0];
                 var parameters = constructor.GetParameters();
@@ -269,7 +269,7 @@ namespace Qmmands
                 }
                 catch (Exception ex)
                 {
-                    throw new InvalidOperationException($"Failed to instantiate {typeInfo.Name}. See the inner exception for more details.", ex);
+                    throw new InvalidOperationException($"Failed to instantiate {typeInfo}. See the inner exception for more details.", ex);
                 }
 
                 do

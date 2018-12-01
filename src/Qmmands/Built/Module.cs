@@ -45,7 +45,7 @@ namespace Qmmands
         ///     Gets the full aliases of this <see cref="Module"/>.
         /// </summary>
         /// <remarks>
-        ///     Aliases of parent modules and this module concatenated using the <see cref="CommandService.Separator"/>.
+        ///     Aliases of parent <see cref="Module"/>s and this <see cref="Module"/> concatenated using the <see cref="CommandService.Separator"/>.
         /// </remarks>
         public IReadOnlyList<string> FullAliases { get; }
 
@@ -128,7 +128,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Runs checks on parent modules and this module.
+        ///     Runs checks on parent <see cref="Module"/>s and this <see cref="Module"/>.
         /// </summary>
         /// <param name="context"> The <see cref="ICommandContext"/> used for execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>

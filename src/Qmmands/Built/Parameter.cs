@@ -68,7 +68,7 @@ namespace Qmmands
         public IReadOnlyList<Attribute> Attributes { get; }
 
         /// <summary>
-        ///     Gets the command of this <see cref="Parameter"/>.
+        ///     Gets the <see cref="Qmmands.Command"/> of this <see cref="Parameter"/>.
         /// </summary>
         public Command Command { get; }
 

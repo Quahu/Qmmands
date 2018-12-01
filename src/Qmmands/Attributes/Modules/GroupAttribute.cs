@@ -18,10 +18,10 @@ namespace Qmmands
         /// </summary>
         /// <param name="aliases"> The aliases to set. </param>
         /// <exception cref="ArgumentNullException">
-        ///     <paramref name="aliases"/> mustn't be null.
+        ///     Group aliases mustn't be null."
         /// </exception>
         /// <exception cref="ArgumentException">
-        ///     <paramref name="aliases"/> must contain at least one alias.
+        ///     You must provide at least one alias for the group.
         /// </exception>
         public GroupAttribute(params string[] aliases)
         {

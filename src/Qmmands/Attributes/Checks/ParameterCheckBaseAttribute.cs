@@ -28,7 +28,9 @@ namespace Qmmands
         /// <param name="argument"> The value given to this <see cref="Parameter"/>. </param>
         /// <param name="context"> The <see cref="ICommandContext"/> used during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> used during execution. </param>
-        /// <returns></returns>
+        /// <returns>
+        ///     A <see cref="CheckResult"/> which determines whether this <see cref="ParameterCheckBaseAttribute"/> succeeded or not.
+        /// </returns>
         public abstract Task<CheckResult> CheckAsync(object argument, ICommandContext context, IServiceProvider provider);
     }
 }

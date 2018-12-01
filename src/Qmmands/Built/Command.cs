@@ -61,7 +61,7 @@ namespace Qmmands
         ///     Gets the full aliases of this <see cref="Command"/>.
         /// </summary>
         /// <remarks>
-        ///     Aliases of parent modules and this command concatenated using the <see cref="CommandService.Separator"/>.
+        ///     Aliases of parent <see cref="Qmmands.Module"/>s and this <see cref="Command"/> concatenated using the <see cref="CommandService.Separator"/>.
         /// </remarks>
         public IReadOnlyList<string> FullAliases { get; }
 
@@ -156,7 +156,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Runs checks on parent modules and this command.
+        ///     Runs checks on parent <see cref="Qmmands.Module"/>s and this <see cref="Command"/>.
         /// </summary>
         /// <param name="context"> The <see cref="ICommandContext"/> used for execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
@@ -192,6 +192,9 @@ namespace Qmmands
         /// <summary>
         ///     Resets all <see cref="Cooldown"/> buckets on this <see cref="Command"/>.
         /// </summary>
+        /// <exception cref="InvalidOperationException">
+        ///     This command doesn't have any assigned cooldowns.
+        /// </exception>
         public void ResetCooldowns()
         {
             if (CooldownMap == null)
@@ -207,6 +210,9 @@ namespace Qmmands
         /// <param name="cooldown"> The <see cref="Cooldown"/> to reset. </param>
         /// <param name="context"> The <see cref="ICommandContext"/> to use for bucket key generation. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use for bucket key generation. </param>
+        /// <exception cref="InvalidOperationException">
+        ///     This command doesn't have any assigned cooldowns.
+        /// </exception>
         public void ResetCooldown(Cooldown cooldown, ICommandContext context, IServiceProvider provider = null)
         {
             if (CooldownMap == null)
@@ -221,7 +227,7 @@ namespace Qmmands
 
 
         /// <summary>
-        ///     Runs cooldowns on this command.
+        ///     Runs cooldowns on this <see cref="Command"/>.
         /// </summary>
         /// <param name="context"> The <see cref="ICommandContext"/> used for execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
@@ -264,9 +270,15 @@ namespace Qmmands
         /// <param name="context"> The <see cref="ICommandContext"/> to use during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns> An <see cref="IResult"/>. </returns>
-        /// <exception cref="ArgumentNullException"> The command mustn't be null. </exception>
-        /// <exception cref="ArgumentNullException"> The raw arguments mustn't be null. </exception>
-        /// <exception cref="ArgumentNullException"> The context mustn't be null. </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The command mustn't be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The raw arguments mustn't be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The context mustn't be null.
+        /// </exception>
         public Task<IResult> ExecuteAsync(string rawArguments, ICommandContext context, IServiceProvider provider = null)
             => Service.ExecuteAsync(this, rawArguments, context, provider);
 

@@ -40,7 +40,7 @@ namespace Qmmands
 
         /// <summary>
         ///     Gets or sets the <see cref="string"/> separator to use between groups and commands.
-        ///     Defaults to a single whitespace.
+        ///     Defaults to a single whitespace character.
         /// </summary>
         public string Separator { get; set; } = " ";
 

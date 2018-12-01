@@ -24,13 +24,15 @@
         ///     Gets a successful <see cref="CheckResult"/>.
         /// </summary>
         public static CheckResult Successful { get; } = new CheckResult();
-        
+
         /// <summary>
-        ///     Gets a failed <see cref="CheckResult"/>.
+        ///     Initialises a new unsuccessful <see cref="CheckResult"/>.
         /// </summary>
         /// <param name="reason"> The error reason. </param>
-        /// <returns></returns>
-        public static CheckResult Unsuccessful(string reason) 
+        /// <returns>
+        ///     An unsuccessful <see cref="CheckResult"/>.
+        /// </returns>
+        public static CheckResult Unsuccessful(string reason)
             => new CheckResult(reason);
     }
 }

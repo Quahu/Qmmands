@@ -42,7 +42,7 @@ namespace Qmmands
         public int? FailurePosition { get; }
 
         /// <summary>
-        ///     Initialises a new failed <see cref="ArgumentParserResult"/>.
+        ///     Initialises a new unsuccessful <see cref="ArgumentParserResult"/>.
         /// </summary>
         /// <param name="command"> The <see cref="Qmmands.Command"/> the parse failed for. </param>
         /// <param name="parameter"> The parameter the parse failed for. </param>

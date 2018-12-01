@@ -11,7 +11,7 @@ namespace Qmmands
         public override string Reason { get; } = "Failed to find a matching overload.";
 
         /// <summary>
-        ///     Gets the failed overloads with their respective failure reasons.
+        ///     Gets the failed overloads with their respective failed results.
         /// </summary>
         public IReadOnlyDictionary<Command, FailedResult> FailedOverloads { get; }
 
