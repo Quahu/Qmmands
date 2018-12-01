@@ -260,10 +260,10 @@ namespace Qmmands
                 if (!Aliases.Contains(aliases[i]))
                 {
                     if (alias.IndexOf(' ') != -1)
-                        throw new InvalidOperationException($"Command's aliases mustn't contain whitespace. ({alias})");
+                        throw new InvalidOperationException($"Module's group aliases mustn't contain whitespace. ({alias})");
 
                     if (alias.IndexOf(service.Separator) != -1)
-                        throw new InvalidOperationException($"Command's aliases mustn't contain the separator. ({alias})");
+                        throw new InvalidOperationException($"Module's group aliases mustn't contain the separator. ({alias})");
 
                     Aliases.Add(alias.Trim());
                 }
