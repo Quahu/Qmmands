@@ -18,9 +18,9 @@ namespace Qmmands
         /// </summary>
         /// <param name="aliases"> The aliases to set. </param>
         /// <exception cref="ArgumentNullException">
-        ///     Command aliases mustn't be null.
+        ///     Command aliases must not be null.
         /// </exception>
         public CommandAttribute(params string[] aliases)
-            => Aliases = aliases ?? throw new ArgumentNullException(nameof(aliases), "Command aliases mustn't be null.");
+            => Aliases = aliases ?? throw new ArgumentNullException(nameof(aliases), "Command aliases must not be null.");
     }
 }

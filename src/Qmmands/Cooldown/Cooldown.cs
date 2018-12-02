@@ -32,7 +32,7 @@ namespace Qmmands
         ///     Amount and per must be positive values.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        ///     Bucket type mustn't be <see langword="null"/>.
+        ///     Bucket type must not be <see langword="null"/>.
         /// </exception>
         /// <exception cref="ArgumentException">
         ///     Bucket type must be an <see langword="enum"/>.
@@ -46,7 +46,7 @@ namespace Qmmands
                 throw new ArgumentOutOfRangeException(nameof(per), "Per must be a positive time span.");
 
             if (bucketType is null)
-                throw new ArgumentNullException(nameof(bucketType), "Bucket type mustn't be null.");
+                throw new ArgumentNullException(nameof(bucketType), "Bucket type must not be null.");
 
             if (!bucketType.GetType().IsEnum)
                 throw new ArgumentException("Bucket type must be an enum.", nameof(bucketType));

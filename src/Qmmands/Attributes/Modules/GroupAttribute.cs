@@ -18,7 +18,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="aliases"> The aliases to set. </param>
         /// <exception cref="ArgumentNullException">
-        ///     Group aliases mustn't be null."
+        ///     Group aliases must not be null."
         /// </exception>
         /// <exception cref="ArgumentException">
         ///     You must provide at least one alias for the group.
@@ -26,7 +26,7 @@ namespace Qmmands
         public GroupAttribute(params string[] aliases)
         {
             if (aliases == null)
-                throw new ArgumentNullException(nameof(aliases), "Group aliases mustn't be null.");
+                throw new ArgumentNullException(nameof(aliases), "Group aliases must not be null.");
 
             if (aliases.Length == 0)
                 throw new ArgumentException("You must provide at least one alias for the group.", nameof(aliases));

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -149,7 +149,7 @@ namespace Qmmands
             if (Cooldowns.Count != 0)
             {
                 if (Service.CooldownBucketKeyGenerator is null)
-                    throw new InvalidOperationException("Cooldown bucket key generator hasn't been set.");
+                    throw new CommandBuildingException(builder, "Cooldown bucket key generator delegate has not been set.");
 
                 CooldownMap = new CooldownMap(this);
             }
@@ -193,12 +193,12 @@ namespace Qmmands
         ///     Resets all <see cref="Cooldown"/> buckets on this <see cref="Command"/>.
         /// </summary>
         /// <exception cref="InvalidOperationException">
-        ///     This command doesn't have any assigned cooldowns.
+        ///     This command does not have any assigned cooldowns.
         /// </exception>
         public void ResetCooldowns()
         {
             if (CooldownMap == null)
-                throw new InvalidOperationException("This command doesn't have any assigned cooldowns.");
+                throw new InvalidOperationException("This command does not have any assigned cooldowns.");
 
             CooldownMap.Buckets.Clear();
         }
@@ -211,12 +211,12 @@ namespace Qmmands
         /// <param name="context"> The <see cref="ICommandContext"/> to use for bucket key generation. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use for bucket key generation. </param>
         /// <exception cref="InvalidOperationException">
-        ///     This command doesn't have any assigned cooldowns.
+        ///     This command does not have any assigned cooldowns.
         /// </exception>
         public void ResetCooldown(Cooldown cooldown, ICommandContext context, IServiceProvider provider = null)
         {
             if (CooldownMap == null)
-                throw new InvalidOperationException("This command doesn't have any assigned cooldowns.");
+                throw new InvalidOperationException("This command does not have any assigned cooldowns.");
 
             if (provider is null)
                 provider = DummyServiceProvider.Instance;
@@ -271,13 +271,13 @@ namespace Qmmands
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns> An <see cref="IResult"/>. </returns>
         /// <exception cref="ArgumentNullException">
-        ///     The command mustn't be null.
+        ///     The command must not be null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        ///     The raw arguments mustn't be null.
+        ///     The raw arguments must not be null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        ///     The context mustn't be null.
+        ///     The context must not be null.
         /// </exception>
         public Task<IResult> ExecuteAsync(string rawArguments, ICommandContext context, IServiceProvider provider = null)
             => Service.ExecuteAsync(this, rawArguments, context, provider);

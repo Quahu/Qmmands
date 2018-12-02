@@ -87,28 +87,13 @@ namespace Qmmands
             DefaultValue = builder.DefaultValue;
             Type = builder.Type;
 
-            if (Type == null)
-                throw new InvalidOperationException("Parameter must have an assigned type.");
-
-            if (IsOptional)
-            {
-                if (DefaultValue is null)
-                {
-                    if (Type.IsValueType && !ReflectionUtilities.IsNullable(Type))
-                        throw new InvalidOperationException("A value type parameter can't have null as the default value.");
-                }
-
-                else if (DefaultValue.GetType() != Type)
-                    throw new InvalidOperationException($"Parameter type and default value mismatch. Expected {Type}, got {DefaultValue.GetType()}.");
-            }
-
             if (Type.IsEnum)
                 _ = Service.GetPrimitiveTypeParser(Type);
 
             if (builder.CustomTypeParserType != null)
             {
                 if (!ReflectionUtilities.IsValidParserDefinition(builder.CustomTypeParserType.GetTypeInfo(), Type))
-                    throw new InvalidOperationException($"{builder.CustomTypeParserType.Name} isn't a valid type parser for parameter of type {Type}.");
+                    throw new ParameterBuildingException(builder, $"{builder.CustomTypeParserType} is not a valid type parser for parameter of type {Type}.");
 
                 CustomTypeParserType = builder.CustomTypeParserType;
             }

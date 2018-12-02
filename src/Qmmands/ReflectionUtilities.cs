@@ -58,7 +58,7 @@ namespace Qmmands
         public static ModuleBuilder BuildModule(TypeInfo typeInfo)
         {
             if (!IsValidModuleDefinition(typeInfo))
-                throw new ArgumentException($"{typeInfo} mustn't be abstract, mustn't have generic parameters, and must inherit ModuleBase.", nameof(typeInfo));
+                throw new ArgumentException($"{typeInfo} must not be abstract, must not have generic parameters, and must inherit ModuleBase.", nameof(typeInfo));
 
             var builder = new ModuleBuilder(typeInfo);
             var attributes = typeInfo.GetCustomAttributes(false);
@@ -190,7 +190,7 @@ namespace Qmmands
 
                     case ParamArrayAttribute _:
                         if (!last)
-                            throw new InvalidOperationException($"A params array parameter must be the last parameter in a command. Parameter: {parameterInfo.Name} in {parameterInfo.Member.Name} in {parameterInfo.Member.DeclaringType}.");
+                            throw new ParameterBuildingException(builder, $"A params array parameter must be the last parameter in a command. Parameter: {parameterInfo.Name} in {parameterInfo.Member.Name} in {parameterInfo.Member.DeclaringType}.");
 
                         builder.WithIsMultiple(true)
                             .WithType(parameterInfo.ParameterType.GetElementType());
@@ -198,7 +198,7 @@ namespace Qmmands
 
                     case RemainderAttribute _:
                         if (!last)
-                            throw new InvalidOperationException($"A remainder parameter must be the last parameter in a command. Parameter: {parameterInfo.Name} in {parameterInfo.Member.Name} in {parameterInfo.Member.DeclaringType}.");
+                            throw new ParameterBuildingException(builder,  $"A remainder parameter must be the last parameter in a command. Parameter: {parameterInfo.Name} in {parameterInfo.Member.Name} in {parameterInfo.Member.DeclaringType}.");
 
                         builder.WithIsRemainder(true);
                         break;
@@ -244,7 +244,7 @@ namespace Qmmands
                 if (!(service is null))
                     return service;
 
-                throw new InvalidOperationException($"Failed to instantiate {typeInfo}, dependency of type {type} wasn't found.");
+                throw new InvalidOperationException($"Failed to instantiate {typeInfo}, dependency of type {type} was not found.");
             }
 
             return (provider) =>

@@ -31,7 +31,7 @@ namespace Qmmands
     ///     Represents a <see cref="CommandService.CommandExecuted"/> callback method.
     /// </summary>
     /// <param name="command"> The executed <see cref="Command"/>. </param>
-    /// <param name="result"> The <see cref="CommandResult"/> of the command. <see langword="null"/> if the <see cref="Command"/> didn't return anything. </param>
+    /// <param name="result"> The <see cref="CommandResult"/> of the command. <see langword="null"/> if the <see cref="Command"/> did not return anything. </param>
     /// <param name="context"> The <see cref="ICommandContext"/> used for execution. </param>
     /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
     public delegate Task CommandExecutedDelegate(Command command, CommandResult result, ICommandContext context, IServiceProvider provider);

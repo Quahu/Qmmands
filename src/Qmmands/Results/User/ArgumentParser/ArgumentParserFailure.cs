@@ -6,7 +6,7 @@
     public enum ArgumentParserFailure
     {
         /// <summary>
-        ///     The <see cref="IArgumentParser"/> wasn't able to find a matching closing quote.
+        ///     The <see cref="IArgumentParser"/> was not able to find a matching closing quote.
         /// </summary>
         UnclosedQuote,
 

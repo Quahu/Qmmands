@@ -51,7 +51,7 @@ namespace Qmmands
             Arguments = argumentParseResult.Arguments;
             ArgumentParserFailure = argumentParseResult.ArgumentParserFailure != null 
                 ? argumentParseResult.ArgumentParserFailure.Value 
-                : throw new ArgumentException("Argument parser failure mustn't be null.", nameof(argumentParseResult));
+                : throw new ArgumentException("Argument parser failure must not be null.", nameof(argumentParseResult));
             Position = argumentParseResult.FailurePosition;
             switch (argumentParseResult.ArgumentParserFailure)
             {

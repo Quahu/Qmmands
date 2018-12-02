@@ -31,7 +31,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefix"> The <see cref="char"/> prefix to check for. </param>
-        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
@@ -45,7 +45,7 @@ namespace Qmmands
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefix"> The <see cref="char"/> prefix to check for. </param>
         /// <param name="ignoreCase"> Whether to ignore casing or not. </param>
-        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
@@ -67,8 +67,8 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
-        /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix wasn't found. </param>
-        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix was not found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
@@ -82,8 +82,8 @@ namespace Qmmands
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
         /// <param name="ignoreCase"> Whether to ignore casing or not. </param>
-        /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix wasn't found. </param>
-        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix was not found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
@@ -110,8 +110,8 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
-        /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix wasn't found. </param>
-        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix was not found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
@@ -125,8 +125,8 @@ namespace Qmmands
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
         /// <param name="ignoreCase"> Whether to ignore casing or not. </param>
-        /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix wasn't found. </param>
-        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix was not found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
@@ -152,7 +152,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefix"> The <see cref="string"/> prefix to check for. </param>
-        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
@@ -166,7 +166,7 @@ namespace Qmmands
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefix"> The <see cref="string"/> prefix to check for. </param>
         /// <param name="stringComparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
-        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
@@ -188,8 +188,8 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>
-        /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix isn't found. </param>
-        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix is not found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
@@ -203,8 +203,8 @@ namespace Qmmands
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>
         /// <param name="stringComparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
-        /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix isn't found. </param>
-        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix is not found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
@@ -231,8 +231,8 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>
-        /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix isn't found. </param>
-        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix is not found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
@@ -246,8 +246,8 @@ namespace Qmmands
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>
         /// <param name="stringComparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
-        /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix isn't found. </param>
-        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix isn't found. </param>
+        /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix is not found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>

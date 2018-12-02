@@ -3,7 +3,7 @@
 namespace Qmmands
 {
     /// <summary>
-    ///     Represents errors that occur during mapping commands.
+    ///     Represents errors that occur during mapping <see cref="Qmmands.Command"/>s.
     /// </summary>
     public sealed class CommandMappingException : Exception
     {

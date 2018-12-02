@@ -6,7 +6,7 @@
     public enum SeparatorRequirement
     {
         /// <summary>
-        ///     Groups and commands don't have to be separated by anything.
+        ///     Groups and commands do not have to be separated by anything.
         /// </summary>
         None,
 

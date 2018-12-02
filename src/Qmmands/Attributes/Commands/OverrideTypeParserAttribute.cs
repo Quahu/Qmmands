@@ -18,9 +18,9 @@ namespace Qmmands
         /// </summary>
         /// <param name="customTypeParserType"> The custom parser's <see cref="Type"/> to overwrite with. </param>
         /// <exception cref="ArgumentNullException">
-        ///     Custom type parser type mustn't be null.
+        ///     Custom type parser type must not be null.
         /// </exception>
         public OverrideTypeParserAttribute(Type customTypeParserType)
-            => CustomTypeParserType = customTypeParserType ?? throw new ArgumentNullException(nameof(customTypeParserType), "Custom type parser type mustn't be null.");
+            => CustomTypeParserType = customTypeParserType ?? throw new ArgumentNullException(nameof(customTypeParserType), "Custom type parser type must not be null.");
     }
 }

@@ -190,6 +190,23 @@ namespace Qmmands
         }
 
         internal Parameter Build(Command command)
-            => new Parameter(this, command);
+        {
+            if (Type == null)
+                throw new ParameterBuildingException(this, "Parameter's type must not be null.");
+
+            if (IsOptional)
+            {
+                if (DefaultValue is null)
+                {
+                    if (Type.IsValueType && !ReflectionUtilities.IsNullable(Type))
+                        throw new ParameterBuildingException(this, "Value type parameter's default value must not be null.");
+                }
+
+                else if (DefaultValue.GetType() != Type)
+                    throw new ParameterBuildingException(this, $"Parameter type and default value mismatch. Expected {Type}, got {DefaultValue.GetType()}.");
+            }
+
+            return new Parameter(this, command);
+        }
     }
 }

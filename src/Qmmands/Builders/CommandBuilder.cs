@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 
 namespace Qmmands
 {
@@ -260,38 +259,37 @@ namespace Qmmands
 
         internal Command Build(Module module)
         {
-            if (module is null)
-                throw new ArgumentNullException(nameof(module), "Command's module mustn't be null.");
-
             if (Callback is null)
-                throw new InvalidOperationException("Command's callback mustn't be null.");
+                throw new CommandBuildingException(this, "Command's callback must not be null.");
 
-            var aliases = Aliases.ToImmutableArray();
-            Aliases.Clear();
-            for (var i = 0; i < aliases.Length; i++)
+            var aliases = new List<string>();
+            for (var i = 0; i < Aliases.Count; i++)
             {
-                var alias = aliases[i];
-                if (alias == null)
-                    continue;
+                var alias = Aliases[i];
+                if (string.IsNullOrEmpty(alias))
+                    throw new CommandBuildingException(this, "Command's aliases must not contain null or empty ones.");
 
-                if (!Aliases.Contains(aliases[i]))
-                {
-                    if (alias.IndexOf(' ') != -1)
-                        throw new InvalidOperationException($"Command's aliases mustn't contain whitespace ({alias}).");
+                if (aliases.Contains(alias))
+                    throw new CommandBuildingException(this, "Command's aliases must not contain duplicates.");
 
-                    if (alias.IndexOf(module.Service.Separator) != -1)
-                        throw new InvalidOperationException($"Command's aliases mustn't contain the separator ({alias}).");
+                if (alias.IndexOf(' ') != -1)
+                    throw new CommandBuildingException(this, "Command's aliases must not contain whitespace.");
 
-                    Aliases.Add(alias.Trim());
-                }
+                if (alias.IndexOf(module.Service.Separator) != -1)
+                    throw new CommandBuildingException(this, "Command's aliases must not contain the separator.");
+
+                aliases.Add(alias);
             }
+            Aliases.Clear();
+            for (var i = 0; i < aliases.Count; i++)
+                Aliases.Add(aliases[i]);
 
             ParameterBuilder previous = null;
             for (var i = 0; i < Parameters.Count; i++)
             {
                 var current = Parameters[i];
                 if (previous != null && previous.IsOptional && !current.IsOptional)
-                    throw new InvalidOperationException("Optional parameters mustn't appear before required ones.");
+                    throw new CommandBuildingException(this, "Optional parameters must not appear before required ones.");
 
                 previous = current;
             }
