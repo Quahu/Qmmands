@@ -47,9 +47,9 @@ namespace Qmmands
         public IArgumentParser ArgumentParser { get; }
 
         /// <summary>
-        ///     Gets the generator to use for <see cref="Cooldown"/> bucket keys.
+        ///     Gets the generator <see langword="delegate"/> to use for <see cref="Cooldown"/> bucket keys.
         /// </summary>
-        public ICooldownBucketKeyGenerator CooldownBucketKeyGenerator { get; }
+        public CooldownBucketKeyGeneratorDelegate CooldownBucketKeyGenerator { get; }
 
         /// <summary>
         ///     Gets the quotation mark map used for non-remainder multi word arguments.
@@ -64,7 +64,7 @@ namespace Qmmands
         /// <summary>
         ///     Fires when a command is successfully executed. Use this to handle <see cref="RunMode.Parallel"/> commands.
         /// </summary>
-        public event Func<Command, CommandResult, ICommandContext, IServiceProvider, Task> CommandExecuted
+        public event CommandExecutedDelegate CommandExecuted
         {
             add
             {
@@ -82,12 +82,12 @@ namespace Qmmands
         ///     Gets the <see cref="CommandExecuted"/> event handlers.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ImmutableArray<Func<Command, CommandResult, ICommandContext, IServiceProvider, Task>> CommandExecutedHandlers { get; private set; } = ImmutableArray<Func<Command, CommandResult, ICommandContext, IServiceProvider, Task>>.Empty;
+        public ImmutableArray<CommandExecutedDelegate> CommandExecutedHandlers { get; private set; } = ImmutableArray<CommandExecutedDelegate>.Empty;
 
         /// <summary>
         ///     Fires when a command fails to execute. Use this to handle <see cref="RunMode.Parallel"/> commands.
         /// </summary>
-        public event Func<ExecutionFailedResult, ICommandContext, IServiceProvider, Task> CommandErrored
+        public event CommandErroredDelegate CommandErrored
         {
             add
             {
@@ -105,12 +105,12 @@ namespace Qmmands
         ///     Gets the <see cref="CommandErroredHandlers"/> event handlers.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ImmutableArray<Func<ExecutionFailedResult, ICommandContext, IServiceProvider, Task>> CommandErroredHandlers { get; private set; } = ImmutableArray<Func<ExecutionFailedResult, ICommandContext, IServiceProvider, Task>>.Empty;
+        public ImmutableArray<CommandErroredDelegate> CommandErroredHandlers { get; private set; } = ImmutableArray<CommandErroredDelegate>.Empty;
 
         /// <summary>
         ///     Fires when a non-user instantiated <see cref="ModuleBuilder"/> is about to be built into a <see cref="Module"/>.
         /// </summary>
-        public event Func<ModuleBuilder, Task> ModuleBuilding
+        public event ModuleBuildingDelegate ModuleBuilding
         {
             add
             {
@@ -128,7 +128,7 @@ namespace Qmmands
         ///     Gets the <see cref="ModuleBuilding"/> event handlers.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ImmutableArray<Func<ModuleBuilder, Task>> ModuleBuildingHandlers { get; private set; } = ImmutableArray<Func<ModuleBuilder, Task>>.Empty;
+        public ImmutableArray<ModuleBuildingDelegate> ModuleBuildingHandlers { get; private set; } = ImmutableArray<ModuleBuildingDelegate>.Empty;
 
         internal StringComparison StringComparison { get; }
 
@@ -1017,7 +1017,7 @@ namespace Qmmands
             {
                 try
                 {
-                    await handlers[i].Invoke(command, result, context, provider).ConfigureAwait(false);
+                    await handlers[i](command, result, context, provider).ConfigureAwait(false);
                 }
                 catch { }
             }
@@ -1030,7 +1030,7 @@ namespace Qmmands
             {
                 try
                 {
-                    await handlers[i].Invoke(result, context, provider).ConfigureAwait(false);
+                    await handlers[i](result, context, provider).ConfigureAwait(false);
                 }
                 catch { }
             }
@@ -1043,7 +1043,7 @@ namespace Qmmands
             {
                 try
                 {
-                    await handlers[i].Invoke(builder).ConfigureAwait(false);
+                    await handlers[i](builder).ConfigureAwait(false);
                 }
                 catch { }
             }

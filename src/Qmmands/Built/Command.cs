@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -151,7 +151,7 @@ namespace Qmmands
                 if (Service.CooldownBucketKeyGenerator is null)
                     throw new InvalidOperationException("Cooldown bucket key generator hasn't been set.");
 
-                CooldownMap = new CooldownMap(this, Service.CooldownBucketKeyGenerator);
+                CooldownMap = new CooldownMap(this);
             }
         }
 

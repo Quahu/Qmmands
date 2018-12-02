@@ -18,7 +18,7 @@ namespace Qmmands
         public TimeSpan Per { get; }
 
         /// <summary>
-        ///     Gets the <see langword="enum"/> bucket type to use with the <see cref="ICooldownBucketKeyGenerator"/>.
+        ///     Gets the <see langword="enum"/> bucket type to use with the <see cref="CooldownBucketKeyGeneratorDelegate"/>.
         /// </summary>
         public object BucketType { get; }
 
