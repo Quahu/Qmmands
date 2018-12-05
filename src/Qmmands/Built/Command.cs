@@ -266,7 +266,7 @@ namespace Qmmands
         ///     Attempts to parse the raw arguments for this <see cref="Command"/> and execute it.
         ///     Short for <see cref="CommandService.ExecuteAsync(Command, string, ICommandContext, IServiceProvider)"/>
         /// </summary>
-        /// <param name="rawArguments"> The raw arguments to use for this command's parameters. </param>
+        /// <param name="rawArguments"> The raw arguments to use for this <see cref="Command"/>'s <see cref="Parameter"/>s. </param>
         /// <param name="context"> The <see cref="ICommandContext"/> to use during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns> An <see cref="IResult"/>. </returns>
@@ -283,7 +283,7 @@ namespace Qmmands
             => Service.ExecuteAsync(this, rawArguments, context, provider);
 
         /// <summary>
-        ///     Returns <see cref="Name"/> or calls <see cref="object.ToString"/> if it's <see langword="null"/>.
+        ///     Returns <see cref="Name"/> or calls <see cref="object.ToString"/> if it is <see langword="null"/>.
         /// </summary>
         /// <returns>
         ///     A <see cref="string"/> representing this <see cref="Command"/>.

@@ -165,7 +165,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Returns <see cref="Name"/> or calls <see cref="object.ToString"/> if it's <see langword="null"/>.
+        ///     Returns <see cref="Name"/> or calls <see cref="object.ToString"/> if it is <see langword="null"/>.
         /// </summary>
         /// <returns>
         ///     A <see cref="string"/> representing this <see cref="Module"/>.

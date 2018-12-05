@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Qmmands
@@ -92,7 +91,7 @@ namespace Qmmands
 
             if (builder.CustomTypeParserType != null)
             {
-                if (!ReflectionUtilities.IsValidParserDefinition(builder.CustomTypeParserType.GetTypeInfo(), Type))
+                if (!ReflectionUtilities.IsValidParserDefinition(builder.CustomTypeParserType, Type))
                     throw new ParameterBuildingException(builder, $"{builder.CustomTypeParserType} is not a valid type parser for parameter of type {Type}.");
 
                 CustomTypeParserType = builder.CustomTypeParserType;
@@ -136,7 +135,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Returns <see cref="Name"/> or calls <see cref="object.ToString"/> if it's <see langword="null"/>.
+        ///     Returns <see cref="Name"/> or calls <see cref="object.ToString"/> if it is <see langword="null"/>.
         /// </summary>
         /// <returns>
         ///     A <see cref="string"/> representing this <see cref="Parameter"/>.
