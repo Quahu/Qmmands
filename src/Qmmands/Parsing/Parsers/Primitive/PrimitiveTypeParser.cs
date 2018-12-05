@@ -1,7 +1,5 @@
 ﻿namespace Qmmands
 {
-    internal delegate bool TryParseDelegate<T>(string value, out T result);
-
     internal class PrimitiveTypeParser<T> : IPrimitiveTypeParser where T : struct
     {
         private readonly TryParseDelegate<T> _tryParse;

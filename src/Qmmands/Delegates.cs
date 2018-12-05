@@ -49,4 +49,6 @@ namespace Qmmands
     /// </summary>
     /// <param name="builder"> The <see cref="ModuleBuilder"/> of the <see cref="Module"/> currently being built. </param>
     public delegate Task ModuleBuildingDelegate(ModuleBuilder builder);
+
+    internal delegate bool TryParseDelegate<T>(string value, out T result);
 }
