@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -16,12 +15,6 @@ namespace Qmmands
         private static readonly TypeInfo _taskTypeInfo = typeof(Task).GetTypeInfo();
         private static readonly TypeInfo _objectTypeInfo = typeof(object).GetTypeInfo();
         private static readonly Type _nullableType = typeof(Nullable<>);
-
-        private static readonly ConcurrentDictionary<Type, Func<Task, IResult>> _commandResultFuncs =
-            new ConcurrentDictionary<Type, Func<Task, IResult>>
-            {
-                [typeof(Task)] = x => new SuccessfulResult()
-            };
 
         public static bool IsValidModuleDefinition(TypeInfo typeInfo)
             => _moduleBaseTypeInfo.IsAssignableFrom(typeInfo) && !typeInfo.IsAbstract && !typeInfo.ContainsGenericParameters;
@@ -198,7 +191,7 @@ namespace Qmmands
 
                     case RemainderAttribute _:
                         if (!last)
-                            throw new ParameterBuildingException(builder,  $"A remainder parameter must be the last parameter in a command. Parameter: {parameterInfo.Name} in {parameterInfo.Member.Name} in {parameterInfo.Member.DeclaringType}.");
+                            throw new ParameterBuildingException(builder, $"A remainder parameter must be the last parameter in a command. Parameter: {parameterInfo.Name} in {parameterInfo.Member.Name} in {parameterInfo.Member.DeclaringType}.");
 
                         builder.WithIsRemainder(true);
                         break;
@@ -288,8 +281,35 @@ namespace Qmmands
             };
         }
 
+        private static MethodInfo MakeGetGenericTaskResultMethodInfo(Type genericTypeArgument)
+            => typeof(ReflectionUtilities)
+                .GetMethod(nameof(GetGenericTaskResult), BindingFlags.Static | BindingFlags.NonPublic)
+                .MakeGenericMethod(genericTypeArgument);
+
+        private static async Task<CommandResult> GetGenericTaskResult<T>(Task<T> task)
+            => task != null ? await task as CommandResult : null;
+
+        public static Func<object, object[], object> CreateExpressionDelegate(TypeInfo typeInfo, MethodInfo methodInfo)
+        {
+            var methodParameters = methodInfo.GetParameters();
+            var instance = Expression.Parameter(typeof(object));
+            var arguments = Expression.Parameter(typeof(object[]));
+            var parameters = new Expression[methodParameters.Length];
+            for (var i = 0; i < methodParameters.Length; i++)
+            {
+                var methodParam = methodParameters[i];
+                parameters[i] = Expression.Convert(Expression.ArrayIndex(arguments, Expression.Constant(i)), methodParam.ParameterType);
+            }
+
+            var call = Expression.Call(Expression.Convert(instance, typeInfo), methodInfo, parameters);
+            return methodInfo.ReturnType == typeof(Task)
+                ? Expression.Lambda<Func<object, object[], object>>(call, instance, arguments).Compile()
+                : Expression.Lambda<Func<object, object[], object>>(Expression.Call(MakeGetGenericTaskResultMethodInfo(methodInfo.ReturnType.GenericTypeArguments[0]), call), instance, arguments).Compile();
+        }
+
         public static CommandCallbackDelegate CreateCommandCallback(TypeInfo typeInfo, MethodInfo methodInfo)
         {
+            var expressionDelegate = CreateExpressionDelegate(typeInfo, methodInfo);
             return async (command, arguments, context, provider) =>
             {
                 var instance = CreateProviderConstructor<IModuleBase>(command.Service, typeInfo)(provider);
@@ -308,18 +328,18 @@ namespace Qmmands
                         return new ExecutionFailedResult(command, CommandExecutionStep.BeforeExecuted, ex);
                     }
 
-                    if (!(methodInfo.Invoke(instance, arguments) is Task task))
-                        return new SuccessfulResult();
+                    var result = expressionDelegate(instance, arguments);
+                    switch (result)
+                    {
+                        case Task<CommandResult> genericTask:
+                            return await genericTask;
 
-                    var resultFunc = _commandResultFuncs.GetOrAdd(methodInfo.ReturnType, _ =>
-                        {
-                            var taskParameter = Expression.Parameter(typeof(Task));
-                            return Expression.Lambda<Func<Task, IResult>>(
-                                Expression.Property(Expression.Convert(taskParameter, methodInfo.ReturnType), "Result"), taskParameter).Compile();
-                        });
+                        case Task task:
+                            await task;
+                            break;
+                    }
 
-                    await task.ConfigureAwait(false);
-                    return resultFunc(task);
+                    return null;
                 }
                 finally
                 {
