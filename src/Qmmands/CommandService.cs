@@ -1000,7 +1000,7 @@ namespace Qmmands
                     await InvokeCommandExecutedHandlersAsync(command, result as CommandResult, context, provider).ConfigureAwait(false);
                 }
 
-                return result;
+                return result ?? new SuccessfulResult();
             }
             catch (Exception ex)
             {
