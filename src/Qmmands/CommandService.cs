@@ -591,7 +591,7 @@ namespace Qmmands
             try
             {
                 await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
-                var moduleBuilder = ReflectionUtilities.BuildModule(type.GetTypeInfo());
+                var moduleBuilder = ReflectionUtilities.BuildModule(this, type.GetTypeInfo());
                 await InvokeModuleBuildingHandlersAsync(moduleBuilder).ConfigureAwait(false);
                 var module = moduleBuilder.Build(this, null);
                 AddModuleInternal(module);

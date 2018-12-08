@@ -48,7 +48,7 @@ namespace Qmmands
         public static IEnumerable<MethodInfo> GetValidCommands(TypeInfo typeInfo)
             => typeInfo.DeclaredMethods.Where(IsValidCommandDefinition);
 
-        public static ModuleBuilder BuildModule(TypeInfo typeInfo)
+        public static ModuleBuilder BuildModule(CommandService service, TypeInfo typeInfo)
         {
             if (!IsValidModuleDefinition(typeInfo))
                 throw new ArgumentException($"{typeInfo} must not be abstract, must not have generic parameters, and must inherit ModuleBase.", nameof(typeInfo));
@@ -94,15 +94,15 @@ namespace Qmmands
             }
 
             foreach (var command in GetValidCommands(typeInfo))
-                builder.AddCommand(BuildCommand(typeInfo, command));
+                builder.AddCommand(BuildCommand(service, typeInfo, command));
 
             foreach (var submodule in GetValidModules(typeInfo))
-                builder.AddSubmodule(BuildModule(submodule));
+                builder.AddSubmodule(BuildModule(service, submodule));
 
             return builder;
         }
 
-        public static CommandBuilder BuildCommand(TypeInfo typeInfo, MethodInfo methodInfo)
+        public static CommandBuilder BuildCommand(CommandService service, TypeInfo typeInfo, MethodInfo methodInfo)
         {
             var builder = new CommandBuilder();
             var attributes = methodInfo.GetCustomAttributes(false);
@@ -156,7 +156,7 @@ namespace Qmmands
             for (var i = 0; i < parameters.Length; i++)
                 builder.AddParameters(BuildParameter(parameters[i], i + 1 == parameters.Length));
 
-            builder.WithCallback(CreateCommandCallback(typeInfo, methodInfo));
+            builder.WithCallback(CreateCommandCallback(service, typeInfo, methodInfo));
 
             return builder;
         }
@@ -240,18 +240,19 @@ namespace Qmmands
                 throw new InvalidOperationException($"Failed to instantiate {typeInfo}, dependency of type {type} was not found.");
             }
 
+            var constructors = typeInfo.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
+            if (constructors.Length == 0)
+                throw new InvalidOperationException($"{typeInfo} has no public non-static constructors.");
+
+            if (constructors.Length > 1)
+                throw new InvalidOperationException($"{typeInfo} has multiple public constructors.");
+
+            var constructor = constructors[0];
+            var parameters = constructor.GetParameters();
+            var arguments = new object[parameters.Length];
+
             return (provider) =>
             {
-                var constructors = typeInfo.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
-                if (constructors.Length == 0)
-                    throw new InvalidOperationException($"{typeInfo} has no public non-static constructors.");
-
-                if (constructors.Length > 1)
-                    throw new InvalidOperationException($"{typeInfo} has multiple public constructors.");
-
-                var constructor = constructors[0];
-                var parameters = constructor.GetParameters();
-                var arguments = new object[parameters.Length];
                 for (var i = 0; i < parameters.Length; i++)
                     arguments[i] = GetDependency(provider, parameters[i].ParameterType);
 
@@ -265,6 +266,7 @@ namespace Qmmands
                     throw new InvalidOperationException($"Failed to instantiate {typeInfo}. See the inner exception for more details.", ex);
                 }
 
+                var type = typeInfo;
                 do
                 {
                     foreach (var property in typeInfo.DeclaredProperties)
@@ -273,9 +275,9 @@ namespace Qmmands
                             property.SetValue(instance, GetDependency(provider, property.PropertyType));
                     }
 
-                    typeInfo = typeInfo.BaseType.GetTypeInfo();
+                    type = type.BaseType.GetTypeInfo();
                 }
-                while (typeInfo != _objectTypeInfo);
+                while (type != _objectTypeInfo);
 
                 return instance;
             };
@@ -307,12 +309,13 @@ namespace Qmmands
                 : Expression.Lambda<Func<object, object[], object>>(Expression.Call(MakeGetGenericTaskResultMethodInfo(methodInfo.ReturnType.GenericTypeArguments[0]), call), instance, arguments).Compile();
         }
 
-        public static CommandCallbackDelegate CreateCommandCallback(TypeInfo typeInfo, MethodInfo methodInfo)
+        public static CommandCallbackDelegate CreateCommandCallback(CommandService service, TypeInfo typeInfo, MethodInfo methodInfo)
         {
             var expressionDelegate = CreateExpressionDelegate(typeInfo, methodInfo);
+            var constructor = CreateProviderConstructor<IModuleBase>(service, typeInfo);
             return async (command, arguments, context, provider) =>
             {
-                var instance = CreateProviderConstructor<IModuleBase>(command.Service, typeInfo)(provider);
+                var instance = constructor(provider);
                 instance.Prepare(context);
 
                 var executeAfter = true;
