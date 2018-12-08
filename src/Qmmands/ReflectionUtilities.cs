@@ -287,7 +287,7 @@ namespace Qmmands
                 .MakeGenericMethod(genericTypeArgument);
 
         private static async Task<CommandResult> GetGenericTaskResult<T>(Task<T> task)
-            => task != null ? await task as CommandResult : null;
+            => task != null ? await task.ConfigureAwait(false) as CommandResult : null;
 
         public static Func<object, object[], object> CreateExpressionDelegate(TypeInfo typeInfo, MethodInfo methodInfo)
         {
@@ -332,10 +332,10 @@ namespace Qmmands
                     switch (result)
                     {
                         case Task<CommandResult> genericTask:
-                            return await genericTask;
+                            return await genericTask.ConfigureAwait(false);
 
                         case Task task:
-                            await task;
+                            await task.ConfigureAwait(false);
                             break;
                     }
 
