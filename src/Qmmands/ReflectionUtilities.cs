@@ -269,7 +269,7 @@ namespace Qmmands
                 var type = typeInfo;
                 do
                 {
-                    foreach (var property in typeInfo.DeclaredProperties)
+                    foreach (var property in type.DeclaredProperties)
                     {
                         if (property.SetMethod != null && !property.SetMethod.IsStatic && property.SetMethod.IsPublic && property.GetCustomAttribute<DontAutoInjectAttribute>() == null)
                             property.SetValue(instance, GetDependency(provider, property.PropertyType));
