@@ -250,6 +250,18 @@ namespace Qmmands
             var constructor = constructors[0];
             var parameters = constructor.GetParameters();
             var arguments = new object[parameters.Length];
+            var properties = new List<PropertyInfo>();
+            do
+            {
+                foreach (var property in typeInfo.DeclaredProperties)
+                {
+                    if (property.SetMethod != null && !property.SetMethod.IsStatic && property.SetMethod.IsPublic && property.GetCustomAttribute<DontAutoInjectAttribute>() == null)
+                        properties.Add(property);
+                }
+
+                typeInfo = typeInfo.BaseType.GetTypeInfo();
+            }
+            while (typeInfo != _objectTypeInfo);
 
             return (provider) =>
             {
@@ -266,18 +278,11 @@ namespace Qmmands
                     throw new InvalidOperationException($"Failed to instantiate {typeInfo}. See the inner exception for more details.", ex);
                 }
 
-                var type = typeInfo;
-                do
+                for (var i = 0; i < properties.Count; i++)
                 {
-                    foreach (var property in type.DeclaredProperties)
-                    {
-                        if (property.SetMethod != null && !property.SetMethod.IsStatic && property.SetMethod.IsPublic && property.GetCustomAttribute<DontAutoInjectAttribute>() == null)
-                            property.SetValue(instance, GetDependency(provider, property.PropertyType));
-                    }
-
-                    type = type.BaseType.GetTypeInfo();
+                    var property = properties[i];
+                    property.SetValue(instance, GetDependency(provider, property.PropertyType));
                 }
-                while (type != _objectTypeInfo);
 
                 return instance;
             };
