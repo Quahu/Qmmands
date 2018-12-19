@@ -35,6 +35,9 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The input must not be null.
+        /// </exception>
         public static bool HasPrefix(string input, char prefix, out string output)
             => HasPrefix(input, prefix, false, out output);
 
@@ -49,8 +52,14 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The input must not be null.
+        /// </exception>
         public static bool HasPrefix(string input, char prefix, bool ignoreCase, out string output)
         {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+
             if (input.Length == 0 || input[0] != (ignoreCase ? char.ToLowerInvariant(prefix) : prefix))
             {
                 output = null;
@@ -72,6 +81,12 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The input must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefixes must not be null.
+        /// </exception>
         public static bool HasAnyPrefix(string input, IReadOnlyList<char> prefixes, out char prefix, out string output)
             => HasAnyPrefix(input, prefixes, false, out prefix, out output);
 
@@ -87,8 +102,20 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The input must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefixes must not be null.
+        /// </exception>
         public static bool HasAnyPrefix(string input, IReadOnlyList<char> prefixes, bool ignoreCase, out char prefix, out string output)
         {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+
+            if (prefixes == null)
+                throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
+
             for (var i = 0; i < prefixes.Count; i++)
             {
                 var currentPrefix = prefixes[i];
@@ -115,6 +142,12 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The input must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefixes must not be null.
+        /// </exception>
         public static bool HasAnyPrefix(string input, IEnumerable<char> prefixes, out char prefix, out string output)
             => HasAnyPrefix(input, prefixes, false, out prefix, out output);
 
@@ -130,8 +163,20 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The input must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefixes must not be null.
+        /// </exception>
         public static bool HasAnyPrefix(string input, IEnumerable<char> prefixes, bool ignoreCase, out char prefix, out string output)
         {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+
+            if (prefixes == null)
+                throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
+
             foreach (var currentPrefix in prefixes)
             {
                 if (!HasPrefix(input, currentPrefix, ignoreCase, out output))
@@ -156,6 +201,12 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The input must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefix must not be null.
+        /// </exception>
         public static bool HasPrefix(string input, string prefix, out string output)
             => HasPrefix(input, prefix, StringComparison.Ordinal, out output);
 
@@ -170,8 +221,20 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The input must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefix must not be null.
+        /// </exception>
         public static bool HasPrefix(string input, string prefix, StringComparison stringComparison, out string output)
         {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+
+            if (prefix == null)
+                throw new ArgumentNullException(nameof(prefix), "The prefix must not be null.");
+
             if (!input.StartsWith(prefix, stringComparison))
             {
                 output = null;
@@ -193,6 +256,12 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The input must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefixes must not be null.
+        /// </exception>
         public static bool HasAnyPrefix(string input, IReadOnlyList<string> prefixes, out string prefix, out string output)
             => HasAnyPrefix(input, prefixes, StringComparison.Ordinal, out prefix, out output);
 
@@ -208,8 +277,20 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The input must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefixes must not be null.
+        /// </exception>
         public static bool HasAnyPrefix(string input, IReadOnlyList<string> prefixes, StringComparison stringComparison, out string prefix, out string output)
         {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+
+            if (prefixes == null)
+                throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
+
             for (var i = 0; i < prefixes.Count; i++)
             {
                 var currentPrefix = prefixes[i];
@@ -236,6 +317,12 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The input must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefixes must not be null.
+        /// </exception>
         public static bool HasAnyPrefix(string input, IEnumerable<string> prefixes, out string prefix, out string output)
             => HasAnyPrefix(input, prefixes, StringComparison.Ordinal, out prefix, out output);
 
@@ -251,8 +338,20 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The input must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefixes must not be null.
+        /// </exception>
         public static bool HasAnyPrefix(string input, IEnumerable<string> prefixes, StringComparison stringComparison, out string prefix, out string output)
         {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+
+            if (prefixes == null)
+                throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
+
             foreach (var currentPrefix in prefixes)
             {
                 if (!HasPrefix(input, currentPrefix, stringComparison, out output))
@@ -275,8 +374,14 @@ namespace Qmmands
         /// <returns>
         ///     An enumerator of all <see cref="CheckBaseAttribute"/>s.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The module must not be null.
+        /// </exception>
         public static IEnumerable<CheckBaseAttribute> GetAllChecks(Module module)
         {
+            if (module == null)
+                throw new ArgumentNullException(nameof(module), "The module must not be null.");
+
             if (module.Parent != null)
                 foreach (var check in GetAllChecks(module.Parent))
                     yield return check;
@@ -293,8 +398,14 @@ namespace Qmmands
         /// <returns>
         ///     An enumerator of all <see cref="CheckBaseAttribute"/>s.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The command must not be null.
+        /// </exception>
         public static IEnumerable<CheckBaseAttribute> GetAllChecks(Command command)
         {
+            if (command == null)
+                throw new ArgumentNullException(nameof(command), "The command must not be null.");
+
             foreach (var check in GetAllChecks(command.Module))
                 yield return check;
 
@@ -308,8 +419,14 @@ namespace Qmmands
         /// <returns>
         ///     An enumerator of all <see cref="Command"/>s.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The module must not be null.
+        /// </exception>
         public static IEnumerable<Command> GetAllCommands(Module module)
         {
+            if (module == null)
+                throw new ArgumentNullException(nameof(module), "The module must not be null.");
+
             IEnumerable<Command> GetCommands(Module rModule)
             {
                 for (var i = 0; i < rModule.Commands.Count; i++)
@@ -330,19 +447,25 @@ namespace Qmmands
         /// <returns>
         ///     An enumerator of all <see cref="CommandBuilder"/>s.
         /// </returns>
-        public static IEnumerable<CommandBuilder> GetAllCommands(ModuleBuilder moduleBuilder)
+        /// <exception cref="ArgumentNullException">
+        ///     The builder must not be null.
+        /// </exception>
+        public static IEnumerable<CommandBuilder> GetAllCommands(ModuleBuilder builder)
         {
-            IEnumerable<CommandBuilder> GetCommands(ModuleBuilder rModuleBuilder)
-            {
-                for (var i = 0; i < rModuleBuilder.Commands.Count; i++)
-                    yield return rModuleBuilder.Commands[i];
+            if (builder == null)
+                throw new ArgumentNullException(nameof(builder), "The builder must not be null.");
 
-                for (var i = 0; i < rModuleBuilder.Submodules.Count; i++)
-                    foreach (var command in GetCommands(rModuleBuilder.Submodules[i]))
+            IEnumerable<CommandBuilder> GetCommands(ModuleBuilder rBuilder)
+            {
+                for (var i = 0; i < rBuilder.Commands.Count; i++)
+                    yield return rBuilder.Commands[i];
+
+                for (var i = 0; i < rBuilder.Submodules.Count; i++)
+                    foreach (var command in GetCommands(rBuilder.Submodules[i]))
                         yield return command;
             }
 
-            foreach (var command in GetCommands(moduleBuilder))
+            foreach (var command in GetCommands(builder))
                 yield return command;
         }
 
@@ -352,8 +475,14 @@ namespace Qmmands
         /// <returns>
         ///     An enumerator of all <see cref="Module"/>s.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The module must not be null.
+        /// </exception>
         public static IEnumerable<Module> GetAllSubmodules(Module module)
         {
+            if (module == null)
+                throw new ArgumentNullException(nameof(module), "The module must not be null.");
+
             IEnumerable<Module> GetModules(Module rModule)
             {
                 for (var i = 0; i < rModule.Submodules.Count; i++)
@@ -374,19 +503,25 @@ namespace Qmmands
         /// <returns>
         ///     An enumerator of all <see cref="ModuleBuilder"/>s.
         /// </returns>
-        public static IEnumerable<ModuleBuilder> GetAllSubmodules(ModuleBuilder moduleBuilder)
+        /// <exception cref="ArgumentNullException">
+        ///     The builder must not be null.
+        /// </exception>
+        public static IEnumerable<ModuleBuilder> GetAllSubmodules(ModuleBuilder builder)
         {
-            IEnumerable<ModuleBuilder> GetModules(ModuleBuilder rModuleBuilder)
-            {
-                for (var i = 0; i < rModuleBuilder.Submodules.Count; i++)
-                    yield return rModuleBuilder.Submodules[i];
+            if (builder == null)
+                throw new ArgumentNullException(nameof(builder), "The builder must not be null.");
 
-                for (var i = 0; i < rModuleBuilder.Submodules.Count; i++)
-                    foreach (var command in GetModules(rModuleBuilder.Submodules[i]))
+            IEnumerable<ModuleBuilder> GetModules(ModuleBuilder rBuilder)
+            {
+                for (var i = 0; i < rBuilder.Submodules.Count; i++)
+                    yield return rBuilder.Submodules[i];
+
+                for (var i = 0; i < rBuilder.Submodules.Count; i++)
+                    foreach (var command in GetModules(rBuilder.Submodules[i]))
                         yield return command;
             }
 
-            foreach (var submodule in GetModules(moduleBuilder))
+            foreach (var submodule in GetModules(builder))
                 yield return submodule;
         }
 
