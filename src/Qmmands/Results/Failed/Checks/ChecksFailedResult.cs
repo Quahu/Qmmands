@@ -11,12 +11,12 @@ namespace Qmmands
         public override string Reason { get; }
 
         /// <summary>
-        ///     Gets the <see cref="Qmmands.Module"/> the checks failed on, null if <see cref="Command"/> has a value.
+        ///     Gets the <see cref="Qmmands.Module"/> the checks failed on, <see langword="null"/> if <see cref="Command"/> has a value.
         /// </summary>
         public Module Module { get; }
 
         /// <summary>
-        ///     Gets the <see cref="Qmmands.Command"/> the checks failed on, null if <see cref="Module"/> has a value.
+        ///     Gets the <see cref="Qmmands.Command"/> the checks failed on, <see langword="null"/> if <see cref="Module"/> has a value.
         /// </summary>
         public Command Command { get; }
 

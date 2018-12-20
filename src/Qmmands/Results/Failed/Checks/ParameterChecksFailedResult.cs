@@ -16,13 +16,19 @@ namespace Qmmands
         public Parameter Parameter { get; }
 
         /// <summary>
+        ///     Gets the argument the checks failed on.
+        /// </summary>
+        public object Argument { get; }
+
+        /// <summary>
         ///     Gets the checks that failed with their error reasons.
         /// </summary>
         public IReadOnlyList<(ParameterCheckBaseAttribute Check, string Error)> FailedChecks { get; }
 
-        internal ParameterChecksFailedResult(Parameter parameter, IReadOnlyList<(ParameterCheckBaseAttribute Check, string Error)> failedChecks)
+        internal ParameterChecksFailedResult(Parameter parameter, object argument, IReadOnlyList<(ParameterCheckBaseAttribute Check, string Error)> failedChecks)
         {
             Parameter = parameter;
+            Argument = argument;
             FailedChecks = failedChecks;
             Reason = $"{(FailedChecks.Count == 1 ? "One check" : "Multiple checks")} failed for the parameter {Parameter.Name} in the command {Parameter.Command}.";
         }
