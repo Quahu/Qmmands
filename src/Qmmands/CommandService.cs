@@ -352,6 +352,28 @@ namespace Qmmands
                 typeParsers.Remove(ReflectionUtilities.MakeNullable(type));
         }
 
+        /// <summary>
+        ///     Retrieves a <see cref="TypeParser{T}"/> from the added non-primitive parsers for the specified <typeparamref name="T"/> <see cref="Type"/>.
+        /// </summary>
+        /// <typeparam name="T"> The <see cref="Type"/> the <see cref="TypeParser{T}"/> is for. </typeparam>
+        /// <param name="replacingPrimitive"> Whether the <see cref="TypeParser{T}"/> replaces one of the primitive parsers or not. </param>
+        /// <returns>
+        ///     The <see cref="TypeParser{T}"/> or <see langword="null"/> if not found.
+        /// </returns>
+        public TypeParser<T> GetTypeParser<T>(bool replacingPrimitive = false)
+            => GetAnyTypeParser(typeof(T), replacingPrimitive) as TypeParser<T>;
+
+        /// <summary>
+        ///     Retrieves a <see cref="TypeParser{T}"/> of the specified <typeparamref name="TParser"/> <see cref="Type"/>.
+        /// </summary>
+        /// <typeparam name="T"> The <see cref="Type"/> the <see cref="TypeParser{T}"/> is for. </typeparam>
+        /// <typeparam name="TParser"> The <see cref="Type"/> of the <see cref="TypeParser{T}"/>. </typeparam>
+        /// <returns>
+        ///     The <see cref="TypeParser{T}"/> of the specified <typeparamref name="TParser"/> <see cref="Type"/> or <see langword="null"/> if not found.
+        /// </returns>
+        public TParser GetSpecificTypeParser<T, TParser>() where TParser : TypeParser<T>
+            => GetSpecificTypeParser(typeof(T), typeof(TParser)) as TParser;
+
         internal ITypeParser GetSpecificTypeParser(Type type, Type parserType)
             => _parsers.TryGetValue(type, out var typeParsers) && typeParsers.TryGetValue(parserType, out var typeParser) ? typeParser.Instance : null;
 
