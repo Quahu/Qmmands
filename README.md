@@ -4,7 +4,7 @@
 [![MyGet](https://img.shields.io/myget/qmmands/vpre/Qmmands.svg?style=flat-square&label=myget)](https://www.myget.org/gallery/qmmands)
 [![The Lab](https://img.shields.io/discord/416256456505950215.svg?style=flat-square&label=Discord)](https://discord.gg/eUMSXGZ)  
 
-An asynchronous, platform-independent, .NET Standard 2.0 command framework that can be used with any input source, whether that be Discord messages, IRC, or a terminal. 
+An asynchronous platform-independent .NET Standard 2.0 command framework that can be used with any input source, whether that be Discord messages, IRC, or a terminal. 
 
 Inspired by [Discord.Net.Commands](https://github.com/RogueException/Discord.Net/tree/dev/src/Discord.Net.Commands) and [DSharpPlus.CommandsNext](https://github.com/DSharpPlus/DSharpPlus/tree/master/DSharpPlus.CommandsNext).
 
