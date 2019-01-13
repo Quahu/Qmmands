@@ -6,21 +6,21 @@
 
 An asynchronous .NET Standard 2.0 command framework.   
   
-Unlike other bundled command frameworks, Qmmands is completely platform-independent and can be used with any input source, whether that be Discord messages, IRC, or a terminal. This makes Qmmands very powerful, but many platform-related entities like type parsers and execution contexts have to be implemented by the consumer.
+Qmmands is completely platform-independent and can be used with any input source, whether that be Discord messages, IRC, or a terminal. 
 
 Inspired by [Discord.Net.Commands](https://github.com/RogueException/Discord.Net/tree/dev/src/Discord.Net.Commands) and [DSharpPlus.CommandsNext](https://github.com/DSharpPlus/DSharpPlus/tree/master/DSharpPlus.CommandsNext).
 
 Qmmands can be pulled from NuGet. For nightly builds add `https://www.myget.org/F/qmmands/api/v3/index.json` (the nightly feed) to your project's package sources.
 
 ## Features
-- Commands are asynchronous C# methods, with advanced parameter parsing support (including optional parameters)
-- Rich command metadata with including data attributes and support for custom attributes
-- Custom type parsers, with replaceable type parsers for language primitives built-in (`string`, `int`, `bool`, + more)
-- Advanced command node trees, with support for overloads, command groups and module structures
-- Support for automatically discovering command modules with reflection
-- Support for adding custom modules and commands at runtime with `ModuleBuilder`
-- Advanced post-execution handling with diverse result types
-- Built-in (optional) command cooldown system with support for custom cooldown keys and types
+- Commands are `Task` or `Task<CommandResult>`-returning async C# methods, with advanced parameter parsing support (including optional parameters)
+- Support for returning custom `CommandResult` implementations for advanced post-execution handling.
+- Rich command metadata with included data attributes and support for custom attributes
+- Automatic parsing of raw string arguments with custom type parsers, with primitive type parsers built-in
+- Advanced command node trees, with support for overloads, command groups and module searching
+- Command module discovery via assembly crawling for valid types
+- Support for adding custom modules and commands at runtime with builders or types
+- Built-in (optional) command cooldown system with support for custom cooldown bucket keys and types
 - Support for asynchronous checks at the command, module and parameter level
 
 
@@ -34,7 +34,7 @@ There's currently no official documentation for Qmmands other than the usage exa
 * [Kiritsu](https://github.com/Kiritsu)'s Discord bot: [FoxBot](https://github.com/Kiritsu/FoxBot) (DSharpPlus)
 * [idolcoder](https://github.com/idolcoder)'s Discord bot: [Ichigo](https://github.com/idolcoder/Ichigo) (Discord.Net)
 
-### A Simple Example
+### A Simple Usage Example
 **CommandHandler.cs**
 ```cs
 private readonly CommandService _service = new CommandService();
