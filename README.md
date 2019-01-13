@@ -12,16 +12,12 @@ Inspired by [Discord.Net.Commands](https://github.com/RogueException/Discord.Net
 
 Qmmands can be pulled from NuGet. For nightly builds add `https://www.myget.org/F/qmmands/api/v3/index.json` (the nightly feed) to your project's package sources.
 
-## Features
-- Commands are `Task` or `Task<CommandResult>`-returning async C# methods, with advanced parameter parsing support (including optional parameters)
-- Support for returning custom `CommandResult` implementations for advanced post-execution handling.
-- Rich command metadata with included data attributes and support for custom attributes
-- Automatic parsing of raw string arguments with custom type parsers, with primitive type parsers built-in
-- Advanced command node trees, with support for overloads, command groups and module searching
+## Key Features
+- Advanced parameter parsing support (including custom type parsers, optional parameters, and remainder support)
+- Support for returning custom `CommandResult` implementations for advanced post-execution handling
 - Command module discovery via assembly crawling for valid types
 - Support for adding custom modules and commands at runtime with builders or types
-- Built-in (optional) command cooldown system with support for custom cooldown bucket keys and types
-- Support for asynchronous checks at the command, module and parameter level
+- Built-in (optional) command cooldown system with support for custom cooldown types
 
 
 ## Documentation
