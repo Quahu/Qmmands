@@ -60,7 +60,7 @@ namespace Qmmands
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(cooldownMeasure), "Not a valid cooldown measure.");
+                    throw new ArgumentOutOfRangeException(nameof(cooldownMeasure), "Invalid cooldown measure.");
             }
 
             BucketType = bucketType;

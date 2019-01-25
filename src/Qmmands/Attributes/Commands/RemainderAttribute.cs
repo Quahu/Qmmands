@@ -3,10 +3,10 @@
 namespace Qmmands
 {
     /// <summary>
-    ///     Sets the <see cref="Parameter"/> as the remainder.
+    ///     Marks the <see cref="Parameter"/> as a remainder parameter.
     /// </summary>
     /// <remarks>
-    ///     Remainder parameters are the last parameters of a <see cref="Command"/>.
+    ///     Remainder parameters are the last parameters of <see cref="Command"/>s.
     ///     Using the <see cref="DefaultArgumentParser"/> remainder parameters can consist
     ///     of multiple words without the need of using quotation marks."/>.
     /// </remarks>

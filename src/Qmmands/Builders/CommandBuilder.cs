@@ -267,7 +267,7 @@ namespace Qmmands
             {
                 var alias = Aliases[i];
                 if (string.IsNullOrEmpty(alias))
-                    throw new CommandBuildingException(this, "Command's aliases must not contain null or empty ones.");
+                    throw new CommandBuildingException(this, "Command's aliases must not contain null or empty entries.");
 
                 if (aliases.Contains(alias))
                     throw new CommandBuildingException(this, "Command's aliases must not contain duplicates.");

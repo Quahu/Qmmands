@@ -11,6 +11,7 @@ namespace Qmmands
     {
         /// <summary>
         ///     Gets the <see cref="Qmmands.Module"/> this <see cref="CheckBaseAttribute"/> is for.
+        ///     <see langword="null"/> if this check is for a <see cref="Qmmands.Command"/>.
         /// </summary>
         public Module Module { get; internal set; }
 

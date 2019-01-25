@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -269,7 +269,9 @@ namespace Qmmands
         /// <param name="rawArguments"> The raw arguments to use for this <see cref="Command"/>'s <see cref="Parameter"/>s. </param>
         /// <param name="context"> The <see cref="ICommandContext"/> to use during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
-        /// <returns> An <see cref="IResult"/>. </returns>
+        /// <returns>
+        ///     An <see cref="IResult"/>.
+        /// </returns>
         /// <exception cref="ArgumentNullException">
         ///     The command must not be null.
         /// </exception>

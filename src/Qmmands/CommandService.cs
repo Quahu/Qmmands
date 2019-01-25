@@ -185,7 +185,7 @@ namespace Qmmands
         { }
 
         /// <summary>
-        ///     Enumerates through all of the added <see cref="Module"/>s and yields all found <see cref="Command"/>s.
+        ///     Enumerates through all of the added <see cref="Module"/>s and <see langword="yield"/>s all found <see cref="Command"/>s.
         /// </summary>
         /// <returns>
         ///     An enumerable with all <see cref="Command"/>s.
@@ -208,7 +208,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Enumerates through all of the added <see cref="Module"/>s yields them.
+        ///     Enumerates through all of the added <see cref="Module"/>s <see langword="yield"/>s them.
         /// </summary>
         /// <returns>
         ///     An enumerable with all <see cref="Module"/>s.
@@ -241,7 +241,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="path"> The path to use for searching. </param>
         /// <returns>
-        ///     An ordered enumerable of <see cref="CommandMatch"/>es.
+        ///     A lazy ordered enumerable of <see cref="CommandMatch"/>es.
         /// </returns>
         public IEnumerable<CommandMatch> FindCommands(string path)
         {
@@ -258,7 +258,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="path"> The path to use for searching. </param>
         /// <returns>
-        ///     An ordered enumerable of <see cref="ModuleMatch"/>es.
+        ///     A lazy ordered enumerable of <see cref="ModuleMatch"/>es.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         ///     The path to find modules for must not be null.
@@ -586,7 +586,9 @@ namespace Qmmands
         /// <summary>
         ///     Attempts to add the specified <see cref="Type"/> as a <see cref="Module"/>. 
         /// </summary>
-        /// <returns> A <see cref="Module"/>. </returns>
+        /// <returns>
+        ///     A <see cref="Module"/>.
+        /// </returns>
         /// <exception cref="ArgumentNullException">
         ///     The type to add must not be null.
         /// </exception>
@@ -717,7 +719,9 @@ namespace Qmmands
         /// <param name="input"> The input. </param>
         /// <param name="context"> The <see cref="ICommandContext"/> to use during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
-        /// <returns> An <see cref="IResult"/>. </returns>
+        /// <returns>
+        ///     An <see cref="IResult"/>.
+        /// </returns>
         /// <exception cref="ArgumentNullException">
         ///     The input must not be null.
         /// </exception>

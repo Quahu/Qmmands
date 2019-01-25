@@ -3,13 +3,13 @@
 namespace Qmmands
 {
     /// <summary>
-    ///     Overwrites the type parser for the <see cref="Parameter"/>.
+    ///     Overrides the type parser for the <see cref="Parameter"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
     public sealed class OverrideTypeParserAttribute : Attribute
     {
         /// <summary>
-        ///     Gets the type parser <see cref="Type"/>.
+        ///     Gets the <see cref="Type"/> of the custom type parser.
         /// </summary>
         public Type CustomTypeParserType { get; }
 

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Qmmands
 {
     /// <summary>
-    ///     The base class for type parsers.
+    ///     The base class for user type parsers.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract class TypeParser<T> : ITypeParser
