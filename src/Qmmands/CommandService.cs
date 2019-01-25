@@ -14,7 +14,7 @@ namespace Qmmands
     /// <summary>
     ///     Provides a framework for creating text based commands.
     /// </summary>
-    public sealed class CommandService
+    public class CommandService : ICommandService
     {
         /// <summary>
         ///     Gets whether <see cref="FindCommands"/> and primitive <see langword="enum"/> type parsers are case sensitive or not.

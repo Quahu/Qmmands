@@ -230,7 +230,7 @@ namespace Qmmands
                 if (type == typeof(IServiceProvider) || type == provider.GetType())
                     return provider;
 
-                if (type == typeof(CommandService))
+                if (type == typeof(CommandService) || type == typeof(ICommandService) || type == commandService.GetType())
                     return commandService;
 
                 var service = provider.GetService(type);
@@ -293,8 +293,10 @@ namespace Qmmands
                 .GetMethod(nameof(GetGenericTaskResult), BindingFlags.Static | BindingFlags.NonPublic)
                 .MakeGenericMethod(genericTypeArgument);
 
+#pragma warning disable IDE0051 // Remove unused private members
         private static async Task<CommandResult> GetGenericTaskResult<T>(Task<T> task)
             => task != null ? await task.ConfigureAwait(false) as CommandResult : null;
+#pragma warning restore IDE0051 // Remove unused private members
 
         public static Func<object, object[], object> CreateExpressionDelegate(TypeInfo typeInfo, MethodInfo methodInfo)
         {
