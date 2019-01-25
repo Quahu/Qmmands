@@ -292,6 +292,16 @@ namespace Qmmands
             if (ReflectionUtilities.IsNullable(type))
                 throw new ArgumentException("Cannot add custom nullable type parsers.", nameof(T));
 
+            if (replacePrimitive)
+            {
+                if (GetPrimitiveTypeParser(type) == null)
+                    throw new ArgumentException($"No primitive parser found to replace for type {type}.", nameof(T));
+
+                var existingParser = GetAnyTypeParser(type, true);
+                if (existingParser != null)
+                    throw new ArgumentException($"There is already a custom type parser replacing the primitive parser for type {type} - {existingParser.GetType()}.");
+            }
+
             AddParserInternal(type, parser, replacePrimitive);
         }
 
