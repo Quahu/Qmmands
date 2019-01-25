@@ -122,11 +122,7 @@ namespace Qmmands
             Name = builder.Name ?? (FullAliases.Count > 0 ? FullAliases[0] : null);
 
             for (var i = 0; i < builder.Checks.Count; i++)
-            {
-                var check = builder.Checks[i];
-                check.Module = Module;
-                check.Command = this;
-            }
+                builder.Checks[i].Command = this;
             Checks = builder.Checks.ToImmutableArray();
             Attributes = builder.Attributes.ToImmutableArray();
 
