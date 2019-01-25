@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -279,6 +279,27 @@ namespace Qmmands
         /// </exception>
         public Task<IResult> ExecuteAsync(string rawArguments, ICommandContext context, IServiceProvider provider = null)
             => Service.ExecuteAsync(this, rawArguments, context, provider);
+
+        /// <summary>
+        ///     Executes this <see cref="Command"/>.
+        /// </summary>
+        /// <param name="arguments"> The parsed arguments to use for this <see cref="Command"/>'s <see cref="Parameter"/>s. </param>
+        /// <param name="context"> The <see cref="ICommandContext"/> to use during execution. </param>
+        /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
+        /// <returns>
+        ///     An <see cref="IResult"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The command must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The raw arguments must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The context must not be null.
+        /// </exception>
+        public Task<IResult> ExecuteAsync(object[] arguments, ICommandContext context, IServiceProvider provider = null)
+            => Service.ExecuteInternalAsync(this, arguments, context, provider);
 
         /// <summary>
         ///     Returns <see cref="Name"/> or calls <see cref="object.ToString"/> if it is <see langword="null"/>.

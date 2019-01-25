@@ -749,11 +749,11 @@ namespace Qmmands
             if (provider is null)
                 provider = DummyServiceProvider.Instance;
 
-            var matches = FindCommands(input).ToImmutableArray();
+            var matches = FindCommands(input).ToArray();
             if (matches.Length == 0)
                 return new CommandNotFoundResult();
 
-            var failedOverloads = new Dictionary<Command, FailedResult>();
+            var failedOverloads = new Dictionary<Command, FailedResult>(matches.Length);
             foreach (var match in matches.GroupBy(x => string.Join(Separator, x.Path)).First())
             {
                 try
@@ -818,10 +818,10 @@ namespace Qmmands
                 switch (match.Command.RunMode)
                 {
                     case RunMode.Sequential:
-                        return await ExecuteInternalAsync(match.Command, context, provider, parsedArguments).ConfigureAwait(false);
+                        return await ExecuteInternalAsync(match.Command, parsedArguments, context, provider).ConfigureAwait(false);
 
                     case RunMode.Parallel:
-                        _ = Task.Run(() => ExecuteInternalAsync(match.Command, context, provider, parsedArguments));
+                        _ = Task.Run(() => ExecuteInternalAsync(match.Command, parsedArguments, context, provider));
                         return new SuccessfulResult();
 
                     default:
@@ -839,7 +839,9 @@ namespace Qmmands
         /// <param name="rawArguments"> The raw arguments to use for this <see cref="Command"/>'s parameters. </param>
         /// <param name="context"> The <see cref="ICommandContext"/> to use during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
-        /// <returns> An <see cref="IResult"/>. </returns>
+        /// <returns>
+        ///     An <see cref="IResult"/>.
+        /// </returns>
         /// <exception cref="ArgumentNullException">
         ///     The command must not be null.
         /// </exception>
@@ -913,10 +915,10 @@ namespace Qmmands
             switch (command.RunMode)
             {
                 case RunMode.Sequential:
-                    return await ExecuteInternalAsync(command, context, provider, parsedArguments).ConfigureAwait(false);
+                    return await ExecuteInternalAsync(command, parsedArguments, context, provider).ConfigureAwait(false);
 
                 case RunMode.Parallel:
-                    _ = Task.Run(() => ExecuteInternalAsync(command, context, provider, parsedArguments));
+                    _ = Task.Run(() => ExecuteInternalAsync(command, parsedArguments, context, provider));
                     return new SuccessfulResult();
 
                 default:
@@ -924,26 +926,35 @@ namespace Qmmands
             }
         }
 
-        private async Task<(FailedResult FailedResult, object[] ParsedArguments)> CreateArgumentsAsync(ArgumentParserResult parseResult, ICommandContext context, IServiceProvider provider)
+        private async Task<(FailedResult FailedResult, object[] ParsedArguments)> CreateArgumentsAsync(ArgumentParserResult parserResult, ICommandContext context, IServiceProvider provider = null)
         {
-            var parsedArguments = new object[parseResult.Arguments.Count];
-            if (parseResult.Arguments.Count == 0)
+            if (context is null)
+                throw new ArgumentNullException(nameof(context), "The context must not be null.");
+
+            if (provider is null)
+                provider = DummyServiceProvider.Instance;
+
+            var parsedArguments = new object[parserResult.Arguments.Count];
+            if (parserResult.Arguments.Count == 0)
                 return (default, parsedArguments);
 
             var index = 0;
-            foreach (var kvp in parseResult.Arguments)
+            for (var i = 0; i < parserResult.Command.Parameters.Count; i++)
             {
-                var parameter = kvp.Key;
-                if (kvp.Value is IReadOnlyList<string> multipleArguments)
+                var parameter = parserResult.Command.Parameters[i];
+                if (!parserResult.Arguments.TryGetValue(parameter, out var value))
+                    throw new InvalidOperationException($"No value for parameter {parameter.Name} ({parameter.Type}) was returned by the argument parser ({ArgumentParser.GetType()}).");
+
+                if (value is IReadOnlyList<string> multipleArguments)
                 {
                     var array = Array.CreateInstance(parameter.Type, multipleArguments.Count);
-                    for (var i = 0; i < multipleArguments.Count; i++)
+                    for (var j = 0; j < multipleArguments.Count; j++)
                     {
-                        var (result, parsed) = await ParseArgumentAsync(parameter, multipleArguments[i], context, provider).ConfigureAwait(false);
+                        var (result, parsedArgument) = await ParseArgumentAsync(parameter, multipleArguments[j], context, provider).ConfigureAwait(false);
                         if (result != null)
                             return (result, default);
 
-                        array.SetValue(parsed, i);
+                        array.SetValue(parsedArgument, j);
                     }
 
                     var checkResult = await parameter.RunChecksAsync(array, context, provider).ConfigureAwait(false);
@@ -955,22 +966,22 @@ namespace Qmmands
 
                 else
                 {
-                    var (result, parsed) = await ParseArgumentAsync(parameter, kvp.Value, context, provider).ConfigureAwait(false);
+                    var (result, parsedArgument) = await ParseArgumentAsync(parameter, value, context, provider).ConfigureAwait(false);
                     if (result != null)
                         return (result, default);
 
-                    var checkResult = await parameter.RunChecksAsync(parsed, context, provider).ConfigureAwait(false);
+                    var checkResult = await parameter.RunChecksAsync(parsedArgument, context, provider).ConfigureAwait(false);
                     if (!checkResult.IsSuccessful)
                         return (checkResult as FailedResult, default);
 
-                    parsedArguments[index++] = parsed;
+                    parsedArguments[index++] = parsedArgument;
                 }
             }
 
             return (default, parsedArguments);
         }
 
-        private async Task<(FailedResult FailedResult, object Parsed)> ParseArgumentAsync(Parameter parameter, object argument, ICommandContext context, IServiceProvider provider)
+        private async Task<(TypeParseFailedResult TypeParseFailedResult, object ParsedArgument)> ParseArgumentAsync(Parameter parameter, object argument, ICommandContext context, IServiceProvider provider)
         {
             if (!(argument is string value))
                 return (null, argument);
@@ -983,7 +994,7 @@ namespace Qmmands
             {
                 var customParser = GetSpecificTypeParser(parameter.Type, parameter.CustomTypeParserType);
                 if (customParser is null)
-                    throw new InvalidOperationException($"Custom parser of type {parameter.CustomTypeParserType.Name} for parameter {parameter.Name} not found.");
+                    throw new InvalidOperationException($"Custom parser of type {parameter.CustomTypeParserType} for parameter {parameter} not found.");
 
                 var typeParserResult = await customParser.ParseAsync(value, context, provider).ConfigureAwait(false);
                 if (!typeParserResult.IsSuccessful)
@@ -1020,7 +1031,7 @@ namespace Qmmands
             return (new TypeParseFailedResult(parameter, value, $"Failed to parse {friendlyName}."), default);
         }
 
-        private async Task<IResult> ExecuteInternalAsync(Command command, ICommandContext context, IServiceProvider provider, object[] arguments)
+        internal async Task<IResult> ExecuteInternalAsync(Command command, object[] arguments, ICommandContext context, IServiceProvider provider)
         {
             try
             {
