@@ -382,12 +382,18 @@ namespace Qmmands
             if (module == null)
                 throw new ArgumentNullException(nameof(module), "The module must not be null.");
 
-            if (module.Parent != null)
-                foreach (var check in GetAllChecks(module.Parent))
-                    yield return check;
+            return GetAllChecksIterator();
+            IEnumerable<CheckBaseAttribute> GetAllChecksIterator()
+            {
+                if (module.Parent != null)
+                {
+                    foreach (var check in GetAllChecks(module.Parent))
+                        yield return check;
+                }
 
-            for (var i = 0; i < module.Checks.Count; i++)
-                yield return module.Checks[i];
+                for (var i = 0; i < module.Checks.Count; i++)
+                    yield return module.Checks[i];
+            }
         }
 
         /// <summary>
@@ -406,11 +412,15 @@ namespace Qmmands
             if (command == null)
                 throw new ArgumentNullException(nameof(command), "The command must not be null.");
 
-            foreach (var check in GetAllChecks(command.Module))
-                yield return check;
+            return GetAllChecksIterator();
+            IEnumerable<CheckBaseAttribute> GetAllChecksIterator()
+            {
+                foreach (var check in GetAllChecks(command.Module))
+                    yield return check;
 
-            for (var i = 0; i < command.Checks.Count; i++)
-                yield return command.Checks[i];
+                for (var i = 0; i < command.Checks.Count; i++)
+                    yield return command.Checks[i];
+            }
         }
 
         /// <summary>
@@ -427,18 +437,22 @@ namespace Qmmands
             if (module == null)
                 throw new ArgumentNullException(nameof(module), "The module must not be null.");
 
-            IEnumerable<Command> GetCommands(Module rModule)
+            return GetAllCommandsIterator();
+            IEnumerable<Command> GetAllCommandsIterator()
             {
-                for (var i = 0; i < rModule.Commands.Count; i++)
-                    yield return rModule.Commands[i];
+                IEnumerable<Command> GetCommands(Module rModule)
+                {
+                    for (var i = 0; i < rModule.Commands.Count; i++)
+                        yield return rModule.Commands[i];
 
-                for (var i = 0; i < rModule.Submodules.Count; i++)
-                    foreach (var command in GetCommands(rModule.Submodules[i]))
-                        yield return command;
+                    for (var i = 0; i < rModule.Submodules.Count; i++)
+                        foreach (var command in GetCommands(rModule.Submodules[i]))
+                            yield return command;
+                }
+
+                foreach (var command in GetCommands(module))
+                    yield return command;
             }
-
-            foreach (var command in GetCommands(module))
-                yield return command;
         }
 
         /// <summary>
@@ -455,18 +469,22 @@ namespace Qmmands
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder), "The builder must not be null.");
 
-            IEnumerable<CommandBuilder> GetCommands(ModuleBuilder rBuilder)
+            return GetAllCommandsIterator();
+            IEnumerable<CommandBuilder> GetAllCommandsIterator()
             {
-                for (var i = 0; i < rBuilder.Commands.Count; i++)
-                    yield return rBuilder.Commands[i];
+                IEnumerable<CommandBuilder> GetCommands(ModuleBuilder rBuilder)
+                {
+                    for (var i = 0; i < rBuilder.Commands.Count; i++)
+                        yield return rBuilder.Commands[i];
 
-                for (var i = 0; i < rBuilder.Submodules.Count; i++)
-                    foreach (var command in GetCommands(rBuilder.Submodules[i]))
-                        yield return command;
+                    for (var i = 0; i < rBuilder.Submodules.Count; i++)
+                        foreach (var command in GetCommands(rBuilder.Submodules[i]))
+                            yield return command;
+                }
+
+                foreach (var command in GetCommands(builder))
+                    yield return command;
             }
-
-            foreach (var command in GetCommands(builder))
-                yield return command;
         }
 
         /// <summary>
@@ -483,18 +501,22 @@ namespace Qmmands
             if (module == null)
                 throw new ArgumentNullException(nameof(module), "The module must not be null.");
 
-            IEnumerable<Module> GetModules(Module rModule)
+            return GetAllSubmodulesIterator();
+            IEnumerable<Module> GetAllSubmodulesIterator()
             {
-                for (var i = 0; i < rModule.Submodules.Count; i++)
-                    yield return rModule.Submodules[i];
+                IEnumerable<Module> GetModules(Module rModule)
+                {
+                    for (var i = 0; i < rModule.Submodules.Count; i++)
+                        yield return rModule.Submodules[i];
 
-                for (var i = 0; i < rModule.Submodules.Count; i++)
-                    foreach (var command in GetModules(rModule.Submodules[i]))
-                        yield return command;
+                    for (var i = 0; i < rModule.Submodules.Count; i++)
+                        foreach (var command in GetModules(rModule.Submodules[i]))
+                            yield return command;
+                }
+
+                foreach (var submodule in GetModules(module))
+                    yield return submodule;
             }
-
-            foreach (var submodule in GetModules(module))
-                yield return submodule;
         }
 
         /// <summary>
@@ -511,18 +533,22 @@ namespace Qmmands
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder), "The builder must not be null.");
 
-            IEnumerable<ModuleBuilder> GetModules(ModuleBuilder rBuilder)
+            return GetAllSubmodulesIterator();
+            IEnumerable<ModuleBuilder> GetAllSubmodulesIterator()
             {
-                for (var i = 0; i < rBuilder.Submodules.Count; i++)
-                    yield return rBuilder.Submodules[i];
+                IEnumerable<ModuleBuilder> GetModules(ModuleBuilder rBuilder)
+                {
+                    for (var i = 0; i < rBuilder.Submodules.Count; i++)
+                        yield return rBuilder.Submodules[i];
 
-                for (var i = 0; i < rBuilder.Submodules.Count; i++)
-                    foreach (var command in GetModules(rBuilder.Submodules[i]))
-                        yield return command;
+                    for (var i = 0; i < rBuilder.Submodules.Count; i++)
+                        foreach (var command in GetModules(rBuilder.Submodules[i]))
+                            yield return command;
+                }
+
+                foreach (var submodule in GetModules(builder))
+                    yield return submodule;
             }
-
-            foreach (var submodule in GetModules(builder))
-                yield return submodule;
         }
 
         static CommandUtilities()
