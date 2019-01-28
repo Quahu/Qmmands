@@ -20,7 +20,7 @@ namespace Qmmands
             => _moduleBaseTypeInfo.IsAssignableFrom(typeInfo) && !typeInfo.IsAbstract && !typeInfo.ContainsGenericParameters;
 
         public static bool IsValidCommandDefinition(MethodInfo methodInfo)
-            => methodInfo.IsPublic && methodInfo.GetCustomAttribute<CommandAttribute>() != null
+            => methodInfo.IsPublic && !methodInfo.IsStatic && methodInfo.GetCustomAttribute<CommandAttribute>() != null
                && (methodInfo.ReturnType == _taskTypeInfo || methodInfo.ReturnType.IsConstructedGenericType
                                                              && methodInfo.ReturnType.GenericTypeArguments.Length == 1
                                                              && _commandResultTypeInfo.IsAssignableFrom(methodInfo.ReturnType.GenericTypeArguments[0]));
