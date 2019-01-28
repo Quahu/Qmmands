@@ -38,7 +38,7 @@ namespace Qmmands
                 else
                 {
                     if (arguments.TryGetValue(currentParameter, out var list))
-                        (list as List<string>).Add(argumentBuilder.ToString());
+                        ((List<string>) list).Add(argumentBuilder.ToString());
 
                     else
                         arguments[currentParameter] = new List<string> { argumentBuilder.ToString() };
@@ -65,7 +65,7 @@ namespace Qmmands
 
                     else
                     {
-                        currentParameter = arguments.Count < command.Parameters.Count && command.Parameters.Count > 0 ? command.Parameters.ElementAt(arguments.Count) : multipleParameter;
+                        currentParameter = arguments.Count < command.Parameters.Count && command.Parameters.Count > 0 ? command.Parameters[arguments.Count] : multipleParameter;
                         if (currentParameter == null)
                         {
                             if (command.IgnoreExtraArguments)

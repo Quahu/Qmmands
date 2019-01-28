@@ -221,7 +221,6 @@ namespace Qmmands
             bucket?.Reset();
         }
 
-
         /// <summary>
         ///     Runs cooldowns on this <see cref="Command"/>.
         /// </summary>
@@ -256,7 +255,6 @@ namespace Qmmands
 
             return new SuccessfulResult();
         }
-
 
         /// <summary>
         ///     Attempts to parse the raw arguments for this <see cref="Command"/> and execute it.

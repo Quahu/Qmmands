@@ -97,7 +97,7 @@ namespace Qmmands
 
             else
             {
-                index = index + key.Length;
+                index += key.Length;
                 var hasConfigSeparator = false;
                 hasWhitespaceSeparator = false;
                 if (!_isNullOrWhitespaceSeparator && checkForSeparator)

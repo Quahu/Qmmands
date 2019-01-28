@@ -27,7 +27,6 @@ namespace Qmmands
         public void RemoveCommand(Command command, IReadOnlyList<string> path)
             => _rootNode.RemoveCommand(command, path, 0);
 
-
         public void MapModule(Module module, List<string> path)
         {
             if (module.Aliases.Count == 0)

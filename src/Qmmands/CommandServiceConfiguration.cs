@@ -14,8 +14,6 @@ namespace Qmmands
         /// </summary>
         public bool CaseSensitive { get; set; }
 
-        private RunMode _defaultRunMode = RunMode.Sequential;
-
         /// <summary>
         ///     Gets or sets the <see cref="RunMode"/> which determines whether the commands should
         ///     run sequentially or in parallel. Defaults to <see cref="RunMode.Sequential"/>.
@@ -31,6 +29,7 @@ namespace Qmmands
                 _defaultRunMode = value;
             }
         }
+        private RunMode _defaultRunMode = RunMode.Sequential;
 
         /// <summary>
         ///     Gets or sets the <see cref="bool"/> which determines whether the extra arguments
