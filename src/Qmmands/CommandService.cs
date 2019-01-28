@@ -120,7 +120,7 @@ namespace Qmmands
             remove
             {
                 lock (_handlerLock)
-                    ModuleBuildingHandlers = ModuleBuildingHandlers.Add(value);
+                    ModuleBuildingHandlers = ModuleBuildingHandlers.Remove(value);
             }
         }
 
