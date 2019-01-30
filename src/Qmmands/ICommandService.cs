@@ -26,38 +26,38 @@ namespace Qmmands
         event ModuleBuildingDelegate ModuleBuilding;
 
         /// <summary>
-        ///     Enumerates through all of the added <see cref="Module"/>s and <see langword="yield"/>s all found <see cref="Command"/>s.
+        ///     Gets all of the added <see cref="Command"/>s.
         /// </summary>
         /// <returns>
-        ///     An enumerable with all <see cref="Command"/>s.
+        ///     A list of <see cref="Command"/>s.
         /// </returns>
-        IEnumerable<Command> GetAllCommands();
+        IReadOnlyList<Command> GetAllCommands();
 
         /// <summary>
-        ///     Enumerates through all of the added <see cref="Module"/>s <see langword="yield"/>s them.
+        ///     Gets all of the added <see cref="Module"/>s.
         /// </summary>
         /// <returns>
-        ///     An enumerable with all <see cref="Module"/>s.
+        ///     A list of <see cref="Module"/>s.
         /// </returns>
-        IEnumerable<Module> GetAllModules();
+        IReadOnlyList<Module> GetAllModules();
 
         /// <summary>
         ///     Attempts to find <see cref="Command"/>s matching the provided path.
         /// </summary>
         /// <param name="path"> The path to use for searching. </param>
         /// <returns>
-        ///     A lazy ordered enumerable of <see cref="CommandMatch"/>es.
+        ///     A list of <see cref="CommandMatch"/>es.
         /// </returns>
-        IEnumerable<CommandMatch> FindCommands(string path);
+        IReadOnlyList<CommandMatch> FindCommands(string path);
 
         /// <summary>
         ///     Attempts to find <see cref="Module"/>s matching the provided path.
         /// </summary>
         /// <param name="path"> The path to use for searching. </param>
         /// <returns>
-        ///     A lazy ordered enumerable of <see cref="ModuleMatch"/>es.
+        ///     A list of <see cref="ModuleMatch"/>es.
         /// </returns>
-        IEnumerable<ModuleMatch> FindModules(string path);
+        IReadOnlyList<ModuleMatch> FindModules(string path);
 
         /// <summary>
         ///     Adds a <see cref="TypeParser{T}"/> for the specified <typeparamref name="T"/> <see cref="Type"/>.
@@ -101,7 +101,7 @@ namespace Qmmands
         /// <returns>
         ///     An <see cref="IReadOnlyList{Module}"/> of all found and added <see cref="Module"/>s.
         /// </returns>
-        Task<IReadOnlyList<Module>> AddModulesAsync(Assembly assembly);
+        IReadOnlyList<Module> AddModules(Assembly assembly);
 
         /// <summary>
         ///     Attempts to build the specified <see cref="ModuleBuilder"/> into a <see cref="Module"/>.
@@ -110,7 +110,7 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="Module"/>.
         /// </returns>
-        Task<Module> AddModuleAsync(ModuleBuilder builder);
+        Module AddModule(ModuleBuilder builder);
 
         /// <summary>
         ///     Attempts to instantiate, modify, and build a <see cref="ModuleBuilder"/> into a <see cref="Module"/>.
@@ -119,13 +119,13 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="Module"/>.
         /// </returns>
-        Task<Module> AddModuleAsync(Action<ModuleBuilder> builderAction);
+        Module AddModule(Action<ModuleBuilder> builderAction);
 
         /// <summary>
         ///     Adds the specified <see cref="Module"/>.
         /// </summary>
         /// <param name="module"> The <see cref="Module"/> to add. </param>
-        Task AddModuleAsync(Module module);
+        void AddModule(Module module);
 
         /// <summary>
         ///     Attempts to add the specified <typeparamref name="TModule"/> <see cref="Type"/> as a <see cref="Module"/>. 
@@ -134,7 +134,7 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="Module"/>.
         /// </returns>
-        Task<Module> AddModuleAsync<TModule>();
+        Module AddModule<TModule>();
 
         /// <summary>
         ///     Attempts to add the specified <see cref="Type"/> as a <see cref="Module"/>. 
@@ -142,18 +142,18 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="Module"/>.
         /// </returns>
-        Task<Module> AddModuleAsync(Type type);
+        Module AddModule(Type type);
 
         /// <summary>
         ///     Removes all added <see cref="Module"/>s.
         /// </summary>
-        Task RemoveAllModulesAsync();
+        void RemoveAllModules();
 
         /// <summary>
         ///     Removes the specified <see cref="Module"/>.
         /// </summary>
         /// <param name="module"> The <see cref="Module"/> to remove. </param>
-        Task RemoveModuleAsync(Module module);
+        void RemoveModule(Module module);
 
         /// <summary>
         ///     Attempts to find <see cref="Command"/>s matching the input and executes the most suitable one.

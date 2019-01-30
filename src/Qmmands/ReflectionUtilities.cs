@@ -255,7 +255,7 @@ namespace Qmmands
             {
                 foreach (var property in typeInfo.DeclaredProperties)
                 {
-                    if (property.SetMethod != null && !property.SetMethod.IsStatic && property.SetMethod.IsPublic && property.GetCustomAttribute<DontAutoInjectAttribute>() == null)
+                    if (property.SetMethod != null && !property.SetMethod.IsStatic && property.SetMethod.IsPublic && property.GetCustomAttribute<DoNotAutomaticallyInjectAttribute>() == null)
                         properties.Add(property);
                 }
 

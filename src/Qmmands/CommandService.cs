@@ -6,7 +6,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Qmmands
@@ -68,11 +67,17 @@ namespace Qmmands
         {
             add
             {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+
                 lock (_handlerLock)
                     CommandExecutedHandlers = CommandExecutedHandlers.Add(value);
             }
             remove
             {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+
                 lock (_handlerLock)
                     CommandExecutedHandlers = CommandExecutedHandlers.Remove(value);
             }
@@ -91,11 +96,17 @@ namespace Qmmands
         {
             add
             {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+
                 lock (_handlerLock)
                     CommandErroredHandlers = CommandErroredHandlers.Add(value);
             }
             remove
             {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+
                 lock (_handlerLock)
                     CommandErroredHandlers = CommandErroredHandlers.Remove(value);
             }
@@ -114,11 +125,17 @@ namespace Qmmands
         {
             add
             {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+
                 lock (_handlerLock)
                     ModuleBuildingHandlers = ModuleBuildingHandlers.Add(value);
             }
             remove
             {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+
                 lock (_handlerLock)
                     ModuleBuildingHandlers = ModuleBuildingHandlers.Remove(value);
             }
@@ -138,7 +155,7 @@ namespace Qmmands
         private readonly HashSet<Module> _modules;
         private readonly CommandMap _map;
         private static readonly Type _stringType = typeof(string);
-        private readonly SemaphoreSlim _moduleSemaphore = new SemaphoreSlim(1, 1);
+        private readonly object _moduleLock = new object();
         private readonly object _handlerLock = new object();
 
         /// <summary>
@@ -160,8 +177,12 @@ namespace Qmmands
             SeparatorRequirement = configuration.SeparatorRequirement;
             ArgumentParser = configuration.ArgumentParser ?? new DefaultArgumentParser();
             CooldownBucketKeyGenerator = configuration.CooldownBucketKeyGenerator;
-            QuotationMarkMap = configuration.QuoteMap != null ? new ReadOnlyDictionary<char, char>(configuration.QuoteMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value)) : CommandUtilities.DefaultQuotationMarkMap;
-            NullableNouns = configuration.NullableNouns != null ? configuration.NullableNouns.ToImmutableArray() : CommandUtilities.DefaultNullableNouns;
+            QuotationMarkMap = configuration.QuoteMap != null
+                ? new ReadOnlyDictionary<char, char>(configuration.QuoteMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value))
+                : CommandUtilities.DefaultQuotationMarkMap;
+            NullableNouns = configuration.NullableNouns != null
+                ? configuration.NullableNouns.ToImmutableArray()
+                : CommandUtilities.DefaultNullableNouns;
 
             StringComparison = CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
@@ -185,12 +206,12 @@ namespace Qmmands
         { }
 
         /// <summary>
-        ///     Enumerates through all of the added <see cref="Module"/>s and <see langword="yield"/>s all found <see cref="Command"/>s.
+        ///     Gets all of the added <see cref="Command"/>s.
         /// </summary>
         /// <returns>
-        ///     An enumerable with all <see cref="Command"/>s.
+        ///     A list of <see cref="Command"/>s.
         /// </returns>
-        public IEnumerable<Command> GetAllCommands()
+        public IReadOnlyList<Command> GetAllCommands()
         {
             IEnumerable<Command> GetCommands(Module module)
             {
@@ -202,18 +223,17 @@ namespace Qmmands
                         yield return command;
             }
 
-            foreach (var module in _modules.ToImmutableArray())
-                foreach (var command in GetCommands(module))
-                    yield return command;
+            lock (_moduleLock)
+                return _modules.SelectMany(GetCommands).ToImmutableArray();
         }
 
         /// <summary>
-        ///     Enumerates through all of the added <see cref="Module"/>s <see langword="yield"/>s them.
+        ///     Gets all of the added <see cref="Module"/>s.
         /// </summary>
         /// <returns>
-        ///     An enumerable with all <see cref="Module"/>s.
+        ///     A list of <see cref="Module"/>s.
         /// </returns>
-        public IEnumerable<Module> GetAllModules()
+        public IReadOnlyList<Module> GetAllModules()
         {
             IEnumerable<Module> GetSubmodules(Module module)
             {
@@ -227,12 +247,16 @@ namespace Qmmands
                 }
             }
 
-            foreach (var module in _modules.ToImmutableArray())
+            lock (_moduleLock)
             {
-                yield return module;
+                var builder = new List<Module>();
+                foreach (var module in _modules)
+                {
+                    builder.Add(module);
+                    builder.AddRange(GetSubmodules(module));
+                }
 
-                foreach (var submodule in GetSubmodules(module))
-                    yield return submodule;
+                return builder.AsReadOnly();
             }
         }
 
@@ -241,16 +265,20 @@ namespace Qmmands
         /// </summary>
         /// <param name="path"> The path to use for searching. </param>
         /// <returns>
-        ///     A lazy ordered enumerable of <see cref="CommandMatch"/>es.
+        ///     An ordered list of <see cref="CommandMatch"/>es.
         /// </returns>
-        public IEnumerable<CommandMatch> FindCommands(string path)
+        public IReadOnlyList<CommandMatch> FindCommands(string path)
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path), "The path to find commands for must not be null.");
 
-            return _map.FindCommands(path).OrderByDescending(x => x.Path.Count)
-                .ThenByDescending(x => x.Command.Priority)
-                .ThenByDescending(x => x.Command.Parameters.Count);
+            lock (_moduleLock)
+            {
+                return _map.FindCommands(path).OrderByDescending(x => x.Path.Count)
+                    .ThenByDescending(x => x.Command.Priority)
+                    .ThenByDescending(x => x.Command.Parameters.Count)
+                    .ToImmutableArray();
+            }
         }
 
         /// <summary>
@@ -258,17 +286,22 @@ namespace Qmmands
         /// </summary>
         /// <param name="path"> The path to use for searching. </param>
         /// <returns>
-        ///     A lazy ordered enumerable of <see cref="ModuleMatch"/>es.
+        ///     An ordered list of <see cref="ModuleMatch"/>es.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         ///     The path to find modules for must not be null.
         /// </exception>
-        public IEnumerable<ModuleMatch> FindModules(string path)
+        public IReadOnlyList<ModuleMatch> FindModules(string path)
         {
             if (path == null)
                 throw new ArgumentNullException(nameof(path), "The path to find modules for must not be null.");
 
-            return _map.FindModules(path).OrderByDescending(x => x.Path.Count);
+            lock (_moduleLock)
+            {
+                return _map.FindModules(path)
+                    .OrderByDescending(x => x.Path.Count)
+                    .ToImmutableArray();
+            }
         }
 
         /// <summary>
@@ -445,7 +478,7 @@ namespace Qmmands
         /// <exception cref="CommandMappingException">
         ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
         /// </exception>
-        public async Task<IReadOnlyList<Module>> AddModulesAsync(Assembly assembly)
+        public IReadOnlyList<Module> AddModules(Assembly assembly)
         {
             if (assembly is null)
                 throw new ArgumentNullException(nameof(assembly), "The assembly to add modules from must not be null.");
@@ -455,10 +488,10 @@ namespace Qmmands
             for (var i = 0; i < types.Length; i++)
             {
                 var typeInfo = types[i].GetTypeInfo();
-                if (!ReflectionUtilities.IsValidModuleDefinition(typeInfo) || typeInfo.IsNested || typeInfo.GetCustomAttribute<DontAutoAddAttribute>() != null)
+                if (!ReflectionUtilities.IsValidModuleDefinition(typeInfo) || typeInfo.IsNested || typeInfo.GetCustomAttribute<DoNotAutomaticallyAddAttribute>() != null)
                     continue;
 
-                modules.Add(await AddModuleAsync(typeInfo.AsType()).ConfigureAwait(false));
+                modules.Add(AddModule(typeInfo.AsType()));
             }
 
             return modules.AsReadOnly();
@@ -483,22 +516,14 @@ namespace Qmmands
         /// <exception cref="CommandMappingException">
         ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
         /// </exception>
-        public async Task<Module> AddModuleAsync(ModuleBuilder builder)
+        public Module AddModule(ModuleBuilder builder)
         {
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder), "The module builder to add must not be null.");
 
-            try
-            {
-                await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
-                var module = builder.Build(this, null);
-                AddModuleInternal(module);
-                return module;
-            }
-            finally
-            {
-                _moduleSemaphore.Release();
-            }
+            var module = builder.Build(this, null);
+            AddModuleInternal(module);
+            return module;
         }
 
         /// <summary>
@@ -520,14 +545,14 @@ namespace Qmmands
         /// <exception cref="CommandMappingException">
         ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
         /// </exception>
-        public Task<Module> AddModuleAsync(Action<ModuleBuilder> builderAction)
+        public Module AddModule(Action<ModuleBuilder> builderAction)
         {
             if (builderAction == null)
                 throw new ArgumentNullException(nameof(builderAction), "The module builder action must not be null.");
 
             var builder = new ModuleBuilder();
             builderAction(builder);
-            return AddModuleAsync(builder);
+            return AddModule(builder);
         }
 
         /// <summary>
@@ -549,7 +574,7 @@ namespace Qmmands
         /// <exception cref="CommandMappingException">
         ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
         /// </exception>
-        public async Task AddModuleAsync(Module module)
+        public void AddModule(Module module)
         {
             if (module == null)
                 throw new ArgumentNullException(nameof(module), "The module to add must not be null.");
@@ -557,18 +582,7 @@ namespace Qmmands
             if (module.Parent != null)
                 throw new ArgumentException("The module to add must not be a nested module.", nameof(module));
 
-            if (_modules.Contains(module))
-                throw new ArgumentException("This module has already been added.", nameof(module));
-
-            try
-            {
-                await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
-                AddModuleInternal(module);
-            }
-            finally
-            {
-                _moduleSemaphore.Release();
-            }
+            AddModuleInternal(module);
         }
 
         /// <summary>
@@ -590,8 +604,8 @@ namespace Qmmands
         /// <exception cref="CommandMappingException">
         ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
         /// </exception>
-        public Task<Module> AddModuleAsync<TModule>()
-            => AddModuleAsync(typeof(TModule));
+        public Module AddModule<TModule>()
+            => AddModule(typeof(TModule));
 
         /// <summary>
         ///     Attempts to add the specified <see cref="Type"/> as a <see cref="Module"/>. 
@@ -614,27 +628,16 @@ namespace Qmmands
         /// <exception cref="CommandMappingException">
         ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
         /// </exception>
-        public async Task<Module> AddModuleAsync(Type type)
+        public Module AddModule(Type type)
         {
             if (type is null)
                 throw new ArgumentNullException(nameof(type), "The type to add must not be null.");
 
-            if (_typeModules.ContainsKey(type))
-                throw new ArgumentException($"{type} has already been added as a module.", nameof(type));
-
-            try
-            {
-                await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
-                var moduleBuilder = ReflectionUtilities.BuildModule(this, type.GetTypeInfo());
-                await InvokeModuleBuildingHandlersAsync(moduleBuilder).ConfigureAwait(false);
-                var module = moduleBuilder.Build(this, null);
-                AddModuleInternal(module);
-                return module;
-            }
-            finally
-            {
-                _moduleSemaphore.Release();
-            }
+            var moduleBuilder = ReflectionUtilities.BuildModule(this, type.GetTypeInfo());
+            InvokeModuleBuildingHandlers(moduleBuilder);
+            var module = moduleBuilder.Build(this, null);
+            AddModuleInternal(module);
+            return module;
         }
 
         private void AddModuleInternal(Module module)
@@ -650,9 +653,18 @@ namespace Qmmands
                 }
             }
 
-            _map.MapModule(module, new List<string>());
-            _modules.Add(module);
-            AddSubmodules(module);
+            lock (_moduleLock)
+            {
+                if (_modules.Contains(module))
+                    throw new ArgumentException("This module has already been added.", nameof(module));
+
+                if (module.Type != null && _typeModules.ContainsKey(module.Type))
+                    throw new ArgumentException($"{module.Type} has already been added as a module.", nameof(module));
+
+                _map.MapModule(module, new List<string>());
+                _modules.Add(module);
+                AddSubmodules(module);
+            }
         }
 
         /// <summary>
@@ -665,40 +677,21 @@ namespace Qmmands
         /// <exception cref="ArgumentException">
         ///     This module has not been added.
         /// </exception>
-        public async Task RemoveModuleAsync(Module module)
+        public void RemoveModule(Module module)
         {
             if (module == null)
                 throw new ArgumentNullException(nameof(module), "The module to remove must not be null.");
 
-            if (!_modules.Contains(module))
-                throw new ArgumentException("This module has not been added.", nameof(module));
-
-            try
-            {
-                await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
-                RemoveModuleInternal(module);
-            }
-            finally
-            {
-                _moduleSemaphore.Release();
-            }
+            RemoveModuleInternal(module);
         }
 
         /// <summary>
         ///     Removes all added <see cref="Module"/>s.
         /// </summary>
-        public async Task RemoveAllModulesAsync()
+        public void RemoveAllModules()
         {
-            try
-            {
-                await _moduleSemaphore.WaitAsync().ConfigureAwait(false);
-                foreach (var module in _modules.ToImmutableArray())
-                    RemoveModuleInternal(module);
-            }
-            finally
-            {
-                _moduleSemaphore.Release();
-            }
+            foreach (var module in _modules.ToImmutableArray())
+                RemoveModuleInternal(module);
         }
 
         private void RemoveModuleInternal(Module module)
@@ -714,12 +707,18 @@ namespace Qmmands
                 }
             }
 
-            _map.UnmapModule(module, new List<string>());
-            _modules.Remove(module);
-            if (module.Type != null)
+            lock (_moduleLock)
             {
-                _typeModules.Remove(module.Type);
-                RemoveSubmodules(module);
+                if (!_modules.Contains(module))
+                    throw new ArgumentException("This module has not been added.", nameof(module));
+
+                _map.UnmapModule(module, new List<string>());
+                _modules.Remove(module);
+                if (module.Type != null)
+                {
+                    _typeModules.Remove(module.Type);
+                    RemoveSubmodules(module);
+                }
             }
         }
 
@@ -749,11 +748,11 @@ namespace Qmmands
             if (provider is null)
                 provider = DummyServiceProvider.Instance;
 
-            var matches = FindCommands(input).ToArray();
-            if (matches.Length == 0)
+            var matches = FindCommands(input);
+            if (matches.Count == 0)
                 return new CommandNotFoundResult();
 
-            var failedOverloads = new Dictionary<Command, FailedResult>(matches.Length);
+            var failedOverloads = new Dictionary<Command, FailedResult>(matches.Count);
             foreach (var match in matches.GroupBy(x => string.Join(Separator, x.Path)).First())
             {
                 try
@@ -764,7 +763,7 @@ namespace Qmmands
                         if (checksFailedResult.Module != null)
                             return checksFailedResult;
 
-                        failedOverloads.Add(match.Command, checkResult as FailedResult);
+                        failedOverloads.Add(match.Command, checksFailedResult);
                         continue;
                     }
                 }
@@ -792,7 +791,7 @@ namespace Qmmands
                     return executionFailedResult;
                 }
 
-                object[] parsedArguments = null;
+                object[] parsedArguments;
                 try
                 {
                     var result = await CreateArgumentsAsync(parseResult, context, provider).ConfigureAwait(false);
@@ -892,7 +891,7 @@ namespace Qmmands
                 return executionFailedResult;
             }
 
-            object[] parsedArguments = null;
+            object[] parsedArguments;
             try
             {
                 var result = await CreateArgumentsAsync(parseResult, context, provider).ConfigureAwait(false);
@@ -1083,14 +1082,14 @@ namespace Qmmands
             }
         }
 
-        private async Task InvokeModuleBuildingHandlersAsync(ModuleBuilder builder)
+        private void InvokeModuleBuildingHandlers(ModuleBuilder builder)
         {
             var handlers = ModuleBuildingHandlers;
             for (var i = 0; i < handlers.Length; i++)
             {
                 try
                 {
-                    await handlers[i](builder).ConfigureAwait(false);
+                    handlers[i](builder);
                 }
                 catch { }
             }
