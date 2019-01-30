@@ -275,7 +275,7 @@ namespace Qmmands
                 if (alias.IndexOf(' ') != -1)
                     throw new CommandBuildingException(this, "Command's aliases must not contain whitespace.");
 
-                if (alias.IndexOf(module.Service.Separator) != -1)
+                if (alias.IndexOf(module.Service.Separator, module.Service.StringComparison) != -1)
                     throw new CommandBuildingException(this, "Command's aliases must not contain the separator.");
 
                 aliases.Add(alias);
