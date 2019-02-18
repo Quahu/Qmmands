@@ -26,7 +26,7 @@ There's currently no official documentation for Qmmands other than the usage exa
 
 ### Community Examples:
 * [Kiritsu](https://github.com/Kiritsu)'s Discord bot: [FoxBot](https://github.com/Kiritsu/FoxBot) (DSharpPlus)
-* [idolcoder](https://github.com/idolcoder)'s Discord bot: [Ichigo](https://github.com/idolcoder/Ichigo) (Discord.Net)
+* [GreemDev](https://github.com/GreemDev)'s Discord bot: [Volte](https://github.com/GreemDev/Volte) (Discord.Net)
 
 ### A Simple Usage Example
 **CommandHandler.cs**
@@ -41,8 +41,8 @@ private async Task MessageReceivedAsync(Message message)
         return;
         
     IResult result = await _service.ExecuteAsync(output, new CommandContext(message));
-    if (!result.IsSuccessful)
-        await message.Channel.SendMessageAsync((result as FailedResult).Reason); 
+    if (result is FailedResult failedResult)
+        await message.Channel.SendMessageAsync(failedResult.Reason); 
 }
 ```
 **CommandContext.cs**
