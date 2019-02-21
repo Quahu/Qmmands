@@ -995,7 +995,7 @@ namespace Qmmands
                 if (customParser is null)
                     throw new InvalidOperationException($"Custom parser of type {parameter.CustomTypeParserType} for parameter {parameter} not found.");
 
-                var typeParserResult = await customParser.ParseAsync(value, context, provider).ConfigureAwait(false);
+                var typeParserResult = await customParser.ParseAsync(parameter, value, context, provider).ConfigureAwait(false);
                 if (!typeParserResult.IsSuccessful)
                     return (new TypeParseFailedResult(parameter, value, typeParserResult.Reason), default);
 
@@ -1005,7 +1005,7 @@ namespace Qmmands
             var parser = GetAnyTypeParser(parameter.Type, (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null);
             if (!(parser is null))
             {
-                var typeParserResult = await parser.ParseAsync(value, context, provider).ConfigureAwait(false);
+                var typeParserResult = await parser.ParseAsync(parameter, value, context, provider).ConfigureAwait(false);
                 if (!typeParserResult.IsSuccessful)
                     return (new TypeParseFailedResult(parameter, value, typeParserResult.Reason), default);
 

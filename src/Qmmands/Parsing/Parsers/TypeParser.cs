@@ -12,15 +12,16 @@ namespace Qmmands
         /// <summary>
         ///     The overridable method for type parsing logic.
         /// </summary>
+        /// <param name="parameter"> The currently parsed <see cref="Parameter"/>. </param>
         /// <param name="value"> The raw argument to parse. </param>
         /// <param name="context"> The <see cref="ICommandContext"/> used during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> used during execution. </param>
         /// <returns> A <see cref="TypeParserResult{T}"/>. </returns>
-        public abstract Task<TypeParserResult<T>> ParseAsync(string value, ICommandContext context, IServiceProvider provider);
+        public abstract Task<TypeParserResult<T>> ParseAsync(Parameter parameter, string value, ICommandContext context, IServiceProvider provider);
 
-        async Task<TypeParserResult<object>> ITypeParser.ParseAsync(string value, ICommandContext context, IServiceProvider provider)
+        async Task<TypeParserResult<object>> ITypeParser.ParseAsync(Parameter parameter, string value, ICommandContext context, IServiceProvider provider)
         {
-            var result = await ParseAsync(value, context, provider).ConfigureAwait(false);
+            var result = await ParseAsync(parameter, value, context, provider).ConfigureAwait(false);
             return result.IsSuccessful
                 ? result.HasValue
                     ? new TypeParserResult<object>(result.Value)

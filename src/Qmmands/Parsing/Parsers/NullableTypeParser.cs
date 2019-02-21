@@ -15,9 +15,9 @@ namespace Qmmands
             _typeParser = typeParser;
         }
 
-        public override Task<TypeParserResult<T>> ParseAsync(string value, ICommandContext context, IServiceProvider provider)
+        public override Task<TypeParserResult<T>> ParseAsync(Parameter parameter, string value, ICommandContext context, IServiceProvider provider)
             => _service.NullableNouns.Any(x => value.Equals(x, _service.StringComparison))
                 ? Task.FromResult(new TypeParserResult<T>(false))
-                : _typeParser.ParseAsync(value, context, provider);
+                : _typeParser.ParseAsync(parameter, value, context, provider);
     }
 }

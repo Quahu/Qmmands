@@ -5,6 +5,6 @@ namespace Qmmands
 {
     internal interface ITypeParser
     {
-        Task<TypeParserResult<object>> ParseAsync(string value, ICommandContext context, IServiceProvider provider);
+        Task<TypeParserResult<object>> ParseAsync(Parameter parameter, string value, ICommandContext context, IServiceProvider provider);
     }
 }
