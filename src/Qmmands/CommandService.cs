@@ -463,6 +463,7 @@ namespace Qmmands
         ///     Attempts to add all valid <see cref="Module"/>s and <see cref="Command"/>s found in the provided <see cref="Assembly"/>.
         /// </summary>
         /// <param name="assembly"> The assembly to search. </param>
+        /// <param name="predicate"> The optional <see cref="Predicate{T}"/> delegate that defines the conditions of the <see cref="Type"/>s to add as <see cref="Module"/>s. </param>
         /// <returns>
         ///     An <see cref="IReadOnlyList{Module}"/> of all found and added <see cref="Module"/>s.
         /// </returns>
@@ -478,7 +479,7 @@ namespace Qmmands
         /// <exception cref="CommandMappingException">
         ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
         /// </exception>
-        public IReadOnlyList<Module> AddModules(Assembly assembly)
+        public IReadOnlyList<Module> AddModules(Assembly assembly, Predicate<TypeInfo> predicate = null)
         {
             if (assembly is null)
                 throw new ArgumentNullException(nameof(assembly), "The assembly to add modules from must not be null.");
@@ -489,6 +490,9 @@ namespace Qmmands
             {
                 var typeInfo = types[i].GetTypeInfo();
                 if (!ReflectionUtilities.IsValidModuleDefinition(typeInfo) || typeInfo.IsNested || typeInfo.GetCustomAttribute<DoNotAutomaticallyAddAttribute>() != null)
+                    continue;
+
+                if (predicate != null && !predicate(typeInfo))
                     continue;
 
                 modules.Add(AddModule(typeInfo.AsType()));

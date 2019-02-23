@@ -98,10 +98,11 @@ namespace Qmmands
         ///     Attempts to add all valid <see cref="Module"/>s and <see cref="Command"/>s found in the provided <see cref="Assembly"/>.
         /// </summary>
         /// <param name="assembly"> The assembly to search. </param>
+        /// <param name="predicate"> The optional <see cref="Predicate{T}"/> delegate that defines the conditions of the <see cref="Type"/>s to add as <see cref="Module"/>s. </param>
         /// <returns>
         ///     An <see cref="IReadOnlyList{Module}"/> of all found and added <see cref="Module"/>s.
         /// </returns>
-        IReadOnlyList<Module> AddModules(Assembly assembly);
+        IReadOnlyList<Module> AddModules(Assembly assembly, Predicate<TypeInfo> predicate = null);
 
         /// <summary>
         ///     Attempts to build the specified <see cref="ModuleBuilder"/> into a <see cref="Module"/>.
