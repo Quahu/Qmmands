@@ -21,11 +21,6 @@ namespace Qmmands
         event CommandErroredDelegate CommandErrored;
 
         /// <summary>
-        ///     Fires when a non-user instantiated <see cref="ModuleBuilder"/> is about to be built into a <see cref="Module"/>.
-        /// </summary>
-        event ModuleBuildingDelegate ModuleBuilding;
-
-        /// <summary>
         ///     Gets all of the added <see cref="Command"/>s.
         /// </summary>
         /// <returns>
@@ -99,10 +94,11 @@ namespace Qmmands
         /// </summary>
         /// <param name="assembly"> The assembly to search. </param>
         /// <param name="predicate"> The optional <see cref="Predicate{T}"/> delegate that defines the conditions of the <see cref="Type"/>s to add as <see cref="Module"/>s. </param>
+        /// <param name="action"> The optional <see cref="Action{T}"/> delegate that allows for mutation of the <see cref="ModuleBuilder"/>s before they are built. </param>
         /// <returns>
         ///     An <see cref="IReadOnlyList{Module}"/> of all found and added <see cref="Module"/>s.
         /// </returns>
-        IReadOnlyList<Module> AddModules(Assembly assembly, Predicate<TypeInfo> predicate = null);
+        IReadOnlyList<Module> AddModules(Assembly assembly, Predicate<TypeInfo> predicate = null, Action<ModuleBuilder> action = null);
 
         /// <summary>
         ///     Attempts to build the specified <see cref="ModuleBuilder"/> into a <see cref="Module"/>.
@@ -116,11 +112,11 @@ namespace Qmmands
         /// <summary>
         ///     Attempts to instantiate, modify, and build a <see cref="ModuleBuilder"/> into a <see cref="Module"/>.
         /// </summary>
-        /// <param name="builderAction"> The action to perform on the builder. </param>
+        /// <param name="action"> The action to perform on the builder. </param>
         /// <returns>
         ///     A <see cref="Module"/>.
         /// </returns>
-        Module AddModule(Action<ModuleBuilder> builderAction);
+        Module AddModule(Action<ModuleBuilder> action);
 
         /// <summary>
         ///     Adds the specified <see cref="Module"/>.
@@ -132,18 +128,21 @@ namespace Qmmands
         ///     Attempts to add the specified <typeparamref name="TModule"/> <see cref="Type"/> as a <see cref="Module"/>. 
         /// </summary>
         /// <typeparam name="TModule"> The <see cref="Type"/> to add. </typeparam>
+        /// <param name="action"> The optional <see cref="Action{T}"/> delegate that allows for mutation of the <see cref="ModuleBuilder"/> before it is built. </param>
         /// <returns>
         ///     A <see cref="Module"/>.
         /// </returns>
-        Module AddModule<TModule>();
+        Module AddModule<TModule>(Action<ModuleBuilder> action = null);
 
         /// <summary>
         ///     Attempts to add the specified <see cref="Type"/> as a <see cref="Module"/>. 
         /// </summary>
+        /// <param name="type"> The <see cref="Type"/> to add. </param>
+        /// <param name="action"> The optional <see cref="Action{T}"/> delegate that allows for mutation of the <see cref="ModuleBuilder"/> before it is built. </param>
         /// <returns>
         ///     A <see cref="Module"/>.
         /// </returns>
-        Module AddModule(Type type);
+        Module AddModule(Type type, Action<ModuleBuilder> action = null);
 
         /// <summary>
         ///     Removes all added <see cref="Module"/>s.

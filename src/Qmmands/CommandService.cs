@@ -118,35 +118,6 @@ namespace Qmmands
         [EditorBrowsable(EditorBrowsableState.Never)]
         public ImmutableArray<CommandErroredDelegate> CommandErroredHandlers { get; private set; } = ImmutableArray<CommandErroredDelegate>.Empty;
 
-        /// <summary>
-        ///     Fires when a non-user instantiated <see cref="ModuleBuilder"/> is about to be built into a <see cref="Module"/>.
-        /// </summary>
-        public event ModuleBuildingDelegate ModuleBuilding
-        {
-            add
-            {
-                if (value == null)
-                    throw new ArgumentNullException(nameof(value));
-
-                lock (_handlerLock)
-                    ModuleBuildingHandlers = ModuleBuildingHandlers.Add(value);
-            }
-            remove
-            {
-                if (value == null)
-                    throw new ArgumentNullException(nameof(value));
-
-                lock (_handlerLock)
-                    ModuleBuildingHandlers = ModuleBuildingHandlers.Remove(value);
-            }
-        }
-
-        /// <summary>
-        ///     Gets the <see cref="ModuleBuilding"/> event handlers.
-        /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public ImmutableArray<ModuleBuildingDelegate> ModuleBuildingHandlers { get; private set; } = ImmutableArray<ModuleBuildingDelegate>.Empty;
-
         internal StringComparison StringComparison { get; }
 
         private readonly ConcurrentDictionary<Type, Dictionary<Type, (bool ReplacingPrimitive, ITypeParser Instance)>> _parsers;
@@ -464,6 +435,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="assembly"> The assembly to search. </param>
         /// <param name="predicate"> The optional <see cref="Predicate{T}"/> delegate that defines the conditions of the <see cref="Type"/>s to add as <see cref="Module"/>s. </param>
+        /// <param name="action"> The optional <see cref="Action{T}"/> delegate that allows for mutation of the <see cref="ModuleBuilder"/>s before they are built. </param>
         /// <returns>
         ///     An <see cref="IReadOnlyList{Module}"/> of all found and added <see cref="Module"/>s.
         /// </returns>
@@ -479,7 +451,7 @@ namespace Qmmands
         /// <exception cref="CommandMappingException">
         ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
         /// </exception>
-        public IReadOnlyList<Module> AddModules(Assembly assembly, Predicate<TypeInfo> predicate = null)
+        public IReadOnlyList<Module> AddModules(Assembly assembly, Predicate<TypeInfo> predicate = null, Action<ModuleBuilder> action = null)
         {
             if (assembly is null)
                 throw new ArgumentNullException(nameof(assembly), "The assembly to add modules from must not be null.");
@@ -495,7 +467,7 @@ namespace Qmmands
                 if (predicate != null && !predicate(typeInfo))
                     continue;
 
-                modules.Add(AddModule(typeInfo.AsType()));
+                modules.Add(AddModule(typeInfo.AsType(), action));
             }
 
             return modules.AsReadOnly();
@@ -533,7 +505,7 @@ namespace Qmmands
         /// <summary>
         ///     Attempts to instantiate, modify, and build a <see cref="ModuleBuilder"/> into a <see cref="Module"/>.
         /// </summary>
-        /// <param name="builderAction"> The action to perform on the builder. </param>
+        /// <param name="action"> The action to perform on the builder. </param>
         /// <returns>
         ///     A <see cref="Module"/>.
         /// </returns>
@@ -549,13 +521,13 @@ namespace Qmmands
         /// <exception cref="CommandMappingException">
         ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
         /// </exception>
-        public Module AddModule(Action<ModuleBuilder> builderAction)
+        public Module AddModule(Action<ModuleBuilder> action)
         {
-            if (builderAction == null)
-                throw new ArgumentNullException(nameof(builderAction), "The module builder action must not be null.");
+            if (action == null)
+                throw new ArgumentNullException(nameof(action), "The action must not be null.");
 
             var builder = new ModuleBuilder();
-            builderAction(builder);
+            action(builder);
             return AddModule(builder);
         }
 
@@ -593,6 +565,7 @@ namespace Qmmands
         ///     Attempts to add the specified <typeparamref name="TModule"/> <see cref="Type"/> as a <see cref="Module"/>. 
         /// </summary>
         /// <typeparam name="TModule"> The <see cref="Type"/> to add. </typeparam>
+        /// <param name="action"> The optional <see cref="Action{T}"/> delegate that allows for mutation of the <see cref="ModuleBuilder"/> before it is built. </param>
         /// <returns>
         ///     A <see cref="Module"/>.
         /// </returns>
@@ -608,12 +581,14 @@ namespace Qmmands
         /// <exception cref="CommandMappingException">
         ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
         /// </exception>
-        public Module AddModule<TModule>()
-            => AddModule(typeof(TModule));
+        public Module AddModule<TModule>(Action<ModuleBuilder> action = null)
+            => AddModule(typeof(TModule), action);
 
         /// <summary>
         ///     Attempts to add the specified <see cref="Type"/> as a <see cref="Module"/>. 
         /// </summary>
+        /// <param name="type"> The <see cref="Type"/> to add. </param>
+        /// <param name="action"> The optional <see cref="Action{T}"/> delegate that allows for mutation of the <see cref="ModuleBuilder"/> before it is built. </param>
         /// <returns>
         ///     A <see cref="Module"/>.
         /// </returns>
@@ -632,14 +607,14 @@ namespace Qmmands
         /// <exception cref="CommandMappingException">
         ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
         /// </exception>
-        public Module AddModule(Type type)
+        public Module AddModule(Type type, Action<ModuleBuilder> action = null)
         {
             if (type is null)
                 throw new ArgumentNullException(nameof(type), "The type to add must not be null.");
 
-            var moduleBuilder = ReflectionUtilities.BuildModule(this, type.GetTypeInfo());
-            InvokeModuleBuildingHandlers(moduleBuilder);
-            var module = moduleBuilder.Build(this, null);
+            var builder = ReflectionUtilities.BuildModule(this, type.GetTypeInfo());
+            action?.Invoke(builder);
+            var module = builder.Build(this, null);
             AddModuleInternal(module);
             return module;
         }
@@ -1081,19 +1056,6 @@ namespace Qmmands
                 try
                 {
                     await handlers[i](result, context, provider).ConfigureAwait(false);
-                }
-                catch { }
-            }
-        }
-
-        private void InvokeModuleBuildingHandlers(ModuleBuilder builder)
-        {
-            var handlers = ModuleBuildingHandlers;
-            for (var i = 0; i < handlers.Length; i++)
-            {
-                try
-                {
-                    handlers[i](builder);
                 }
                 catch { }
             }

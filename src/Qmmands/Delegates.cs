@@ -44,11 +44,5 @@ namespace Qmmands
     /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
     public delegate Task CommandErroredDelegate(ExecutionFailedResult result, ICommandContext context, IServiceProvider provider);
 
-    /// <summary>
-    ///     Represents a <see cref="CommandService.ModuleBuilding"/> callback method.
-    /// </summary>
-    /// <param name="builder"> The <see cref="ModuleBuilder"/> of the <see cref="Module"/> currently being built. </param>
-    public delegate void ModuleBuildingDelegate(ModuleBuilder builder);
-
     internal delegate bool TryParseDelegate<T>(string value, out T result);
 }
