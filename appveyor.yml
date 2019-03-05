@@ -2,10 +2,6 @@ version: 'build-{build}'
 
 image: Visual Studio 2017 Preview
 
-branches:
-  only:
-  - master
-
 build_script:
 - ps: dotnet restore .\src\Qmmands.sln | Out-Host
 - ps: dotnet build .\src\Qmmands.sln -c "Release" --no-restore | Out-Host
@@ -42,9 +38,15 @@ deploy:
   skip_symbols: true
   on:
     branch: master
+    appveyor_repo_tag: false
 - provider: NuGet
   api_key:
     secure: O7xmTfASfpU1YlRDxaLRtK0Nkjt6T03B6K4oT96B32mNTw7K0ZbC7c8/dxe9yTqW
   on:
     branch: master
+    appveyor_repo_tag: true
+- provider: NuGet
+  api_key:
+    secure: O7xmTfASfpU1YlRDxaLRtK0Nkjt6T03B6K4oT96B32mNTw7K0ZbC7c8/dxe9yTqW
+  on:
     appveyor_repo_tag: true

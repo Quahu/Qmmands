@@ -113,7 +113,7 @@ namespace Qmmands
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
 
-            if (prefixes == null)
+            if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
 
             for (var i = 0; i < prefixes.Count; i++)
@@ -174,7 +174,7 @@ namespace Qmmands
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
 
-            if (prefixes == null)
+            if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
 
             foreach (var currentPrefix in prefixes)
@@ -288,7 +288,7 @@ namespace Qmmands
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
 
-            if (prefixes == null)
+            if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
 
             for (var i = 0; i < prefixes.Count; i++)
@@ -349,7 +349,7 @@ namespace Qmmands
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
 
-            if (prefixes == null)
+            if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
 
             foreach (var currentPrefix in prefixes)

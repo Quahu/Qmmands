@@ -119,7 +119,6 @@ namespace Qmmands
                         continue;
                     }
                 }
-
                 else
                 {
                     if (character == '\\' && currentPosition + 1 < rawArguments.Length && rawArguments[currentPosition + 1] == expectedQuote)
