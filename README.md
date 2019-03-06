@@ -27,6 +27,7 @@ There's currently no official documentation for Qmmands other than the usage exa
 ### Community Examples:
 * [Kiritsu](https://github.com/Kiritsu)'s Discord bot: [FoxBot](https://github.com/Kiritsu/FoxBot) (DSharpPlus)
 * [GreemDev](https://github.com/GreemDev)'s Discord bot: [Volte](https://github.com/GreemDev/Volte) (Discord.Net)
+* [TheCasino](https://github.com/TheCasino)'s Discord bot: [Espeon](https://github.com/TheCasino/Espeon) (Discord.Net)
 
 ### A Simple Usage Example
 **CommandHandler.cs**
