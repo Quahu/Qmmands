@@ -171,18 +171,18 @@ namespace Qmmands
             if (Checks.Count > 0)
             {
                 var checkResults = await Task.WhenAll(Checks.Select(x => RunCheckAsync(x, context, provider))).ConfigureAwait(false);
-                var failedGroups = checkResults.GroupBy(x => x.Check.Group).Where(x => x.Key == null ? x.Any(y => y.Error != null) : x.All(y => y.Error != null)).ToImmutableArray();
+                var failedGroups = checkResults.GroupBy(x => x.Check.Group).Where(x => x.Key == null ? x.Any(y => !y.Result.IsSuccessful) : x.All(y => !y.Result.IsSuccessful)).ToImmutableArray();
                 if (failedGroups.Length > 0)
-                    return new ChecksFailedResult(this, failedGroups.SelectMany(x => x).Where(x => x.Error != null).ToImmutableArray());
+                    return new ChecksFailedResult(this, failedGroups.SelectMany(x => x).Where(x => !x.Result.IsSuccessful).ToImmutableArray());
             }
 
             return new SuccessfulResult();
         }
 
-        private async Task<(CheckBaseAttribute Check, string Error)> RunCheckAsync(CheckBaseAttribute check, ICommandContext context, IServiceProvider provider)
+        private async Task<(CheckBaseAttribute Check, CheckResult Result)> RunCheckAsync(CheckBaseAttribute check, ICommandContext context, IServiceProvider provider)
         {
             var checkResult = await check.CheckAsync(context, provider).ConfigureAwait(false);
-            return (check, checkResult.Reason);
+            return (check, checkResult);
         }
 
         /// <summary>

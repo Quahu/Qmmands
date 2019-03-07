@@ -21,18 +21,18 @@ namespace Qmmands
         public Command Command { get; }
 
         /// <summary>
-        ///     Gets the checks that failed with their error reasons.
+        ///     Gets the checks that failed with their respective results.
         /// </summary>
-        public IReadOnlyList<(CheckBaseAttribute Check, string Error)> FailedChecks { get; }
+        public IReadOnlyList<(CheckBaseAttribute Check, CheckResult Result)> FailedChecks { get; }
 
-        internal ChecksFailedResult(Command command, IReadOnlyList<(CheckBaseAttribute Check, string Error)> failedChecks)
+        internal ChecksFailedResult(Command command, IReadOnlyList<(CheckBaseAttribute Check, CheckResult Result)> failedChecks)
         {
             Command = command;
             FailedChecks = failedChecks;
             Reason = $"{(FailedChecks.Count == 1 ? "One check" : "Multiple checks")} failed for the command {Command}.";
         }
 
-        internal ChecksFailedResult(Module module, IReadOnlyList<(CheckBaseAttribute Check, string Error)> failedChecks)
+        internal ChecksFailedResult(Module module, IReadOnlyList<(CheckBaseAttribute Check, CheckResult Result)> failedChecks)
         {
             Module = module;
             FailedChecks = failedChecks;

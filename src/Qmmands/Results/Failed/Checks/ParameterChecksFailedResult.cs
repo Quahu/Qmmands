@@ -23,9 +23,9 @@ namespace Qmmands
         /// <summary>
         ///     Gets the checks that failed with their error reasons.
         /// </summary>
-        public IReadOnlyList<(ParameterCheckBaseAttribute Check, string Error)> FailedChecks { get; }
+        public IReadOnlyList<(ParameterCheckBaseAttribute Check, CheckResult Result)> FailedChecks { get; }
 
-        internal ParameterChecksFailedResult(Parameter parameter, object argument, IReadOnlyList<(ParameterCheckBaseAttribute Check, string Error)> failedChecks)
+        internal ParameterChecksFailedResult(Parameter parameter, object argument, IReadOnlyList<(ParameterCheckBaseAttribute Check, CheckResult Result)> failedChecks)
         {
             Parameter = parameter;
             Argument = argument;
