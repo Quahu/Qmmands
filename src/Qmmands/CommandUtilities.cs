@@ -553,14 +553,14 @@ namespace Qmmands
 
         static CommandUtilities()
         {
-            DefaultQuotationMarkMap = new ReadOnlyDictionary<char, char>(new Dictionary<char, char>
+            DefaultQuotationMarkMap = new ReadOnlyDictionary<char, char>(new Dictionary<char, char>(3)
             {
                 ['"'] = '"',
                 ['“'] = '”',
                 ['„'] = '‟'
             });
 
-            var nullableNounsBuilder = ImmutableArray.CreateBuilder<string>();
+            var nullableNounsBuilder = ImmutableArray.CreateBuilder<string>(5);
             nullableNounsBuilder.Add("nil");
             nullableNounsBuilder.Add("none");
             nullableNounsBuilder.Add("nothing");
@@ -568,7 +568,7 @@ namespace Qmmands
             nullableNounsBuilder.Add("undefined");
             DefaultNullableNouns = nullableNounsBuilder.ToImmutable();
 
-            FriendlyPrimitiveTypeNames = new ReadOnlyDictionary<Type, string>(new Dictionary<Type, string>
+            FriendlyPrimitiveTypeNames = new ReadOnlyDictionary<Type, string>(new Dictionary<Type, string>(13)
             {
                 [typeof(char)] = "char",
                 [typeof(bool)] = "bool",

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 namespace Qmmands
 {
-    internal sealed class EnumTypeParser<T> : IPrimitiveTypeParser where T : struct
+    // T is the underlying type of the enum, not typeof(enum)
+    internal sealed class EnumTypeParser<T> : IPrimitiveTypeParser
+        where T : struct
     {
         private readonly TryParseDelegate<T> _tryParse;
         private readonly Dictionary<string, object> _enumByNames;
@@ -12,10 +14,10 @@ namespace Qmmands
         public EnumTypeParser(Type enumType, bool ignoreCase)
         {
             _tryParse = (TryParseDelegate<T>) ReflectionUtilities.TryParseDelegates[typeof(T)];
-            _enumByNames = new Dictionary<string, object>(ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
-            _enumByValues = new Dictionary<T, object>();
 
             var names = Enum.GetNames(enumType);
+            _enumByNames = new Dictionary<string, object>(names.Length, ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
+            _enumByValues = new Dictionary<T, object>();
             for (var i = 0; i < names.Length; i++)
             {
                 var name = names[i];
@@ -27,7 +29,7 @@ namespace Qmmands
             }
         }
 
-        public bool TryParse(CommandService service, string value, out object result)
-            => !_tryParse(value, out var numericResult) ? _enumByNames.TryGetValue(value, out result) : _enumByValues.TryGetValue(numericResult, out result);
+        public bool TryParse(Parameter parameter, string value, out object result)
+            => _tryParse(value, out var numericResult) ? _enumByValues.TryGetValue(numericResult, out result) : _enumByNames.TryGetValue(value, out result);
     }
 }

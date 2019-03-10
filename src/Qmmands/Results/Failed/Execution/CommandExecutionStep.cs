@@ -26,7 +26,7 @@
         BeforeExecuted,
 
         /// <summary>
-        ///     An execution occurred when executing the <see cref="Command"/>.
+        ///     An execution occurred when executing the <see cref="Qmmands.Command"/>.
         /// </summary>
         Command
     }

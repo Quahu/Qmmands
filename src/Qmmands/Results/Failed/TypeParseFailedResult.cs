@@ -9,7 +9,7 @@
         public override string Reason { get; }
 
         /// <summary>
-        ///     Gets the <see cref="Parameter"/> the parse failed for.
+        ///     Gets the <see cref="Qmmands.Parameter"/> the parse failed for.
         /// </summary>
         public Parameter Parameter { get; }
 

@@ -10,6 +10,11 @@ namespace Qmmands
     [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class DummyServiceProvider : IServiceProvider
     {
+        /// <summary>
+        ///     Gets the singleton instance of the <see cref="DummyServiceProvider"/>.
+        /// </summary>
+        public static readonly DummyServiceProvider Instance = new DummyServiceProvider();
+
         private DummyServiceProvider()
         { }
 
@@ -22,10 +27,5 @@ namespace Qmmands
         /// </returns>
         public object GetService(Type serviceType)
             => null;
-
-        /// <summary>
-        ///     Gets the singleton instance of the <see cref="DummyServiceProvider"/>.
-        /// </summary>
-        public static readonly DummyServiceProvider Instance = new DummyServiceProvider();
     }
 }

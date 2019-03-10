@@ -7,7 +7,8 @@ namespace Qmmands
     ///     Makes the inheriting class a <see cref="Module"/> that can be added to the <see cref="CommandService"/>.
     /// </summary>
     /// <typeparam name="TContext"> The <see cref="ICommandContext"/> this <see cref="Module"/> will use. </typeparam>
-    public abstract class ModuleBase<TContext> : IModuleBase where TContext : class, ICommandContext
+    public abstract class ModuleBase<TContext> : IModuleBase
+        where TContext : class, ICommandContext
     {
         /// <summary>
         ///     The command context.

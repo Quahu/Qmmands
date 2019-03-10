@@ -161,7 +161,7 @@ namespace Qmmands
             _modules = new HashSet<Module>();
             _map = new CommandMap(this);
             _parsers = new ConcurrentDictionary<Type, Dictionary<Type, (bool, ITypeParser)>>();
-            _primitiveParsers = new ConcurrentDictionary<Type, IPrimitiveTypeParser>();
+            _primitiveParsers = new ConcurrentDictionary<Type, IPrimitiveTypeParser>(Environment.ProcessorCount, ReflectionUtilities.TryParseDelegates.Count * 2);
             foreach (var type in ReflectionUtilities.TryParseDelegates.Keys)
             {
                 var primitiveTypeParser = ReflectionUtilities.CreatePrimitiveTypeParser(type);
@@ -220,14 +220,14 @@ namespace Qmmands
 
             lock (_moduleLock)
             {
-                var builder = new List<Module>();
+                var builder = ImmutableArray.CreateBuilder<Module>();
                 foreach (var module in _modules)
                 {
                     builder.Add(module);
                     builder.AddRange(GetSubmodules(module));
                 }
 
-                return builder.AsReadOnly();
+                return builder.ToImmutable();
             }
         }
 
@@ -321,7 +321,7 @@ namespace Qmmands
 
             if (type.IsValueType)
             {
-                var nullableParser = ReflectionUtilities.CreateNullableTypeParser(type, this, parser);
+                var nullableParser = ReflectionUtilities.CreateNullableTypeParser(type, parser);
                 _parsers.AddOrUpdate(ReflectionUtilities.MakeNullable(type),
                     new Dictionary<Type, (bool, ITypeParser)> { [nullableParser.GetType()] = (replacePrimitive, nullableParser) },
                     (_, v) =>
@@ -424,10 +424,9 @@ namespace Qmmands
                 return enumParser;
             }
 
-            if (ReflectionUtilities.IsNullable(type) && (type = Nullable.GetUnderlyingType(type)).IsEnum)
-                return GetPrimitiveTypeParser(type);
-
-            return null;
+            return ReflectionUtilities.IsNullable(type) && (type = Nullable.GetUnderlyingType(type)).IsEnum
+                ? GetPrimitiveTypeParser(type)
+                : null;
         }
 
         /// <summary>
@@ -456,7 +455,7 @@ namespace Qmmands
             if (assembly is null)
                 throw new ArgumentNullException(nameof(assembly), "The assembly to add modules from must not be null.");
 
-            var modules = new List<Module>();
+            var modules = ImmutableArray.CreateBuilder<Module>();
             var types = assembly.GetExportedTypes();
             for (var i = 0; i < types.Length; i++)
             {
@@ -470,7 +469,7 @@ namespace Qmmands
                 modules.Add(AddModule(typeInfo.AsType(), action));
             }
 
-            return modules.AsReadOnly();
+            return modules.ToImmutable();
         }
 
         /// <summary>
@@ -994,7 +993,7 @@ namespace Qmmands
             if (primitiveParser == null && (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) == null)
                 throw new InvalidOperationException($"No type parser found for parameter {parameter} ({parameter.Type}).");
 
-            if (primitiveParser.TryParse(this, value, out var result))
+            if (primitiveParser.TryParse(parameter, value, out var result))
                 return (null, result);
 
             var type = Nullable.GetUnderlyingType(parameter.Type);

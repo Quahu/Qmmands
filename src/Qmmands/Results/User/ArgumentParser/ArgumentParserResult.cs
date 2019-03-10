@@ -8,7 +8,7 @@ namespace Qmmands
     public struct ArgumentParserResult : IResult
     {
         /// <inheritdoc />
-        public bool IsSuccessful { get; }
+        public bool IsSuccessful => ArgumentParserFailure == null;
 
         /// <summary>
         ///     Gets the <see cref="Qmmands.Command"/> the parse was for.
@@ -52,7 +52,6 @@ namespace Qmmands
         /// <param name="failurePosition"> The failure position. </param>
         public ArgumentParserResult(Command command, Parameter parameter, string rawArguments, IReadOnlyDictionary<Parameter, object> arguments, ArgumentParserFailure parseFailure, int? failurePosition) : this()
         {
-            IsSuccessful = false;
             Command = command;
             Parameter = parameter;
             RawArguments = rawArguments;
@@ -69,7 +68,6 @@ namespace Qmmands
         /// <param name="arguments"> The parsed arguments. </param>
         public ArgumentParserResult(Command command, string rawArguments, IReadOnlyDictionary<Parameter, object> arguments) : this()
         {
-            IsSuccessful = true;
             Command = command;
             RawArguments = rawArguments;
             Arguments = arguments;

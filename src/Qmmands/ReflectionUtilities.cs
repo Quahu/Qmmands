@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -255,7 +255,8 @@ namespace Qmmands
             {
                 foreach (var property in typeInfo.DeclaredProperties)
                 {
-                    if (property.SetMethod != null && !property.SetMethod.IsStatic && property.SetMethod.IsPublic && property.GetCustomAttribute<DoNotAutomaticallyInjectAttribute>() == null)
+                    if (property.SetMethod != null && !property.SetMethod.IsStatic && property.SetMethod.IsPublic
+                        && property.GetCustomAttribute<DoNotAutomaticallyInjectAttribute>() == null)
                         properties.Add(property);
                 }
 
@@ -379,20 +380,20 @@ namespace Qmmands
             => Activator.CreateInstance(typeof(PrimitiveTypeParser<>).MakeGenericType(type)) as IPrimitiveTypeParser;
 
         public static IPrimitiveTypeParser CreateEnumTypeParser(Type type, Type enumType, bool ignoreCase)
-            => typeof(EnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new object[] { enumType, ignoreCase }) as IPrimitiveTypeParser;
+            => (IPrimitiveTypeParser) typeof(EnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new object[] { enumType, ignoreCase });
 
         public static IPrimitiveTypeParser CreateNullableEnumTypeParser(Type type, IPrimitiveTypeParser enumTypeParser)
-            => typeof(NullableEnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new[] { enumTypeParser }) as IPrimitiveTypeParser;
+            => (IPrimitiveTypeParser) typeof(NullableEnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new[] { enumTypeParser });
 
         public static IPrimitiveTypeParser CreateNullablePrimitiveTypeParser(Type type, IPrimitiveTypeParser primitiveTypeParser)
-            => typeof(NullablePrimitiveTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new[] { primitiveTypeParser }) as IPrimitiveTypeParser;
+            => (IPrimitiveTypeParser) typeof(NullablePrimitiveTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new[] { primitiveTypeParser });
 
-        public static ITypeParser CreateNullableTypeParser(Type nullableType, CommandService service, ITypeParser typeParser)
-            => typeof(NullableTypeParser<>).MakeGenericType(nullableType).GetConstructors()[0].Invoke(new object[] { service, typeParser }) as ITypeParser;
+        public static ITypeParser CreateNullableTypeParser(Type nullableType, ITypeParser typeParser)
+            => (ITypeParser) typeof(NullableTypeParser<>).MakeGenericType(nullableType).GetConstructors()[0].Invoke(new object[] { typeParser });
 
         static ReflectionUtilities()
         {
-            TryParseDelegates = new Dictionary<Type, Delegate>
+            TryParseDelegates = new Dictionary<Type, Delegate>(13)
             {
                 [typeof(char)] = (TryParseDelegate<char>) char.TryParse,
                 [typeof(bool)] = (TryParseDelegate<bool>) bool.TryParse,
