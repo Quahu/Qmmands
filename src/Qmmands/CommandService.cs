@@ -227,7 +227,7 @@ namespace Qmmands
                     builder.AddRange(GetSubmodules(module));
                 }
 
-                return builder.ToImmutable();
+                return builder.TryMoveToImmutable();
             }
         }
 
@@ -469,7 +469,7 @@ namespace Qmmands
                 modules.Add(AddModule(typeInfo.AsType(), action));
             }
 
-            return modules.ToImmutable();
+            return modules.TryMoveToImmutable();
         }
 
         /// <summary>

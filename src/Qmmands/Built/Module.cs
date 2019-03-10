@@ -107,7 +107,7 @@ namespace Qmmands
                     for (var j = 0; j < Aliases.Count; j++)
                         fullAliases.Add(string.Concat(Parent.FullAliases[i], Service.Separator, Aliases[j]));
             }
-            FullAliases = fullAliases.ToImmutable();
+            FullAliases = fullAliases.TryMoveToImmutable();
 
             Name = builder.Name ?? Type?.Name;
 
@@ -119,12 +119,12 @@ namespace Qmmands
             var modules = ImmutableArray.CreateBuilder<Module>(builder.Submodules.Count);
             for (var i = 0; i < builder.Submodules.Count; i++)
                 modules.Add(builder.Submodules[i].Build(Service, this));
-            Submodules = modules.ToImmutable();
+            Submodules = modules.TryMoveToImmutable();
 
             var commands = ImmutableArray.CreateBuilder<Command>(builder.Commands.Count);
             for (var i = 0; i < builder.Commands.Count; i++)
                 commands.Add(builder.Commands[i].Build(this));
-            Commands = commands.ToImmutable();
+            Commands = commands.TryMoveToImmutable();
         }
 
         /// <summary>

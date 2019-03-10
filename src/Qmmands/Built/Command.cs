@@ -117,7 +117,7 @@ namespace Qmmands
                     for (var j = 0; j < Aliases.Count; j++)
                         fullAliases.Add(string.Concat(Module.FullAliases[i], Service.Separator, Aliases[j]));
             }
-            FullAliases = fullAliases.ToImmutable();
+            FullAliases = fullAliases.TryMoveToImmutable();
 
             Name = builder.Name ?? (FullAliases.Count > 0 ? FullAliases[0] : null);
 
@@ -139,7 +139,7 @@ namespace Qmmands
 
                 sb.Append(parameter.Type).Append(';');
             }
-            Parameters = parameters.ToImmutable();
+            Parameters = parameters.TryMoveToImmutable();
             SignatureIdentifier = (hasRemainder, sb.ToString());
 
             if (Cooldowns.Count != 0)
@@ -247,7 +247,7 @@ namespace Qmmands
                 }
 
                 if (rateLimited.Count > 0)
-                    return new CommandOnCooldownResult(this, rateLimited.ToImmutable());
+                    return new CommandOnCooldownResult(this, rateLimited.TryMoveToImmutable());
 
                 for (var i = 0; i < buckets.Length; i++)
                     buckets[i]?.Decrement();

@@ -566,7 +566,7 @@ namespace Qmmands
             nullableNounsBuilder.Add("nothing");
             nullableNounsBuilder.Add("null");
             nullableNounsBuilder.Add("undefined");
-            DefaultNullableNouns = nullableNounsBuilder.ToImmutable();
+            DefaultNullableNouns = nullableNounsBuilder.TryMoveToImmutable();
 
             FriendlyPrimitiveTypeNames = new ReadOnlyDictionary<Type, string>(new Dictionary<Type, string>(13)
             {
