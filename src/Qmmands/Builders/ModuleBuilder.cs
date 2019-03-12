@@ -53,7 +53,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the checks of the <see cref="Module"/>.
         /// </summary>
-        public List<CheckBaseAttribute> Checks { get; }
+        public List<CheckAttribute> Checks { get; }
 
         /// <summary>
         ///     Gets the attributes of the <see cref="Module"/>.
@@ -78,7 +78,7 @@ namespace Qmmands
         public ModuleBuilder()
         {
             Aliases = new List<string>();
-            Checks = new List<CheckBaseAttribute>();
+            Checks = new List<CheckAttribute>();
             Attributes = new List<Attribute>();
             Commands = new List<CommandBuilder>();
             Submodules = new List<ModuleBuilder>();
@@ -153,7 +153,7 @@ namespace Qmmands
         /// <summary>
         ///     Adds a check to <see cref="Checks"/>.
         /// </summary>
-        public ModuleBuilder AddCheck(CheckBaseAttribute check)
+        public ModuleBuilder AddCheck(CheckAttribute check)
         {
             Checks.Add(check);
             return this;
@@ -162,7 +162,7 @@ namespace Qmmands
         /// <summary>
         ///     Adds checks to <see cref="Checks"/>.
         /// </summary>
-        public ModuleBuilder AddChecks(params CheckBaseAttribute[] checks)
+        public ModuleBuilder AddChecks(params CheckAttribute[] checks)
         {
             Checks.AddRange(checks);
             return this;

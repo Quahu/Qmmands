@@ -1,7 +1,7 @@
 ﻿namespace Qmmands
 {
     /// <summary>
-    ///     Represents a <see cref="CheckBaseAttribute"/>'s result.
+    ///     Represents a <see cref="CheckAttribute"/>'s result.
     /// </summary>
     public class CheckResult : IResult
     {

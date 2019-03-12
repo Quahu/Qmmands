@@ -68,7 +68,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the checks of the <see cref="Command"/>.
         /// </summary>
-        public List<CheckBaseAttribute> Checks { get; }
+        public List<CheckAttribute> Checks { get; }
 
         /// <summary>
         ///     Gets the custom attributes of the <see cref="Command"/>.
@@ -87,7 +87,7 @@ namespace Qmmands
         {
             Cooldowns = new List<Cooldown>();
             Aliases = new List<string>();
-            Checks = new List<CheckBaseAttribute>();
+            Checks = new List<CheckAttribute>();
             Attributes = new List<Attribute>();
             Parameters = new List<ParameterBuilder>();
         }
@@ -194,7 +194,7 @@ namespace Qmmands
         /// <summary>
         ///     Adds a check to <see cref="Checks"/>.
         /// </summary>
-        public CommandBuilder AddCheck(CheckBaseAttribute check)
+        public CommandBuilder AddCheck(CheckAttribute check)
         {
             Checks.Add(check);
             return this;
@@ -203,7 +203,7 @@ namespace Qmmands
         /// <summary>
         ///     Adds checks to <see cref="Checks"/>.
         /// </summary>
-        public CommandBuilder AddChecks(params CheckBaseAttribute[] checks)
+        public CommandBuilder AddChecks(params CheckAttribute[] checks)
         {
             Checks.AddRange(checks);
             return this;

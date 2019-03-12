@@ -26,11 +26,11 @@ namespace Qmmands
         ///     A method which determines whether the <paramref name="argument"/> is valid for the <see cref="Parameter"/> in given circumstances.
         /// </summary>
         /// <param name="argument"> The value given to this <see cref="Parameter"/>. </param>
-        /// <param name="context"> The <see cref="ICommandContext"/> used during execution. </param>
+        /// <param name="context"> The <see cref="CommandContext"/> used during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> used during execution. </param>
         /// <returns>
         ///     A <see cref="CheckResult"/> which determines whether this <see cref="ParameterCheckBaseAttribute"/> succeeded or not.
         /// </returns>
-        public abstract Task<CheckResult> CheckAsync(object argument, ICommandContext context, IServiceProvider provider);
+        public abstract Task<CheckResult> CheckAsync(object argument, CommandContext context, IServiceProvider provider);
     }
 }

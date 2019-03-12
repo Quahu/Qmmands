@@ -15,6 +15,8 @@ namespace Qmmands
         private static readonly TypeInfo _taskTypeInfo = typeof(Task).GetTypeInfo();
         private static readonly TypeInfo _objectTypeInfo = typeof(object).GetTypeInfo();
         private static readonly Type _nullableType = typeof(Nullable<>);
+        private static readonly MethodInfo _getGenericTaskResultMethodInfo = typeof(ReflectionUtilities)
+            .GetMethod(nameof(GetGenericTaskResult), BindingFlags.Static | BindingFlags.NonPublic);
 
         public static bool IsValidModuleDefinition(TypeInfo typeInfo)
             => _moduleBaseTypeInfo.IsAssignableFrom(typeInfo) && !typeInfo.IsAbstract && !typeInfo.ContainsGenericParameters;
@@ -83,7 +85,7 @@ namespace Qmmands
                         builder.AddAliases(groupAttribute.Aliases);
                         break;
 
-                    case CheckBaseAttribute checkAttribute:
+                    case CheckAttribute checkAttribute:
                         builder.AddCheck(checkAttribute);
                         break;
 
@@ -142,7 +144,7 @@ namespace Qmmands
                         builder.AddAliases(commandAttribute.Aliases);
                         break;
 
-                    case CheckBaseAttribute checkAttribute:
+                    case CheckAttribute checkAttribute:
                         builder.AddCheck(checkAttribute);
                         break;
 
@@ -292,11 +294,6 @@ namespace Qmmands
             };
         }
 
-        private static MethodInfo MakeGetGenericTaskResultMethodInfo(Type genericTypeArgument)
-            => typeof(ReflectionUtilities)
-                .GetMethod(nameof(GetGenericTaskResult), BindingFlags.Static | BindingFlags.NonPublic)
-                .MakeGenericMethod(genericTypeArgument);
-
 #pragma warning disable IDE0051 // Remove unused private members
         private static async Task<CommandResult> GetGenericTaskResult<T>(Task<T> task)
             => task != null ? await task.ConfigureAwait(false) as CommandResult : null;
@@ -317,14 +314,15 @@ namespace Qmmands
             var call = Expression.Call(Expression.Convert(instance, typeInfo), methodInfo, parameters);
             return methodInfo.ReturnType == typeof(Task)
                 ? Expression.Lambda<Func<object, object[], object>>(call, instance, arguments).Compile()
-                : Expression.Lambda<Func<object, object[], object>>(Expression.Call(MakeGetGenericTaskResultMethodInfo(methodInfo.ReturnType.GenericTypeArguments[0]), call), instance, arguments).Compile();
+                : Expression.Lambda<Func<object, object[], object>>(Expression.Call(
+                    _getGenericTaskResultMethodInfo.MakeGenericMethod(methodInfo.ReturnType.GenericTypeArguments[0]), call), instance, arguments).Compile();
         }
 
         public static CommandCallbackDelegate CreateCommandCallback(CommandService service, TypeInfo typeInfo, MethodInfo methodInfo)
         {
             var expressionDelegate = CreateExpressionDelegate(typeInfo, methodInfo);
             var constructor = CreateProviderConstructor<IModuleBase>(service, typeInfo);
-            return async (command, arguments, context, provider) =>
+            return async (context, provider) =>
             {
                 var instance = constructor(provider);
                 instance.Prepare(context);
@@ -334,16 +332,15 @@ namespace Qmmands
                 {
                     try
                     {
-                        await instance.BeforeExecutedAsync(command).ConfigureAwait(false);
+                        await instance.BeforeExecutedAsync().ConfigureAwait(false);
                     }
                     catch (Exception ex)
                     {
                         executeAfter = false;
-                        return new ExecutionFailedResult(command, CommandExecutionStep.BeforeExecuted, ex);
+                        return new ExecutionFailedResult(context.Command, CommandExecutionStep.BeforeExecuted, ex);
                     }
 
-                    var result = expressionDelegate(instance, arguments);
-                    switch (result)
+                    switch (expressionDelegate(instance, context.InternalArguments))
                     {
                         case Task<CommandResult> genericTask:
                             return await genericTask.ConfigureAwait(false);
@@ -360,7 +357,7 @@ namespace Qmmands
                     try
                     {
                         if (executeAfter)
-                            await instance.AfterExecutedAsync(command).ConfigureAwait(false);
+                            await instance.AfterExecutedAsync().ConfigureAwait(false);
                     }
                     finally
                     {

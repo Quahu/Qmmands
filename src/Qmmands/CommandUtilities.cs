@@ -372,18 +372,18 @@ namespace Qmmands
         /// </summary>
         /// <param name="module"> The <see cref="Module"/> to get the checks for. </param>
         /// <returns>
-        ///     An enumerator of all <see cref="CheckBaseAttribute"/>s.
+        ///     An enumerator of all <see cref="CheckAttribute"/>s.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         ///     The module must not be null.
         /// </exception>
-        public static IEnumerable<CheckBaseAttribute> GetAllChecks(Module module)
+        public static IEnumerable<CheckAttribute> GetAllChecks(Module module)
         {
             if (module == null)
                 throw new ArgumentNullException(nameof(module), "The module must not be null.");
 
             return GetAllChecksIterator();
-            IEnumerable<CheckBaseAttribute> GetAllChecksIterator()
+            IEnumerable<CheckAttribute> GetAllChecksIterator()
             {
                 if (module.Parent != null)
                 {
@@ -402,18 +402,18 @@ namespace Qmmands
         /// </summary>
         /// <param name="command"> The <see cref="Command"/> to get the checks for. </param>
         /// <returns>
-        ///     An enumerator of all <see cref="CheckBaseAttribute"/>s.
+        ///     An enumerator of all <see cref="CheckAttribute"/>s.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         ///     The command must not be null.
         /// </exception>
-        public static IEnumerable<CheckBaseAttribute> GetAllChecks(Command command)
+        public static IEnumerable<CheckAttribute> GetAllChecks(Command command)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command), "The command must not be null.");
 
             return GetAllChecksIterator();
-            IEnumerable<CheckBaseAttribute> GetAllChecksIterator()
+            IEnumerable<CheckAttribute> GetAllChecksIterator()
             {
                 foreach (var check in GetAllChecks(command.Module))
                     yield return check;

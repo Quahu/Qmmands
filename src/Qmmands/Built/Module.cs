@@ -52,7 +52,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the checks of this <see cref="Module"/>.
         /// </summary>
-        public IReadOnlyList<CheckBaseAttribute> Checks { get; }
+        public IReadOnlyList<CheckAttribute> Checks { get; }
 
         /// <summary>
         ///     Gets the attributes of this <see cref="Module"/>.
@@ -130,12 +130,12 @@ namespace Qmmands
         /// <summary>
         ///     Runs checks on parent <see cref="Module"/>s and this <see cref="Module"/>.
         /// </summary>
-        /// <param name="context"> The <see cref="ICommandContext"/> used for execution. </param>
+        /// <param name="context"> The <see cref="CommandContext"/> used for execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
         /// <returns>
         ///     A <see cref="SuccessfulResult"/> if all of the checks pass, otherwise a <see cref="ChecksFailedResult"/>.
         /// </returns>
-        public async Task<IResult> RunChecksAsync(ICommandContext context, IServiceProvider provider = null)
+        public async Task<IResult> RunChecksAsync(CommandContext context, IServiceProvider provider = null)
         {
             if (provider is null)
                 provider = DummyServiceProvider.Instance;
@@ -149,7 +149,7 @@ namespace Qmmands
 
             if (Checks.Count > 0)
             {
-                async Task<(CheckBaseAttribute Check, CheckResult Result)> RunCheckAsync(CheckBaseAttribute check)
+                async Task<(CheckAttribute Check, CheckResult Result)> RunCheckAsync(CheckAttribute check)
                 {
                     var checkResult = await check.CheckAsync(context, provider).ConfigureAwait(false);
                     return (check, checkResult);
