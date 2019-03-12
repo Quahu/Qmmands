@@ -6,7 +6,7 @@ namespace Qmmands
     ///     Overrides the type parser for the <see cref="Parameter"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
-    public sealed class OverrideTypeParserAttribute : Attribute
+    public class OverrideTypeParserAttribute : Attribute
     {
         /// <summary>
         ///     Gets the <see cref="Type"/> of the custom type parser.

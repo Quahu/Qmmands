@@ -198,6 +198,9 @@ namespace Qmmands
 
                     case OverrideTypeParserAttribute overwriteTypeParserAttribute:
                         builder.CustomTypeParserType = overwriteTypeParserAttribute.CustomTypeParserType;
+
+                        if (overwriteTypeParserAttribute.GetType() != typeof(OverrideTypeParserAttribute))
+                            builder.AddAttribute(overwriteTypeParserAttribute);
                         break;
 
                     case ParameterCheckBaseAttribute parameterCheckAttribute:

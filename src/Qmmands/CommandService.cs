@@ -963,9 +963,6 @@ namespace Qmmands
             if (!(argument is string value))
                 return (null, argument);
 
-            if (parameter.Type == _stringType)
-                return (null, value);
-
             IPrimitiveTypeParser primitiveParser;
             if (!(parameter.CustomTypeParserType is null))
             {
@@ -979,6 +976,9 @@ namespace Qmmands
 
                 return (null, typeParserResult.HasValue ? typeParserResult.Value : null);
             }
+
+            if (parameter.Type == _stringType)
+                return (null, value);
 
             var parser = GetAnyTypeParser(parameter.Type, (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null);
             if (!(parser is null))
