@@ -33,8 +33,6 @@ namespace Qmmands
         /// </summary>
         public int Priority { get; set; }
 
-        private RunMode? _runMode;
-
         /// <summary>
         ///     Gets or sets the <see cref="Qmmands.RunMode"/> of the <see cref="Command"/>.
         /// </summary>
@@ -49,11 +47,7 @@ namespace Qmmands
                 _runMode = value;
             }
         }
-
-        /// <summary>
-        ///     Gets or sets the callback of the <see cref="Command"/>.
-        /// </summary>
-        public CommandCallbackDelegate Callback { get; set; }
+        private RunMode? _runMode;
 
         /// <summary>
         ///     Gets the <see cref="Cooldown"/>s of the <see cref="Command"/>.
@@ -80,11 +74,14 @@ namespace Qmmands
         /// </summary>
         public List<ParameterBuilder> Parameters { get; }
 
+        internal CommandCallbackDelegate Callback { get; }
+
         /// <summary>
         ///     Initialises a new <see cref="CommandBuilder"/>.
         /// </summary>
-        public CommandBuilder()
+        public CommandBuilder(CommandCallbackDelegate callback)
         {
+            Callback = callback;
             Cooldowns = new List<Cooldown>();
             Aliases = new List<string>();
             Checks = new List<CheckAttribute>();
@@ -143,15 +140,6 @@ namespace Qmmands
         public CommandBuilder WithRunMode(RunMode? runMode)
         {
             RunMode = runMode;
-            return this;
-        }
-
-        /// <summary>
-        ///     Sets the <see cref="Callback"/>.
-        /// </summary>
-        public CommandBuilder WithCallback(CommandCallbackDelegate callback)
-        {
-            Callback = callback;
             return this;
         }
 
@@ -262,12 +250,12 @@ namespace Qmmands
             if (Callback is null)
                 throw new CommandBuildingException(this, "Command's callback must not be null.");
 
-            var aliases = new List<string>();
+            var aliases = new List<string>(Aliases.Count);
             for (var i = 0; i < Aliases.Count; i++)
             {
                 var alias = Aliases[i];
-                if (string.IsNullOrEmpty(alias))
-                    throw new CommandBuildingException(this, "Command's aliases must not contain null or empty entries.");
+                if (alias == null)
+                    throw new CommandBuildingException(this, "Command's aliases must not contain null entries.");
 
                 if (aliases.Contains(alias))
                     throw new CommandBuildingException(this, "Command's aliases must not contain duplicates.");

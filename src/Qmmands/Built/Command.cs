@@ -99,20 +99,40 @@ namespace Qmmands
             IgnoreExtraArguments = builder.IgnoreExtraArguments ?? module.IgnoreExtraArguments;
             Callback = builder.Callback;
             Cooldowns = builder.Cooldowns.OrderBy(x => x.Amount).ToImmutableArray();
-            Aliases = builder.Aliases.ToImmutableArray();
+            var aliases = builder.Aliases.ToImmutableArray();
+            Aliases = aliases;
 
             var fullAliases = ImmutableArray.CreateBuilder<string>();
             if (Module.FullAliases.Count == 0)
-                fullAliases.AddRange(Aliases);
-
-            else if (Aliases.Count == 0)
-                fullAliases.AddRange(Module.FullAliases);
-
+            {
+                fullAliases.AddRange(aliases);
+            }
+            else if (aliases.Length == 0)
+            {
+                fullAliases.AddRange((ImmutableArray<string>) Module.FullAliases);
+            }
             else
             {
                 for (var i = 0; i < Module.FullAliases.Count; i++)
-                    for (var j = 0; j < Aliases.Count; j++)
-                        fullAliases.Add(string.Concat(Module.FullAliases[i], Service.Separator, Aliases[j]));
+                {
+                    var moduleAlias = Module.FullAliases[i];
+                    var absolute = moduleAlias.Length == 0;
+                    for (var j = 0; j < aliases.Length; j++)
+                    {
+                        var alias = aliases[j];
+                        if (alias.Length == 0)
+                        {
+                            if (absolute)
+                                continue;
+
+                            fullAliases.Add(moduleAlias);
+                        }
+                        else if (absolute)
+                            fullAliases.Add(alias);
+                        else
+                            fullAliases.Add(string.Concat(moduleAlias, Service.Separator, alias));
+                    }
+                }
             }
             FullAliases = fullAliases.TryMoveToImmutable();
 
@@ -294,17 +314,7 @@ namespace Qmmands
         ///     The context must not be null.
         /// </exception>
         public Task<IResult> ExecuteAsync(IEnumerable<object> arguments, CommandContext context, IServiceProvider provider = null)
-        {
-            if (arguments is null)
-                throw new ArgumentNullException(nameof(arguments));
-
-            if (context is null)
-                throw new ArgumentNullException(nameof(context));
-
-            context.Command = this;
-            context.InternalArguments = arguments.ToArray();
-            return Service.ExecuteInternalAsync(context, provider);
-        }
+            => Service.ExecuteAsync(this, arguments, context, provider);
 
         /// <summary>
         ///     Returns <see cref="Name"/> or calls <see cref="object.ToString"/> if it is <see langword="null"/>.

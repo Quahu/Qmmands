@@ -92,20 +92,44 @@ namespace Qmmands
             Remarks = builder.Remarks;
             RunMode = builder.RunMode ?? Parent?.RunMode ?? Service.DefaultRunMode;
             IgnoreExtraArguments = builder.IgnoreExtraArguments ?? Parent?.IgnoreExtraArguments ?? Service.IgnoreExtraArguments;
-            Aliases = builder.Aliases.ToImmutableArray();
+            var aliases = builder.Aliases.ToImmutableArray();
+            Aliases = aliases;
 
             var fullAliases = ImmutableArray.CreateBuilder<string>();
-            if (Parent is null || Parent.FullAliases.Count == 0)
-                fullAliases.AddRange(Aliases);
-
-            else if (Aliases.Count == 0)
-                fullAliases.AddRange(Parent.FullAliases);
-
+            if (Parent == null || Parent.FullAliases.Count == 0)
+            {
+                fullAliases.AddRange(aliases);
+            }
+            else if (aliases.Length == 0)
+            {
+                fullAliases.AddRange((ImmutableArray<string>) Parent.FullAliases);
+            }
             else
             {
                 for (var i = 0; i < Parent.FullAliases.Count; i++)
-                    for (var j = 0; j < Aliases.Count; j++)
-                        fullAliases.Add(string.Concat(Parent.FullAliases[i], Service.Separator, Aliases[j]));
+                {
+                    var parentAlias = Parent.FullAliases[i];
+                    var absolute = parentAlias.Length == 0;
+                    for (var j = 0; j < aliases.Length; j++)
+                    {
+                        var alias = aliases[j];
+                        if (alias.Length == 0)
+                        {
+                            if (absolute)
+                                continue;
+
+                            fullAliases.Add(parentAlias);
+                        }
+                        else if (absolute)
+                        {
+                            fullAliases.Add(alias);
+                        }
+                        else
+                        {
+                            fullAliases.Add(string.Concat(parentAlias, Service.Separator, alias));
+                        }
+                    }
+                }
             }
             FullAliases = fullAliases.TryMoveToImmutable();
 
@@ -118,7 +142,7 @@ namespace Qmmands
 
             var modules = ImmutableArray.CreateBuilder<Module>(builder.Submodules.Count);
             for (var i = 0; i < builder.Submodules.Count; i++)
-                modules.Add(builder.Submodules[i].Build(Service, this));
+                modules.Add(builder.Submodules[i].Build(service, this));
             Submodules = modules.TryMoveToImmutable();
 
             var commands = ImmutableArray.CreateBuilder<Command>(builder.Commands.Count);

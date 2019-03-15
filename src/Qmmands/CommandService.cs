@@ -611,7 +611,7 @@ namespace Qmmands
             if (type is null)
                 throw new ArgumentNullException(nameof(type), "The type to add must not be null.");
 
-            var builder = ReflectionUtilities.BuildModule(this, type.GetTypeInfo());
+            var builder = ReflectionUtilities.CreateModuleBuilder(this, type.GetTypeInfo());
             action?.Invoke(builder);
             var module = builder.Build(this, null);
             AddModuleInternal(module);
@@ -793,23 +793,8 @@ namespace Qmmands
                     return executionFailedResult;
                 }
 
-                var cooldownResult = match.Command.RunCooldowns(context, provider);
-                if (!cooldownResult.IsSuccessful)
-                    return cooldownResult;
-
                 context.InternalArguments = parsedArguments;
-                switch (match.Command.RunMode)
-                {
-                    case RunMode.Sequential:
-                        return await ExecuteInternalAsync(context, provider).ConfigureAwait(false);
-
-                    case RunMode.Parallel:
-                        _ = Task.Run(() => ExecuteInternalAsync(context, provider));
-                        return new SuccessfulResult();
-
-                    default:
-                        throw new InvalidOperationException("Invalid run mode.");
-                }
+                return await InternalExecuteAsync(context, provider).ConfigureAwait(false);
             }
 
             return failedOverloads.Count == 1 ? failedOverloads.First().Value : new OverloadsFailedResult(failedOverloads);
@@ -840,7 +825,7 @@ namespace Qmmands
                 throw new ArgumentNullException(nameof(command), "The command must not be null.");
 
             if (rawArguments == null)
-                throw new ArgumentNullException(nameof(rawArguments), "The input must not be null.");
+                throw new ArgumentNullException(nameof(rawArguments), "The raw arguments must not be null.");
 
             if (context is null)
                 throw new ArgumentNullException(nameof(context), "The context must not be null.");
@@ -893,18 +878,109 @@ namespace Qmmands
                 return executionFailedResult;
             }
 
-            var cooldownResult = command.RunCooldowns(context, provider);
-            if (!cooldownResult.IsSuccessful)
-                return cooldownResult;
-
             context.InternalArguments = parsedArguments;
-            switch (command.RunMode)
+            return await InternalExecuteAsync(context, provider).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        ///     Attempts to execute the given <see cref="Command"/> with the provided arguments.
+        /// </summary>
+        /// <param name="command"> The <see cref="Command"/> to execute. </param>
+        /// <param name="arguments"> The arguments to use for this <see cref="Command"/>'s parameters. </param>
+        /// <param name="context"> The <see cref="CommandContext"/> to use during execution. </param>
+        /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
+        /// <returns>
+        ///     An <see cref="IResult"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The command must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The raw arguments must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The context must not be null.
+        /// </exception>
+        public async Task<IResult> ExecuteAsync(Command command, IEnumerable<object> arguments, CommandContext context, IServiceProvider provider = null)
+        {
+            if (command == null)
+                throw new ArgumentNullException(nameof(command), "The command must not be null.");
+
+            if (arguments is null)
+                throw new ArgumentNullException(nameof(arguments), "The arguments must not be null.");
+
+            if (context is null)
+                throw new ArgumentNullException(nameof(context), "The context must not be null.");
+
+            if (provider is null)
+                provider = DummyServiceProvider.Instance;
+
+            context.Command = command;
+            context.InternalArguments = arguments.ToArray();
+            try
+            {
+                var checkResult = await command.RunChecksAsync(context, provider).ConfigureAwait(false);
+                if (!checkResult.IsSuccessful)
+                    return checkResult;
+            }
+            catch (Exception ex)
+            {
+                var executionFailedResult = new ExecutionFailedResult(command, CommandExecutionStep.Checks, ex);
+                await InvokeCommandErroredHandlersAsync(executionFailedResult, context, provider).ConfigureAwait(false);
+                return executionFailedResult;
+            }
+
+            return await InternalExecuteAsync(context, provider).ConfigureAwait(false);
+        }
+
+        private async Task<IResult> InternalExecuteAsync(CommandContext context, IServiceProvider provider)
+        {
+            async Task<IResult> ExecuteCallbackAsync()
+            {
+                try
+                {
+                    var result = await context.Command.Callback(context, provider).ConfigureAwait(false);
+                    if (result is ExecutionFailedResult executionFailedResult)
+                        await InvokeCommandErroredHandlersAsync(executionFailedResult, context, provider).ConfigureAwait(false);
+
+                    else
+                    {
+                        if (result is CommandResult commandResult)
+                            commandResult.Command = context.Command;
+
+                        await InvokeCommandExecutedHandlersAsync(result as CommandResult, context, provider).ConfigureAwait(false);
+                    }
+
+                    return result ?? new SuccessfulResult();
+                }
+                catch (Exception ex)
+                {
+                    var result = new ExecutionFailedResult(context.Command, CommandExecutionStep.Command, ex);
+                    await InvokeCommandErroredHandlersAsync(result, context, provider).ConfigureAwait(false);
+                    return result;
+                }
+            }
+
+            try
+            {
+                var cooldownResult = context.Command.RunCooldowns(context, provider);
+                if (!cooldownResult.IsSuccessful)
+                    return cooldownResult;
+            }
+            catch (Exception ex)
+            {
+                var result = new ExecutionFailedResult(context.Command, CommandExecutionStep.CooldownBucketKeyGenerating, ex);
+                await InvokeCommandErroredHandlersAsync(result, context, provider).ConfigureAwait(false);
+                return result;
+            }
+
+            switch (context.Command.RunMode)
             {
                 case RunMode.Sequential:
-                    return await ExecuteInternalAsync(context, provider).ConfigureAwait(false);
+                    return await ExecuteCallbackAsync().ConfigureAwait(false);
 
                 case RunMode.Parallel:
-                    _ = Task.Run(() => ExecuteInternalAsync(context, provider));
+                    _ = Task.Run(() => ExecuteCallbackAsync());
                     return new SuccessfulResult();
 
                 default:
@@ -1015,32 +1091,6 @@ namespace Qmmands
                     : $"nullable {type.Name}";
 
             return (new TypeParseFailedResult(parameter, value, $"Failed to parse {friendlyName}."), default);
-        }
-
-        internal async Task<IResult> ExecuteInternalAsync(CommandContext context, IServiceProvider provider)
-        {
-            try
-            {
-                var result = await context.Command.Callback(context, provider).ConfigureAwait(false);
-                if (result is ExecutionFailedResult executionFailedResult)
-                    await InvokeCommandErroredHandlersAsync(executionFailedResult, context, provider).ConfigureAwait(false);
-
-                else
-                {
-                    if (result is CommandResult commandResult)
-                        commandResult.Command = context.Command;
-
-                    await InvokeCommandExecutedHandlersAsync(result as CommandResult, context, provider).ConfigureAwait(false);
-                }
-
-                return result ?? new SuccessfulResult();
-            }
-            catch (Exception ex)
-            {
-                var result = new ExecutionFailedResult(context.Command, CommandExecutionStep.Command, ex);
-                await InvokeCommandErroredHandlersAsync(result, context, provider).ConfigureAwait(false);
-                return result;
-            }
         }
 
         private async Task InvokeCommandExecutedHandlersAsync(CommandResult result, CommandContext context, IServiceProvider provider)

@@ -23,8 +23,6 @@ namespace Qmmands
         /// </summary>
         public string Remarks { get; set; }
 
-        private RunMode? _runMode;
-
         /// <summary>
         ///     Gets or sets the <see cref="Qmmands.RunMode"/> of the <see cref="Module"/>.
         /// </summary>
@@ -39,6 +37,7 @@ namespace Qmmands
                 _runMode = value;
             }
         }
+        private RunMode? _runMode;
 
         /// <summary>
         ///     Gets or sets whether the <see cref="Command"/>s in the <see cref="Module"/> should ignore extra arguments or not.
@@ -70,7 +69,11 @@ namespace Qmmands
         /// </summary>
         public List<ModuleBuilder> Submodules { get; }
 
-        internal Type Type { get; }
+        /// <summary>
+        ///     Gets the <see cref="System.Type"/> this <see cref="ModuleBuilder"/> was created from.
+        ///     <see langword="null"/> if this module was created using, for example, <see cref="CommandService.AddModule(Type, Action{ModuleBuilder})"/>.
+        /// </summary>
+        public Type Type { get; }
 
         /// <summary>
         ///     Initialises a new <see cref="ModuleBuilder"/>.
@@ -189,10 +192,11 @@ namespace Qmmands
         /// <summary>
         ///     Attempts to instantiate, modify, and add a <see cref="CommandBuilder"/> to <see cref="Commands"/>.
         /// </summary>
+        /// <param name="callback"> The callback of the <see cref="Command"/>. </param>
         /// <param name="builderAction"> The action to perform on the builder. </param>
-        public ModuleBuilder AddCommand(Action<CommandBuilder> builderAction)
+        public ModuleBuilder AddCommand(CommandCallbackDelegate callback, Action<CommandBuilder> builderAction)
         {
-            var builder = new CommandBuilder();
+            var builder = new CommandBuilder(callback);
             builderAction(builder);
             Commands.Add(builder);
             return this;
@@ -248,12 +252,12 @@ namespace Qmmands
 
         internal Module Build(CommandService service, Module parent)
         {
-            var aliases = new List<string>();
+            var aliases = new List<string>(Aliases.Count);
             for (var i = 0; i < Aliases.Count; i++)
             {
                 var alias = Aliases[i];
-                if (string.IsNullOrEmpty(alias))
-                    throw new ModuleBuildingException(this, "Module's group aliases must not contain null or empty ones.");
+                if (alias == null)
+                    throw new ModuleBuildingException(this, "Module's group aliases must not contain null entries.");
 
                 if (aliases.Contains(alias))
                     throw new ModuleBuildingException(this, "Module's group aliases must not contain duplicate.");

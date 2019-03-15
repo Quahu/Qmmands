@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Qmmands
@@ -40,7 +41,7 @@ namespace Qmmands
             {
                 var arguments = _arguments;
                 return arguments == null
-                    ? (_arguments = new ReadOnlyCollection<object>(InternalArguments))
+                    ? (_arguments = new ReadOnlyCollection<object>(InternalArguments ?? Array.Empty<object>()))
                     : arguments;
             }
         }

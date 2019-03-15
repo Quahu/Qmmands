@@ -50,7 +50,7 @@ namespace Qmmands
         public static IEnumerable<MethodInfo> GetValidCommands(TypeInfo typeInfo)
             => typeInfo.DeclaredMethods.Where(IsValidCommandDefinition);
 
-        public static ModuleBuilder BuildModule(CommandService service, TypeInfo typeInfo)
+        public static ModuleBuilder CreateModuleBuilder(CommandService service, TypeInfo typeInfo)
         {
             if (!IsValidModuleDefinition(typeInfo))
                 throw new ArgumentException($"{typeInfo} must not be abstract, must not have generic parameters, and must inherit ModuleBase.", nameof(typeInfo));
@@ -96,17 +96,17 @@ namespace Qmmands
             }
 
             foreach (var command in GetValidCommands(typeInfo))
-                builder.AddCommand(BuildCommand(service, typeInfo, command));
+                builder.AddCommand(CreateCommandBuilder(service, typeInfo, command));
 
             foreach (var submodule in GetValidModules(typeInfo))
-                builder.AddSubmodule(BuildModule(service, submodule));
+                builder.AddSubmodule(CreateModuleBuilder(service, submodule));
 
             return builder;
         }
 
-        public static CommandBuilder BuildCommand(CommandService service, TypeInfo typeInfo, MethodInfo methodInfo)
+        public static CommandBuilder CreateCommandBuilder(CommandService service, TypeInfo typeInfo, MethodInfo methodInfo)
         {
-            var builder = new CommandBuilder();
+            var builder = new CommandBuilder(CreateCommandCallback(service, typeInfo, methodInfo));
             var attributes = methodInfo.GetCustomAttributes(false);
             for (var i = 0; i < attributes.Length; i++)
             {
@@ -156,14 +156,12 @@ namespace Qmmands
 
             var parameters = methodInfo.GetParameters();
             for (var i = 0; i < parameters.Length; i++)
-                builder.AddParameters(BuildParameter(parameters[i], i + 1 == parameters.Length));
-
-            builder.WithCallback(CreateCommandCallback(service, typeInfo, methodInfo));
+                builder.AddParameters(CreateParameterBuilder(parameters[i], i + 1 == parameters.Length));
 
             return builder;
         }
 
-        public static ParameterBuilder BuildParameter(ParameterInfo parameterInfo, bool last)
+        public static ParameterBuilder CreateParameterBuilder(ParameterInfo parameterInfo, bool last)
         {
             var builder = new ParameterBuilder();
             var attributes = parameterInfo.GetCustomAttributes(false);
