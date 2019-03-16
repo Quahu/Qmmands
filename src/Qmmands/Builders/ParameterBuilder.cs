@@ -56,7 +56,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the checks of the <see cref="Parameter"/>.
         /// </summary>
-        public List<ParameterCheckBaseAttribute> Checks { get; }
+        public List<ParameterCheckAttribute> Checks { get; }
 
         /// <summary>
         ///     Gets the attributes of the <see cref="Parameter"/>.
@@ -68,7 +68,7 @@ namespace Qmmands
         /// </summary>
         public ParameterBuilder()
         {
-            Checks = new List<ParameterCheckBaseAttribute>();
+            Checks = new List<ParameterCheckAttribute>();
             Attributes = new List<Attribute>();
         }
 
@@ -156,7 +156,7 @@ namespace Qmmands
         /// <summary>
         ///     Adds a check to <see cref="Checks"/>.
         /// </summary>
-        public ParameterBuilder AddCheck(ParameterCheckBaseAttribute check)
+        public ParameterBuilder AddCheck(ParameterCheckAttribute check)
         {
             Checks.Add(check);
             return this;
@@ -165,7 +165,7 @@ namespace Qmmands
         /// <summary>
         ///     Adds checks to <see cref="Checks"/>.
         /// </summary>
-        public ParameterBuilder AddChecks(params ParameterCheckBaseAttribute[] checks)
+        public ParameterBuilder AddChecks(params ParameterCheckAttribute[] checks)
         {
             Checks.AddRange(checks);
             return this;

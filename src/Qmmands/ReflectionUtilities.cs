@@ -203,7 +203,7 @@ namespace Qmmands
                             builder.AddAttribute(overwriteTypeParserAttribute);
                         break;
 
-                    case ParameterCheckBaseAttribute parameterCheckAttribute:
+                    case ParameterCheckAttribute parameterCheckAttribute:
                         builder.AddCheck(parameterCheckAttribute);
                         break;
 

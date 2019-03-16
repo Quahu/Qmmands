@@ -59,7 +59,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the checks of this <see cref="Parameter"/>.
         /// </summary>
-        public IReadOnlyList<ParameterCheckBaseAttribute> Checks { get; }
+        public IReadOnlyList<ParameterCheckAttribute> Checks { get; }
 
         /// <summary>
         ///     Gets the attributes of this <see cref="Parameter"/>.
@@ -119,7 +119,7 @@ namespace Qmmands
 
             if (Checks.Count > 0)
             {
-                async Task<(ParameterCheckBaseAttribute Check, CheckResult Result)> RunCheckAsync(ParameterCheckBaseAttribute check)
+                async Task<(ParameterCheckAttribute Check, CheckResult Result)> RunCheckAsync(ParameterCheckAttribute check)
                 {
                     var checkResult = await check.CheckAsync(argument, context, provider).ConfigureAwait(false);
                     return (check, checkResult);
