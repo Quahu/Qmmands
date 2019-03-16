@@ -206,27 +206,12 @@ namespace Qmmands
         /// <param name="builderAction"> The action to perform on the builder. </param>
         public CommandBuilder AddParameter(Action<ParameterBuilder> builderAction)
         {
+            if (builderAction == null)
+                throw new ArgumentNullException(nameof(builderAction));
+
             var builder = new ParameterBuilder(this);
             builderAction(builder);
             Parameters.Add(builder);
-            return this;
-        }
-
-        /// <summary>
-        ///     Adds a parameter to <see cref="Parameters"/>.
-        /// </summary>
-        public CommandBuilder AddParameter(ParameterBuilder parameter)
-        {
-            Parameters.Add(parameter);
-            return this;
-        }
-
-        /// <summary>
-        ///     Adds parameters to <see cref="Parameters"/>.
-        /// </summary>
-        public CommandBuilder AddParameters(params ParameterBuilder[] parameters)
-        {
-            Parameters.AddRange(parameters);
             return this;
         }
 

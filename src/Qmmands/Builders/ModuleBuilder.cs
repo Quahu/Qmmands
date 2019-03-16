@@ -217,6 +217,9 @@ namespace Qmmands
         /// <param name="builderAction"> The action to perform on the builder. </param>
         public ModuleBuilder AddSubmodule(Action<ModuleBuilder> builderAction)
         {
+            if (builderAction == null)
+                throw new ArgumentNullException(nameof(builderAction));
+
             var builder = new ModuleBuilder(this);
             builderAction(builder);
             Submodules.Add(builder);
