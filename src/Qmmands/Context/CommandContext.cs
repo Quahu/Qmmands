@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 namespace Qmmands
 {
     /// <summary>
-    ///     The interface for custom command contexts.
+    ///     The base class for custom command contexts.
     /// </summary>
     public abstract class CommandContext
     {
