@@ -74,13 +74,16 @@ namespace Qmmands
         /// </summary>
         public List<ParameterBuilder> Parameters { get; }
 
+        /// <summary>
+        ///     Gets the module of the <see cref="Command"/>.
+        /// </summary>
+        public ModuleBuilder Module { get; }
+
         internal CommandCallbackDelegate Callback { get; }
 
-        /// <summary>
-        ///     Initialises a new <see cref="CommandBuilder"/>.
-        /// </summary>
-        public CommandBuilder(CommandCallbackDelegate callback)
+        internal CommandBuilder(ModuleBuilder module, CommandCallbackDelegate callback)
         {
+            Module = module;
             Callback = callback;
             Cooldowns = new List<Cooldown>();
             Aliases = new List<string>();
@@ -203,7 +206,7 @@ namespace Qmmands
         /// <param name="builderAction"> The action to perform on the builder. </param>
         public CommandBuilder AddParameter(Action<ParameterBuilder> builderAction)
         {
-            var builder = new ParameterBuilder();
+            var builder = new ParameterBuilder(this);
             builderAction(builder);
             Parameters.Add(builder);
             return this;

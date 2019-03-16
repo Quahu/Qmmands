@@ -50,12 +50,12 @@ namespace Qmmands
         public static IEnumerable<MethodInfo> GetValidCommands(TypeInfo typeInfo)
             => typeInfo.DeclaredMethods.Where(IsValidCommandDefinition);
 
-        public static ModuleBuilder CreateModuleBuilder(CommandService service, TypeInfo typeInfo)
+        public static ModuleBuilder CreateModuleBuilder(CommandService service, ModuleBuilder parent, TypeInfo typeInfo)
         {
             if (!IsValidModuleDefinition(typeInfo))
                 throw new ArgumentException($"{typeInfo} must not be abstract, must not have generic parameters, and must inherit ModuleBase.", nameof(typeInfo));
 
-            var builder = new ModuleBuilder(typeInfo);
+            var builder = new ModuleBuilder(typeInfo, parent);
             var attributes = typeInfo.GetCustomAttributes(false);
             for (var i = 0; i < attributes.Length; i++)
             {
@@ -96,17 +96,17 @@ namespace Qmmands
             }
 
             foreach (var command in GetValidCommands(typeInfo))
-                builder.AddCommand(CreateCommandBuilder(service, typeInfo, command));
+                builder.Commands.Add(CreateCommandBuilder(service, builder, typeInfo, command));
 
             foreach (var submodule in GetValidModules(typeInfo))
-                builder.AddSubmodule(CreateModuleBuilder(service, submodule));
+                builder.Submodules.Add(CreateModuleBuilder(service, builder, submodule));
 
             return builder;
         }
 
-        public static CommandBuilder CreateCommandBuilder(CommandService service, TypeInfo typeInfo, MethodInfo methodInfo)
+        public static CommandBuilder CreateCommandBuilder(CommandService service, ModuleBuilder module, TypeInfo typeInfo, MethodInfo methodInfo)
         {
-            var builder = new CommandBuilder(CreateCommandCallback(service, typeInfo, methodInfo));
+            var builder = new CommandBuilder(module, CreateCommandCallback(service, typeInfo, methodInfo));
             var attributes = methodInfo.GetCustomAttributes(false);
             for (var i = 0; i < attributes.Length; i++)
             {
@@ -156,14 +156,14 @@ namespace Qmmands
 
             var parameters = methodInfo.GetParameters();
             for (var i = 0; i < parameters.Length; i++)
-                builder.AddParameters(CreateParameterBuilder(parameters[i], i + 1 == parameters.Length));
+                builder.AddParameters(CreateParameterBuilder(builder, parameters[i], i + 1 == parameters.Length));
 
             return builder;
         }
 
-        public static ParameterBuilder CreateParameterBuilder(ParameterInfo parameterInfo, bool last)
+        public static ParameterBuilder CreateParameterBuilder(CommandBuilder command, ParameterInfo parameterInfo, bool last)
         {
-            var builder = new ParameterBuilder();
+            var builder = new ParameterBuilder(command);
             var attributes = parameterInfo.GetCustomAttributes(false);
             for (var i = 0; i < attributes.Length; i++)
             {

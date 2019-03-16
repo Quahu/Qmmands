@@ -76,7 +76,7 @@ namespace Qmmands
 
         /// <summary>
         ///     Gets the <see cref="System.Type"/> this <see cref="Module"/> was built from.
-        ///     <see langword="null"/> if it was built from a <see cref="ModuleBuilder"/>.
+        ///     <see langword="null"/> if it was built using a <see cref="ModuleBuilder"/>.
         /// </summary>
         public Type Type { get; }
 

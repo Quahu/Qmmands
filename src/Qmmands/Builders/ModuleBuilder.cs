@@ -70,16 +70,19 @@ namespace Qmmands
         public List<ModuleBuilder> Submodules { get; }
 
         /// <summary>
+        ///     Gets the parent module of the <see cref="Module"/>.
+        /// </summary>
+        public ModuleBuilder Parent { get; }
+
+        /// <summary>
         ///     Gets the <see cref="System.Type"/> this <see cref="ModuleBuilder"/> was created from.
         ///     <see langword="null"/> if this module was created using, for example, <see cref="CommandService.AddModule(Type, Action{ModuleBuilder})"/>.
         /// </summary>
         public Type Type { get; }
 
-        /// <summary>
-        ///     Initialises a new <see cref="ModuleBuilder"/>.
-        /// </summary>
-        public ModuleBuilder()
+        internal ModuleBuilder(ModuleBuilder parent)
         {
+            Parent = parent;
             Aliases = new List<string>();
             Checks = new List<CheckAttribute>();
             Attributes = new List<Attribute>();
@@ -87,7 +90,7 @@ namespace Qmmands
             Submodules = new List<ModuleBuilder>();
         }
 
-        internal ModuleBuilder(Type type) : this()
+        internal ModuleBuilder(Type type, ModuleBuilder parent) : this(parent)
             => Type = type;
 
         /// <summary>
@@ -196,27 +199,15 @@ namespace Qmmands
         /// <param name="builderAction"> The action to perform on the builder. </param>
         public ModuleBuilder AddCommand(CommandCallbackDelegate callback, Action<CommandBuilder> builderAction)
         {
-            var builder = new CommandBuilder(callback);
+            if (callback == null)
+                throw new ArgumentNullException(nameof(callback));
+
+            if (builderAction == null)
+                throw new ArgumentNullException(nameof(builderAction));
+
+            var builder = new CommandBuilder(this, callback);
             builderAction(builder);
             Commands.Add(builder);
-            return this;
-        }
-
-        /// <summary>
-        ///     Adds a command to <see cref="Commands"/>.
-        /// </summary>
-        public ModuleBuilder AddCommand(CommandBuilder commandBuilder)
-        {
-            Commands.Add(commandBuilder);
-            return this;
-        }
-
-        /// <summary>
-        ///     Adds commands to <see cref="Commands"/>.
-        /// </summary>
-        public ModuleBuilder AddCommands(params CommandBuilder[] commandBuilders)
-        {
-            Commands.AddRange(commandBuilders);
             return this;
         }
 
@@ -226,27 +217,9 @@ namespace Qmmands
         /// <param name="builderAction"> The action to perform on the builder. </param>
         public ModuleBuilder AddSubmodule(Action<ModuleBuilder> builderAction)
         {
-            var builder = new ModuleBuilder();
+            var builder = new ModuleBuilder(this);
             builderAction(builder);
             Submodules.Add(builder);
-            return this;
-        }
-
-        /// <summary>
-        ///     Adds a submodule to <see cref="Submodules"/>.
-        /// </summary>
-        public ModuleBuilder AddSubmodule(ModuleBuilder moduleBuilder)
-        {
-            Submodules.Add(moduleBuilder);
-            return this;
-        }
-
-        /// <summary>
-        ///     Adds submodules to <see cref="Submodules"/>.
-        /// </summary>
-        public ModuleBuilder AddSubmodules(params ModuleBuilder[] moduleBuilders)
-        {
-            Submodules.AddRange(moduleBuilders);
             return this;
         }
 

@@ -101,15 +101,6 @@ namespace Qmmands
         IReadOnlyList<Module> AddModules(Assembly assembly, Predicate<TypeInfo> predicate = null, Action<ModuleBuilder> action = null);
 
         /// <summary>
-        ///     Attempts to build the specified <see cref="ModuleBuilder"/> into a <see cref="Module"/>.
-        /// </summary>
-        /// <param name="builder"> The builder to build. </param>
-        /// <returns>
-        ///     A <see cref="Module"/>.
-        /// </returns>
-        Module AddModule(ModuleBuilder builder);
-
-        /// <summary>
         ///     Attempts to instantiate, modify, and build a <see cref="ModuleBuilder"/> into a <see cref="Module"/>.
         /// </summary>
         /// <param name="action"> The action to perform on the builder. </param>

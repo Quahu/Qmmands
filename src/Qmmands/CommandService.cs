@@ -473,35 +473,6 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Attempts to build the specified <see cref="ModuleBuilder"/> into a <see cref="Module"/>.
-        /// </summary>
-        /// <param name="builder"> The builder to build. </param>
-        /// <returns>
-        ///     A <see cref="Module"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        ///     The module builder to add must not be null.
-        /// </exception>
-        /// <exception cref="CommandMappingException">
-        ///     Cannot map commands to the root node.
-        /// </exception>
-        /// <exception cref="CommandMappingException">
-        ///     Cannot map multiple overloads with the same signature.
-        /// </exception>
-        /// <exception cref="CommandMappingException">
-        ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
-        /// </exception>
-        public Module AddModule(ModuleBuilder builder)
-        {
-            if (builder == null)
-                throw new ArgumentNullException(nameof(builder), "The module builder to add must not be null.");
-
-            var module = builder.Build(this, null);
-            AddModuleInternal(module);
-            return module;
-        }
-
-        /// <summary>
         ///     Attempts to instantiate, modify, and build a <see cref="ModuleBuilder"/> into a <see cref="Module"/>.
         /// </summary>
         /// <param name="action"> The action to perform on the builder. </param>
@@ -525,9 +496,11 @@ namespace Qmmands
             if (action == null)
                 throw new ArgumentNullException(nameof(action), "The action must not be null.");
 
-            var builder = new ModuleBuilder();
+            var builder = new ModuleBuilder(null);
             action(builder);
-            return AddModule(builder);
+            var module = builder.Build(this, null);
+            AddModuleInternal(module);
+            return module;
         }
 
         /// <summary>
@@ -611,7 +584,7 @@ namespace Qmmands
             if (type is null)
                 throw new ArgumentNullException(nameof(type), "The type to add must not be null.");
 
-            var builder = ReflectionUtilities.CreateModuleBuilder(this, type.GetTypeInfo());
+            var builder = ReflectionUtilities.CreateModuleBuilder(this, null, type.GetTypeInfo());
             action?.Invoke(builder);
             var module = builder.Build(this, null);
             AddModuleInternal(module);
@@ -639,7 +612,7 @@ namespace Qmmands
                 if (module.Type != null && _typeModules.ContainsKey(module.Type))
                     throw new ArgumentException($"{module.Type} has already been added as a module.", nameof(module));
 
-                _map.MapModule(module, new List<string>());
+                _map.MapModule(module);
                 _modules.Add(module);
                 AddSubmodules(module);
             }
@@ -690,7 +663,7 @@ namespace Qmmands
                 if (!_modules.Contains(module))
                     throw new ArgumentException("This module has not been added.", nameof(module));
 
-                _map.UnmapModule(module, new List<string>());
+                _map.UnmapModule(module);
                 _modules.Remove(module);
                 if (module.Type != null)
                 {

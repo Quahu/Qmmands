@@ -3,20 +3,20 @@ using System.Collections.Generic;
 
 namespace Qmmands
 {
-    internal sealed class CommandNode
+    internal sealed class CommandMapNode
     {
         private readonly CommandService _service;
         private readonly Dictionary<string, List<Command>> _commands;
         private readonly Dictionary<string, List<Module>> _modules;
-        private readonly Dictionary<string, CommandNode> _nodes;
+        private readonly Dictionary<string, CommandMapNode> _nodes;
         private readonly bool _isNullOrWhitespaceSeparator;
 
-        public CommandNode(CommandService service)
+        public CommandMapNode(CommandService service)
         {
             _service = service;
             _commands = new Dictionary<string, List<Command>>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
             _modules = new Dictionary<string, List<Module>>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
-            _nodes = new Dictionary<string, CommandNode>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
+            _nodes = new Dictionary<string, CommandMapNode>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
             _isNullOrWhitespaceSeparator = string.IsNullOrWhiteSpace(_service.Separator);
         }
 
@@ -31,10 +31,10 @@ namespace Qmmands
                 if (index == -1 || !(hasWhitespaceSeparator || string.IsNullOrWhiteSpace(arguments)))
                     continue;
 
-                foreach (var command in kvp.Value)
+                for (var i = 0; i < kvp.Value.Count; i++)
                 {
                     path.Add(kvp.Key);
-                    yield return new CommandMatch(command, kvp.Key, path, arguments);
+                    yield return new CommandMatch(kvp.Value[i], kvp.Key, path, arguments);
                     path.RemoveAt(path.Count - 1);
                 }
             }
@@ -63,10 +63,10 @@ namespace Qmmands
                 if (index == -1 || !(hasWhitespaceSeparator || string.IsNullOrWhiteSpace(arguments)))
                     continue;
 
-                foreach (var module in kvp.Value)
+                for (var i = 0; i < kvp.Value.Count; i++)
                 {
                     path.Add(kvp.Key);
-                    yield return new ModuleMatch(module, kvp.Key, path, arguments);
+                    yield return new ModuleMatch(kvp.Value[i], kvp.Key, path, arguments);
                     path.RemoveAt(path.Count - 1);
                 }
             }
@@ -94,7 +94,6 @@ namespace Qmmands
                 hasWhitespaceSeparator = false;
                 return -1;
             }
-
             else
             {
                 index += key.Length;
@@ -170,7 +169,7 @@ namespace Qmmands
             {
                 if (!_nodes.TryGetValue(segment, out var node))
                 {
-                    node = new CommandNode(_service);
+                    node = new CommandMapNode(_service);
                     _nodes.Add(segment, node);
                 }
 
@@ -230,7 +229,7 @@ namespace Qmmands
             {
                 if (!_nodes.TryGetValue(segment, out var node))
                 {
-                    node = new CommandNode(_service);
+                    node = new CommandMapNode(_service);
                     _nodes.Add(segment, node);
                 }
 

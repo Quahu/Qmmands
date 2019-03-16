@@ -64,10 +64,13 @@ namespace Qmmands
         public List<Attribute> Attributes { get; }
 
         /// <summary>
-        ///     Initialises a new <see cref="ParameterBuilder"/>.
+        ///     Gets the command of the <see cref="Parameter"/>.
         /// </summary>
-        public ParameterBuilder()
+        public CommandBuilder Command { get; }
+
+        internal ParameterBuilder(CommandBuilder command)
         {
+            Command = command;
             Checks = new List<ParameterCheckAttribute>();
             Attributes = new List<Attribute>();
         }
