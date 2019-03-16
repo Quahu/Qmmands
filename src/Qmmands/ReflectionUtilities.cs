@@ -156,7 +156,7 @@ namespace Qmmands
 
             var parameters = methodInfo.GetParameters();
             for (var i = 0; i < parameters.Length; i++)
-                builder.AddParameters(CreateParameterBuilder(builder, parameters[i], i + 1 == parameters.Length));
+                builder.Parameters.Add(CreateParameterBuilder(builder, parameters[i], i + 1 == parameters.Length));
 
             return builder;
         }
