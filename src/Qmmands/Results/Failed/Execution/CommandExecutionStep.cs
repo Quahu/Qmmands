@@ -20,7 +20,6 @@
         /// </summary>
         TypeParsing,
 
-
         /// <summary>
         ///     An exception occurred during generating the cooldown bucket key using <see cref="CommandService.CooldownBucketKeyGenerator"/>.
         /// </summary>
