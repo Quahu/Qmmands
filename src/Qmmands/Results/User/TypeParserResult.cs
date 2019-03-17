@@ -6,11 +6,13 @@
     /// <typeparam name="T"> The type handled by the type parser. </typeparam>
     public sealed class TypeParserResult<T> : IResult
     {
-        /// <inheritdoc />
+        /// <summary>
+        ///     Gets whether the result was successful or not.
+        /// </summary>
         public bool IsSuccessful => Reason == null;
 
         /// <summary>
-        ///     Gets the error reason. Null if <see cref="IsSuccessful"/> is <see langword="true"/>.
+        ///     Gets the error reason. <see langword="null"/> if <see cref="IsSuccessful"/> is <see langword="true"/>.
         /// </summary>
         public string Reason { get; }
 

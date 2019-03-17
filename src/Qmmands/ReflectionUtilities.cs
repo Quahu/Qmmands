@@ -78,7 +78,7 @@ namespace Qmmands
                         break;
 
                     case IgnoreExtraArgumentsAttribute ignoreExtraArgumentsAttribute:
-                        builder.IgnoreExtraArguments = ignoreExtraArgumentsAttribute.IgnoreExtraArguments;
+                        builder.WithIgnoreExtraArguments(ignoreExtraArgumentsAttribute.IgnoreExtraArguments);
                         break;
 
                     case GroupAttribute groupAttribute:
@@ -197,7 +197,7 @@ namespace Qmmands
                         break;
 
                     case OverrideTypeParserAttribute overwriteTypeParserAttribute:
-                        builder.CustomTypeParserType = overwriteTypeParserAttribute.CustomTypeParserType;
+                        builder.WithCustomTypeParserType(overwriteTypeParserAttribute.CustomTypeParserType);
 
                         if (overwriteTypeParserAttribute.GetType() != typeof(OverrideTypeParserAttribute))
                             builder.AddAttribute(overwriteTypeParserAttribute);

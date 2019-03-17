@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Qmmands
 {
@@ -7,7 +7,9 @@ namespace Qmmands
     /// </summary>
     public struct ArgumentParserResult : IResult
     {
-        /// <inheritdoc />
+        /// <summary>
+        ///     Gets whether the result was successful or not.
+        /// </summary>
         public bool IsSuccessful => ArgumentParserFailure == null;
 
         /// <summary>

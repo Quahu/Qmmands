@@ -16,9 +16,9 @@ namespace Qmmands
     public class CommandService : ICommandService
     {
         /// <summary>
-        ///     Gets whether <see cref="FindCommands"/> and primitive <see langword="enum"/> type parsers are case sensitive or not.
+        ///     Gets whether <see cref="FindModules"/>, <see cref="FindCommands"/> and primitive <see langword="enum"/> type parsers are case sensitive or not.
         /// </summary>
-        public bool CaseSensitive { get; }
+        public bool IsCaseSensitive { get; }
 
         /// <summary>
         ///     Gets the default <see cref="RunMode"/> for commands and modules.
@@ -28,7 +28,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets whether commands should ignore extra arguments by default or not.
         /// </summary>
-        public bool IgnoreExtraArguments { get; }
+        public bool IgnoresExtraArguments { get; }
 
         /// <summary>
         ///     Gets the separator.
@@ -141,9 +141,9 @@ namespace Qmmands
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration), "The configuration must not be null.");
 
-            CaseSensitive = configuration.CaseSensitive;
+            IsCaseSensitive = configuration.CaseSensitive;
             DefaultRunMode = configuration.DefaultRunMode;
-            IgnoreExtraArguments = configuration.IgnoreExtraArguments;
+            IgnoresExtraArguments = configuration.IgnoreExtraArguments;
             Separator = configuration.Separator;
             SeparatorRequirement = configuration.SeparatorRequirement;
             ArgumentParser = configuration.ArgumentParser ?? new DefaultArgumentParser();
@@ -155,7 +155,7 @@ namespace Qmmands
                 ? configuration.NullableNouns.ToImmutableArray()
                 : CommandUtilities.DefaultNullableNouns;
 
-            StringComparison = CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+            StringComparison = IsCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
             _typeModules = new Dictionary<Type, Module>();
             _modules = new HashSet<Module>();

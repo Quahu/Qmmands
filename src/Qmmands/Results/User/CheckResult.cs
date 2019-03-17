@@ -5,7 +5,9 @@
     /// </summary>
     public class CheckResult : IResult
     {
-        /// <inheritdoc />
+        /// <summary>
+        ///     Gets whether the result was successful or not.
+        /// </summary>
         public virtual bool IsSuccessful => Reason == null;
 
         /// <summary>
@@ -29,7 +31,7 @@
         /// <summary>
         ///     Gets a successful <see cref="CheckResult"/>.
         /// </summary>
-        public static CheckResult Successful 
+        public static CheckResult Successful
             => new CheckResult();
 
         /// <summary>

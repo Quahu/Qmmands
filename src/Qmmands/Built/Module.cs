@@ -34,7 +34,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets whether this <see cref="Module"/>'s commands ignore extra arguments or not.
         /// </summary>
-        public bool IgnoreExtraArguments { get; }
+        public bool IgnoresExtraArguments { get; }
 
         /// <summary>
         ///     Gets the aliases of this <see cref="Module"/>.
@@ -91,7 +91,7 @@ namespace Qmmands
             Description = builder.Description;
             Remarks = builder.Remarks;
             RunMode = builder.RunMode ?? Parent?.RunMode ?? Service.DefaultRunMode;
-            IgnoreExtraArguments = builder.IgnoreExtraArguments ?? Parent?.IgnoreExtraArguments ?? Service.IgnoreExtraArguments;
+            IgnoresExtraArguments = builder.IgnoresExtraArguments ?? Parent?.IgnoresExtraArguments ?? Service.IgnoresExtraArguments;
             var aliases = builder.Aliases.ToImmutableArray();
             Aliases = aliases;
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Qmmands
 {
     /// <summary>
-    ///     Provides a framework interface for creating text based commands.
+    ///     Represents extracted interface from <see cref="CommandService"/>.
     /// </summary>
     public interface ICommandService
     {

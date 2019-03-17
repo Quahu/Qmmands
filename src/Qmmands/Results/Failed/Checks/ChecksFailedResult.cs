@@ -7,7 +7,9 @@ namespace Qmmands
     /// </summary>
     public sealed class ChecksFailedResult : FailedResult
     {
-        /// <inheritdoc />
+        /// <summary>
+        ///     Gets the reason of this failed result.
+        /// </summary>
         public override string Reason { get; }
 
         /// <summary>

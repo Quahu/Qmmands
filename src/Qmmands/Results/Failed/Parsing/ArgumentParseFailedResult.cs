@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -10,7 +10,9 @@ namespace Qmmands
     /// </summary>
     public sealed class ArgumentParseFailedResult : FailedResult
     {
-        /// <inheritdoc />
+        /// <summary>
+        ///     Gets the reason of this failed result.
+        /// </summary>
         public override string Reason { get; }
 
         /// <summary>

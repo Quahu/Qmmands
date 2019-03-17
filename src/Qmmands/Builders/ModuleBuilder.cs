@@ -42,7 +42,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets or sets whether the <see cref="Command"/>s in the <see cref="Module"/> should ignore extra arguments or not.
         /// </summary>
-        public bool? IgnoreExtraArguments { get; set; }
+        public bool? IgnoresExtraArguments { get; set; }
 
         /// <summary>
         ///     Gets the aliases of the <see cref="Module"/>.
@@ -130,11 +130,11 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Sets the <see cref="IgnoreExtraArguments"/>.
+        ///     Sets the <see cref="IgnoresExtraArguments"/>.
         /// </summary>
         public ModuleBuilder WithIgnoreExtraArguments(bool? ignoreExtraArguments)
         {
-            IgnoreExtraArguments = ignoreExtraArguments;
+            IgnoresExtraArguments = ignoreExtraArguments;
             return this;
         }
 

@@ -14,9 +14,9 @@ namespace Qmmands
         public CommandMapNode(CommandService service)
         {
             _service = service;
-            _commands = new Dictionary<string, List<Command>>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
-            _modules = new Dictionary<string, List<Module>>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
-            _nodes = new Dictionary<string, CommandMapNode>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
+            _commands = new Dictionary<string, List<Command>>(_service.IsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
+            _modules = new Dictionary<string, List<Module>>(_service.IsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
+            _nodes = new Dictionary<string, CommandMapNode>(_service.IsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
             _isNullOrWhitespaceSeparator = string.IsNullOrWhiteSpace(_service.Separator);
         }
 
@@ -213,7 +213,7 @@ namespace Qmmands
                             if (signature.HasRemainder == otherSignature.HasRemainder)
                                 throw new CommandMappingException(command, segment, "Cannot map multiple overloads with the same signature.");
 
-                            else if (!signature.HasRemainder && command.IgnoreExtraArguments || !otherSignature.HasRemainder && otherCommand.IgnoreExtraArguments)
+                            else if (!signature.HasRemainder && command.IgnoresExtraArguments || !otherSignature.HasRemainder && otherCommand.IgnoresExtraArguments)
                                 throw new CommandMappingException(command, segment, "Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.");
                         }
                     }

@@ -5,7 +5,9 @@
     /// </summary>
     public abstract class CommandResult : IResult
     {
-        /// <inheritdoc />
+        /// <summary>
+        ///     Gets whether the result was successful or not.
+        /// </summary>
         public abstract bool IsSuccessful { get; }
 
         /// <summary>

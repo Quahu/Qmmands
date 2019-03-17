@@ -26,7 +26,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets or sets whether the <see cref="Command"/> should ignore extra arguments or not.
         /// </summary>
-        public bool? IgnoreExtraArguments { get; set; }
+        public bool? IgnoresExtraArguments { get; set; }
 
         /// <summary>
         ///     Gets or sets the priority of the <see cref="Command"/>.
@@ -120,11 +120,11 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Sets the <see cref="IgnoreExtraArguments"/>.
+        ///     Sets the <see cref="IgnoresExtraArguments"/>.
         /// </summary>
-        public CommandBuilder WithIgnoreExtraArguments(bool ignoreExtraArguments)
+        public CommandBuilder WithIgnoreExtraArguments(bool? ignoreExtraArguments)
         {
-            IgnoreExtraArguments = ignoreExtraArguments;
+            IgnoresExtraArguments = ignoreExtraArguments;
             return this;
         }
 

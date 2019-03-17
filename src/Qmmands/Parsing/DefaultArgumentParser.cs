@@ -68,7 +68,7 @@ namespace Qmmands
                         currentParameter = arguments.Count < command.Parameters.Count && command.Parameters.Count > 0 ? command.Parameters[arguments.Count] : multipleParameter;
                         if (currentParameter == null)
                         {
-                            if (command.IgnoreExtraArguments)
+                            if (command.IgnoresExtraArguments)
                                 break;
 
                             else

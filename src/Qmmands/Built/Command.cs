@@ -40,7 +40,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets whether this <see cref="Command"/> ignores extra arguments or not.
         /// </summary>
-        public bool IgnoreExtraArguments { get; }
+        public bool IgnoresExtraArguments { get; }
 
         /// <summary>
         ///     Gets the <see cref="Cooldown"/>s of this <see cref="Command"/>.
@@ -96,7 +96,7 @@ namespace Qmmands
             Remarks = builder.Remarks;
             Priority = builder.Priority;
             RunMode = builder.RunMode ?? module.RunMode;
-            IgnoreExtraArguments = builder.IgnoreExtraArguments ?? module.IgnoreExtraArguments;
+            IgnoresExtraArguments = builder.IgnoresExtraArguments ?? module.IgnoresExtraArguments;
             Callback = builder.Callback;
             Cooldowns = builder.Cooldowns.OrderBy(x => x.Amount).ToImmutableArray();
             var aliases = builder.Aliases.ToImmutableArray();
