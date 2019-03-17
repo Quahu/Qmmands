@@ -11,7 +11,13 @@ namespace Qmmands
     /// <returns>
     ///     An <see cref="IResult"/>.
     /// </returns>
-    public delegate Task<IResult> CommandCallbackDelegate(CommandContext context, IServiceProvider provider);
+    public delegate
+#if NETCOREAPP
+        ValueTask<IResult>
+#else
+        Task<IResult>
+#endif
+        CommandCallbackDelegate(CommandContext context, IServiceProvider provider);
 
     /// <summary>
     ///     Represents a <see cref="Cooldown"/> bucket key generator callback method.
