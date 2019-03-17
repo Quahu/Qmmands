@@ -37,6 +37,12 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="CheckResult"/> which determines whether this <see cref="CheckAttribute"/> succeeded or not.
         /// </returns>
-        public abstract Task<CheckResult> CheckAsync(CommandContext context, IServiceProvider provider);
+        public abstract
+#if NETCOREAPP
+            ValueTask<CheckResult>
+#else
+            Task<CheckResult>
+#endif
+            CheckAsync(CommandContext context, IServiceProvider provider);
     }
 }

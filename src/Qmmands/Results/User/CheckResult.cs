@@ -43,5 +43,14 @@
         /// </returns>
         public static CheckResult Unsuccessful(string reason)
             => new CheckResult(reason);
+
+#if NETCOREAPP
+        /// <summary>
+        ///     Implicitly wraps the provided <see cref="CheckResult"/> in <see cref="System.Threading.Tasks.ValueTask{TResult}"/>.
+        /// </summary>
+        /// <param name="result"></param>
+        public static implicit operator System.Threading.Tasks.ValueTask<CheckResult>(CheckResult result)
+            => new System.Threading.Tasks.ValueTask<CheckResult>(result);
+#endif
     }
 }

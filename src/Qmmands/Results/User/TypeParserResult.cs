@@ -65,5 +65,14 @@
         /// </returns>
         public static TypeParserResult<T> Unsuccessful(string reason)
             => new TypeParserResult<T>(reason);
+
+#if NETCOREAPP
+        /// <summary>
+        ///     Implicitly wraps the provided <see cref="TypeParserResult{T}"/> in <see cref="System.Threading.Tasks.ValueTask{TResult}"/>.
+        /// </summary>
+        /// <param name="result"></param>
+        public static implicit operator System.Threading.Tasks.ValueTask<TypeParserResult<T>>(TypeParserResult<T> result)
+            => new System.Threading.Tasks.ValueTask<TypeParserResult<T>>(result);
+#endif
     }
 }
