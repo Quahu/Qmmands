@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -8,9 +7,16 @@ namespace Qmmands
     /// <summary>
     ///     The default argument parser used by the <see cref="CommandService"/>.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class DefaultArgumentParser : IArgumentParser
     {
+        /// <summary>
+        ///     Gets the singleton instance of the <see cref="DefaultArgumentParser"/>.
+        /// </summary>
+        public static readonly DefaultArgumentParser Instance = new DefaultArgumentParser();
+
+        private DefaultArgumentParser()
+        { }
+
         /// <summary>
         ///     Attempts to parse raw arguments for the specified <see cref="Command"/>.
         /// </summary>

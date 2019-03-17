@@ -146,7 +146,7 @@ namespace Qmmands
             IgnoreExtraArguments = configuration.IgnoreExtraArguments;
             Separator = configuration.Separator;
             SeparatorRequirement = configuration.SeparatorRequirement;
-            ArgumentParser = configuration.ArgumentParser ?? new DefaultArgumentParser();
+            ArgumentParser = configuration.ArgumentParser ?? DefaultArgumentParser.Instance;
             CooldownBucketKeyGenerator = configuration.CooldownBucketKeyGenerator;
             QuotationMarkMap = configuration.QuoteMap != null
                 ? new ReadOnlyDictionary<char, char>(configuration.QuoteMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value))
