@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -10,6 +10,51 @@ namespace Qmmands
     /// </summary>
     public interface ICommandService
     {
+        /// <summary>
+        ///     Gets whether <see cref="FindModules"/>, <see cref="FindCommands"/> and primitive <see langword="enum"/> type parsers are case sensitive or not.
+        /// </summary>
+        bool IsCaseSensitive { get; }
+
+        /// <summary>
+        ///     Gets the default <see cref="RunMode"/> for commands and modules.
+        /// </summary>
+        RunMode DefaultRunMode { get; }
+
+        /// <summary>
+        ///     Gets whether commands should ignore extra arguments by default or not.
+        /// </summary>
+        bool IgnoresExtraArguments { get; }
+
+        /// <summary>
+        ///     Gets the separator.
+        /// </summary>
+        string Separator { get; }
+
+        /// <summary>
+        ///     Gets the separator requirement.
+        /// </summary>
+        SeparatorRequirement SeparatorRequirement { get; }
+
+        /// <summary>
+        ///     Gets the default argument parser.
+        /// </summary>
+        IArgumentParser ArgumentParser { get; }
+
+        /// <summary>
+        ///     Gets the generator <see langword="delegate"/> to use for <see cref="Cooldown"/> bucket keys.
+        /// </summary>
+        CooldownBucketKeyGeneratorDelegate CooldownBucketKeyGenerator { get; }
+
+        /// <summary>
+        ///     Gets the quotation mark map used for non-remainder multi word arguments.
+        /// </summary>
+        IReadOnlyDictionary<char, char> QuotationMarkMap { get; }
+
+        /// <summary>
+        ///     Gets the collection of nouns used for nullable value type parsing.
+        /// </summary>
+        IReadOnlyList<string> NullableNouns { get; }
+
         /// <summary>
         ///     Fires when a command is successfully executed. Use this to handle <see cref="RunMode.Parallel"/> commands.
         /// </summary>
