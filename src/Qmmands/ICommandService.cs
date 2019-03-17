@@ -115,6 +115,11 @@ namespace Qmmands
         void RemoveTypeParser<T>(TypeParser<T> parser);
 
         /// <summary>
+        ///     Removes all added <see cref="TypeParser{T}"/>s.
+        /// </summary>
+        void RemoveAllTypeParsers();
+
+        /// <summary>
         ///     Retrieves a <see cref="TypeParser{T}"/> from the added non-primitive parsers for the specified <typeparamref name="T"/> <see cref="Type"/>.
         /// </summary>
         /// <typeparam name="T"> The <see cref="Type"/> the <see cref="TypeParser{T}"/> is for. </typeparam>

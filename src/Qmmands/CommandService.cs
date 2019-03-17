@@ -120,8 +120,8 @@ namespace Qmmands
 
         internal StringComparison StringComparison { get; }
 
-        private readonly ConcurrentDictionary<Type, Dictionary<Type, (bool ReplacingPrimitive, ITypeParser Instance)>> _parsers;
-        private readonly ConcurrentDictionary<Type, IPrimitiveTypeParser> _primitiveParsers;
+        private readonly ConcurrentDictionary<Type, Dictionary<Type, (bool ReplacingPrimitive, ITypeParser Instance)>> _typeParsers;
+        private readonly ConcurrentDictionary<Type, IPrimitiveTypeParser> _primitiveTypeParsers;
         private readonly Dictionary<Type, Module> _typeModules;
         private readonly HashSet<Module> _modules;
         private readonly CommandMap _map;
@@ -160,13 +160,13 @@ namespace Qmmands
             _typeModules = new Dictionary<Type, Module>();
             _modules = new HashSet<Module>();
             _map = new CommandMap(this);
-            _parsers = new ConcurrentDictionary<Type, Dictionary<Type, (bool, ITypeParser)>>();
-            _primitiveParsers = new ConcurrentDictionary<Type, IPrimitiveTypeParser>(Environment.ProcessorCount, ReflectionUtilities.TryParseDelegates.Count * 2);
+            _typeParsers = new ConcurrentDictionary<Type, Dictionary<Type, (bool, ITypeParser)>>();
+            _primitiveTypeParsers = new ConcurrentDictionary<Type, IPrimitiveTypeParser>(Environment.ProcessorCount, ReflectionUtilities.TryParseDelegates.Count * 2);
             foreach (var type in ReflectionUtilities.TryParseDelegates.Keys)
             {
                 var primitiveTypeParser = ReflectionUtilities.CreatePrimitiveTypeParser(type);
-                _primitiveParsers.TryAdd(type, primitiveTypeParser);
-                _primitiveParsers.TryAdd(ReflectionUtilities.MakeNullable(type), ReflectionUtilities.CreateNullablePrimitiveTypeParser(type, primitiveTypeParser));
+                _primitiveTypeParsers.TryAdd(type, primitiveTypeParser);
+                _primitiveTypeParsers.TryAdd(ReflectionUtilities.MakeNullable(type), ReflectionUtilities.CreateNullablePrimitiveTypeParser(type, primitiveTypeParser));
             }
         }
 
@@ -294,24 +294,19 @@ namespace Qmmands
 
             var type = typeof(T);
             if (ReflectionUtilities.IsNullable(type))
-                throw new ArgumentException("Cannot add custom nullable type parsers.", nameof(T));
+                throw new ArgumentException("Cannot add custom type parsers for nullable types.", nameof(T));
 
             if (replacePrimitive)
             {
                 if (GetPrimitiveTypeParser(type) == null)
-                    throw new ArgumentException($"No primitive parser found to replace for type {type}.", nameof(T));
+                    throw new ArgumentException($"No primitive type parser found to replace for type {type}.", nameof(T));
 
                 var existingParser = GetAnyTypeParser(type, true);
                 if (existingParser != null)
                     throw new ArgumentException($"There is already a custom type parser replacing the primitive parser for type {type} - {existingParser.GetType()}.");
             }
 
-            AddParserInternal(type, parser, replacePrimitive);
-        }
-
-        private void AddParserInternal(Type type, ITypeParser parser, bool replacePrimitive = false)
-        {
-            _parsers.AddOrUpdate(type,
+            _typeParsers.AddOrUpdate(type,
             new Dictionary<Type, (bool, ITypeParser)> { [parser.GetType()] = (replacePrimitive, parser) },
             (_, v) =>
             {
@@ -322,7 +317,7 @@ namespace Qmmands
             if (type.IsValueType)
             {
                 var nullableParser = ReflectionUtilities.CreateNullableTypeParser(type, parser);
-                _parsers.AddOrUpdate(ReflectionUtilities.MakeNullable(type),
+                _typeParsers.AddOrUpdate(ReflectionUtilities.MakeNullable(type),
                     new Dictionary<Type, (bool, ITypeParser)> { [nullableParser.GetType()] = (replacePrimitive, nullableParser) },
                     (_, v) =>
                     {
@@ -333,7 +328,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Removes a <see cref="TypeParser{T}"/> for the specified <typeparamref name="T"/> <see cref="Type"/>.
+        ///     Removes a <see cref="TypeParser{T}"/> for the specified <see cref="Type"/>.
         /// </summary>
         /// <typeparam name="T"> The <see cref="Type"/> to remove the <paramref name="parser"/> for. </typeparam>
         /// <param name="parser"> The <see cref="TypeParser{T}"/> to remove for the <see cref="Type"/>. </param>
@@ -341,7 +336,7 @@ namespace Qmmands
         ///     The type parser to remove must not be null.
         /// </exception>
         /// <exception cref="ArgumentException">
-        ///     A parser for this type has not been added.
+        ///     The type parser to remove has not been added.
         /// </exception>
         public void RemoveTypeParser<T>(TypeParser<T> parser)
         {
@@ -349,21 +344,20 @@ namespace Qmmands
                 throw new ArgumentNullException(nameof(parser), "The type parser to remove must not be null.");
 
             var type = typeof(T);
-            if (!_parsers.ContainsKey(type))
-                throw new ArgumentException($"A type parser for type {type} has not been added.", nameof(T));
-
-            RemoveParserInternal(type, parser);
-        }
-
-        private void RemoveParserInternal(Type type, ITypeParser parser)
-        {
-            if (!_parsers.TryGetValue(type, out var typeParsers))
-                return;
-
-            typeParsers.Remove(parser.GetType());
+            if (!_typeParsers.TryGetValue(type, out var typeParsers) || !typeParsers.Remove(parser.GetType()))
+                throw new ArgumentException("The type parser to remove has not been added.");
 
             if (type.IsValueType)
                 typeParsers.Remove(ReflectionUtilities.MakeNullable(type));
+        }
+
+        /// <summary>
+        ///     Removes all added <see cref="TypeParser{T}"/>s.
+        /// </summary>
+        public void RemoveAllTypeParsers()
+        {
+            foreach (var typeParsers in _typeParsers.ToArray())
+                _typeParsers.TryRemove(typeParsers.Key, out _);
         }
 
         /// <summary>
@@ -389,11 +383,11 @@ namespace Qmmands
             => GetSpecificTypeParser(typeof(T), typeof(TParser)) as TParser;
 
         internal ITypeParser GetSpecificTypeParser(Type type, Type parserType)
-            => _parsers.TryGetValue(type, out var typeParsers) && typeParsers.TryGetValue(parserType, out var typeParser) ? typeParser.Instance : null;
+            => _typeParsers.TryGetValue(type, out var typeParsers) && typeParsers.TryGetValue(parserType, out var typeParser) ? typeParser.Instance : null;
 
         internal ITypeParser GetAnyTypeParser(Type type, bool replacingPrimitive)
         {
-            if (_parsers.TryGetValue(type, out var typeParsers))
+            if (_typeParsers.TryGetValue(type, out var typeParsers))
             {
                 if (replacingPrimitive)
                 {
@@ -413,14 +407,14 @@ namespace Qmmands
 
         internal IPrimitiveTypeParser GetPrimitiveTypeParser(Type type)
         {
-            if (_primitiveParsers.TryGetValue(type, out var typeParser))
+            if (_primitiveTypeParsers.TryGetValue(type, out var typeParser))
                 return typeParser;
 
             if (type.IsEnum)
             {
-                var enumParser = ReflectionUtilities.CreateEnumTypeParser(type.GetEnumUnderlyingType(), type, !CaseSensitive);
-                _primitiveParsers.TryAdd(type, enumParser);
-                _primitiveParsers.TryAdd(ReflectionUtilities.MakeNullable(type), ReflectionUtilities.CreateNullableEnumTypeParser(type.GetEnumUnderlyingType(), enumParser));
+                var enumParser = ReflectionUtilities.CreateEnumTypeParser(type.GetEnumUnderlyingType(), type, !IsCaseSensitive);
+                _primitiveTypeParsers.TryAdd(type, enumParser);
+                _primitiveTypeParsers.TryAdd(ReflectionUtilities.MakeNullable(type), ReflectionUtilities.CreateNullableEnumTypeParser(type.GetEnumUnderlyingType(), enumParser));
                 return enumParser;
             }
 
