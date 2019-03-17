@@ -132,9 +132,9 @@ namespace Qmmands
         /// <summary>
         ///     Sets the <see cref="IgnoresExtraArguments"/>.
         /// </summary>
-        public ModuleBuilder WithIgnoreExtraArguments(bool? ignoreExtraArguments)
+        public ModuleBuilder WithIgnoresExtraArguments(bool? ignoresExtraArguments)
         {
-            IgnoresExtraArguments = ignoreExtraArguments;
+            IgnoresExtraArguments = ignoresExtraArguments;
             return this;
         }
 

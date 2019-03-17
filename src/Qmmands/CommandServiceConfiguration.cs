@@ -12,7 +12,7 @@ namespace Qmmands
         ///     Gets or sets the <see cref="bool"/> which determines whether the commands should
         ///     be case sensitive or not. Defaults to <see langword="false"/>.
         /// </summary>
-        public bool CaseSensitive { get; set; }
+        public bool IsCaseSensitive { get; set; }
 
         /// <summary>
         ///     Gets or sets the <see cref="RunMode"/> which determines whether the commands should
@@ -35,7 +35,7 @@ namespace Qmmands
         ///     Gets or sets the <see cref="bool"/> which determines whether the extra arguments
         ///     provided should be ignored. Defaults to <see langword="false"/>.
         /// </summary>
-        public bool IgnoreExtraArguments { get; set; }
+        public bool IgnoresExtraArguments { get; set; }
 
         /// <summary>
         ///     Gets or sets the <see cref="string"/> separator to use between groups and commands.

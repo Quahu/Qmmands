@@ -141,9 +141,9 @@ namespace Qmmands
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration), "The configuration must not be null.");
 
-            IsCaseSensitive = configuration.CaseSensitive;
+            IsCaseSensitive = configuration.IsCaseSensitive;
             DefaultRunMode = configuration.DefaultRunMode;
-            IgnoresExtraArguments = configuration.IgnoreExtraArguments;
+            IgnoresExtraArguments = configuration.IgnoresExtraArguments;
             Separator = configuration.Separator;
             SeparatorRequirement = configuration.SeparatorRequirement;
             ArgumentParser = configuration.ArgumentParser ?? DefaultArgumentParser.Instance;
