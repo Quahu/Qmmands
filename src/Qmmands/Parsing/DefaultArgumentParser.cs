@@ -1,30 +1,37 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
 namespace Qmmands
 {
     /// <summary>
-    ///     The default argument parser used by the <see cref="CommandService"/>.
+    ///     Represents the default argument parser used by the <see cref="CommandService"/>.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class DefaultArgumentParser : IArgumentParser
     {
         /// <summary>
-        ///     Attempts to parse raw arguments for the specified <see cref="Command"/>.
+        ///     Gets the singleton instance of the <see cref="DefaultArgumentParser"/>.
         /// </summary>
-        /// <param name="command"> The <see cref="Command"/> to parse raw arguments for. </param>
-        /// <param name="rawArguments"> The raw arguments. </param>
+        public static readonly DefaultArgumentParser Instance = new DefaultArgumentParser();
+
+        private DefaultArgumentParser()
+        { }
+
+        /// <summary>
+        ///     Attempts to parse raw arguments for the given <see cref="CommandContext"/>.
+        /// </summary>
+        /// <param name="context"> The <see cref="CommandContext"/> to parse raw arguments for. </param>
         /// <returns>
         ///     An <see cref="ArgumentParserResult"/>.
         /// </returns>
-        public ArgumentParserResult ParseRawArguments(Command command, string rawArguments)
+        public ArgumentParserResult Parse(CommandContext context)
         {
+            var command = context.Command;
+            var rawArguments = context.RawArguments;
             Parameter currentParameter = null;
             Parameter multipleParameter = null;
             var argumentBuilder = new StringBuilder();
-            var arguments = new Dictionary<Parameter, object>();
+            var arguments = new Dictionary<Parameter, object>(command.Parameters.Count);
             var currentQuote = '\0';
             var expectedQuote = '\0';
             var whitespaceSeparated = false;

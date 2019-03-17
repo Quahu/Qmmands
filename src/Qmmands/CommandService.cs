@@ -146,7 +146,7 @@ namespace Qmmands
             IgnoresExtraArguments = configuration.IgnoreExtraArguments;
             Separator = configuration.Separator;
             SeparatorRequirement = configuration.SeparatorRequirement;
-            ArgumentParser = configuration.ArgumentParser ?? new DefaultArgumentParser();
+            ArgumentParser = configuration.ArgumentParser ?? DefaultArgumentParser.Instance;
             CooldownBucketKeyGenerator = configuration.CooldownBucketKeyGenerator;
             QuotationMarkMap = configuration.QuoteMap != null
                 ? new ReadOnlyDictionary<char, char>(configuration.QuoteMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value))
@@ -733,7 +733,7 @@ namespace Qmmands
                 ArgumentParserResult parseResult;
                 try
                 {
-                    parseResult = ArgumentParser.ParseRawArguments(match.Command, match.RawArguments);
+                    parseResult = ArgumentParser.Parse(context);
                     if (!parseResult.IsSuccessful)
                     {
                         failedOverloads.Add(match.Command, new ArgumentParseFailedResult(match.Command, parseResult));
@@ -824,7 +824,7 @@ namespace Qmmands
             ArgumentParserResult parseResult;
             try
             {
-                parseResult = ArgumentParser.ParseRawArguments(command, rawArguments);
+                parseResult = ArgumentParser.Parse(context);
                 if (!parseResult.IsSuccessful)
                     return new ArgumentParseFailedResult(command, parseResult);
             }

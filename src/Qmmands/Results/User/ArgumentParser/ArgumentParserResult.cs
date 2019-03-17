@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Qmmands
 {
     /// <summary>
-    ///     Represents an <see cref="IArgumentParser.ParseRawArguments"/> result.
+    ///     Represents an <see cref="IArgumentParser.Parse"/> result.
     /// </summary>
     public struct ArgumentParserResult : IResult
     {
@@ -24,7 +24,7 @@ namespace Qmmands
         public Parameter Parameter { get; }
 
         /// <summary>
-        ///     Gets the raw arguments passed to the <see cref="IArgumentParser.ParseRawArguments"/>.
+        ///     Gets the raw arguments passed to the <see cref="IArgumentParser.Parse"/>.
         /// </summary>
         public string RawArguments { get; }
 

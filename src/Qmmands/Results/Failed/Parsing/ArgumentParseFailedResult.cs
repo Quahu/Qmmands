@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -26,7 +26,7 @@ namespace Qmmands
         public Parameter Parameter { get; }
 
         /// <summary>
-        ///     Gets the raw arguments passed to the <see cref="IArgumentParser.ParseRawArguments"/>.
+        ///     Gets the raw arguments passed to the <see cref="IArgumentParser.Parse"/>.
         /// </summary>
         public string RawArguments { get; }
 

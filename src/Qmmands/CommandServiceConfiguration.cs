@@ -64,8 +64,8 @@ namespace Qmmands
         private SeparatorRequirement _separatorRequirement = SeparatorRequirement.Separator;
 
         /// <summary>
-        ///     Gets or sets the raw argument parser.
-        ///     If <see langword="null"/>, will default to <see cref="DefaultArgumentParser"/>.
+        ///     Gets or sets the argument parser.
+        ///     If <see langword="null"/>, will default to <see cref="Qmmands.DefaultArgumentParser"/>.
         /// </summary>
         public IArgumentParser ArgumentParser { get; set; }
 
