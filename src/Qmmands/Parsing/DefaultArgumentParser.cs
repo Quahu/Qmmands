@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -27,7 +28,11 @@ namespace Qmmands
         public ArgumentParserResult Parse(CommandContext context)
         {
             var command = context.Command;
+#if NETCOREAPP
+            var rawArguments = context.RawArguments.AsSpan();
+#else
             var rawArguments = context.RawArguments;
+#endif
             Parameter currentParameter = null;
             Parameter multipleParameter = null;
             var argumentBuilder = new StringBuilder();
@@ -68,7 +73,14 @@ namespace Qmmands
                     }
 
                     else if (currentPosition != 0 && !whitespaceSeparated)
-                        return new ArgumentParserResult(command, null, rawArguments, arguments, command.Service.QuotationMarkMap.TryGetValue(character, out expectedQuote) && rawArguments.IndexOf(expectedQuote, currentPosition + 1) == -1 ? ArgumentParserFailure.UnexpectedQuote : ArgumentParserFailure.NoWhitespaceBetweenArguments, currentPosition);
+                        return new ArgumentParserResult(command, null, context.RawArguments, arguments, command.Service.QuotationMarkMap.TryGetValue(character, out expectedQuote) 
+                            &&
+#if NETCOREAPP
+                            rawArguments.Slice(currentPosition + 1).IndexOf(expectedQuote)
+#else
+                            rawArguments.IndexOf(expectedQuote, currentPosition + 1)
+#endif
+                            == -1 ? ArgumentParserFailure.UnexpectedQuote : ArgumentParserFailure.NoWhitespaceBetweenArguments, currentPosition);
 
                     else
                     {
@@ -79,7 +91,7 @@ namespace Qmmands
                                 break;
 
                             else
-                                return new ArgumentParserResult(command, null, rawArguments, arguments, ArgumentParserFailure.TooManyArguments, currentPosition);
+                                return new ArgumentParserResult(command, null, context.RawArguments, arguments, ArgumentParserFailure.TooManyArguments, currentPosition);
                         }
 
                         else if (currentParameter.IsMultiple)
@@ -89,7 +101,13 @@ namespace Qmmands
 
                 if (currentParameter.IsRemainder)
                 {
-                    argumentBuilder.Append(rawArguments.Substring(currentPosition));
+                    argumentBuilder.Append(
+#if NETCOREAPP
+                        rawArguments.Slice(currentPosition) 
+#else
+                        rawArguments.Substring(currentPosition)
+#endif
+                        );
                     break;
                 }
 
@@ -119,7 +137,13 @@ namespace Qmmands
                     if (command.Service.QuotationMarkMap.TryGetValue(character, out expectedQuote))
                     {
                         if (currentPosition != 0 && !whitespaceSeparated)
-                            return new ArgumentParserResult(command, currentParameter, rawArguments, arguments, rawArguments.IndexOf(expectedQuote, currentPosition + 1) == -1 ? ArgumentParserFailure.UnexpectedQuote : ArgumentParserFailure.NoWhitespaceBetweenArguments, currentPosition);
+                            return new ArgumentParserResult(command, currentParameter, context.RawArguments, arguments,
+#if NETCOREAPP
+                                rawArguments.Slice(currentPosition + 1).IndexOf(expectedQuote) 
+#else
+                                rawArguments.IndexOf(expectedQuote, currentPosition + 1)
+#endif
+                                == -1 ? ArgumentParserFailure.UnexpectedQuote : ArgumentParserFailure.NoWhitespaceBetweenArguments, currentPosition);
 
                         currentQuote = character;
                         whitespaceSeparated = false;
@@ -148,7 +172,7 @@ namespace Qmmands
             }
 
             if (currentQuote != '\0')
-                return new ArgumentParserResult(command, currentParameter, rawArguments, arguments, ArgumentParserFailure.UnclosedQuote, rawArguments.LastIndexOf(currentQuote));
+                return new ArgumentParserResult(command, currentParameter, context.RawArguments, arguments, ArgumentParserFailure.UnclosedQuote, rawArguments.LastIndexOf(currentQuote));
 
             if (currentParameter != null)
                 NextParameter();
@@ -164,13 +188,13 @@ namespace Qmmands
                     }
 
                     if (!parameter.IsOptional)
-                        return new ArgumentParserResult(command, parameter, rawArguments, arguments, ArgumentParserFailure.TooFewArguments, null);
+                        return new ArgumentParserResult(command, parameter, context.RawArguments, arguments, ArgumentParserFailure.TooFewArguments, null);
 
                     arguments.Add(parameter, parameter.DefaultValue);
                 }
             }
 
-            return new ArgumentParserResult(command, rawArguments, arguments);
+            return new ArgumentParserResult(command, context.RawArguments, arguments);
         }
     }
 }

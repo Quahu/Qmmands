@@ -84,9 +84,22 @@ namespace Qmmands
             }
         }
 
-        private int GetSegment(string text, string key, int startIndex, bool checkForSeparator, out string arguments, out bool hasSeparator, out bool hasWhitespaceSeparator)
+        private int GetSegment(
+#if NETCOREAPP
+            in ReadOnlySpan<char> text,
+            in ReadOnlySpan<char> key,
+#else
+            string text,
+            string key,
+#endif
+            int startIndex, bool checkForSeparator, out string arguments, out bool hasSeparator, out bool hasWhitespaceSeparator)
         {
-            var index = text.IndexOf(key, startIndex, _service.StringComparison);
+            var index =
+#if NETCOREAPP
+                text.Slice(startIndex).IndexOf(key, _service.StringComparison) + startIndex;
+#else
+                text.IndexOf(key, startIndex, _service.StringComparison);
+#endif
             if (index == -1 || index != startIndex)
             {
                 arguments = null;
@@ -110,7 +123,13 @@ namespace Qmmands
                         index++;
                     }
 
-                    if (text.IndexOf(_service.Separator, index, _service.StringComparison) == index)
+                    var separatorIndex =
+#if NETCOREAPP
+                        text.Slice(index).IndexOf(_service.Separator, _service.StringComparison) + index;
+#else
+                        text.IndexOf(_service.Separator, index, _service.StringComparison);
+#endif
+                    if (separatorIndex == index)
                     {
                         index += _service.Separator.Length;
                         hasConfigSeparator = true;
@@ -127,7 +146,11 @@ namespace Qmmands
                     index++;
                 }
 
+#if NETCOREAPP
+                arguments = new string(text.Slice(index));
+#else
                 arguments = text.Substring(index);
+#endif
                 switch (_service.SeparatorRequirement)
                 {
                     case SeparatorRequirement.None:
