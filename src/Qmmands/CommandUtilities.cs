@@ -26,7 +26,7 @@ namespace Qmmands
         public static readonly IReadOnlyDictionary<Type, string> FriendlyPrimitiveTypeNames;
 
         /// <summary>
-        ///     Checks if the provided <see cref="string"/> starts with the specified <see cref="char"/> prefix.
+        ///     Checks if the provided <see cref="string"/> starts with the provided <see cref="char"/> prefix.
         ///     If it does, returns <see langword="true"/> and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
@@ -39,10 +39,16 @@ namespace Qmmands
         ///     The input must not be null.
         /// </exception>
         public static bool HasPrefix(string input, char prefix, out string output)
-            => HasPrefix(input, prefix, false, out output);
+            => HasPrefix(
+#if NETCOREAPP
+                input != null ? input.AsSpan() : throw new ArgumentNullException(nameof(input), "The input must not be null."),
+#else
+                input,
+#endif
+                prefix, false, out output);
 
         /// <summary>
-        ///     Checks if the provided <see cref="string"/> starts with the specified <see cref="char"/> prefix.
+        ///     Checks if the provided <see cref="string"/> starts with the provided <see cref="char"/> prefix.
         ///     If it does, returns <see langword="true"/> and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
@@ -60,6 +66,9 @@ namespace Qmmands
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
 
+#if NETCOREAPP
+            return HasPrefix(input.AsSpan(), prefix, ignoreCase, out output);
+#else
             if (input.Length == 0 || input[0] != (ignoreCase ? char.ToLowerInvariant(prefix) : prefix))
             {
                 output = null;
@@ -68,10 +77,11 @@ namespace Qmmands
 
             output = input.Substring(1).TrimStart();
             return true;
+#endif
         }
 
         /// <summary>
-        ///     Checks if the provided <see cref="string"/> starts with any of the specified <see cref="char"/> prefixes.
+        ///     Checks if the provided <see cref="string"/> starts with any of the provided <see cref="char"/> prefixes.
         ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
@@ -88,10 +98,16 @@ namespace Qmmands
         ///     The prefixes must not be null.
         /// </exception>
         public static bool HasAnyPrefix(string input, IReadOnlyList<char> prefixes, out char prefix, out string output)
-            => HasAnyPrefix(input, prefixes, false, out prefix, out output);
+            => HasAnyPrefix(
+#if NETCOREAPP
+                input != null ? input.AsSpan() : throw new ArgumentNullException(nameof(input), "The input must not be null."),
+#else
+                input,
+#endif
+                prefixes, false, out prefix, out output);
 
         /// <summary>
-        ///     Checks if the provided <see cref="string"/> starts with any of the specified <see cref="char"/> prefixes.
+        ///     Checks if the provided <see cref="string"/> starts with any of the provided <see cref="char"/> prefixes.
         ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
@@ -113,6 +129,10 @@ namespace Qmmands
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
 
+#if NETCOREAPP
+            return HasAnyPrefix(input.AsSpan(), prefixes, ignoreCase, out prefix, out output);
+#else
+
             if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
 
@@ -129,10 +149,11 @@ namespace Qmmands
             prefix = default;
             output = null;
             return false;
+#endif
         }
 
         /// <summary>
-        ///     Checks if the provided <see cref="string"/> starts with any of the specified <see cref="char"/> prefixes.
+        ///     Checks if the provided <see cref="string"/> starts with any of the provided <see cref="char"/> prefixes.
         ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
@@ -149,10 +170,16 @@ namespace Qmmands
         ///     The prefixes must not be null.
         /// </exception>
         public static bool HasAnyPrefix(string input, IEnumerable<char> prefixes, out char prefix, out string output)
-            => HasAnyPrefix(input, prefixes, false, out prefix, out output);
+            => HasAnyPrefix(
+#if NETCOREAPP
+                input != null ? input.AsSpan() : throw new ArgumentNullException(nameof(input), "The input must not be null."),
+#else
+                input,
+#endif
+                prefixes, false, out prefix, out output);
 
         /// <summary>
-        ///     Checks if the provided <see cref="string"/> starts with any of the specified <see cref="char"/> prefixes.
+        ///     Checks if the provided <see cref="string"/> starts with any of the provided <see cref="char"/> prefixes.
         ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
@@ -173,7 +200,9 @@ namespace Qmmands
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
-
+#if NETCOREAPP
+            return HasAnyPrefix(input.AsSpan(), prefixes, ignoreCase, out prefix, out output);
+#else
             if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
 
@@ -189,10 +218,11 @@ namespace Qmmands
             prefix = default;
             output = null;
             return false;
+#endif
         }
 
         /// <summary>
-        ///     Checks if the provided <see cref="string"/> starts with the specified <see cref="string"/> prefix.
+        ///     Checks if the provided <see cref="string"/> starts with the provided <see cref="string"/> prefix.
         ///     If it does, returns <see langword="true"/> and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
@@ -208,10 +238,16 @@ namespace Qmmands
         ///     The prefix must not be null.
         /// </exception>
         public static bool HasPrefix(string input, string prefix, out string output)
-            => HasPrefix(input, prefix, StringComparison.Ordinal, out output);
+            => HasPrefix(
+#if NETCOREAPP
+                input != null ? input.AsSpan() : throw new ArgumentNullException(nameof(input), "The input must not be null."),
+#else
+                input,
+#endif
+                prefix, StringComparison.Ordinal, out output);
 
         /// <summary>
-        ///     Checks if the provided <see cref="string"/> starts with the specified <see cref="string"/> prefix.
+        ///     Checks if the provided <see cref="string"/> starts with the provided <see cref="string"/> prefix.
         ///     If it does, returns <see langword="true"/> and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
@@ -231,7 +267,9 @@ namespace Qmmands
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
-
+#if NETCOREAPP
+            return HasPrefix(input.AsSpan(), prefix, stringComparison, out output);
+#else
             if (prefix == null)
                 throw new ArgumentNullException(nameof(prefix), "The prefix must not be null.");
 
@@ -243,10 +281,11 @@ namespace Qmmands
 
             output = input.Substring(prefix.Length).TrimStart();
             return true;
+#endif
         }
 
         /// <summary>
-        ///     Checks if the provided <see cref="string"/> starts with any of the specified <see cref="string"/> prefixes.
+        ///     Checks if the provided <see cref="string"/> starts with any of the provided <see cref="string"/> prefixes.
         ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
@@ -263,10 +302,16 @@ namespace Qmmands
         ///     The prefixes must not be null.
         /// </exception>
         public static bool HasAnyPrefix(string input, IReadOnlyList<string> prefixes, out string prefix, out string output)
-            => HasAnyPrefix(input, prefixes, StringComparison.Ordinal, out prefix, out output);
+            => HasAnyPrefix(
+#if NETCOREAPP
+                input != null ? input.AsSpan() : throw new ArgumentNullException(nameof(input), "The input must not be null."),
+#else
+                input,
+#endif
+                prefixes, StringComparison.Ordinal, out prefix, out output);
 
         /// <summary>
-        ///     Checks if the provided <see cref="string"/> starts with any of the specified <see cref="string"/> prefixes.
+        ///     Checks if the provided <see cref="string"/> starts with any of the provided <see cref="string"/> prefixes.
         ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
@@ -287,7 +332,9 @@ namespace Qmmands
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
-
+#if NETCOREAPP
+            return HasAnyPrefix(input.AsSpan(), prefixes, stringComparison, out prefix, out output);
+#else
             if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
 
@@ -304,10 +351,11 @@ namespace Qmmands
             prefix = null;
             output = null;
             return false;
+#endif
         }
 
         /// <summary>
-        ///     Checks if the provided <see cref="string"/> starts with any of the specified <see cref="string"/> prefixes.
+        ///     Checks if the provided <see cref="string"/> starts with any of the provided <see cref="string"/> prefixes.
         ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
@@ -324,10 +372,16 @@ namespace Qmmands
         ///     The prefixes must not be null.
         /// </exception>
         public static bool HasAnyPrefix(string input, IEnumerable<string> prefixes, out string prefix, out string output)
-            => HasAnyPrefix(input, prefixes, StringComparison.Ordinal, out prefix, out output);
+            => HasAnyPrefix(
+#if NETCOREAPP
+                input != null ? input.AsSpan() : throw new ArgumentNullException(nameof(input), "The input must not be null."),
+#else
+                input,
+#endif
+                prefixes, StringComparison.Ordinal, out prefix, out output);
 
         /// <summary>
-        ///     Checks if the provided <see cref="string"/> starts with any of the specified <see cref="string"/> prefixes.
+        ///     Checks if the provided <see cref="string"/> starts with any of the provided <see cref="string"/> prefixes.
         ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
@@ -348,7 +402,304 @@ namespace Qmmands
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
+#if NETCOREAPP
+            return HasAnyPrefix(input.AsSpan(), prefixes, stringComparison, out prefix, out output);
+#else
+            if (prefixes is null)
+                throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
 
+            foreach (var currentPrefix in prefixes)
+            {
+                if (!HasPrefix(input, currentPrefix, stringComparison, out output))
+                    continue;
+
+                prefix = currentPrefix;
+                return true;
+            }
+
+            prefix = null;
+            output = null;
+            return false;
+#endif
+        }
+
+#if NETCOREAPP
+        /// <summary>
+        ///     Checks if the provided <see cref="ReadOnlySpan{T}"/> starts with the provided <see cref="char"/> prefix.
+        ///     If it does, returns <see langword="true"/> and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
+        /// <param name="prefix"> The <see cref="char"/> prefix to check for. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The input must not be null.
+        /// </exception>
+        public static bool HasPrefix(in ReadOnlySpan<char> input, char prefix, out string output)
+            => HasPrefix(input, prefix, false, out output);
+
+        /// <summary>
+        ///     Checks if the provided <see cref="ReadOnlySpan{T}"/> starts with the provided <see cref="char"/> prefix.
+        ///     If it does, returns <see langword="true"/> and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
+        /// <param name="prefix"> The <see cref="char"/> prefix to check for. </param>
+        /// <param name="ignoreCase"> Whether to ignore casing or not. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The input must not be null.
+        /// </exception>
+        public static bool HasPrefix(in ReadOnlySpan<char> input, char prefix, bool ignoreCase, out string output)
+        {
+            if (input.Length == 0 || input[0] != (ignoreCase ? char.ToLowerInvariant(prefix) : prefix))
+            {
+                output = null;
+                return false;
+            }
+
+            output = new string(input.Slice(1).TrimStart());
+            return true;
+        }
+
+        /// <summary>
+        ///     Checks if the provided <see cref="ReadOnlySpan{T}"/> starts with any of the provided <see cref="char"/> prefixes.
+        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
+        /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
+        /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix was not found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefixes must not be null.
+        /// </exception>
+        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IReadOnlyList<char> prefixes, out char prefix, out string output)
+            => HasAnyPrefix(input, prefixes, false, out prefix, out output);
+
+        /// <summary>
+        ///     Checks if the provided <see cref="ReadOnlySpan{T}"/> starts with any of the provided <see cref="char"/> prefixes.
+        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
+        /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
+        /// <param name="ignoreCase"> Whether to ignore casing or not. </param>
+        /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix was not found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefixes must not be null.
+        /// </exception>
+        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IReadOnlyList<char> prefixes, bool ignoreCase, out char prefix, out string output)
+        {
+            if (prefixes is null)
+                throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
+
+            for (var i = 0; i < prefixes.Count; i++)
+            {
+                var currentPrefix = prefixes[i];
+                if (!HasPrefix(input, currentPrefix, ignoreCase, out output))
+                    continue;
+
+                prefix = currentPrefix;
+                return true;
+            }
+
+            prefix = default;
+            output = null;
+            return false;
+        }
+
+        /// <summary>
+        ///     Checks if the provided <see cref="ReadOnlySpan{T}"/> starts with any of the provided <see cref="char"/> prefixes.
+        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
+        /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
+        /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix was not found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefixes must not be null.
+        /// </exception>
+        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IEnumerable<char> prefixes, out char prefix, out string output)
+            => HasAnyPrefix(input, prefixes, false, out prefix, out output);
+
+        /// <summary>
+        ///     Checks if the provided <see cref="ReadOnlySpan{T}"/> starts with any of the provided <see cref="char"/> prefixes.
+        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
+        /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
+        /// <param name="ignoreCase"> Whether to ignore casing or not. </param>
+        /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix was not found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefixes must not be null.
+        /// </exception>
+        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IEnumerable<char> prefixes, bool ignoreCase, out char prefix, out string output)
+        {
+            if (prefixes is null)
+                throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
+
+            foreach (var currentPrefix in prefixes)
+            {
+                if (!HasPrefix(input, currentPrefix, ignoreCase, out output))
+                    continue;
+
+                prefix = currentPrefix;
+                return true;
+            }
+
+            prefix = default;
+            output = null;
+            return false;
+        }
+
+        /// <summary>
+        ///     Checks if the provided <see cref="ReadOnlySpan{T}"/> starts with the provided <see cref="string"/> prefix.
+        ///     If it does, returns <see langword="true"/> and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
+        /// <param name="prefix"> The <see cref="string"/> prefix to check for. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefix must not be null.
+        /// </exception>
+        public static bool HasPrefix(in ReadOnlySpan<char> input, string prefix, out string output)
+            => HasPrefix(input, prefix, StringComparison.Ordinal, out output);
+
+        /// <summary>
+        ///     Checks if the provided <see cref="ReadOnlySpan{T}"/> starts with the provided <see cref="string"/> prefix.
+        ///     If it does, returns <see langword="true"/> and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
+        /// <param name="prefix"> The <see cref="string"/> prefix to check for. </param>
+        /// <param name="stringComparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefix must not be null.
+        /// </exception>
+        public static bool HasPrefix(in ReadOnlySpan<char> input, string prefix, StringComparison stringComparison, out string output)
+        {
+            if (prefix == null)
+                throw new ArgumentNullException(nameof(prefix), "The prefix must not be null.");
+
+            if (!input.StartsWith(prefix, stringComparison))
+            {
+                output = null;
+                return false;
+            }
+
+            output = new string(input.Slice(prefix.Length).TrimStart());
+            return true;
+        }
+
+        /// <summary>
+        ///     Checks if the provided <see cref="ReadOnlySpan{T}"/> starts with any of the provided <see cref="string"/> prefixes.
+        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
+        /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>
+        /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix is not found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefixes must not be null.
+        /// </exception>
+        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IReadOnlyList<string> prefixes, out string prefix, out string output)
+            => HasAnyPrefix(input, prefixes, StringComparison.Ordinal, out prefix, out output);
+
+        /// <summary>
+        ///     Checks if the provided <see cref="ReadOnlySpan{T}"/> starts with any of the provided <see cref="string"/> prefixes.
+        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
+        /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>
+        /// <param name="stringComparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
+        /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix is not found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefixes must not be null.
+        /// </exception>
+        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IReadOnlyList<string> prefixes, StringComparison stringComparison, out string prefix, out string output)
+        {
+            if (prefixes is null)
+                throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
+
+            for (var i = 0; i < prefixes.Count; i++)
+            {
+                var currentPrefix = prefixes[i];
+                if (!HasPrefix(input, currentPrefix, stringComparison, out output))
+                    continue;
+
+                prefix = currentPrefix;
+                return true;
+            }
+
+            prefix = null;
+            output = null;
+            return false;
+        }
+
+        /// <summary>
+        ///     Checks if the provided <see cref="ReadOnlySpan{T}"/> starts with any of the provided <see cref="string"/> prefixes.
+        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
+        /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>
+        /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix is not found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefixes must not be null.
+        /// </exception>
+        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IEnumerable<string> prefixes, out string prefix, out string output)
+            => HasAnyPrefix(input, prefixes, StringComparison.Ordinal, out prefix, out output);
+
+        /// <summary>
+        ///     Checks if the provided <see cref="ReadOnlySpan{T}"/> starts with any of the provided <see cref="string"/> prefixes.
+        ///     If it does, returns <see langword="true"/>, the found <paramref name="prefix"/>, and the trimmed <paramref name="output"/>.
+        /// </summary>
+        /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
+        /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>
+        /// <param name="stringComparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
+        /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix is not found. </param>
+        /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
+        /// <returns>
+        ///     A <see cref="bool"/> which determines whether the prefix was found or not.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The prefixes must not be null.
+        /// </exception>
+        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IEnumerable<string> prefixes, StringComparison stringComparison, out string prefix, out string output)
+        {
             if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
 
@@ -365,9 +716,10 @@ namespace Qmmands
             output = null;
             return false;
         }
+#endif
 
         /// <summary>
-        ///     Recursively gets all of the checks the specified <see cref="Module"/>
+        ///     Recursively gets all of the checks the provided <see cref="Module"/>
         ///     will require to pass before one of its <see cref="Command"/>s can be executed.
         /// </summary>
         /// <param name="module"> The <see cref="Module"/> to get the checks for. </param>
@@ -397,7 +749,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Recursively gets all of the checks the specified <see cref="Command"/>
+        ///     Recursively gets all of the checks the provided <see cref="Command"/>
         ///     will require to pass before one of it can be executed.
         /// </summary>
         /// <param name="command"> The <see cref="Command"/> to get the checks for. </param>
@@ -424,7 +776,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Recursively gets all of the <see cref="Command"/>s in the specified <see cref="Module"/> and its submodules.
+        ///     Recursively gets all of the <see cref="Command"/>s in the provided <see cref="Module"/> and its submodules.
         /// </summary>
         /// <returns>
         ///     An enumerator of all <see cref="Command"/>s.
@@ -456,7 +808,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Recursively gets all of the <see cref="CommandBuilder"/>s in the specified <see cref="ModuleBuilder"/> and its submodules.
+        ///     Recursively gets all of the <see cref="CommandBuilder"/>s in the provided <see cref="ModuleBuilder"/> and its submodules.
         /// </summary>
         /// <returns>
         ///     An enumerator of all <see cref="CommandBuilder"/>s.
@@ -488,7 +840,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Recursively gets all of the submodules in the specified <see cref="Module"/> and its submodules.
+        ///     Recursively gets all of the submodules in the provided <see cref="Module"/> and its submodules.
         /// </summary>
         /// <returns>
         ///     An enumerator of all <see cref="Module"/>s.
@@ -520,7 +872,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Recursively gets all of the submodules in the specified <see cref="ModuleBuilder"/> and its submodules.
+        ///     Recursively gets all of the submodules in the provided <see cref="ModuleBuilder"/> and its submodules.
         /// </summary>
         /// <returns>
         ///     An enumerator of all <see cref="ModuleBuilder"/>s.
