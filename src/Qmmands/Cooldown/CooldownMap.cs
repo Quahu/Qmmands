@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Immutable;
 
 namespace Qmmands
 {
@@ -19,10 +18,12 @@ namespace Qmmands
         public void Update()
         {
             var now = DateTimeOffset.UtcNow;
-            foreach (var kvp in Buckets.ToImmutableArray())
+            var buckets = Buckets.ToArray();
+            for (var i = 0; i < buckets.Length; i++)
             {
-                if (now > kvp.Value.LastCall + kvp.Value.Cooldown.Per)
-                    Buckets.TryRemove(kvp.Key, out _);
+                var bucket = buckets[i];
+                if (now > bucket.Value.LastCall + bucket.Value.Cooldown.Per)
+                    Buckets.TryRemove(bucket.Key, out _);
             }
         }
 
