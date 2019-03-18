@@ -47,9 +47,9 @@ private async Task MessageReceivedAsync(Message message)
         await message.Channel.SendMessageAsync(failedResult.Reason); 
 }
 ```
-**CommandContext.cs**
+**CustomCommandContext.cs**
 ```cs
-public sealed class CommandContext : ICommandContext
+public sealed class CustomCommandContext : CommandContext
 {
     public Message Message { get; }
     
@@ -61,8 +61,11 @@ public sealed class CommandContext : ICommandContext
 ```
 **CommandModule.cs**
 ```cs
-public sealed class CommandModule : ModuleBase<CommandContext>
+public sealed class CommandModule : ModuleBase<CustomCommandContext>
 {
+    // Dependency Injection via a constructor or public settable properties.
+    // CommandService and IServiceProvider self-inject into modules,
+    // properties and other types are requested from the provided IServiceProvider
     public CommandService Service { get; set; }
 
     // Invoked with:   !help
