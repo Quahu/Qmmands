@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if NETCOREAPP
+using System;
+#endif
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -73,7 +75,7 @@ namespace Qmmands
                     }
 
                     else if (currentPosition != 0 && !whitespaceSeparated)
-                        return new ArgumentParserResult(command, null, context.RawArguments, arguments, command.Service.QuotationMarkMap.TryGetValue(character, out expectedQuote) 
+                        return new ArgumentParserResult(command, null, context.RawArguments, arguments, command.Service.QuotationMarkMap.TryGetValue(character, out expectedQuote)
                             &&
 #if NETCOREAPP
                             rawArguments.Slice(currentPosition + 1).IndexOf(expectedQuote)
@@ -103,7 +105,7 @@ namespace Qmmands
                 {
                     argumentBuilder.Append(
 #if NETCOREAPP
-                        rawArguments.Slice(currentPosition) 
+                        rawArguments.Slice(currentPosition)
 #else
                         rawArguments.Substring(currentPosition)
 #endif
@@ -139,7 +141,7 @@ namespace Qmmands
                         if (currentPosition != 0 && !whitespaceSeparated)
                             return new ArgumentParserResult(command, currentParameter, context.RawArguments, arguments,
 #if NETCOREAPP
-                                rawArguments.Slice(currentPosition + 1).IndexOf(expectedQuote) 
+                                rawArguments.Slice(currentPosition + 1).IndexOf(expectedQuote)
 #else
                                 rawArguments.IndexOf(expectedQuote, currentPosition + 1)
 #endif
