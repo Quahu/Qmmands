@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Qmmands
 {
     /// <summary>
-    ///     Represents extracted interface from <see cref="CommandService"/>.
+    ///     Represents the extracted interface from <see cref="CommandService"/>.
     /// </summary>
     public interface ICommandService
     {
