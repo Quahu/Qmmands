@@ -42,7 +42,7 @@ private async Task MessageReceivedAsync(Message message)
     if (!CommandUtilities.HasPrefix(message.Content, '!', out string output))
         return;
         
-    IResult result = await _service.ExecuteAsync(output, new CommandContext(message));
+    IResult result = await _service.ExecuteAsync(output, new CustomCommandContext(message));
     if (result is FailedResult failedResult)
         await message.Channel.SendMessageAsync(failedResult.Reason); 
 }
