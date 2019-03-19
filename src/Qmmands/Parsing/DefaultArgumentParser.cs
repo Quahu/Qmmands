@@ -38,7 +38,7 @@ namespace Qmmands
             Parameter currentParameter = null;
             Parameter multipleParameter = null;
             var argumentBuilder = new StringBuilder();
-            var arguments = new Dictionary<Parameter, object>(command.Parameters.Count);
+            Dictionary<Parameter, object> arguments = null;
             var currentQuote = '\0';
             var expectedQuote = '\0';
             var whitespaceSeparated = false;
@@ -46,6 +46,9 @@ namespace Qmmands
 
             void NextParameter()
             {
+                if (arguments == null)
+                    arguments = new Dictionary<Parameter, object>(command.Parameters.Count);
+
                 if (!currentParameter.IsMultiple)
                     arguments.Add(currentParameter, argumentBuilder.ToString());
 
@@ -86,7 +89,9 @@ namespace Qmmands
 
                     else
                     {
-                        currentParameter = arguments.Count < command.Parameters.Count && command.Parameters.Count > 0 ? command.Parameters[arguments.Count] : multipleParameter;
+                        currentParameter = (arguments == null || arguments.Count < command.Parameters.Count) && command.Parameters.Count > 0
+                            ? command.Parameters[arguments?.Count ?? 0]
+                            : multipleParameter;
                         if (currentParameter == null)
                         {
                             if (command.IgnoresExtraArguments)
@@ -173,26 +178,29 @@ namespace Qmmands
                 whitespaceSeparated = false;
             }
 
-            if (currentQuote != '\0')
-                return new ArgumentParserResult(command, currentParameter, context.RawArguments, arguments, ArgumentParserFailure.UnclosedQuote, rawArguments.LastIndexOf(currentQuote));
-
-            if (currentParameter != null)
-                NextParameter();
-
-            if (arguments.Count != command.Parameters.Count)
+            if (arguments != null)
             {
-                foreach (var parameter in command.Parameters.Skip(arguments.Count))
+                if (currentQuote != '\0')
+                    return new ArgumentParserResult(command, currentParameter, context.RawArguments, arguments, ArgumentParserFailure.UnclosedQuote, rawArguments.LastIndexOf(currentQuote));
+
+                if (currentParameter != null)
+                    NextParameter();
+
+                if (arguments.Count != command.Parameters.Count)
                 {
-                    if (parameter.IsMultiple)
+                    foreach (var parameter in command.Parameters.Skip(arguments.Count))
                     {
-                        arguments.Add(parameter, new List<string>());
-                        break;
+                        if (parameter.IsMultiple)
+                        {
+                            arguments.Add(parameter, new List<string>());
+                            break;
+                        }
+
+                        if (!parameter.IsOptional)
+                            return new ArgumentParserResult(command, parameter, context.RawArguments, arguments, ArgumentParserFailure.TooFewArguments, null);
+
+                        arguments.Add(parameter, parameter.DefaultValue);
                     }
-
-                    if (!parameter.IsOptional)
-                        return new ArgumentParserResult(command, parameter, context.RawArguments, arguments, ArgumentParserFailure.TooFewArguments, null);
-
-                    arguments.Add(parameter, parameter.DefaultValue);
                 }
             }
 

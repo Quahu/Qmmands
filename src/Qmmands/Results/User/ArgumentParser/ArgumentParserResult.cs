@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Qmmands
 {
@@ -7,6 +8,9 @@ namespace Qmmands
     /// </summary>
     public struct ArgumentParserResult : IResult
     {
+        private static readonly IReadOnlyDictionary<Parameter, object> _emptyParameterDictionary =
+            new ReadOnlyDictionary<Parameter, object>(new Dictionary<Parameter, object>(0));
+
         /// <summary>
         ///     Gets whether the result was successful or not.
         /// </summary>
@@ -57,7 +61,7 @@ namespace Qmmands
             Command = command;
             Parameter = parameter;
             RawArguments = rawArguments;
-            Arguments = arguments;
+            Arguments = arguments ?? _emptyParameterDictionary;
             ArgumentParserFailure = parseFailure;
             FailurePosition = failurePosition;
         }
@@ -72,7 +76,7 @@ namespace Qmmands
         {
             Command = command;
             RawArguments = rawArguments;
-            Arguments = arguments;
+            Arguments = arguments ?? _emptyParameterDictionary;
         }
     }
 }

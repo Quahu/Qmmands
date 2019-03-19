@@ -171,7 +171,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Initialises a new <see cref="CommandService"/> with the default <see cref="CommandServiceConfiguration"/>
+        ///     Initialises a new <see cref="CommandService"/> with the default <see cref="CommandServiceConfiguration"/>.
         /// </summary>
         public CommandService() : this(CommandServiceConfiguration.Default)
         { }
@@ -693,13 +693,34 @@ namespace Qmmands
             if (provider is null)
                 provider = DummyServiceProvider.Instance;
 
-            var matches = FindCommands(input);
-            if (matches.Count == 0)
+            CommandMatch[] matches;
+            lock (_moduleLock)
+            {
+                matches = _map.FindCommands(input).OrderByDescending(x => x.Path.Count)
+                    .ThenByDescending(x => x.Command.Priority)
+                    .ThenByDescending(x => x.Command.Parameters.Count)
+                    .ToArray();
+            }
+
+            if (matches.Length == 0)
                 return new CommandNotFoundResult();
 
-            var failedOverloads = new Dictionary<Command, FailedResult>(matches.Count);
-            foreach (var match in matches.GroupBy(x => string.Join(Separator, x.Path)).First())
+            var pathLength = matches[0].Path.Count;
+            Dictionary<Command, FailedResult> failedOverloads = null;
+            for (var i = 0; i < matches.Length; i++)
             {
+                var match = matches[i];
+                if (match.Path.Count < pathLength)
+                    continue;
+
+                void AddFailedOverload(Command overload, FailedResult result)
+                {
+                    if (failedOverloads == null)
+                        failedOverloads = new Dictionary<Command, FailedResult>(4);
+
+                    failedOverloads[overload] = result;
+                }
+
                 context.Command = match.Command;
                 context.Alias = match.Alias;
                 context.Path = match.Path;
@@ -710,10 +731,10 @@ namespace Qmmands
                     var checkResult = await match.Command.RunChecksAsync(context, provider).ConfigureAwait(false);
                     if (checkResult is ChecksFailedResult checksFailedResult)
                     {
-                        if (checksFailedResult.Module != null)
+                        if (checksFailedResult.Module != null || matches.Length == 1)
                             return checksFailedResult;
 
-                        failedOverloads.Add(match.Command, checksFailedResult);
+                        AddFailedOverload(match.Command, checksFailedResult);
                         continue;
                     }
                 }
@@ -730,7 +751,10 @@ namespace Qmmands
                     parseResult = ArgumentParser.Parse(context);
                     if (!parseResult.IsSuccessful)
                     {
-                        failedOverloads.Add(match.Command, new ArgumentParseFailedResult(match.Command, parseResult));
+                        if (matches.Length == 1)
+                            return parseResult;
+
+                        AddFailedOverload(match.Command, new ArgumentParseFailedResult(match.Command, parseResult));
                         continue;
                     }
                 }
@@ -747,7 +771,10 @@ namespace Qmmands
                     var result = await CreateArgumentsAsync(parseResult, context, provider).ConfigureAwait(false);
                     if (result.FailedResult != null)
                     {
-                        failedOverloads.Add(match.Command, result.FailedResult);
+                        if (matches.Length == 1)
+                            return result.FailedResult;
+
+                        AddFailedOverload(match.Command, result.FailedResult);
                         continue;
                     }
 
@@ -764,7 +791,7 @@ namespace Qmmands
                 return await InternalExecuteAsync(context, provider).ConfigureAwait(false);
             }
 
-            return failedOverloads.Count == 1 ? failedOverloads.First().Value : new OverloadsFailedResult(failedOverloads);
+            return new OverloadsFailedResult(failedOverloads);
         }
 
         /// <summary>
