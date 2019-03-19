@@ -449,7 +449,12 @@ namespace Qmmands
         {
             TryParseDelegates = new Dictionary<Type, Delegate>(13)
             {
-                [typeof(char)] = (TryParseDelegate<char>) char.TryParse,
+                [typeof(char)] =
+#if NETCOREAPP
+                    (TryParseDelegate<char>) TryParseChar,
+#else
+                    (TryParseDelegate<char>) char.TryParse,
+#endif
                 [typeof(bool)] = (TryParseDelegate<bool>) bool.TryParse,
                 [typeof(byte)] = (TryParseDelegate<byte>) byte.TryParse,
                 [typeof(sbyte)] = (TryParseDelegate<sbyte>) sbyte.TryParse,
@@ -464,5 +469,18 @@ namespace Qmmands
                 [typeof(decimal)] = (TryParseDelegate<decimal>) decimal.TryParse
             };
         }
+#if NETCOREAPP
+        private static bool TryParseChar(ReadOnlySpan<char> value, out char result)
+        {
+            if (value.Length == 1)
+            {
+                result = value[0];
+                return true;
+            }
+
+            result = default;
+            return false;
+        }
+#endif
     }
 }

@@ -46,5 +46,11 @@ namespace Qmmands
     /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
     public delegate Task CommandErroredDelegate(ExecutionFailedResult result, CommandContext context, IServiceProvider provider);
 
-    internal delegate bool TryParseDelegate<T>(string value, out T result);
+    internal delegate bool TryParseDelegate<T>(
+#if NETCOREAPP
+        ReadOnlySpan<char> value,
+#else
+        string value,
+#endif
+        out T result);
 }
