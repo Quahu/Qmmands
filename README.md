@@ -59,7 +59,7 @@ public sealed class CustomCommandContext : CommandContext
     
     public Channel Channel => Message.Channel;
   
-    public CommandContext(Message message)
+    public CustomCommandContext(Message message)
       => Message = message;
 }
 ```
