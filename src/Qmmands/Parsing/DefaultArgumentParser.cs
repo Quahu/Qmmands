@@ -2,7 +2,6 @@
 using System;
 #endif
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Qmmands
@@ -55,10 +54,10 @@ namespace Qmmands
                 else
                 {
                     if (arguments.TryGetValue(currentParameter, out var list))
-                        ((List<string>) list).Add(argumentBuilder.ToString());
+                        ((List<object>) list).Add(argumentBuilder.ToString());
 
                     else
-                        arguments[currentParameter] = new List<string> { argumentBuilder.ToString() };
+                        arguments[currentParameter] = new List<object> { argumentBuilder.ToString() };
                 }
 
                 argumentBuilder.Clear();
@@ -178,29 +177,30 @@ namespace Qmmands
                 whitespaceSeparated = false;
             }
 
-            if (arguments != null)
+            if (currentQuote != '\0')
+                return new ArgumentParserResult(command, currentParameter, context.RawArguments, arguments, ArgumentParserFailure.UnclosedQuote, rawArguments.LastIndexOf(currentQuote));
+
+            if (currentParameter != null)
+                NextParameter();
+
+            if (arguments == null && command.Parameters.Count > 0)
+                arguments = new Dictionary<Parameter, object>(command.Parameters.Count);
+
+            if (arguments != null && arguments.Count != command.Parameters.Count)
             {
-                if (currentQuote != '\0')
-                    return new ArgumentParserResult(command, currentParameter, context.RawArguments, arguments, ArgumentParserFailure.UnclosedQuote, rawArguments.LastIndexOf(currentQuote));
-
-                if (currentParameter != null)
-                    NextParameter();
-
-                if (arguments.Count != command.Parameters.Count)
+                for (var i = arguments.Count; i < command.Parameters.Count; i++)
                 {
-                    foreach (var parameter in command.Parameters.Skip(arguments.Count))
+                    var parameter = command.Parameters[i];
+                    if (parameter.IsMultiple)
                     {
-                        if (parameter.IsMultiple)
-                        {
-                            arguments.Add(parameter, new List<string>());
-                            break;
-                        }
-
-                        if (!parameter.IsOptional)
-                            return new ArgumentParserResult(command, parameter, context.RawArguments, arguments, ArgumentParserFailure.TooFewArguments, null);
-
-                        arguments.Add(parameter, parameter.DefaultValue);
+                        arguments.Add(parameter, new List<object>());
+                        break;
                     }
+
+                    if (!parameter.IsOptional)
+                        return new ArgumentParserResult(command, parameter, context.RawArguments, arguments, ArgumentParserFailure.TooFewArguments, null);
+
+                    arguments.Add(parameter, parameter.DefaultValue);
                 }
             }
 

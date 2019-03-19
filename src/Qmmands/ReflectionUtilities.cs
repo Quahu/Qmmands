@@ -224,6 +224,10 @@ namespace Qmmands
                 builder.WithIsOptional(true)
                     .WithDefaultValue(parameterInfo.DefaultValue);
 
+            else if (builder.IsMultiple)
+                builder.WithIsOptional(true)
+                    .WithDefaultValue(Array.CreateInstance(builder.Type, 0));
+
             if (!builder.IsMultiple)
                 builder.WithType(parameterInfo.ParameterType);
 

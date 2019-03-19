@@ -205,7 +205,7 @@ namespace Qmmands
                         throw new ParameterBuildingException(this, "Value type parameter's default value must not be null.");
                 }
 
-                else if (DefaultValue.GetType() != Type)
+                else if (DefaultValue.GetType() != (IsMultiple ? Type.MakeArrayType() : Type))
                     throw new ParameterBuildingException(this, $"Parameter type and default value mismatch. Expected {Type}, got {DefaultValue.GetType()}.");
             }
 

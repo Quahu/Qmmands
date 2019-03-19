@@ -752,7 +752,7 @@ namespace Qmmands
                     if (!parseResult.IsSuccessful)
                     {
                         if (matches.Length == 1)
-                            return parseResult;
+                            return new ArgumentParseFailedResult(match.Command, parseResult);
 
                         AddFailedOverload(match.Command, new ArgumentParseFailedResult(match.Command, parseResult));
                         continue;
@@ -990,19 +990,37 @@ namespace Qmmands
             if (provider is null)
                 provider = DummyServiceProvider.Instance;
 
-            var parsedArguments = new object[parserResult.Arguments.Count];
-            if (parserResult.Arguments.Count == 0)
+            var parsedArguments = new object[context.Command.Parameters.Count];
+            if (parsedArguments.Length == 0)
                 return (default, parsedArguments);
 
+            else if (parsedArguments.Length != parserResult.Arguments.Count)
+                throw new ArgumentException("The amount of arguments must match the amount of parameters.");
+
             var index = 0;
-            for (var i = 0; i < parserResult.Command.Parameters.Count; i++)
+            for (var i = 0; i < context.Command.Parameters.Count; i++)
             {
-                var parameter = parserResult.Command.Parameters[i];
+                var parameter = context.Command.Parameters[i];
                 if (!parserResult.Arguments.TryGetValue(parameter, out var value))
                     throw new InvalidOperationException($"No value for parameter {parameter.Name} ({parameter.Type}) was returned by the argument parser ({ArgumentParser.GetType()}).");
 
-                if (value is IReadOnlyList<string> multipleArguments)
+                if (!parameter.IsMultiple)
                 {
+                    var (result, parsedArgument) = await ParseArgumentAsync(parameter, value, context, provider).ConfigureAwait(false);
+                    if (result != null)
+                        return (result, default);
+
+                    var checkResult = await parameter.RunChecksAsync(parsedArgument, context, provider).ConfigureAwait(false);
+                    if (!checkResult.IsSuccessful)
+                        return (checkResult as FailedResult, default);
+
+                    parsedArguments[index++] = parsedArgument;
+                }
+                else
+                {
+                    if (!(value is IReadOnlyList<object> multipleArguments))
+                        throw new InvalidOperationException("Multiple parameters require an IReadOnlyList<string> as their arguments.");
+
                     var array = Array.CreateInstance(parameter.Type, multipleArguments.Count);
                     for (var j = 0; j < multipleArguments.Count; j++)
                     {
@@ -1018,19 +1036,6 @@ namespace Qmmands
                         return (checkResult as FailedResult, default);
 
                     parsedArguments[index++] = array;
-                }
-
-                else
-                {
-                    var (result, parsedArgument) = await ParseArgumentAsync(parameter, value, context, provider).ConfigureAwait(false);
-                    if (result != null)
-                        return (result, default);
-
-                    var checkResult = await parameter.RunChecksAsync(parsedArgument, context, provider).ConfigureAwait(false);
-                    if (!checkResult.IsSuccessful)
-                        return (checkResult as FailedResult, default);
-
-                    parsedArguments[index++] = parsedArgument;
                 }
             }
 
