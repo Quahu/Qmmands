@@ -3,20 +3,20 @@ using System.Collections.Generic;
 
 namespace Qmmands
 {
-    internal sealed class CommandNode
+    internal sealed class CommandMapNode
     {
         private readonly CommandService _service;
         private readonly Dictionary<string, List<Command>> _commands;
         private readonly Dictionary<string, List<Module>> _modules;
-        private readonly Dictionary<string, CommandNode> _nodes;
+        private readonly Dictionary<string, CommandMapNode> _nodes;
         private readonly bool _isNullOrWhitespaceSeparator;
 
-        public CommandNode(CommandService service)
+        public CommandMapNode(CommandService service)
         {
             _service = service;
-            _commands = new Dictionary<string, List<Command>>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
-            _modules = new Dictionary<string, List<Module>>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
-            _nodes = new Dictionary<string, CommandNode>(_service.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
+            _commands = new Dictionary<string, List<Command>>(_service.IsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
+            _modules = new Dictionary<string, List<Module>>(_service.IsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
+            _nodes = new Dictionary<string, CommandMapNode>(_service.IsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
             _isNullOrWhitespaceSeparator = string.IsNullOrWhiteSpace(_service.Separator);
         }
 
@@ -31,10 +31,10 @@ namespace Qmmands
                 if (index == -1 || !(hasWhitespaceSeparator || string.IsNullOrWhiteSpace(arguments)))
                     continue;
 
-                foreach (var command in kvp.Value)
+                for (var i = 0; i < kvp.Value.Count; i++)
                 {
                     path.Add(kvp.Key);
-                    yield return new CommandMatch(command, kvp.Key, path, arguments);
+                    yield return new CommandMatch(kvp.Value[i], kvp.Key, path, arguments);
                     path.RemoveAt(path.Count - 1);
                 }
             }
@@ -63,10 +63,10 @@ namespace Qmmands
                 if (index == -1 || !(hasWhitespaceSeparator || string.IsNullOrWhiteSpace(arguments)))
                     continue;
 
-                foreach (var module in kvp.Value)
+                for (var i = 0; i < kvp.Value.Count; i++)
                 {
                     path.Add(kvp.Key);
-                    yield return new ModuleMatch(module, kvp.Key, path, arguments);
+                    yield return new ModuleMatch(kvp.Value[i], kvp.Key, path, arguments);
                     path.RemoveAt(path.Count - 1);
                 }
             }
@@ -84,9 +84,22 @@ namespace Qmmands
             }
         }
 
-        private int GetSegment(string text, string key, int startIndex, bool checkForSeparator, out string arguments, out bool hasSeparator, out bool hasWhitespaceSeparator)
+        private int GetSegment(
+#if NETCOREAPP
+            in ReadOnlySpan<char> text,
+            in ReadOnlySpan<char> key,
+#else
+            string text,
+            string key,
+#endif
+            int startIndex, bool checkForSeparator, out string arguments, out bool hasSeparator, out bool hasWhitespaceSeparator)
         {
-            var index = text.IndexOf(key, startIndex, _service.StringComparison);
+            var index =
+#if NETCOREAPP
+                text.Slice(startIndex).IndexOf(key, _service.StringComparison) + startIndex;
+#else
+                text.IndexOf(key, startIndex, _service.StringComparison);
+#endif
             if (index == -1 || index != startIndex)
             {
                 arguments = null;
@@ -94,7 +107,6 @@ namespace Qmmands
                 hasWhitespaceSeparator = false;
                 return -1;
             }
-
             else
             {
                 index += key.Length;
@@ -111,7 +123,13 @@ namespace Qmmands
                         index++;
                     }
 
-                    if (text.IndexOf(_service.Separator, index, _service.StringComparison) == index)
+                    var separatorIndex =
+#if NETCOREAPP
+                        text.Slice(index).IndexOf(_service.Separator, _service.StringComparison) + index;
+#else
+                        text.IndexOf(_service.Separator, index, _service.StringComparison);
+#endif
+                    if (separatorIndex == index)
                     {
                         index += _service.Separator.Length;
                         hasConfigSeparator = true;
@@ -128,7 +146,11 @@ namespace Qmmands
                     index++;
                 }
 
+#if NETCOREAPP
+                arguments = new string(text.Slice(index));
+#else
                 arguments = text.Substring(index);
+#endif
                 switch (_service.SeparatorRequirement)
                 {
                     case SeparatorRequirement.None:
@@ -170,7 +192,7 @@ namespace Qmmands
             {
                 if (!_nodes.TryGetValue(segment, out var node))
                 {
-                    node = new CommandNode(_service);
+                    node = new CommandMapNode(_service);
                     _nodes.Add(segment, node);
                 }
 
@@ -214,7 +236,7 @@ namespace Qmmands
                             if (signature.HasRemainder == otherSignature.HasRemainder)
                                 throw new CommandMappingException(command, segment, "Cannot map multiple overloads with the same signature.");
 
-                            else if (!signature.HasRemainder && command.IgnoreExtraArguments || !otherSignature.HasRemainder && otherCommand.IgnoreExtraArguments)
+                            else if (!signature.HasRemainder && command.IgnoresExtraArguments || !otherSignature.HasRemainder && otherCommand.IgnoresExtraArguments)
                                 throw new CommandMappingException(command, segment, "Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.");
                         }
                     }
@@ -230,7 +252,7 @@ namespace Qmmands
             {
                 if (!_nodes.TryGetValue(segment, out var node))
                 {
-                    node = new CommandNode(_service);
+                    node = new CommandMapNode(_service);
                     _nodes.Add(segment, node);
                 }
 

@@ -10,7 +10,9 @@ namespace Qmmands
     /// </summary>
     public sealed class ArgumentParseFailedResult : FailedResult
     {
-        /// <inheritdoc />
+        /// <summary>
+        ///     Gets the reason of this failed result.
+        /// </summary>
         public override string Reason { get; }
 
         /// <summary>
@@ -24,7 +26,7 @@ namespace Qmmands
         public Parameter Parameter { get; }
 
         /// <summary>
-        ///     Gets the raw arguments passed to the <see cref="IArgumentParser.ParseRawArguments"/>.
+        ///     Gets the raw arguments passed to the <see cref="IArgumentParser.Parse"/>.
         /// </summary>
         public string RawArguments { get; }
 

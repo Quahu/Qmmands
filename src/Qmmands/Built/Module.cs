@@ -34,7 +34,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets whether this <see cref="Module"/>'s commands ignore extra arguments or not.
         /// </summary>
-        public bool IgnoreExtraArguments { get; }
+        public bool IgnoresExtraArguments { get; }
 
         /// <summary>
         ///     Gets the aliases of this <see cref="Module"/>.
@@ -52,7 +52,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the checks of this <see cref="Module"/>.
         /// </summary>
-        public IReadOnlyList<CheckBaseAttribute> Checks { get; }
+        public IReadOnlyList<CheckAttribute> Checks { get; }
 
         /// <summary>
         ///     Gets the attributes of this <see cref="Module"/>.
@@ -76,7 +76,7 @@ namespace Qmmands
 
         /// <summary>
         ///     Gets the <see cref="System.Type"/> this <see cref="Module"/> was built from.
-        ///     <see langword="null"/> if it was built from a <see cref="ModuleBuilder"/>.
+        ///     <see langword="null"/> if it was built using a <see cref="ModuleBuilder"/>.
         /// </summary>
         public Type Type { get; }
 
@@ -91,21 +91,45 @@ namespace Qmmands
             Description = builder.Description;
             Remarks = builder.Remarks;
             RunMode = builder.RunMode ?? Parent?.RunMode ?? Service.DefaultRunMode;
-            IgnoreExtraArguments = builder.IgnoreExtraArguments ?? Parent?.IgnoreExtraArguments ?? Service.IgnoreExtraArguments;
-            Aliases = builder.Aliases.ToImmutableArray();
+            IgnoresExtraArguments = builder.IgnoresExtraArguments ?? Parent?.IgnoresExtraArguments ?? Service.IgnoresExtraArguments;
+            var aliases = builder.Aliases.ToImmutableArray();
+            Aliases = aliases;
 
             var fullAliases = ImmutableArray.CreateBuilder<string>();
-            if (Parent is null || Parent.FullAliases.Count == 0)
-                fullAliases.AddRange(Aliases);
-
-            else if (Aliases.Count == 0)
-                fullAliases.AddRange(Parent.FullAliases);
-
+            if (Parent == null || Parent.FullAliases.Count == 0)
+            {
+                fullAliases.AddRange(aliases);
+            }
+            else if (aliases.Length == 0)
+            {
+                fullAliases.AddRange((ImmutableArray<string>) Parent.FullAliases);
+            }
             else
             {
                 for (var i = 0; i < Parent.FullAliases.Count; i++)
-                    for (var j = 0; j < Aliases.Count; j++)
-                        fullAliases.Add(string.Concat(Parent.FullAliases[i], Service.Separator, Aliases[j]));
+                {
+                    var parentAlias = Parent.FullAliases[i];
+                    var absolute = parentAlias.Length == 0;
+                    for (var j = 0; j < aliases.Length; j++)
+                    {
+                        var alias = aliases[j];
+                        if (alias.Length == 0)
+                        {
+                            if (absolute)
+                                continue;
+
+                            fullAliases.Add(parentAlias);
+                        }
+                        else if (absolute)
+                        {
+                            fullAliases.Add(alias);
+                        }
+                        else
+                        {
+                            fullAliases.Add(string.Concat(parentAlias, Service.Separator, alias));
+                        }
+                    }
+                }
             }
             FullAliases = fullAliases.TryMoveToImmutable();
 
@@ -118,7 +142,7 @@ namespace Qmmands
 
             var modules = ImmutableArray.CreateBuilder<Module>(builder.Submodules.Count);
             for (var i = 0; i < builder.Submodules.Count; i++)
-                modules.Add(builder.Submodules[i].Build(Service, this));
+                modules.Add(builder.Submodules[i].Build(service, this));
             Submodules = modules.TryMoveToImmutable();
 
             var commands = ImmutableArray.CreateBuilder<Command>(builder.Commands.Count);
@@ -130,12 +154,12 @@ namespace Qmmands
         /// <summary>
         ///     Runs checks on parent <see cref="Module"/>s and this <see cref="Module"/>.
         /// </summary>
-        /// <param name="context"> The <see cref="ICommandContext"/> used for execution. </param>
+        /// <param name="context"> The <see cref="CommandContext"/> used for execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
         /// <returns>
         ///     A <see cref="SuccessfulResult"/> if all of the checks pass, otherwise a <see cref="ChecksFailedResult"/>.
         /// </returns>
-        public async Task<IResult> RunChecksAsync(ICommandContext context, IServiceProvider provider = null)
+        public async Task<IResult> RunChecksAsync(CommandContext context, IServiceProvider provider = null)
         {
             if (provider is null)
                 provider = DummyServiceProvider.Instance;
@@ -149,7 +173,7 @@ namespace Qmmands
 
             if (Checks.Count > 0)
             {
-                async Task<(CheckBaseAttribute Check, CheckResult Result)> RunCheckAsync(CheckBaseAttribute check)
+                async Task<(CheckAttribute Check, CheckResult Result)> RunCheckAsync(CheckAttribute check)
                 {
                     var checkResult = await check.CheckAsync(context, provider).ConfigureAwait(false);
                     return (check, checkResult);

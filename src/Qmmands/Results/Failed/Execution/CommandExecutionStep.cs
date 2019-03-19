@@ -11,7 +11,7 @@
         Checks,
 
         /// <summary>
-        ///     An exception occurred in <see cref="IArgumentParser.ParseRawArguments"/> during raw argument parsing.
+        ///     An exception occurred in <see cref="IArgumentParser.Parse"/> during raw argument parsing.
         /// </summary>
         ArgumentParsing,
 
@@ -21,7 +21,12 @@
         TypeParsing,
 
         /// <summary>
-        ///     An exception occcured in <see cref="ModuleBase{TContext}.BeforeExecutedAsync(Command)"/>.
+        ///     An exception occurred during generating the cooldown bucket key using <see cref="CommandService.CooldownBucketKeyGenerator"/>.
+        /// </summary>
+        CooldownBucketKeyGenerating,
+
+        /// <summary>
+        ///     An exception occcured in <see cref="ModuleBase{TContext}.BeforeExecutedAsync()"/>.
         /// </summary>
         BeforeExecuted,
 

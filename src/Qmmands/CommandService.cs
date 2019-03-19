@@ -16,9 +16,9 @@ namespace Qmmands
     public class CommandService : ICommandService
     {
         /// <summary>
-        ///     Gets whether <see cref="FindCommands"/> and primitive <see langword="enum"/> type parsers are case sensitive or not.
+        ///     Gets whether <see cref="FindModules"/>, <see cref="FindCommands"/> and primitive <see langword="enum"/> type parsers are case sensitive or not.
         /// </summary>
-        public bool CaseSensitive { get; }
+        public bool IsCaseSensitive { get; }
 
         /// <summary>
         ///     Gets the default <see cref="RunMode"/> for commands and modules.
@@ -28,7 +28,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets whether commands should ignore extra arguments by default or not.
         /// </summary>
-        public bool IgnoreExtraArguments { get; }
+        public bool IgnoresExtraArguments { get; }
 
         /// <summary>
         ///     Gets the separator.
@@ -120,8 +120,8 @@ namespace Qmmands
 
         internal StringComparison StringComparison { get; }
 
-        private readonly ConcurrentDictionary<Type, Dictionary<Type, (bool ReplacingPrimitive, ITypeParser Instance)>> _parsers;
-        private readonly ConcurrentDictionary<Type, IPrimitiveTypeParser> _primitiveParsers;
+        private readonly ConcurrentDictionary<Type, Dictionary<Type, (bool ReplacingPrimitive, ITypeParser Instance)>> _typeParsers;
+        private readonly ConcurrentDictionary<Type, IPrimitiveTypeParser> _primitiveTypeParsers;
         private readonly Dictionary<Type, Module> _typeModules;
         private readonly HashSet<Module> _modules;
         private readonly CommandMap _map;
@@ -141,9 +141,9 @@ namespace Qmmands
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration), "The configuration must not be null.");
 
-            CaseSensitive = configuration.CaseSensitive;
+            IsCaseSensitive = configuration.IsCaseSensitive;
             DefaultRunMode = configuration.DefaultRunMode;
-            IgnoreExtraArguments = configuration.IgnoreExtraArguments;
+            IgnoresExtraArguments = configuration.IgnoresExtraArguments;
             Separator = configuration.Separator;
             SeparatorRequirement = configuration.SeparatorRequirement;
             ArgumentParser = configuration.ArgumentParser ?? DefaultArgumentParser.Instance;
@@ -155,23 +155,23 @@ namespace Qmmands
                 ? configuration.NullableNouns.ToImmutableArray()
                 : CommandUtilities.DefaultNullableNouns;
 
-            StringComparison = CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+            StringComparison = IsCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
             _typeModules = new Dictionary<Type, Module>();
             _modules = new HashSet<Module>();
             _map = new CommandMap(this);
-            _parsers = new ConcurrentDictionary<Type, Dictionary<Type, (bool, ITypeParser)>>();
-            _primitiveParsers = new ConcurrentDictionary<Type, IPrimitiveTypeParser>(Environment.ProcessorCount, ReflectionUtilities.TryParseDelegates.Count * 2);
+            _typeParsers = new ConcurrentDictionary<Type, Dictionary<Type, (bool, ITypeParser)>>();
+            _primitiveTypeParsers = new ConcurrentDictionary<Type, IPrimitiveTypeParser>(Environment.ProcessorCount, ReflectionUtilities.TryParseDelegates.Count * 2);
             foreach (var type in ReflectionUtilities.TryParseDelegates.Keys)
             {
                 var primitiveTypeParser = ReflectionUtilities.CreatePrimitiveTypeParser(type);
-                _primitiveParsers.TryAdd(type, primitiveTypeParser);
-                _primitiveParsers.TryAdd(ReflectionUtilities.MakeNullable(type), ReflectionUtilities.CreateNullablePrimitiveTypeParser(type, primitiveTypeParser));
+                _primitiveTypeParsers.TryAdd(type, primitiveTypeParser);
+                _primitiveTypeParsers.TryAdd(ReflectionUtilities.MakeNullable(type), ReflectionUtilities.CreateNullablePrimitiveTypeParser(type, primitiveTypeParser));
             }
         }
 
         /// <summary>
-        ///     Initialises a new <see cref="CommandService"/> with the default <see cref="CommandServiceConfiguration"/>
+        ///     Initialises a new <see cref="CommandService"/> with the default <see cref="CommandServiceConfiguration"/>.
         /// </summary>
         public CommandService() : this(CommandServiceConfiguration.Default)
         { }
@@ -294,24 +294,19 @@ namespace Qmmands
 
             var type = typeof(T);
             if (ReflectionUtilities.IsNullable(type))
-                throw new ArgumentException("Cannot add custom nullable type parsers.", nameof(T));
+                throw new ArgumentException("Cannot add custom type parsers for nullable types.", nameof(T));
 
             if (replacePrimitive)
             {
                 if (GetPrimitiveTypeParser(type) == null)
-                    throw new ArgumentException($"No primitive parser found to replace for type {type}.", nameof(T));
+                    throw new ArgumentException($"No primitive type parser found to replace for type {type}.", nameof(T));
 
                 var existingParser = GetAnyTypeParser(type, true);
                 if (existingParser != null)
                     throw new ArgumentException($"There is already a custom type parser replacing the primitive parser for type {type} - {existingParser.GetType()}.");
             }
 
-            AddParserInternal(type, parser, replacePrimitive);
-        }
-
-        private void AddParserInternal(Type type, ITypeParser parser, bool replacePrimitive = false)
-        {
-            _parsers.AddOrUpdate(type,
+            _typeParsers.AddOrUpdate(type,
             new Dictionary<Type, (bool, ITypeParser)> { [parser.GetType()] = (replacePrimitive, parser) },
             (_, v) =>
             {
@@ -322,7 +317,7 @@ namespace Qmmands
             if (type.IsValueType)
             {
                 var nullableParser = ReflectionUtilities.CreateNullableTypeParser(type, parser);
-                _parsers.AddOrUpdate(ReflectionUtilities.MakeNullable(type),
+                _typeParsers.AddOrUpdate(ReflectionUtilities.MakeNullable(type),
                     new Dictionary<Type, (bool, ITypeParser)> { [nullableParser.GetType()] = (replacePrimitive, nullableParser) },
                     (_, v) =>
                     {
@@ -333,7 +328,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Removes a <see cref="TypeParser{T}"/> for the specified <typeparamref name="T"/> <see cref="Type"/>.
+        ///     Removes a <see cref="TypeParser{T}"/> for the specified <see cref="Type"/>.
         /// </summary>
         /// <typeparam name="T"> The <see cref="Type"/> to remove the <paramref name="parser"/> for. </typeparam>
         /// <param name="parser"> The <see cref="TypeParser{T}"/> to remove for the <see cref="Type"/>. </param>
@@ -341,7 +336,7 @@ namespace Qmmands
         ///     The type parser to remove must not be null.
         /// </exception>
         /// <exception cref="ArgumentException">
-        ///     A parser for this type has not been added.
+        ///     The type parser to remove has not been added.
         /// </exception>
         public void RemoveTypeParser<T>(TypeParser<T> parser)
         {
@@ -349,21 +344,20 @@ namespace Qmmands
                 throw new ArgumentNullException(nameof(parser), "The type parser to remove must not be null.");
 
             var type = typeof(T);
-            if (!_parsers.ContainsKey(type))
-                throw new ArgumentException($"A type parser for type {type} has not been added.", nameof(T));
-
-            RemoveParserInternal(type, parser);
-        }
-
-        private void RemoveParserInternal(Type type, ITypeParser parser)
-        {
-            if (!_parsers.TryGetValue(type, out var typeParsers))
-                return;
-
-            typeParsers.Remove(parser.GetType());
+            if (!_typeParsers.TryGetValue(type, out var typeParsers) || !typeParsers.Remove(parser.GetType()))
+                throw new ArgumentException("The type parser to remove has not been added.");
 
             if (type.IsValueType)
                 typeParsers.Remove(ReflectionUtilities.MakeNullable(type));
+        }
+
+        /// <summary>
+        ///     Removes all added <see cref="TypeParser{T}"/>s.
+        /// </summary>
+        public void RemoveAllTypeParsers()
+        {
+            foreach (var typeParsers in _typeParsers.ToArray())
+                _typeParsers.TryRemove(typeParsers.Key, out _);
         }
 
         /// <summary>
@@ -389,11 +383,11 @@ namespace Qmmands
             => GetSpecificTypeParser(typeof(T), typeof(TParser)) as TParser;
 
         internal ITypeParser GetSpecificTypeParser(Type type, Type parserType)
-            => _parsers.TryGetValue(type, out var typeParsers) && typeParsers.TryGetValue(parserType, out var typeParser) ? typeParser.Instance : null;
+            => _typeParsers.TryGetValue(type, out var typeParsers) && typeParsers.TryGetValue(parserType, out var typeParser) ? typeParser.Instance : null;
 
         internal ITypeParser GetAnyTypeParser(Type type, bool replacingPrimitive)
         {
-            if (_parsers.TryGetValue(type, out var typeParsers))
+            if (_typeParsers.TryGetValue(type, out var typeParsers))
             {
                 if (replacingPrimitive)
                 {
@@ -413,14 +407,14 @@ namespace Qmmands
 
         internal IPrimitiveTypeParser GetPrimitiveTypeParser(Type type)
         {
-            if (_primitiveParsers.TryGetValue(type, out var typeParser))
+            if (_primitiveTypeParsers.TryGetValue(type, out var typeParser))
                 return typeParser;
 
             if (type.IsEnum)
             {
-                var enumParser = ReflectionUtilities.CreateEnumTypeParser(type.GetEnumUnderlyingType(), type, !CaseSensitive);
-                _primitiveParsers.TryAdd(type, enumParser);
-                _primitiveParsers.TryAdd(ReflectionUtilities.MakeNullable(type), ReflectionUtilities.CreateNullableEnumTypeParser(type.GetEnumUnderlyingType(), enumParser));
+                var enumParser = ReflectionUtilities.CreateEnumTypeParser(type.GetEnumUnderlyingType(), type, !IsCaseSensitive);
+                _primitiveTypeParsers.TryAdd(type, enumParser);
+                _primitiveTypeParsers.TryAdd(ReflectionUtilities.MakeNullable(type), ReflectionUtilities.CreateNullableEnumTypeParser(type.GetEnumUnderlyingType(), enumParser));
                 return enumParser;
             }
 
@@ -473,35 +467,6 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Attempts to build the specified <see cref="ModuleBuilder"/> into a <see cref="Module"/>.
-        /// </summary>
-        /// <param name="builder"> The builder to build. </param>
-        /// <returns>
-        ///     A <see cref="Module"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        ///     The module builder to add must not be null.
-        /// </exception>
-        /// <exception cref="CommandMappingException">
-        ///     Cannot map commands to the root node.
-        /// </exception>
-        /// <exception cref="CommandMappingException">
-        ///     Cannot map multiple overloads with the same signature.
-        /// </exception>
-        /// <exception cref="CommandMappingException">
-        ///     Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.
-        /// </exception>
-        public Module AddModule(ModuleBuilder builder)
-        {
-            if (builder == null)
-                throw new ArgumentNullException(nameof(builder), "The module builder to add must not be null.");
-
-            var module = builder.Build(this, null);
-            AddModuleInternal(module);
-            return module;
-        }
-
-        /// <summary>
         ///     Attempts to instantiate, modify, and build a <see cref="ModuleBuilder"/> into a <see cref="Module"/>.
         /// </summary>
         /// <param name="action"> The action to perform on the builder. </param>
@@ -525,9 +490,11 @@ namespace Qmmands
             if (action == null)
                 throw new ArgumentNullException(nameof(action), "The action must not be null.");
 
-            var builder = new ModuleBuilder();
+            var builder = new ModuleBuilder(null);
             action(builder);
-            return AddModule(builder);
+            var module = builder.Build(this, null);
+            AddModuleInternal(module);
+            return module;
         }
 
         /// <summary>
@@ -611,7 +578,7 @@ namespace Qmmands
             if (type is null)
                 throw new ArgumentNullException(nameof(type), "The type to add must not be null.");
 
-            var builder = ReflectionUtilities.BuildModule(this, type.GetTypeInfo());
+            var builder = ReflectionUtilities.CreateModuleBuilder(this, null, type.GetTypeInfo());
             action?.Invoke(builder);
             var module = builder.Build(this, null);
             AddModuleInternal(module);
@@ -639,7 +606,7 @@ namespace Qmmands
                 if (module.Type != null && _typeModules.ContainsKey(module.Type))
                     throw new ArgumentException($"{module.Type} has already been added as a module.", nameof(module));
 
-                _map.MapModule(module, new List<string>());
+                _map.MapModule(module);
                 _modules.Add(module);
                 AddSubmodules(module);
             }
@@ -690,7 +657,7 @@ namespace Qmmands
                 if (!_modules.Contains(module))
                     throw new ArgumentException("This module has not been added.", nameof(module));
 
-                _map.UnmapModule(module, new List<string>());
+                _map.UnmapModule(module);
                 _modules.Remove(module);
                 if (module.Type != null)
                 {
@@ -704,7 +671,7 @@ namespace Qmmands
         ///     Attempts to find <see cref="Command"/>s matching the input and executes the most suitable one.
         /// </summary>
         /// <param name="input"> The input. </param>
-        /// <param name="context"> The <see cref="ICommandContext"/> to use during execution. </param>
+        /// <param name="context"> The <see cref="CommandContext"/> to use during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns>
         ///     An <see cref="IResult"/>.
@@ -715,7 +682,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The context must not be null.
         /// </exception>
-        public async Task<IResult> ExecuteAsync(string input, ICommandContext context, IServiceProvider provider = null)
+        public async Task<IResult> ExecuteAsync(string input, CommandContext context, IServiceProvider provider = null)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
@@ -726,22 +693,48 @@ namespace Qmmands
             if (provider is null)
                 provider = DummyServiceProvider.Instance;
 
-            var matches = FindCommands(input);
-            if (matches.Count == 0)
+            CommandMatch[] matches;
+            lock (_moduleLock)
+            {
+                matches = _map.FindCommands(input).OrderByDescending(x => x.Path.Count)
+                    .ThenByDescending(x => x.Command.Priority)
+                    .ThenByDescending(x => x.Command.Parameters.Count)
+                    .ToArray();
+            }
+
+            if (matches.Length == 0)
                 return new CommandNotFoundResult();
 
-            var failedOverloads = new Dictionary<Command, FailedResult>(matches.Count);
-            foreach (var match in matches.GroupBy(x => string.Join(Separator, x.Path)).First())
+            var pathLength = matches[0].Path.Count;
+            Dictionary<Command, FailedResult> failedOverloads = null;
+            for (var i = 0; i < matches.Length; i++)
             {
+                var match = matches[i];
+                if (match.Path.Count < pathLength)
+                    continue;
+
+                void AddFailedOverload(Command overload, FailedResult result)
+                {
+                    if (failedOverloads == null)
+                        failedOverloads = new Dictionary<Command, FailedResult>(4);
+
+                    failedOverloads[overload] = result;
+                }
+
+                context.Command = match.Command;
+                context.Alias = match.Alias;
+                context.Path = match.Path;
+                context.RawArguments = match.RawArguments;
+
                 try
                 {
                     var checkResult = await match.Command.RunChecksAsync(context, provider).ConfigureAwait(false);
                     if (checkResult is ChecksFailedResult checksFailedResult)
                     {
-                        if (checksFailedResult.Module != null)
+                        if (checksFailedResult.Module != null || matches.Length == 1)
                             return checksFailedResult;
 
-                        failedOverloads.Add(match.Command, checksFailedResult);
+                        AddFailedOverload(match.Command, checksFailedResult);
                         continue;
                     }
                 }
@@ -755,10 +748,13 @@ namespace Qmmands
                 ArgumentParserResult parseResult;
                 try
                 {
-                    parseResult = ArgumentParser.ParseRawArguments(match.Command, match.RawArguments);
+                    parseResult = ArgumentParser.Parse(context);
                     if (!parseResult.IsSuccessful)
                     {
-                        failedOverloads.Add(match.Command, new ArgumentParseFailedResult(match.Command, parseResult));
+                        if (matches.Length == 1)
+                            return parseResult;
+
+                        AddFailedOverload(match.Command, new ArgumentParseFailedResult(match.Command, parseResult));
                         continue;
                     }
                 }
@@ -775,7 +771,10 @@ namespace Qmmands
                     var result = await CreateArgumentsAsync(parseResult, context, provider).ConfigureAwait(false);
                     if (result.FailedResult != null)
                     {
-                        failedOverloads.Add(match.Command, result.FailedResult);
+                        if (matches.Length == 1)
+                            return result.FailedResult;
+
+                        AddFailedOverload(match.Command, result.FailedResult);
                         continue;
                     }
 
@@ -788,25 +787,11 @@ namespace Qmmands
                     return executionFailedResult;
                 }
 
-                var cooldownResult = match.Command.RunCooldowns(context, provider);
-                if (!cooldownResult.IsSuccessful)
-                    return cooldownResult;
-
-                switch (match.Command.RunMode)
-                {
-                    case RunMode.Sequential:
-                        return await ExecuteInternalAsync(match.Command, parsedArguments, context, provider).ConfigureAwait(false);
-
-                    case RunMode.Parallel:
-                        _ = Task.Run(() => ExecuteInternalAsync(match.Command, parsedArguments, context, provider));
-                        return new SuccessfulResult();
-
-                    default:
-                        throw new InvalidOperationException("Invalid run mode.");
-                }
+                context.InternalArguments = parsedArguments;
+                return await InternalExecuteAsync(context, provider).ConfigureAwait(false);
             }
 
-            return failedOverloads.Count == 1 ? failedOverloads.First().Value : new OverloadsFailedResult(failedOverloads);
+            return new OverloadsFailedResult(failedOverloads);
         }
 
         /// <summary>
@@ -814,7 +799,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="command"> The <see cref="Command"/> to execute. </param>
         /// <param name="rawArguments"> The raw arguments to use for this <see cref="Command"/>'s parameters. </param>
-        /// <param name="context"> The <see cref="ICommandContext"/> to use during execution. </param>
+        /// <param name="context"> The <see cref="CommandContext"/> to use during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns>
         ///     An <see cref="IResult"/>.
@@ -828,13 +813,13 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The context must not be null.
         /// </exception>
-        public async Task<IResult> ExecuteAsync(Command command, string rawArguments, ICommandContext context, IServiceProvider provider = null)
+        public async Task<IResult> ExecuteAsync(Command command, string rawArguments, CommandContext context, IServiceProvider provider = null)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command), "The command must not be null.");
 
             if (rawArguments == null)
-                throw new ArgumentNullException(nameof(rawArguments), "The input must not be null.");
+                throw new ArgumentNullException(nameof(rawArguments), "The raw arguments must not be null.");
 
             if (context is null)
                 throw new ArgumentNullException(nameof(context), "The context must not be null.");
@@ -842,6 +827,8 @@ namespace Qmmands
             if (provider is null)
                 provider = DummyServiceProvider.Instance;
 
+            context.Command = command;
+            context.RawArguments = rawArguments;
             try
             {
                 var checkResult = await command.RunChecksAsync(context, provider).ConfigureAwait(false);
@@ -858,7 +845,7 @@ namespace Qmmands
             ArgumentParserResult parseResult;
             try
             {
-                parseResult = ArgumentParser.ParseRawArguments(command, rawArguments);
+                parseResult = ArgumentParser.Parse(context);
                 if (!parseResult.IsSuccessful)
                     return new ArgumentParseFailedResult(command, parseResult);
             }
@@ -885,17 +872,109 @@ namespace Qmmands
                 return executionFailedResult;
             }
 
-            var cooldownResult = command.RunCooldowns(context, provider);
-            if (!cooldownResult.IsSuccessful)
-                return cooldownResult;
+            context.InternalArguments = parsedArguments;
+            return await InternalExecuteAsync(context, provider).ConfigureAwait(false);
+        }
 
-            switch (command.RunMode)
+        /// <summary>
+        ///     Attempts to execute the given <see cref="Command"/> with the provided arguments.
+        /// </summary>
+        /// <param name="command"> The <see cref="Command"/> to execute. </param>
+        /// <param name="arguments"> The arguments to use for this <see cref="Command"/>'s parameters. </param>
+        /// <param name="context"> The <see cref="CommandContext"/> to use during execution. </param>
+        /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
+        /// <returns>
+        ///     An <see cref="IResult"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The command must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The raw arguments must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     The context must not be null.
+        /// </exception>
+        public async Task<IResult> ExecuteAsync(Command command, IEnumerable<object> arguments, CommandContext context, IServiceProvider provider = null)
+        {
+            if (command == null)
+                throw new ArgumentNullException(nameof(command), "The command must not be null.");
+
+            if (arguments is null)
+                throw new ArgumentNullException(nameof(arguments), "The arguments must not be null.");
+
+            if (context is null)
+                throw new ArgumentNullException(nameof(context), "The context must not be null.");
+
+            if (provider is null)
+                provider = DummyServiceProvider.Instance;
+
+            context.Command = command;
+            context.InternalArguments = arguments.ToArray();
+            try
+            {
+                var checkResult = await command.RunChecksAsync(context, provider).ConfigureAwait(false);
+                if (!checkResult.IsSuccessful)
+                    return checkResult;
+            }
+            catch (Exception ex)
+            {
+                var executionFailedResult = new ExecutionFailedResult(command, CommandExecutionStep.Checks, ex);
+                await InvokeCommandErroredHandlersAsync(executionFailedResult, context, provider).ConfigureAwait(false);
+                return executionFailedResult;
+            }
+
+            return await InternalExecuteAsync(context, provider).ConfigureAwait(false);
+        }
+
+        private async Task<IResult> InternalExecuteAsync(CommandContext context, IServiceProvider provider)
+        {
+            async Task<IResult> ExecuteCallbackAsync()
+            {
+                try
+                {
+                    var result = await context.Command.Callback(context, provider).ConfigureAwait(false);
+                    if (result is ExecutionFailedResult executionFailedResult)
+                        await InvokeCommandErroredHandlersAsync(executionFailedResult, context, provider).ConfigureAwait(false);
+
+                    else
+                    {
+                        if (result is CommandResult commandResult)
+                            commandResult.Command = context.Command;
+
+                        await InvokeCommandExecutedHandlersAsync(result as CommandResult, context, provider).ConfigureAwait(false);
+                    }
+
+                    return result ?? new SuccessfulResult();
+                }
+                catch (Exception ex)
+                {
+                    var result = new ExecutionFailedResult(context.Command, CommandExecutionStep.Command, ex);
+                    await InvokeCommandErroredHandlersAsync(result, context, provider).ConfigureAwait(false);
+                    return result;
+                }
+            }
+
+            try
+            {
+                var cooldownResult = context.Command.RunCooldowns(context, provider);
+                if (!cooldownResult.IsSuccessful)
+                    return cooldownResult;
+            }
+            catch (Exception ex)
+            {
+                var result = new ExecutionFailedResult(context.Command, CommandExecutionStep.CooldownBucketKeyGenerating, ex);
+                await InvokeCommandErroredHandlersAsync(result, context, provider).ConfigureAwait(false);
+                return result;
+            }
+
+            switch (context.Command.RunMode)
             {
                 case RunMode.Sequential:
-                    return await ExecuteInternalAsync(command, parsedArguments, context, provider).ConfigureAwait(false);
+                    return await ExecuteCallbackAsync().ConfigureAwait(false);
 
                 case RunMode.Parallel:
-                    _ = Task.Run(() => ExecuteInternalAsync(command, parsedArguments, context, provider));
+                    _ = Task.Run(() => ExecuteCallbackAsync());
                     return new SuccessfulResult();
 
                 default:
@@ -903,7 +982,7 @@ namespace Qmmands
             }
         }
 
-        private async Task<(FailedResult FailedResult, object[] ParsedArguments)> CreateArgumentsAsync(ArgumentParserResult parserResult, ICommandContext context, IServiceProvider provider = null)
+        private async Task<(FailedResult FailedResult, object[] ParsedArguments)> CreateArgumentsAsync(ArgumentParserResult parserResult, CommandContext context, IServiceProvider provider = null)
         {
             if (context is null)
                 throw new ArgumentNullException(nameof(context), "The context must not be null.");
@@ -958,13 +1037,10 @@ namespace Qmmands
             return (default, parsedArguments);
         }
 
-        private async Task<(TypeParseFailedResult TypeParseFailedResult, object ParsedArgument)> ParseArgumentAsync(Parameter parameter, object argument, ICommandContext context, IServiceProvider provider)
+        private async Task<(TypeParseFailedResult TypeParseFailedResult, object ParsedArgument)> ParseArgumentAsync(Parameter parameter, object argument, CommandContext context, IServiceProvider provider)
         {
             if (!(argument is string value))
                 return (null, argument);
-
-            if (parameter.Type == _stringType)
-                return (null, value);
 
             IPrimitiveTypeParser primitiveParser;
             if (!(parameter.CustomTypeParserType is null))
@@ -979,6 +1055,9 @@ namespace Qmmands
 
                 return (null, typeParserResult.HasValue ? typeParserResult.Value : null);
             }
+
+            if (parameter.Type == _stringType)
+                return (null, value);
 
             var parser = GetAnyTypeParser(parameter.Type, (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null);
             if (!(parser is null))
@@ -1008,46 +1087,20 @@ namespace Qmmands
             return (new TypeParseFailedResult(parameter, value, $"Failed to parse {friendlyName}."), default);
         }
 
-        internal async Task<IResult> ExecuteInternalAsync(Command command, object[] arguments, ICommandContext context, IServiceProvider provider)
-        {
-            try
-            {
-                var result = await command.Callback(command, arguments, context, provider).ConfigureAwait(false);
-                if (result is ExecutionFailedResult executionFailedResult)
-                    await InvokeCommandErroredHandlersAsync(executionFailedResult, context, provider).ConfigureAwait(false);
-
-                else
-                {
-                    if (result is CommandResult commandResult)
-                        commandResult.Command = command;
-
-                    await InvokeCommandExecutedHandlersAsync(command, result as CommandResult, context, provider).ConfigureAwait(false);
-                }
-
-                return result ?? new SuccessfulResult();
-            }
-            catch (Exception ex)
-            {
-                var result = new ExecutionFailedResult(command, CommandExecutionStep.Command, ex);
-                await InvokeCommandErroredHandlersAsync(result, context, provider).ConfigureAwait(false);
-                return result;
-            }
-        }
-
-        private async Task InvokeCommandExecutedHandlersAsync(Command command, CommandResult result, ICommandContext context, IServiceProvider provider)
+        private async Task InvokeCommandExecutedHandlersAsync(CommandResult result, CommandContext context, IServiceProvider provider)
         {
             var handlers = CommandExecutedHandlers;
             for (var i = 0; i < handlers.Length; i++)
             {
                 try
                 {
-                    await handlers[i](command, result, context, provider).ConfigureAwait(false);
+                    await handlers[i](result, context, provider).ConfigureAwait(false);
                 }
                 catch { }
             }
         }
 
-        private async Task InvokeCommandErroredHandlersAsync(ExecutionFailedResult result, ICommandContext context, IServiceProvider provider)
+        private async Task InvokeCommandErroredHandlersAsync(ExecutionFailedResult result, CommandContext context, IServiceProvider provider)
         {
             var handlers = CommandErroredHandlers;
             for (var i = 0; i < handlers.Length; i++)

@@ -6,10 +6,55 @@ using System.Threading.Tasks;
 namespace Qmmands
 {
     /// <summary>
-    ///     Provides a framework interface for creating text based commands.
+    ///     Represents the extracted interface from <see cref="CommandService"/>.
     /// </summary>
     public interface ICommandService
     {
+        /// <summary>
+        ///     Gets whether <see cref="FindModules"/>, <see cref="FindCommands"/> and primitive <see langword="enum"/> type parsers are case sensitive or not.
+        /// </summary>
+        bool IsCaseSensitive { get; }
+
+        /// <summary>
+        ///     Gets the default <see cref="RunMode"/> for commands and modules.
+        /// </summary>
+        RunMode DefaultRunMode { get; }
+
+        /// <summary>
+        ///     Gets whether commands should ignore extra arguments by default or not.
+        /// </summary>
+        bool IgnoresExtraArguments { get; }
+
+        /// <summary>
+        ///     Gets the separator.
+        /// </summary>
+        string Separator { get; }
+
+        /// <summary>
+        ///     Gets the separator requirement.
+        /// </summary>
+        SeparatorRequirement SeparatorRequirement { get; }
+
+        /// <summary>
+        ///     Gets the default argument parser.
+        /// </summary>
+        IArgumentParser ArgumentParser { get; }
+
+        /// <summary>
+        ///     Gets the generator <see langword="delegate"/> to use for <see cref="Cooldown"/> bucket keys.
+        /// </summary>
+        CooldownBucketKeyGeneratorDelegate CooldownBucketKeyGenerator { get; }
+
+        /// <summary>
+        ///     Gets the quotation mark map used for non-remainder multi word arguments.
+        /// </summary>
+        IReadOnlyDictionary<char, char> QuotationMarkMap { get; }
+
+        /// <summary>
+        ///     Gets the collection of nouns used for nullable value type parsing.
+        /// </summary>
+        IReadOnlyList<string> NullableNouns { get; }
+
         /// <summary>
         ///     Fires when a command is successfully executed. Use this to handle <see cref="RunMode.Parallel"/> commands.
         /// </summary>
@@ -70,6 +115,11 @@ namespace Qmmands
         void RemoveTypeParser<T>(TypeParser<T> parser);
 
         /// <summary>
+        ///     Removes all added <see cref="TypeParser{T}"/>s.
+        /// </summary>
+        void RemoveAllTypeParsers();
+
+        /// <summary>
         ///     Retrieves a <see cref="TypeParser{T}"/> from the added non-primitive parsers for the specified <typeparamref name="T"/> <see cref="Type"/>.
         /// </summary>
         /// <typeparam name="T"> The <see cref="Type"/> the <see cref="TypeParser{T}"/> is for. </typeparam>
@@ -99,15 +149,6 @@ namespace Qmmands
         ///     An <see cref="IReadOnlyList{Module}"/> of all found and added <see cref="Module"/>s.
         /// </returns>
         IReadOnlyList<Module> AddModules(Assembly assembly, Predicate<TypeInfo> predicate = null, Action<ModuleBuilder> action = null);
-
-        /// <summary>
-        ///     Attempts to build the specified <see cref="ModuleBuilder"/> into a <see cref="Module"/>.
-        /// </summary>
-        /// <param name="builder"> The builder to build. </param>
-        /// <returns>
-        ///     A <see cref="Module"/>.
-        /// </returns>
-        Module AddModule(ModuleBuilder builder);
 
         /// <summary>
         ///     Attempts to instantiate, modify, and build a <see cref="ModuleBuilder"/> into a <see cref="Module"/>.
@@ -159,23 +200,23 @@ namespace Qmmands
         ///     Attempts to find <see cref="Command"/>s matching the input and executes the most suitable one.
         /// </summary>
         /// <param name="input"> The input. </param>
-        /// <param name="context"> The <see cref="ICommandContext"/> to use during execution. </param>
+        /// <param name="context"> The <see cref="CommandContext"/> to use during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns>
         ///     An <see cref="IResult"/>.
         /// </returns>
-        Task<IResult> ExecuteAsync(string input, ICommandContext context, IServiceProvider provider = null);
+        Task<IResult> ExecuteAsync(string input, CommandContext context, IServiceProvider provider = null);
 
         /// <summary>
         ///     Attempts to parse the arguments for the provided <see cref="Command"/> and execute it.
         /// </summary>
         /// <param name="command"> The <see cref="Command"/> to execute. </param>
         /// <param name="rawArguments"> The raw arguments to use for this <see cref="Command"/>'s parameters. </param>
-        /// <param name="context"> The <see cref="ICommandContext"/> to use during execution. </param>
+        /// <param name="context"> The <see cref="CommandContext"/> to use during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns>
         ///     An <see cref="IResult"/>.
         /// </returns>
-        Task<IResult> ExecuteAsync(Command command, string rawArguments, ICommandContext context, IServiceProvider provider = null);
+        Task<IResult> ExecuteAsync(Command command, string rawArguments, CommandContext context, IServiceProvider provider = null);
     }
 }

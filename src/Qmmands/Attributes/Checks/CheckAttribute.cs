@@ -7,16 +7,16 @@ namespace Qmmands
     ///     Represents a <see cref="Qmmands.Module"/> or <see cref="Qmmands.Command"/> check that has to succeed before it can be executed.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
-    public abstract class CheckBaseAttribute : Attribute
+    public abstract class CheckAttribute : Attribute
     {
         /// <summary>
-        ///     Gets the <see cref="Qmmands.Module"/> this <see cref="CheckBaseAttribute"/> is for.
+        ///     Gets the <see cref="Qmmands.Module"/> this <see cref="CheckAttribute"/> is for.
         ///     <see langword="null"/> if this check is for a <see cref="Qmmands.Command"/>.
         /// </summary>
         public Module Module { get; internal set; }
 
         /// <summary>
-        ///     Gets the <see cref="Qmmands.Command"/> this <see cref="CheckBaseAttribute"/> is for.
+        ///     Gets the <see cref="Qmmands.Command"/> this <see cref="CheckAttribute"/> is for.
         ///     <see langword="null"/> if this check is for a <see cref="Qmmands.Module"/>.
         /// </summary>
         public Command Command { get; internal set; }
@@ -32,11 +32,17 @@ namespace Qmmands
         /// <summary>
         ///     A method which determines whether the <see cref="Module"/> or <see cref="Command"/> can execute in given circumstances.
         /// </summary>
-        /// <param name="context"> The <see cref="ICommandContext"/> used during execution. </param>
+        /// <param name="context"> The <see cref="CommandContext"/> used during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> used during execution. </param>
         /// <returns>
-        ///     A <see cref="CheckResult"/> which determines whether this <see cref="CheckBaseAttribute"/> succeeded or not.
+        ///     A <see cref="CheckResult"/> which determines whether this <see cref="CheckAttribute"/> succeeded or not.
         /// </returns>
-        public abstract Task<CheckResult> CheckAsync(ICommandContext context, IServiceProvider provider);
+        public abstract
+#if NETCOREAPP
+            ValueTask<CheckResult>
+#else
+            Task<CheckResult>
+#endif
+            CheckAsync(CommandContext context, IServiceProvider provider);
     }
 }

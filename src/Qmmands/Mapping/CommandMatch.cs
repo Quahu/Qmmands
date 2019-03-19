@@ -19,7 +19,7 @@ namespace Qmmands
         public string Alias { get; }
 
         /// <summary>
-        ///     Gets the path to the found <see cref="Qmmands.Command"/>.
+        ///     Gets the alias path to the found <see cref="Qmmands.Command"/>.
         /// </summary>
         public IReadOnlyList<string> Path { get; }
 

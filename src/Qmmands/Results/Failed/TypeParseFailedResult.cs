@@ -5,7 +5,9 @@
     /// </summary>
     public sealed class TypeParseFailedResult : FailedResult
     {
-        /// <inheritdoc />
+        /// <summary>
+        ///     Gets the reason of this failed result.
+        /// </summary>
         public override string Reason { get; }
 
         /// <summary>

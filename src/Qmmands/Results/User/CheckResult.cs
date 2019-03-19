@@ -1,11 +1,13 @@
 ﻿namespace Qmmands
 {
     /// <summary>
-    ///     Represents a <see cref="CheckBaseAttribute"/>'s result.
+    ///     Represents a <see cref="CheckAttribute"/>'s result.
     /// </summary>
     public class CheckResult : IResult
     {
-        /// <inheritdoc />
+        /// <summary>
+        ///     Gets whether the result was successful or not.
+        /// </summary>
         public virtual bool IsSuccessful => Reason == null;
 
         /// <summary>
@@ -29,7 +31,7 @@
         /// <summary>
         ///     Gets a successful <see cref="CheckResult"/>.
         /// </summary>
-        public static CheckResult Successful 
+        public static CheckResult Successful
             => new CheckResult();
 
         /// <summary>
@@ -41,5 +43,14 @@
         /// </returns>
         public static CheckResult Unsuccessful(string reason)
             => new CheckResult(reason);
+
+#if NETCOREAPP
+        /// <summary>
+        ///     Implicitly wraps the provided <see cref="CheckResult"/> in <see cref="System.Threading.Tasks.ValueTask{TResult}"/>.
+        /// </summary>
+        /// <param name="result"></param>
+        public static implicit operator System.Threading.Tasks.ValueTask<CheckResult>(CheckResult result)
+            => new System.Threading.Tasks.ValueTask<CheckResult>(result);
+#endif
     }
 }

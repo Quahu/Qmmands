@@ -4,11 +4,15 @@
 [![MyGet](https://img.shields.io/myget/qmmands/vpre/Qmmands.svg?style=flat-square&label=myget)](https://www.myget.org/gallery/qmmands)
 [![The Lab](https://img.shields.io/discord/416256456505950215.svg?style=flat-square&label=discord)](https://discord.gg/eUMSXGZ)  
 
-An asynchronous platform-independent .NET Standard 2.0 command framework that can be used with any input source, whether that be Discord messages, IRC, or a terminal. 
+An asynchronous platform-independent .NET Standard 2.0 and .NET Core 2.1-2.2 command framework that can be used with any input source, whether that be Discord messages, IRC, or a terminal. 
 
 Inspired by [Discord.Net.Commands](https://github.com/RogueException/Discord.Net/tree/dev/src/Discord.Net.Commands) and [DSharpPlus.CommandsNext](https://github.com/DSharpPlus/DSharpPlus/tree/master/DSharpPlus.CommandsNext).
 
-Qmmands can be pulled from NuGet. For nightly builds add `https://www.myget.org/F/qmmands/api/v3/index.json` (the nightly feed) to your project's package sources.
+
+## Installing
+Stable Qmmands builds can be pulled from NuGet.
+For nightly builds add `https://www.myget.org/F/quahu/api/v3/index.json` (the nightly feed) to your project's package sources.
+
 
 ## Key Features
 - Advanced parameter parsing support (including custom type parsers, optional parameters, and remainder support)
@@ -19,14 +23,14 @@ Qmmands can be pulled from NuGet. For nightly builds add `https://www.myget.org/
 
 
 ## Documentation
-There's currently no official documentation for Qmmands other than the usage examples below and the bundled XML docstrings. For support you should hop in my Discord guild:
+There's currently no official documentation for Qmmands other than the community projects below and the bundled XML docstrings. For support you should hop in my Discord guild:
 
 [![The Lab](https://discordapp.com/api/guilds/416256456505950215/embed.png?style=banner2)](https://discord.gg/eUMSXGZ)
 
 
-### Community Examples:
+### Community Projects:
 * [Kiritsu](https://github.com/Kiritsu)'s Discord bot: [FoxBot](https://github.com/Kiritsu/FoxBot) (DSharpPlus)
-* [GreemDev](https://github.com/GreemDev)'s Discord bot: [Volte](https://github.com/GreemDev/Volte) (Discord.Net)
+* [GreemDev](https://github.com/GreemDev)'s Discord bot: [Volte](https://github.com/GreemDev/Volte) (DSharpPlus)
 * [TheCasino](https://github.com/TheCasino)'s Discord bot: [Espeon](https://github.com/TheCasino/Espeon) (Discord.Net)
 * [BlowaXD](https://github.com/BlowaXD)'s Nostale Server Emulator: [SaltyEmu](https://github.com/BlowaXD/SaltyEmu) 
 
@@ -35,21 +39,21 @@ There's currently no official documentation for Qmmands other than the usage exa
 ```cs
 private readonly CommandService _service = new CommandService();
 
-// Imagine this being a message callback, whether it'd be from an IRC bot,
-// a Discord bot, or any other chat based commands bot.
+// Imagine this being a message callback, whether it be from an IRC bot,
+// a Discord bot, or any other chat based service.
 private async Task MessageReceivedAsync(Message message)
 {
     if (!CommandUtilities.HasPrefix(message.Content, '!', out string output))
         return;
         
-    IResult result = await _service.ExecuteAsync(output, new CommandContext(message));
+    IResult result = await _service.ExecuteAsync(output, new CustomCommandContext(message));
     if (result is FailedResult failedResult)
         await message.Channel.SendMessageAsync(failedResult.Reason); 
 }
 ```
-**CommandContext.cs**
+**CustomCommandContext.cs**
 ```cs
-public sealed class CommandContext : ICommandContext
+public sealed class CustomCommandContext : CommandContext
 {
     public Message Message { get; }
     
@@ -61,8 +65,11 @@ public sealed class CommandContext : ICommandContext
 ```
 **CommandModule.cs**
 ```cs
-public sealed class CommandModule : ModuleBase<CommandContext>
+public sealed class CommandModule : ModuleBase<CustomCommandContext>
 {
+    // Dependency Injection via a constructor or public settable properties.
+    // CommandService and IServiceProvider self-inject into modules,
+    // properties and other types are requested from the provided IServiceProvider
     public CommandService Service { get; set; }
 
     // Invoked with:   !help

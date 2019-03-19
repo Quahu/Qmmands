@@ -5,7 +5,9 @@
     /// </summary>
     public sealed class CommandNotFoundResult : FailedResult
     {
-        /// <inheritdoc />
+        /// <summary>
+        ///     Gets the reason of this failed result.
+        /// </summary>
         public override string Reason => "No command found matching the provided input.";
 
         internal CommandNotFoundResult()

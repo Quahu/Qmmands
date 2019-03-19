@@ -4,10 +4,10 @@ namespace Qmmands
 {
     internal sealed class CommandMap
     {
-        private readonly CommandNode _rootNode;
+        private readonly CommandMapNode _rootNode;
 
         public CommandMap(CommandService service)
-            => _rootNode = new CommandNode(service);
+            => _rootNode = new CommandMapNode(service);
 
         public IEnumerable<CommandMatch> FindCommands(string text)
             => _rootNode.FindCommands(new List<string>(), text, 0);
@@ -27,7 +27,10 @@ namespace Qmmands
         public void RemoveCommand(Command command, IReadOnlyList<string> path)
             => _rootNode.RemoveCommand(command, path, 0);
 
-        public void MapModule(Module module, List<string> path)
+        public void MapModule(Module module)
+            => MapModule(module, new List<string>());
+
+        private void MapModule(Module module, List<string> path)
         {
             if (module.Aliases.Count == 0)
             {
@@ -43,19 +46,35 @@ namespace Qmmands
             {
                 for (var i = 0; i < module.Aliases.Count; i++)
                 {
-                    path.Add(module.Aliases[i]);
-                    MapCommands(module, path);
+                    var alias = module.Aliases[i];
+                    if (alias.Length == 0)
+                    {
+                        MapCommands(module, path);
 
-                    for (var j = 0; j < module.Submodules.Count; j++)
-                        MapModule(module.Submodules[j], path);
+                        for (var j = 0; j < module.Submodules.Count; j++)
+                            MapModule(module.Submodules[j], path);
 
-                    AddModule(module, path);
-                    path.RemoveAt(path.Count - 1);
+                        AddModule(module, path);
+                    }
+                    else
+                    {
+                        path.Add(alias);
+                        MapCommands(module, path);
+
+                        for (var j = 0; j < module.Submodules.Count; j++)
+                            MapModule(module.Submodules[j], path);
+
+                        AddModule(module, path);
+                        path.RemoveAt(path.Count - 1);
+                    }
                 }
             }
         }
 
-        public void UnmapModule(Module module, List<string> path)
+        public void UnmapModule(Module module)
+            => UnmapModule(module, new List<string>());
+
+        private void UnmapModule(Module module, List<string> path)
         {
             if (module.Aliases.Count == 0)
             {
@@ -71,14 +90,27 @@ namespace Qmmands
             {
                 for (var i = 0; i < module.Aliases.Count; i++)
                 {
-                    path.Add(module.Aliases[i]);
-                    UnmapCommands(module, path);
+                    var alias = module.Aliases[i];
+                    if (alias.Length == 0)
+                    {
+                        UnmapCommands(module, path);
 
-                    for (var j = 0; j < module.Submodules.Count; j++)
-                        UnmapModule(module.Submodules[j], path);
+                        for (var j = 0; j < module.Submodules.Count; j++)
+                            UnmapModule(module.Submodules[j], path);
 
-                    RemoveModule(module, path);
-                    path.RemoveAt(path.Count - 1);
+                        RemoveModule(module, path);
+                    }
+                    else
+                    {
+                        path.Add(alias);
+                        UnmapCommands(module, path);
+
+                        for (var j = 0; j < module.Submodules.Count; j++)
+                            UnmapModule(module.Submodules[j], path);
+
+                        RemoveModule(module, path);
+                        path.RemoveAt(path.Count - 1);
+                    }
                 }
             }
         }
@@ -94,9 +126,20 @@ namespace Qmmands
                 {
                     for (var i = 0; i < command.Aliases.Count; i++)
                     {
-                        path.Add(command.Aliases[i]);
-                        AddCommand(command, path);
-                        path.RemoveAt(path.Count - 1);
+                        var alias = command.Aliases[i];
+                        if (alias.Length == 0)
+                        {
+                            if (path.Count == 0)
+                                continue;
+
+                            AddCommand(command, path);
+                        }
+                        else
+                        {
+                            path.Add(alias);
+                            AddCommand(command, path);
+                            path.RemoveAt(path.Count - 1);
+                        }
                     }
                 }
             }
@@ -113,9 +156,20 @@ namespace Qmmands
                 {
                     for (var i = 0; i < command.Aliases.Count; i++)
                     {
-                        path.Add(command.Aliases[i]);
-                        RemoveCommand(command, path);
-                        path.RemoveAt(path.Count - 1);
+                        var alias = command.Aliases[i];
+                        if (alias.Length == 0)
+                        {
+                            if (path.Count == 0)
+                                continue;
+
+                            RemoveCommand(command, path);
+                        }
+                        else
+                        {
+                            path.Add(alias);
+                            RemoveCommand(command, path);
+                            path.RemoveAt(path.Count - 1);
+                        }
                     }
                 }
             }

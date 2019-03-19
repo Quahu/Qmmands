@@ -59,7 +59,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the checks of this <see cref="Parameter"/>.
         /// </summary>
-        public IReadOnlyList<ParameterCheckBaseAttribute> Checks { get; }
+        public IReadOnlyList<ParameterCheckAttribute> Checks { get; }
 
         /// <summary>
         ///     Gets the attributes of this <see cref="Parameter"/>.
@@ -107,19 +107,19 @@ namespace Qmmands
         ///     Runs parameter checks on this <see cref="Parameter"/>.
         /// </summary>
         /// <param name="argument"> The parsed argument value for this <see cref="Parameter"/>. </param>
-        /// <param name="context"> The <see cref="ICommandContext"/> used for execution. </param>
+        /// <param name="context"> The <see cref="CommandContext"/> used for execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
         /// <returns>
         ///     A <see cref="SuccessfulResult"/> if all of the checks pass, otherwise a <see cref="ChecksFailedResult"/>.
         /// </returns>
-        public async Task<IResult> RunChecksAsync(object argument, ICommandContext context, IServiceProvider provider = null)
+        public async Task<IResult> RunChecksAsync(object argument, CommandContext context, IServiceProvider provider = null)
         {
             if (provider is null)
                 provider = DummyServiceProvider.Instance;
 
             if (Checks.Count > 0)
             {
-                async Task<(ParameterCheckBaseAttribute Check, CheckResult Result)> RunCheckAsync(ParameterCheckBaseAttribute check)
+                async Task<(ParameterCheckAttribute Check, CheckResult Result)> RunCheckAsync(ParameterCheckAttribute check)
                 {
                     var checkResult = await check.CheckAsync(argument, context, provider).ConfigureAwait(false);
                     return (check, checkResult);

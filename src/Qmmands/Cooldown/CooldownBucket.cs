@@ -7,10 +7,8 @@ namespace Qmmands
     {
         public Cooldown Cooldown { get; }
 
+        public int Remaining => Volatile.Read(ref _remaining);
         private int _remaining;
-
-        public int Remaining
-            => Volatile.Read(ref _remaining);
 
         public DateTimeOffset Window { get; private set; }
 

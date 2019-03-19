@@ -7,7 +7,9 @@ namespace Qmmands
     /// </summary>
     public sealed class ParameterChecksFailedResult : FailedResult
     {
-        /// <inheritdoc />
+        /// <summary>
+        ///     Gets the reason of this failed result.
+        /// </summary>
         public override string Reason { get; }
 
         /// <summary>
@@ -23,9 +25,9 @@ namespace Qmmands
         /// <summary>
         ///     Gets the checks that failed with their error reasons.
         /// </summary>
-        public IReadOnlyList<(ParameterCheckBaseAttribute Check, CheckResult Result)> FailedChecks { get; }
+        public IReadOnlyList<(ParameterCheckAttribute Check, CheckResult Result)> FailedChecks { get; }
 
-        internal ParameterChecksFailedResult(Parameter parameter, object argument, IReadOnlyList<(ParameterCheckBaseAttribute Check, CheckResult Result)> failedChecks)
+        internal ParameterChecksFailedResult(Parameter parameter, object argument, IReadOnlyList<(ParameterCheckAttribute Check, CheckResult Result)> failedChecks)
         {
             Parameter = parameter;
             Argument = argument;

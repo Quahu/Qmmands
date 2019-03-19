@@ -7,7 +7,9 @@ namespace Qmmands
     /// </summary>
     public sealed class OverloadsFailedResult : FailedResult
     {
-        /// <inheritdoc />
+        /// <summary>
+        ///     Gets the reason of this failed result.
+        /// </summary>s
         public override string Reason => "Failed to find a matching overload.";
 
         /// <summary>

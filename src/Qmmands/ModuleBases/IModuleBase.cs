@@ -4,10 +4,10 @@ namespace Qmmands
 {
     internal interface IModuleBase
     {
-        Task BeforeExecutedAsync(Command command);
+        Task BeforeExecutedAsync();
 
-        Task AfterExecutedAsync(Command command);
+        Task AfterExecutedAsync();
 
-        void Prepare(ICommandContext context);
+        void Prepare(CommandContext context);
     }
 }

@@ -1,13 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Qmmands
 {
     /// <summary>
-    ///     Represents an <see cref="IArgumentParser.ParseRawArguments"/> result.
+    ///     Represents an <see cref="IArgumentParser.Parse"/> result.
     /// </summary>
     public struct ArgumentParserResult : IResult
     {
-        /// <inheritdoc />
+        private static readonly IReadOnlyDictionary<Parameter, object> _emptyParameterDictionary =
+            new ReadOnlyDictionary<Parameter, object>(new Dictionary<Parameter, object>(0));
+
+        /// <summary>
+        ///     Gets whether the result was successful or not.
+        /// </summary>
         public bool IsSuccessful => ArgumentParserFailure == null;
 
         /// <summary>
@@ -22,7 +28,7 @@ namespace Qmmands
         public Parameter Parameter { get; }
 
         /// <summary>
-        ///     Gets the raw arguments passed to the <see cref="IArgumentParser.ParseRawArguments"/>.
+        ///     Gets the raw arguments passed to the <see cref="IArgumentParser.Parse"/>.
         /// </summary>
         public string RawArguments { get; }
 
@@ -55,7 +61,7 @@ namespace Qmmands
             Command = command;
             Parameter = parameter;
             RawArguments = rawArguments;
-            Arguments = arguments;
+            Arguments = arguments ?? _emptyParameterDictionary;
             ArgumentParserFailure = parseFailure;
             FailurePosition = failurePosition;
         }
@@ -70,7 +76,7 @@ namespace Qmmands
         {
             Command = command;
             RawArguments = rawArguments;
-            Arguments = arguments;
+            Arguments = arguments ?? _emptyParameterDictionary;
         }
     }
 }

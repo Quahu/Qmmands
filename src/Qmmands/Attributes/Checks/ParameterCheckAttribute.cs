@@ -7,10 +7,10 @@ namespace Qmmands
     ///     Represents a <see cref="Qmmands.Parameter"/> check that has to succeed before the <see cref="Command"/> can be executed.
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
-    public abstract class ParameterCheckBaseAttribute : Attribute
+    public abstract class ParameterCheckAttribute : Attribute
     {
         /// <summary>
-        ///     Gets the <see cref="Qmmands.Parameter"/> this <see cref="ParameterCheckBaseAttribute"/> is for.
+        ///     Gets the <see cref="Qmmands.Parameter"/> this <see cref="ParameterCheckAttribute"/> is for.
         /// </summary>
         public Parameter Parameter { get; internal set; }
 
@@ -26,11 +26,17 @@ namespace Qmmands
         ///     A method which determines whether the <paramref name="argument"/> is valid for the <see cref="Parameter"/> in given circumstances.
         /// </summary>
         /// <param name="argument"> The value given to this <see cref="Parameter"/>. </param>
-        /// <param name="context"> The <see cref="ICommandContext"/> used during execution. </param>
+        /// <param name="context"> The <see cref="CommandContext"/> used during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> used during execution. </param>
         /// <returns>
-        ///     A <see cref="CheckResult"/> which determines whether this <see cref="ParameterCheckBaseAttribute"/> succeeded or not.
+        ///     A <see cref="CheckResult"/> which determines whether this <see cref="ParameterCheckAttribute"/> succeeded or not.
         /// </returns>
-        public abstract Task<CheckResult> CheckAsync(object argument, ICommandContext context, IServiceProvider provider);
+        public abstract
+#if NETCOREAPP
+            ValueTask<CheckResult>
+#else
+            Task<CheckResult>
+#endif
+            CheckAsync(object argument, CommandContext context, IServiceProvider provider);
     }
 }

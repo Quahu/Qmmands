@@ -26,14 +26,12 @@ namespace Qmmands
         /// <summary>
         ///     Gets or sets whether the <see cref="Command"/> should ignore extra arguments or not.
         /// </summary>
-        public bool? IgnoreExtraArguments { get; set; }
+        public bool? IgnoresExtraArguments { get; set; }
 
         /// <summary>
         ///     Gets or sets the priority of the <see cref="Command"/>.
         /// </summary>
         public int Priority { get; set; }
-
-        private RunMode? _runMode;
 
         /// <summary>
         ///     Gets or sets the <see cref="Qmmands.RunMode"/> of the <see cref="Command"/>.
@@ -49,11 +47,7 @@ namespace Qmmands
                 _runMode = value;
             }
         }
-
-        /// <summary>
-        ///     Gets or sets the callback of the <see cref="Command"/>.
-        /// </summary>
-        public CommandCallbackDelegate Callback { get; set; }
+        private RunMode? _runMode;
 
         /// <summary>
         ///     Gets the <see cref="Cooldown"/>s of the <see cref="Command"/>.
@@ -68,7 +62,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the checks of the <see cref="Command"/>.
         /// </summary>
-        public List<CheckBaseAttribute> Checks { get; }
+        public List<CheckAttribute> Checks { get; }
 
         /// <summary>
         ///     Gets the custom attributes of the <see cref="Command"/>.
@@ -81,13 +75,19 @@ namespace Qmmands
         public List<ParameterBuilder> Parameters { get; }
 
         /// <summary>
-        ///     Initialises a new <see cref="CommandBuilder"/>.
+        ///     Gets the module of the <see cref="Command"/>.
         /// </summary>
-        public CommandBuilder()
+        public ModuleBuilder Module { get; }
+
+        internal CommandCallbackDelegate Callback { get; }
+
+        internal CommandBuilder(ModuleBuilder module, CommandCallbackDelegate callback)
         {
+            Module = module;
+            Callback = callback;
             Cooldowns = new List<Cooldown>();
             Aliases = new List<string>();
-            Checks = new List<CheckBaseAttribute>();
+            Checks = new List<CheckAttribute>();
             Attributes = new List<Attribute>();
             Parameters = new List<ParameterBuilder>();
         }
@@ -120,11 +120,11 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Sets the <see cref="IgnoreExtraArguments"/>.
+        ///     Sets the <see cref="IgnoresExtraArguments"/>.
         /// </summary>
-        public CommandBuilder WithIgnoreExtraArguments(bool ignoreExtraArguments)
+        public CommandBuilder WithIgnoresExtraArguments(bool? ignoresExtraArguments)
         {
-            IgnoreExtraArguments = ignoreExtraArguments;
+            IgnoresExtraArguments = ignoresExtraArguments;
             return this;
         }
 
@@ -143,15 +143,6 @@ namespace Qmmands
         public CommandBuilder WithRunMode(RunMode? runMode)
         {
             RunMode = runMode;
-            return this;
-        }
-
-        /// <summary>
-        ///     Sets the <see cref="Callback"/>.
-        /// </summary>
-        public CommandBuilder WithCallback(CommandCallbackDelegate callback)
-        {
-            Callback = callback;
             return this;
         }
 
@@ -194,7 +185,7 @@ namespace Qmmands
         /// <summary>
         ///     Adds a check to <see cref="Checks"/>.
         /// </summary>
-        public CommandBuilder AddCheck(CheckBaseAttribute check)
+        public CommandBuilder AddCheck(CheckAttribute check)
         {
             Checks.Add(check);
             return this;
@@ -203,7 +194,7 @@ namespace Qmmands
         /// <summary>
         ///     Adds checks to <see cref="Checks"/>.
         /// </summary>
-        public CommandBuilder AddChecks(params CheckBaseAttribute[] checks)
+        public CommandBuilder AddChecks(params CheckAttribute[] checks)
         {
             Checks.AddRange(checks);
             return this;
@@ -215,27 +206,12 @@ namespace Qmmands
         /// <param name="builderAction"> The action to perform on the builder. </param>
         public CommandBuilder AddParameter(Action<ParameterBuilder> builderAction)
         {
-            var builder = new ParameterBuilder();
+            if (builderAction == null)
+                throw new ArgumentNullException(nameof(builderAction));
+
+            var builder = new ParameterBuilder(this);
             builderAction(builder);
             Parameters.Add(builder);
-            return this;
-        }
-
-        /// <summary>
-        ///     Adds a parameter to <see cref="Parameters"/>.
-        /// </summary>
-        public CommandBuilder AddParameter(ParameterBuilder parameter)
-        {
-            Parameters.Add(parameter);
-            return this;
-        }
-
-        /// <summary>
-        ///     Adds parameters to <see cref="Parameters"/>.
-        /// </summary>
-        public CommandBuilder AddParameters(params ParameterBuilder[] parameters)
-        {
-            Parameters.AddRange(parameters);
             return this;
         }
 
@@ -262,12 +238,12 @@ namespace Qmmands
             if (Callback is null)
                 throw new CommandBuildingException(this, "Command's callback must not be null.");
 
-            var aliases = new List<string>();
+            var aliases = new List<string>(Aliases.Count);
             for (var i = 0; i < Aliases.Count; i++)
             {
                 var alias = Aliases[i];
-                if (string.IsNullOrEmpty(alias))
-                    throw new CommandBuildingException(this, "Command's aliases must not contain null or empty entries.");
+                if (alias == null)
+                    throw new CommandBuildingException(this, "Command's aliases must not contain null entries.");
 
                 if (aliases.Contains(alias))
                     throw new CommandBuildingException(this, "Command's aliases must not contain duplicates.");

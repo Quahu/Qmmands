@@ -1,3 +1,5 @@
+#pragma warning disable IDE0051 // Remove unused private members
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,30 +11,37 @@ namespace Qmmands
 {
     internal static class ReflectionUtilities
     {
-        private static readonly TypeInfo _typeParserTypeInfo = typeof(ITypeParser).GetTypeInfo();
-        private static readonly TypeInfo _moduleBaseTypeInfo = typeof(IModuleBase).GetTypeInfo();
-        private static readonly TypeInfo _commandResultTypeInfo = typeof(CommandResult).GetTypeInfo();
-        private static readonly TypeInfo _taskTypeInfo = typeof(Task).GetTypeInfo();
-        private static readonly TypeInfo _objectTypeInfo = typeof(object).GetTypeInfo();
-        private static readonly Type _nullableType = typeof(Nullable<>);
-
         public static bool IsValidModuleDefinition(TypeInfo typeInfo)
-            => _moduleBaseTypeInfo.IsAssignableFrom(typeInfo) && !typeInfo.IsAbstract && !typeInfo.ContainsGenericParameters;
+            => typeof(IModuleBase).IsAssignableFrom(typeInfo) && !typeInfo.IsAbstract && !typeInfo.ContainsGenericParameters;
 
         public static bool IsValidCommandDefinition(MethodInfo methodInfo)
-            => methodInfo.IsPublic && !methodInfo.IsStatic && methodInfo.GetCustomAttribute<CommandAttribute>() != null
-               && (methodInfo.ReturnType == _taskTypeInfo || methodInfo.ReturnType.IsConstructedGenericType
-                                                             && methodInfo.ReturnType.GenericTypeArguments.Length == 1
-                                                             && _commandResultTypeInfo.IsAssignableFrom(methodInfo.ReturnType.GenericTypeArguments[0]));
+        {
+            if (!methodInfo.IsPublic || methodInfo.IsStatic || methodInfo.GetCustomAttribute<CommandAttribute>() == null)
+                return false;
+
+            if (methodInfo.ReturnType == typeof(Task))
+                return true;
+
+            if (methodInfo.ReturnType.GenericTypeArguments.Length == 0)
+                return false;
+
+            var genericTypeDefinition = methodInfo.ReturnType.GetGenericTypeDefinition();
+            return (genericTypeDefinition == typeof(Task<>)
+#if NETCOREAPP
+                || genericTypeDefinition == typeof(ValueTask<>)
+#endif
+                )
+                && typeof(CommandResult).IsAssignableFrom(methodInfo.ReturnType.GenericTypeArguments[0]);
+        }
 
         public static bool IsValidParserDefinition(Type parserType, Type parameterType)
-            => _typeParserTypeInfo.IsAssignableFrom(parserType) && !parserType.IsAbstract && parserType.BaseType.GetGenericArguments().Any(x => x == parameterType);
+            => typeof(ITypeParser).IsAssignableFrom(parserType) && !parserType.IsAbstract && Array.Exists(parserType.BaseType.GetGenericArguments(), x => x == parameterType);
 
         public static bool IsNullable(Type type)
-            => type.IsGenericType && type.GetGenericTypeDefinition() == _nullableType;
+            => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
 
         public static Type MakeNullable(Type type)
-            => _nullableType.MakeGenericType(type);
+            => typeof(Nullable<>).MakeGenericType(type);
 
         public static IEnumerable<TypeInfo> GetValidModules(TypeInfo typeInfo)
         {
@@ -48,12 +57,12 @@ namespace Qmmands
         public static IEnumerable<MethodInfo> GetValidCommands(TypeInfo typeInfo)
             => typeInfo.DeclaredMethods.Where(IsValidCommandDefinition);
 
-        public static ModuleBuilder BuildModule(CommandService service, TypeInfo typeInfo)
+        public static ModuleBuilder CreateModuleBuilder(CommandService service, ModuleBuilder parent, TypeInfo typeInfo)
         {
             if (!IsValidModuleDefinition(typeInfo))
                 throw new ArgumentException($"{typeInfo} must not be abstract, must not have generic parameters, and must inherit ModuleBase.", nameof(typeInfo));
 
-            var builder = new ModuleBuilder(typeInfo);
+            var builder = new ModuleBuilder(typeInfo, parent);
             var attributes = typeInfo.GetCustomAttributes(false);
             for (var i = 0; i < attributes.Length; i++)
             {
@@ -76,14 +85,14 @@ namespace Qmmands
                         break;
 
                     case IgnoreExtraArgumentsAttribute ignoreExtraArgumentsAttribute:
-                        builder.IgnoreExtraArguments = ignoreExtraArgumentsAttribute.IgnoreExtraArguments;
+                        builder.WithIgnoresExtraArguments(ignoreExtraArgumentsAttribute.IgnoreExtraArguments);
                         break;
 
                     case GroupAttribute groupAttribute:
                         builder.AddAliases(groupAttribute.Aliases);
                         break;
 
-                    case CheckBaseAttribute checkAttribute:
+                    case CheckAttribute checkAttribute:
                         builder.AddCheck(checkAttribute);
                         break;
 
@@ -94,17 +103,17 @@ namespace Qmmands
             }
 
             foreach (var command in GetValidCommands(typeInfo))
-                builder.AddCommand(BuildCommand(service, typeInfo, command));
+                builder.Commands.Add(CreateCommandBuilder(service, builder, typeInfo, command));
 
             foreach (var submodule in GetValidModules(typeInfo))
-                builder.AddSubmodule(BuildModule(service, submodule));
+                builder.Submodules.Add(CreateModuleBuilder(service, builder, submodule));
 
             return builder;
         }
 
-        public static CommandBuilder BuildCommand(CommandService service, TypeInfo typeInfo, MethodInfo methodInfo)
+        public static CommandBuilder CreateCommandBuilder(CommandService service, ModuleBuilder module, TypeInfo typeInfo, MethodInfo methodInfo)
         {
-            var builder = new CommandBuilder();
+            var builder = new CommandBuilder(module, CreateCommandCallback(service, typeInfo, methodInfo));
             var attributes = methodInfo.GetCustomAttributes(false);
             for (var i = 0; i < attributes.Length; i++)
             {
@@ -135,14 +144,14 @@ namespace Qmmands
                         break;
 
                     case IgnoreExtraArgumentsAttribute ignoreExtraArgumentsAttribute:
-                        builder.WithIgnoreExtraArguments(ignoreExtraArgumentsAttribute.IgnoreExtraArguments);
+                        builder.WithIgnoresExtraArguments(ignoreExtraArgumentsAttribute.IgnoreExtraArguments);
                         break;
 
                     case CommandAttribute commandAttribute:
                         builder.AddAliases(commandAttribute.Aliases);
                         break;
 
-                    case CheckBaseAttribute checkAttribute:
+                    case CheckAttribute checkAttribute:
                         builder.AddCheck(checkAttribute);
                         break;
 
@@ -154,16 +163,14 @@ namespace Qmmands
 
             var parameters = methodInfo.GetParameters();
             for (var i = 0; i < parameters.Length; i++)
-                builder.AddParameters(BuildParameter(parameters[i], i + 1 == parameters.Length));
-
-            builder.WithCallback(CreateCommandCallback(service, typeInfo, methodInfo));
+                builder.Parameters.Add(CreateParameterBuilder(builder, parameters[i], i + 1 == parameters.Length));
 
             return builder;
         }
 
-        public static ParameterBuilder BuildParameter(ParameterInfo parameterInfo, bool last)
+        public static ParameterBuilder CreateParameterBuilder(CommandBuilder command, ParameterInfo parameterInfo, bool last)
         {
-            var builder = new ParameterBuilder();
+            var builder = new ParameterBuilder(command);
             var attributes = parameterInfo.GetCustomAttributes(false);
             for (var i = 0; i < attributes.Length; i++)
             {
@@ -197,10 +204,13 @@ namespace Qmmands
                         break;
 
                     case OverrideTypeParserAttribute overwriteTypeParserAttribute:
-                        builder.CustomTypeParserType = overwriteTypeParserAttribute.CustomTypeParserType;
+                        builder.WithCustomTypeParserType(overwriteTypeParserAttribute.CustomTypeParserType);
+
+                        if (overwriteTypeParserAttribute.GetType() != typeof(OverrideTypeParserAttribute))
+                            builder.AddAttribute(overwriteTypeParserAttribute);
                         break;
 
-                    case ParameterCheckBaseAttribute parameterCheckAttribute:
+                    case ParameterCheckAttribute parameterCheckAttribute:
                         builder.AddCheck(parameterCheckAttribute);
                         break;
 
@@ -223,29 +233,29 @@ namespace Qmmands
             return builder;
         }
 
-        public static Func<IServiceProvider, T> CreateProviderConstructor<T>(CommandService commandService, TypeInfo typeInfo)
+        public static Func<IServiceProvider, T> CreateProviderConstructor<T>(CommandService commandService, Type type)
         {
-            object GetDependency(IServiceProvider provider, Type type)
+            object GetDependency(IServiceProvider provider, Type serviceType)
             {
-                if (type == typeof(IServiceProvider) || type == provider.GetType())
+                if (serviceType == typeof(IServiceProvider) || serviceType == provider.GetType())
                     return provider;
 
-                if (type == typeof(CommandService) || type == typeof(ICommandService) || type == commandService.GetType())
+                if (serviceType == typeof(CommandService) || serviceType == typeof(ICommandService) || serviceType == commandService.GetType())
                     return commandService;
 
-                var service = provider.GetService(type);
+                var service = provider.GetService(serviceType);
                 if (!(service is null))
                     return service;
 
-                throw new InvalidOperationException($"Failed to instantiate {typeInfo}, dependency of type {type} was not found.");
+                throw new InvalidOperationException($"Failed to instantiate {type}, dependency of type {serviceType} was not found.");
             }
 
-            var constructors = typeInfo.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
+            var constructors = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
             if (constructors.Length == 0)
-                throw new InvalidOperationException($"{typeInfo} has no public non-static constructors.");
+                throw new InvalidOperationException($"{type} has no public non-static constructors.");
 
             if (constructors.Length > 1)
-                throw new InvalidOperationException($"{typeInfo} has multiple public constructors.");
+                throw new InvalidOperationException($"{type} has multiple public constructors.");
 
             var constructor = constructors[0];
             var parameters = constructor.GetParameters();
@@ -253,16 +263,16 @@ namespace Qmmands
             var properties = new List<PropertyInfo>();
             do
             {
-                foreach (var property in typeInfo.DeclaredProperties)
+                foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
                 {
                     if (property.SetMethod != null && !property.SetMethod.IsStatic && property.SetMethod.IsPublic
                         && property.GetCustomAttribute<DoNotAutomaticallyInjectAttribute>() == null)
                         properties.Add(property);
                 }
 
-                typeInfo = typeInfo.BaseType.GetTypeInfo();
+                type = type.BaseType.GetTypeInfo();
             }
-            while (typeInfo != _objectTypeInfo);
+            while (type != typeof(object));
 
             return (provider) =>
             {
@@ -276,7 +286,7 @@ namespace Qmmands
                 }
                 catch (Exception ex)
                 {
-                    throw new InvalidOperationException($"Failed to instantiate {typeInfo}. See the inner exception for more details.", ex);
+                    throw new InvalidOperationException($"Failed to instantiate {type}. See the inner exception for more details.", ex);
                 }
 
                 for (var i = 0; i < properties.Count; i++)
@@ -289,39 +299,65 @@ namespace Qmmands
             };
         }
 
-        private static MethodInfo MakeGetGenericTaskResultMethodInfo(Type genericTypeArgument)
-            => typeof(ReflectionUtilities)
-                .GetMethod(nameof(GetGenericTaskResult), BindingFlags.Static | BindingFlags.NonPublic)
-                .MakeGenericMethod(genericTypeArgument);
+        private static readonly MethodInfo _getGenericTaskResultMethodInfo = typeof(ReflectionUtilities)
+            .GetMethod(nameof(GetGenericTaskResult), BindingFlags.Static | BindingFlags.NonPublic);
 
-#pragma warning disable IDE0051 // Remove unused private members
-        private static async Task<CommandResult> GetGenericTaskResult<T>(Task<T> task)
+        private static async Task<CommandResult> GetGenericTaskResult<T>(Task<T> task) where T : CommandResult
             => task != null ? await task.ConfigureAwait(false) as CommandResult : null;
-#pragma warning restore IDE0051 // Remove unused private members
 
-        public static Func<object, object[], object> CreateExpressionDelegate(TypeInfo typeInfo, MethodInfo methodInfo)
+        private static Func<object, object[], Task> CreateTaskDelegate(Type type, MethodInfo method)
         {
-            var methodParameters = methodInfo.GetParameters();
+            var methodParameters = method.GetParameters();
             var instance = Expression.Parameter(typeof(object));
             var arguments = Expression.Parameter(typeof(object[]));
             var parameters = new Expression[methodParameters.Length];
             for (var i = 0; i < methodParameters.Length; i++)
-            {
-                var methodParam = methodParameters[i];
-                parameters[i] = Expression.Convert(Expression.ArrayIndex(arguments, Expression.Constant(i)), methodParam.ParameterType);
-            }
+                parameters[i] = Expression.Convert(Expression.ArrayIndex(arguments, Expression.Constant(i)), methodParameters[i].ParameterType);
 
-            var call = Expression.Call(Expression.Convert(instance, typeInfo), methodInfo, parameters);
-            return methodInfo.ReturnType == typeof(Task)
-                ? Expression.Lambda<Func<object, object[], object>>(call, instance, arguments).Compile()
-                : Expression.Lambda<Func<object, object[], object>>(Expression.Call(MakeGetGenericTaskResultMethodInfo(methodInfo.ReturnType.GenericTypeArguments[0]), call), instance, arguments).Compile();
+            var call = Expression.Call(Expression.Convert(instance, type), method, parameters);
+            return method.ReturnType == typeof(Task)
+                ? Expression.Lambda<Func<object, object[], Task>>(call, instance, arguments).Compile()
+                : Expression.Lambda<Func<object, object[], Task>>(
+                    Expression.Call(_getGenericTaskResultMethodInfo.MakeGenericMethod(method.ReturnType.GenericTypeArguments[0]), call), instance, arguments).Compile();
         }
 
-        public static CommandCallbackDelegate CreateCommandCallback(CommandService service, TypeInfo typeInfo, MethodInfo methodInfo)
+#if NETCOREAPP
+        private static readonly MethodInfo _getGenericValueTaskResultMethodInfo = typeof(ReflectionUtilities)
+            .GetMethod(nameof(GetGenericValueTaskResult), BindingFlags.Static | BindingFlags.NonPublic);
+
+        private static async ValueTask<CommandResult> GetGenericValueTaskResult<T>(ValueTask<T> task) where T : CommandResult
+            => await task.ConfigureAwait(false);
+
+        private static Func<object, object[], ValueTask<CommandResult>> CreateValueTaskDelegate(Type type, MethodInfo method)
         {
-            var expressionDelegate = CreateExpressionDelegate(typeInfo, methodInfo);
-            var constructor = CreateProviderConstructor<IModuleBase>(service, typeInfo);
-            return async (command, arguments, context, provider) =>
+            var methodParameters = method.GetParameters();
+            var instance = Expression.Parameter(typeof(object));
+            var arguments = Expression.Parameter(typeof(object[]));
+            var parameters = new Expression[methodParameters.Length];
+            for (var i = 0; i < methodParameters.Length; i++)
+                parameters[i] = Expression.Convert(Expression.ArrayIndex(arguments, Expression.Constant(i)), methodParameters[i].ParameterType);
+
+            var call = Expression.Call(Expression.Convert(instance, type), method, parameters);
+            return Expression.Lambda<Func<object, object[], ValueTask<CommandResult>>>(
+                    Expression.Call(_getGenericValueTaskResultMethodInfo.MakeGenericMethod(method.ReturnType.GenericTypeArguments[0]), call), instance, arguments).Compile();
+        }
+#endif
+
+        public static CommandCallbackDelegate CreateCommandCallback(CommandService service, Type type, MethodInfo method)
+        {
+#if NETCOREAPP
+            Func<object, object[], Task> taskDelegate = null;
+            Func<object, object[], ValueTask<CommandResult>> valueTaskDelegate = null;
+            if (method.ReturnType == typeof(Task) || method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>))
+                taskDelegate = CreateTaskDelegate(type, method);
+            else
+                valueTaskDelegate = CreateValueTaskDelegate(type, method);
+#else
+            var taskDelegate = CreateTaskDelegate(type, method);
+#endif
+            var constructor = CreateProviderConstructor<IModuleBase>(service, type);
+
+            return async (context, provider) =>
             {
                 var instance = constructor(provider);
                 instance.Prepare(context);
@@ -331,16 +367,33 @@ namespace Qmmands
                 {
                     try
                     {
-                        await instance.BeforeExecutedAsync(command).ConfigureAwait(false);
+                        await instance.BeforeExecutedAsync().ConfigureAwait(false);
                     }
                     catch (Exception ex)
                     {
                         executeAfter = false;
-                        return new ExecutionFailedResult(command, CommandExecutionStep.BeforeExecuted, ex);
+                        return new ExecutionFailedResult(context.Command, CommandExecutionStep.BeforeExecuted, ex);
                     }
 
-                    var result = expressionDelegate(instance, arguments);
-                    switch (result)
+#if NETCOREAPP
+                    if (taskDelegate != null)
+                    {
+                        switch (taskDelegate(instance, context.InternalArguments))
+                        {
+                            case Task<CommandResult> genericTask:
+                                return await genericTask.ConfigureAwait(false);
+
+                            case Task task:
+                                await task.ConfigureAwait(false);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        return await valueTaskDelegate(instance, context.InternalArguments).ConfigureAwait(false);
+                    }
+#else
+                    switch (taskDelegate(instance, context.InternalArguments))
                     {
                         case Task<CommandResult> genericTask:
                             return await genericTask.ConfigureAwait(false);
@@ -349,6 +402,7 @@ namespace Qmmands
                             await task.ConfigureAwait(false);
                             break;
                     }
+#endif
 
                     return null;
                 }
@@ -357,7 +411,7 @@ namespace Qmmands
                     try
                     {
                         if (executeAfter)
-                            await instance.AfterExecutedAsync(command).ConfigureAwait(false);
+                            await instance.AfterExecutedAsync().ConfigureAwait(false);
                     }
                     finally
                     {
@@ -395,7 +449,12 @@ namespace Qmmands
         {
             TryParseDelegates = new Dictionary<Type, Delegate>(13)
             {
-                [typeof(char)] = (TryParseDelegate<char>) char.TryParse,
+                [typeof(char)] =
+#if NETCOREAPP
+                    (TryParseDelegate<char>) TryParseChar,
+#else
+                    (TryParseDelegate<char>) char.TryParse,
+#endif
                 [typeof(bool)] = (TryParseDelegate<bool>) bool.TryParse,
                 [typeof(byte)] = (TryParseDelegate<byte>) byte.TryParse,
                 [typeof(sbyte)] = (TryParseDelegate<sbyte>) sbyte.TryParse,
@@ -410,5 +469,18 @@ namespace Qmmands
                 [typeof(decimal)] = (TryParseDelegate<decimal>) decimal.TryParse
             };
         }
+#if NETCOREAPP
+        private static bool TryParseChar(ReadOnlySpan<char> value, out char result)
+        {
+            if (value.Length == 1)
+            {
+                result = value[0];
+                return true;
+            }
+
+            result = default;
+            return false;
+        }
+#endif
     }
 }

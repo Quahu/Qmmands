@@ -6,11 +6,13 @@
     /// <typeparam name="T"> The type handled by the type parser. </typeparam>
     public sealed class TypeParserResult<T> : IResult
     {
-        /// <inheritdoc />
+        /// <summary>
+        ///     Gets whether the result was successful or not.
+        /// </summary>
         public bool IsSuccessful => Reason == null;
 
         /// <summary>
-        ///     Gets the error reason. Null if <see cref="IsSuccessful"/> is <see langword="true"/>.
+        ///     Gets the error reason. <see langword="null"/> if <see cref="IsSuccessful"/> is <see langword="true"/>.
         /// </summary>
         public string Reason { get; }
 
@@ -63,5 +65,14 @@
         /// </returns>
         public static TypeParserResult<T> Unsuccessful(string reason)
             => new TypeParserResult<T>(reason);
+
+#if NETCOREAPP
+        /// <summary>
+        ///     Implicitly wraps the provided <see cref="TypeParserResult{T}"/> in <see cref="System.Threading.Tasks.ValueTask{TResult}"/>.
+        /// </summary>
+        /// <param name="result"></param>
+        public static implicit operator System.Threading.Tasks.ValueTask<TypeParserResult<T>>(TypeParserResult<T> result)
+            => new System.Threading.Tasks.ValueTask<TypeParserResult<T>>(result);
+#endif
     }
 }
