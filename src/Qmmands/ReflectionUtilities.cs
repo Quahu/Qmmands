@@ -270,7 +270,7 @@ namespace Qmmands
                 foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
                 {
                     if (property.SetMethod != null && !property.SetMethod.IsStatic && property.SetMethod.IsPublic
-                        && property.GetCustomAttribute<DoNotAutomaticallyInjectAttribute>() == null)
+                        && property.GetCustomAttribute<DoNotInjectAttribute>() == null)
                         properties.Add(property);
                 }
 

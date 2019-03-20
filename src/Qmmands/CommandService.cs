@@ -304,21 +304,26 @@ namespace Qmmands
                 var existingParser = GetAnyTypeParser(type, true);
                 if (existingParser != null)
                     throw new ArgumentException($"There is already a custom type parser replacing the primitive parser for type {type} - {existingParser.GetType()}.");
-            }
 
+                AddTypeParserInternal(type, parser, replacePrimitive);
+            }
+        }
+
+        internal void AddTypeParserInternal(Type type, ITypeParser parser, bool replacePrimitive)
+        {
             _typeParsers.AddOrUpdate(type,
-            new Dictionary<Type, (bool, ITypeParser)> { [parser.GetType()] = (replacePrimitive, parser) },
-            (_, v) =>
-            {
-                v.Add(parser.GetType(), (replacePrimitive, parser));
-                return v;
-            });
+                _ => new Dictionary<Type, (bool, ITypeParser)> { [parser.GetType()] = (replacePrimitive, parser) },
+                (_, v) =>
+                {
+                    v.Add(parser.GetType(), (replacePrimitive, parser));
+                    return v;
+                });
 
             if (type.IsValueType)
             {
                 var nullableParser = ReflectionUtilities.CreateNullableTypeParser(type, parser);
                 _typeParsers.AddOrUpdate(ReflectionUtilities.MakeNullable(type),
-                    new Dictionary<Type, (bool, ITypeParser)> { [nullableParser.GetType()] = (replacePrimitive, nullableParser) },
+                    _ => new Dictionary<Type, (bool, ITypeParser)> { [nullableParser.GetType()] = (replacePrimitive, nullableParser) },
                     (_, v) =>
                     {
                         v.Add(nullableParser.GetType(), (replacePrimitive, nullableParser));
@@ -352,7 +357,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Removes all added <see cref="TypeParser{T}"/>s.
+        ///     Removes all added <see cref="TypeParser{T}"/>s. This does not affect primitive type parsers.
         /// </summary>
         public void RemoveAllTypeParsers()
         {
@@ -454,7 +459,7 @@ namespace Qmmands
             for (var i = 0; i < types.Length; i++)
             {
                 var typeInfo = types[i].GetTypeInfo();
-                if (!ReflectionUtilities.IsValidModuleDefinition(typeInfo) || typeInfo.IsNested || typeInfo.GetCustomAttribute<DoNotAutomaticallyAddAttribute>() != null)
+                if (!ReflectionUtilities.IsValidModuleDefinition(typeInfo) || typeInfo.IsNested || typeInfo.GetCustomAttribute<DoNotAddAttribute>() != null)
                     continue;
 
                 if (predicate != null && !predicate(typeInfo))
