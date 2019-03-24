@@ -31,7 +31,7 @@ namespace Qmmands
         public bool IgnoresExtraArguments { get; }
 
         /// <summary>
-        ///     Gets the separator.
+        ///     Gets the <see cref="string"/> separator used between groups and commands.
         /// </summary>
         public string Separator { get; }
 
