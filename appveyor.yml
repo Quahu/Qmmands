@@ -2,21 +2,54 @@ version: 'build-{build}'
 
 image: Visual Studio 2017 Preview
 
+environment:
+  EMAIL:
+    secure: no0uCdrnaWY/44Nfx6Tg+zE71d59XA/0nnJT9LznqtQ=
+  ACCESS_TOKEN:
+    secure: JIG9V7Fvjdpl1FvBGSTbv5s29nbAL3RcHiHgSaNC7WwoO2jUOBviIPHvQz2TcI/v
+
+install:
+  - ps: choco install docfx -y
+
 build_script:
 - ps: dotnet restore .\src\Qmmands.sln | Out-Host
 - ps: dotnet build .\src\Qmmands.sln -c "Release" --no-restore | Out-Host
 
 after_build:
 - ps: >-
-    if ($Env:APPVEYOR_REPO_TAG -eq "false")
+    $HasRepoTag = $Env:APPVEYOR_REPO_TAG -eq "true"
+
+    $BuildNumber = ([int] $Env:APPVEYOR_BUILD_NUMBER).ToString("00000")
+
+    $VersionSuffix = If ($HasRepoTag) {$BuildNumber} Else {"nightly-$BuildNumber"}
+
+    if ($HasRepoTag)
     {
-       $BuildNumber = ([int] $Env:APPVEYOR_BUILD_NUMBER).ToString("00000")
-       dotnet pack .\src\Qmmands -c Release -o .\..\..\artifacts --no-restore --no-build --version-suffix="nightly-$BuildNumber" | Out-Host
+       dotnet pack .\src\Qmmands -c Release -o .\..\..\artifacts --no-restore --no-build --version-suffix="$VersionSuffix" | Out-Host
     }
     else
     {
         dotnet pack .\src\Qmmands -c Release -o .\..\..\artifacts --no-restore --no-build | Out-Host
     }
+
+    docfx docs/docfx.json | Out-Host
+
+on_success:
+  - ps: $Directory = If ($HasRepoTag) {"stable\\"} Else {"nightly\\"}
+  - git config --global credential.helper store
+  - ps: Add-Content "$HOME\.git-credentials" "https://$($Env:ACCESS_TOKEN):x-oauth-basic@github.com`n"
+  - ps: git config --global user.email $Env:EMAIL
+  - git config --global user.name "Quahu"
+  - git checkout gh-pages
+  - ps: If (-Not (Test-Path $Directory)) {mkdir $Directory}
+  - ps: Remove-Item "$Directory*" -Recurse
+  - git checkout -
+  - ps: Copy-Item ".\docs\_site\*" -Destination $Directory -Force -Recurse
+  - ps: cd $Directory
+  - git add .
+  - git checkout gh-pages
+  - ps: git commit -m "Updated docs to $VersionSuffix"
+  - git push origin gh-pages
 
 nuget:
   disable_publish_on_pr: true
