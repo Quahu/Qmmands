@@ -44,11 +44,6 @@ namespace Qmmands
         public object DefaultValue { get; set; }
 
         /// <summary>
-        ///     Gets or sets the <see cref="System.Type"/> of the <see cref="Parameter"/>.
-        /// </summary>
-        public Type Type { get; set; }
-
-        /// <summary>
         ///     Gets or sets the custom <see cref="TypeParser{T}"/>'s type of the <see cref="Parameter"/>.
         /// </summary>
         public Type CustomTypeParserType { get; set; }
@@ -64,12 +59,18 @@ namespace Qmmands
         public List<Attribute> Attributes { get; }
 
         /// <summary>
+        ///     Gets the <see cref="System.Type"/> of the <see cref="Parameter"/>.
+        /// </summary>
+        public Type Type { get; internal set; }
+
+        /// <summary>
         ///     Gets the command of the <see cref="Parameter"/>.
         /// </summary>
         public CommandBuilder Command { get; }
 
-        internal ParameterBuilder(CommandBuilder command)
+        internal ParameterBuilder(Type type, CommandBuilder command)
         {
+            Type = type;
             Command = command;
             Checks = new List<ParameterCheckAttribute>();
             Attributes = new List<Attribute>();
@@ -139,15 +140,6 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Sets the <see cref="Type"/>.
-        /// </summary>
-        public ParameterBuilder WithType(Type type)
-        {
-            Type = type;
-            return this;
-        }
-
-        /// <summary>
         ///     Sets the <see cref="CustomTypeParserType"/>.
         /// </summary>
         public ParameterBuilder WithCustomTypeParserType(Type customTypeParser)
@@ -194,9 +186,6 @@ namespace Qmmands
 
         internal Parameter Build(Command command)
         {
-            if (Type == null)
-                throw new ParameterBuildingException(this, "Parameter's type must not be null.");
-
             if (IsOptional)
             {
                 if (DefaultValue is null)

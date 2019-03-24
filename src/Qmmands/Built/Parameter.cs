@@ -98,7 +98,13 @@ namespace Qmmands
             }
 
             for (var i = 0; i < builder.Checks.Count; i++)
-                builder.Checks[i].Parameter = this;
+            {
+                var check = builder.Checks[i];
+                if (!((ImmutableArray<Type>) check.SupportedTypes).Any(x => x == Type))
+                    throw new ParameterBuildingException(builder, $"{check} is not a valid parameter check for parameter of type {Type}.");
+
+                check.Parameter = this;
+            }
             Checks = builder.Checks.ToImmutableArray();
             Attributes = builder.Attributes.ToImmutableArray();
         }

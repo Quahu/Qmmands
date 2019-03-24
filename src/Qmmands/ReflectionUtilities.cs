@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -170,7 +171,7 @@ namespace Qmmands
 
         public static ParameterBuilder CreateParameterBuilder(CommandBuilder command, ParameterInfo parameterInfo, bool last)
         {
-            var builder = new ParameterBuilder(command);
+            var builder = new ParameterBuilder(parameterInfo.ParameterType, command);
             var attributes = parameterInfo.GetCustomAttributes(false);
             for (var i = 0; i < attributes.Length; i++)
             {
@@ -192,8 +193,8 @@ namespace Qmmands
                         if (!last)
                             throw new ParameterBuildingException(builder, $"A params array parameter must be the last parameter in a command. Parameter: {parameterInfo.Name} in {parameterInfo.Member.Name} in {parameterInfo.Member.DeclaringType}.");
 
-                        builder.WithIsMultiple(true)
-                            .WithType(parameterInfo.ParameterType.GetElementType());
+                        builder.WithIsMultiple(true);
+                        builder.Type = parameterInfo.ParameterType.GetElementType();
                         break;
 
                     case RemainderAttribute _:
@@ -227,9 +228,6 @@ namespace Qmmands
             else if (builder.IsMultiple)
                 builder.WithIsOptional(true)
                     .WithDefaultValue(Array.CreateInstance(builder.Type, 0));
-
-            if (!builder.IsMultiple)
-                builder.WithType(parameterInfo.ParameterType);
 
             if (builder.Name is null)
                 builder.WithName(parameterInfo.Name);
@@ -434,20 +432,22 @@ namespace Qmmands
 
         public static readonly IReadOnlyDictionary<Type, Delegate> TryParseDelegates;
 
+        public static readonly ImmutableArray<Type> NumericTypes;
+
         public static IPrimitiveTypeParser CreatePrimitiveTypeParser(Type type)
             => Activator.CreateInstance(typeof(PrimitiveTypeParser<>).MakeGenericType(type)) as IPrimitiveTypeParser;
 
         public static IPrimitiveTypeParser CreateEnumTypeParser(Type type, Type enumType, bool ignoreCase)
-            => (IPrimitiveTypeParser) typeof(EnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new object[] { enumType, ignoreCase });
+            => typeof(EnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new object[] { enumType, ignoreCase }) as IPrimitiveTypeParser;
 
         public static IPrimitiveTypeParser CreateNullableEnumTypeParser(Type type, IPrimitiveTypeParser enumTypeParser)
-            => (IPrimitiveTypeParser) typeof(NullableEnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new[] { enumTypeParser });
+            => typeof(NullableEnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new[] { enumTypeParser }) as IPrimitiveTypeParser;
 
         public static IPrimitiveTypeParser CreateNullablePrimitiveTypeParser(Type type, IPrimitiveTypeParser primitiveTypeParser)
-            => (IPrimitiveTypeParser) typeof(NullablePrimitiveTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new[] { primitiveTypeParser });
+            => typeof(NullablePrimitiveTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new[] { primitiveTypeParser }) as IPrimitiveTypeParser;
 
         public static ITypeParser CreateNullableTypeParser(Type nullableType, ITypeParser typeParser)
-            => (ITypeParser) typeof(NullableTypeParser<>).MakeGenericType(nullableType).GetConstructors()[0].Invoke(new object[] { typeParser });
+            => typeof(NullableTypeParser<>).MakeGenericType(nullableType).GetConstructors()[0].Invoke(new object[] { typeParser }) as ITypeParser;
 
         static ReflectionUtilities()
         {
@@ -472,6 +472,20 @@ namespace Qmmands
                 [typeof(double)] = (TryParseDelegate<double>) double.TryParse,
                 [typeof(decimal)] = (TryParseDelegate<decimal>) decimal.TryParse
             };
+
+            var builder = ImmutableArray.CreateBuilder<Type>(11);
+            builder.Add(typeof(byte));
+            builder.Add(typeof(sbyte));
+            builder.Add(typeof(short));
+            builder.Add(typeof(ushort));
+            builder.Add(typeof(int));
+            builder.Add(typeof(uint));
+            builder.Add(typeof(long));
+            builder.Add(typeof(ulong));
+            builder.Add(typeof(float));
+            builder.Add(typeof(double));
+            builder.Add(typeof(decimal));
+            NumericTypes = builder.MoveToImmutable();
         }
 #if NETCOREAPP
         private static bool TryParseChar(ReadOnlySpan<char> value, out char result)

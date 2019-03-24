@@ -204,12 +204,15 @@ namespace Qmmands
         ///     Attempts to instantiate, modify, and add a <see cref="ParameterBuilder"/> to <see cref="Parameters"/>.
         /// </summary>
         /// <param name="builderAction"> The action to perform on the builder. </param>
-        public CommandBuilder AddParameter(Action<ParameterBuilder> builderAction)
+        public CommandBuilder AddParameter(Type type, Action<ParameterBuilder> builderAction)
         {
+            if (type == null)
+                throw new ArgumentNullException(nameof(type), "Parameter's type must not be null.");
+
             if (builderAction == null)
                 throw new ArgumentNullException(nameof(builderAction));
 
-            var builder = new ParameterBuilder(this);
+            var builder = new ParameterBuilder(type, this);
             builderAction(builder);
             Parameters.Add(builder);
             return this;

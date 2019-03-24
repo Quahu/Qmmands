@@ -640,7 +640,7 @@ namespace Qmmands
         /// </summary>
         public void RemoveAllModules()
         {
-            foreach (var module in _modules.ToImmutableArray())
+            foreach (var module in _modules.ToArray())
                 RemoveModuleInternal(module);
         }
 
