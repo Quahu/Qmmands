@@ -34,7 +34,7 @@ after_build:
 
     docfx docs/docfx.json | Out-Host
 
-on_success:
+after_deploy:
   - ps: $Directory = If ($HasRepoTag) {"stable\\"} Else {"nightly\\"}
   - git config --global credential.helper store
   - ps: Add-Content "$HOME\.git-credentials" "https://$($Env:ACCESS_TOKEN):x-oauth-basic@github.com`n"
@@ -48,7 +48,7 @@ on_success:
   - ps: cd $Directory
   - git add .
   - git checkout gh-pages
-  - ps: git commit -m "Updated docs to $VersionSuffix"
+  - ps: git commit -m "Updated docs to $VersionSuffix."
   - git push origin gh-pages
 
 nuget:
