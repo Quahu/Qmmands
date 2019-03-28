@@ -14,28 +14,28 @@ namespace Qmmands
         public string Value { get; }
 
         /// <summary>
-        ///     Gets whether this check is case-sensitive.
+        ///     Gets the <see cref="System.StringComparison"/> used for comparison.
         /// </summary>
-        public bool IsCaseSensitive { get; }
+        public StringComparison StringComparison { get; }
 
         /// <summary>
-        ///     Initialises a new <see cref="ContainsAttribute"/> with the specified string value and as case-sensitive.
+        ///     Initialises a new <see cref="ContainsAttribute"/> with the specified string value and <see cref="StringComparison.OrdinalIgnoreCase"/>.
         /// </summary>
         /// <param name="value"> The string value. </param>
         public ContainsAttribute(string value)
-            : this(value, true)
+            : this(value, StringComparison.OrdinalIgnoreCase)
         { }
 
         /// <summary>
-        ///     Initialises a new <see cref="ContainsAttribute"/> with the specified string value and case sensitivity.
+        ///     Initialises a new <see cref="ContainsAttribute"/> with the specified string value and <see cref="System.StringComparison"/>.
         /// </summary>
         /// <param name="value"> The string value. </param>
-        /// <param name="isCaseSensitive"> Whether this check is case-sensitive. </param>
-        public ContainsAttribute(string value, bool isCaseSensitive)
-            : base(new[] { typeof(string) })
+        /// <param name="comparison"> The <see cref="System.StringComparison"/> used for comparison. </param>
+        public ContainsAttribute(string value, StringComparison comparison)
+            : base(Utilities.IsStringType)
         {
             Value = value;
-            IsCaseSensitive = isCaseSensitive;
+            StringComparison = comparison;
         }
 
         /// <inheritdoc />
@@ -47,11 +47,10 @@ namespace Qmmands
 #endif
             CheckAsync(object argument, CommandContext context, IServiceProvider provider)
         {
-            var result = (argument as string).IndexOf(Value, IsCaseSensitive
-                    ? StringComparison.Ordinal
-                    : StringComparison.OrdinalIgnoreCase) != -1
+            var result = (argument as string).IndexOf(Value, StringComparison) != -1
                 ? CheckResult.Successful
-                : CheckResult.Unsuccessful($"The provided argument must contain the {(IsCaseSensitive ? "case-sensitive" : "case-insensitive")} value: {Value}.");
+                : CheckResult.Unsuccessful(
+                    $"The provided argument must contain the {(StringComparison.IsCaseSensitive() ? "case-sensitive" : "case-insensitive")} value: {Value}.");
 #if NETCOREAPP
             return result;
 #else

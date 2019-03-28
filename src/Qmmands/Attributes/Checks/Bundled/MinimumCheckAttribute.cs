@@ -18,7 +18,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="minimum"> The minimum value. </param>
         public MinimumAttribute(double minimum)
-            : base(ReflectionUtilities.NumericTypes.Add(typeof(string)))
+            : base(Utilities.IsNumericOrStringType)
         {
             Minimum = minimum;
         }

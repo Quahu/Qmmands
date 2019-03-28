@@ -47,7 +47,7 @@ namespace Qmmands
         /// <param name="isMinimumInclusive"> Whether the minimal value is inclusive or not. </param>
         /// <param name="isMaximumInclusive"> Whether the maximum value is inclusive or not. </param>
         public RangeAttribute(double minimum, double maximum, bool isMinimumInclusive, bool isMaximumInclusive)
-            : base(ReflectionUtilities.NumericTypes.Add(typeof(string)))
+            : base(Utilities.IsNumericOrStringType)
         {
             if (maximum < minimum)
                 throw new ArgumentOutOfRangeException(nameof(maximum), maximum, "Maximum must not be smaller than minimum.");

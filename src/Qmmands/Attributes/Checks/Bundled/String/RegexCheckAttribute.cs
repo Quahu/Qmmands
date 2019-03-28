@@ -28,7 +28,7 @@ namespace Qmmands
         /// <param name="pattern"> The <see cref="System.Text.RegularExpressions.Regex"/> pattern. </param>
         /// <param name="options"> The <see cref="RegexOptions"/>. </param>
         public RegexAttribute(string pattern, RegexOptions options)
-            : base(new[] { typeof(string) })
+            : base(Utilities.IsStringType)
         {
             Regex = new Regex(pattern, options);
         }

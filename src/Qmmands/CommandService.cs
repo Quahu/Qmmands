@@ -16,9 +16,10 @@ namespace Qmmands
     public class CommandService : ICommandService
     {
         /// <summary>
-        ///     Gets whether <see cref="FindModules"/>, <see cref="FindCommands"/> and primitive <see langword="enum"/> type parsers are case sensitive or not.
+        ///     Gets or sets the <see cref="System.StringComparison"/> used for finding <see cref="Command"/>s and <see cref="Module"/>s,
+        ///     used by the default <see langword="enum"/> parsers, and comparing <see cref="NullableNouns"/>.
         /// </summary>
-        public bool IsCaseSensitive { get; }
+        public StringComparison StringComparison { get; }
 
         /// <summary>
         ///     Gets the default <see cref="RunMode"/> for commands and modules.
@@ -118,7 +119,7 @@ namespace Qmmands
         [EditorBrowsable(EditorBrowsableState.Never)]
         public ImmutableArray<CommandErroredDelegate> CommandErroredHandlers { get; private set; } = ImmutableArray<CommandErroredDelegate>.Empty;
 
-        internal StringComparison StringComparison { get; }
+        internal readonly StringComparer StringComparer;
 
         private readonly ConcurrentDictionary<Type, Dictionary<Type, (bool ReplacingPrimitive, ITypeParser Instance)>> _typeParsers;
         private readonly ConcurrentDictionary<Type, IPrimitiveTypeParser> _primitiveTypeParsers;
@@ -141,7 +142,7 @@ namespace Qmmands
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration), "The configuration must not be null.");
 
-            IsCaseSensitive = configuration.IsCaseSensitive;
+            StringComparison = configuration.StringComparison;
             DefaultRunMode = configuration.DefaultRunMode;
             IgnoresExtraArguments = configuration.IgnoresExtraArguments;
             Separator = configuration.Separator;
@@ -155,18 +156,23 @@ namespace Qmmands
                 ? configuration.NullableNouns.ToImmutableArray()
                 : CommandUtilities.DefaultNullableNouns;
 
-            StringComparison = IsCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+            StringComparer =
+#if NETCOREAPP
+                StringComparer.FromComparison(StringComparison);
+#else
+                Utilities.StringComparerFromComparison(StringComparison);
+#endif
 
             _typeModules = new Dictionary<Type, Module>();
             _modules = new HashSet<Module>();
             _map = new CommandMap(this);
             _typeParsers = new ConcurrentDictionary<Type, Dictionary<Type, (bool, ITypeParser)>>();
-            _primitiveTypeParsers = new ConcurrentDictionary<Type, IPrimitiveTypeParser>(Environment.ProcessorCount, ReflectionUtilities.TryParseDelegates.Count * 2);
-            foreach (var type in ReflectionUtilities.TryParseDelegates.Keys)
+            _primitiveTypeParsers = new ConcurrentDictionary<Type, IPrimitiveTypeParser>(Environment.ProcessorCount, Utilities.TryParseDelegates.Count * 2);
+            foreach (var type in Utilities.TryParseDelegates.Keys)
             {
-                var primitiveTypeParser = ReflectionUtilities.CreatePrimitiveTypeParser(type);
+                var primitiveTypeParser = Utilities.CreatePrimitiveTypeParser(type);
                 _primitiveTypeParsers.TryAdd(type, primitiveTypeParser);
-                _primitiveTypeParsers.TryAdd(ReflectionUtilities.MakeNullable(type), ReflectionUtilities.CreateNullablePrimitiveTypeParser(type, primitiveTypeParser));
+                _primitiveTypeParsers.TryAdd(Utilities.MakeNullable(type), Utilities.CreateNullablePrimitiveTypeParser(type, primitiveTypeParser));
             }
         }
 
@@ -293,7 +299,7 @@ namespace Qmmands
                 throw new ArgumentNullException(nameof(parser), "The type parser to add must not be null.");
 
             var type = typeof(T);
-            if (ReflectionUtilities.IsNullable(type))
+            if (Utilities.IsNullable(type))
                 throw new ArgumentException("Cannot add custom type parsers for nullable types.", nameof(T));
 
             if (replacePrimitive)
@@ -321,8 +327,8 @@ namespace Qmmands
 
             if (type.IsValueType)
             {
-                var nullableParser = ReflectionUtilities.CreateNullableTypeParser(type, parser);
-                _typeParsers.AddOrUpdate(ReflectionUtilities.MakeNullable(type),
+                var nullableParser = Utilities.CreateNullableTypeParser(type, parser);
+                _typeParsers.AddOrUpdate(Utilities.MakeNullable(type),
                     _ => new Dictionary<Type, (bool, ITypeParser)> { [nullableParser.GetType()] = (replacePrimitive, nullableParser) },
                     (_, v) =>
                     {
@@ -353,7 +359,7 @@ namespace Qmmands
                 throw new ArgumentException("The type parser to remove has not been added.");
 
             if (type.IsValueType)
-                typeParsers.Remove(ReflectionUtilities.MakeNullable(type));
+                typeParsers.Remove(Utilities.MakeNullable(type));
         }
 
         /// <summary>
@@ -417,13 +423,13 @@ namespace Qmmands
 
             if (type.IsEnum)
             {
-                var enumParser = ReflectionUtilities.CreateEnumTypeParser(type.GetEnumUnderlyingType(), type, !IsCaseSensitive);
+                var enumParser = Utilities.CreateEnumTypeParser(type.GetEnumUnderlyingType(), type, this);
                 _primitiveTypeParsers.TryAdd(type, enumParser);
-                _primitiveTypeParsers.TryAdd(ReflectionUtilities.MakeNullable(type), ReflectionUtilities.CreateNullableEnumTypeParser(type.GetEnumUnderlyingType(), enumParser));
+                _primitiveTypeParsers.TryAdd(Utilities.MakeNullable(type), Utilities.CreateNullableEnumTypeParser(type.GetEnumUnderlyingType(), enumParser));
                 return enumParser;
             }
 
-            return ReflectionUtilities.IsNullable(type) && (type = Nullable.GetUnderlyingType(type)).IsEnum
+            return Utilities.IsNullable(type) && (type = Nullable.GetUnderlyingType(type)).IsEnum
                 ? GetPrimitiveTypeParser(type)
                 : null;
         }
@@ -459,7 +465,7 @@ namespace Qmmands
             for (var i = 0; i < types.Length; i++)
             {
                 var typeInfo = types[i].GetTypeInfo();
-                if (!ReflectionUtilities.IsValidModuleDefinition(typeInfo) || typeInfo.IsNested || typeInfo.GetCustomAttribute<DoNotAddAttribute>() != null)
+                if (!Utilities.IsValidModuleDefinition(typeInfo) || typeInfo.IsNested || typeInfo.GetCustomAttribute<DoNotAddAttribute>() != null)
                     continue;
 
                 if (predicate != null && !predicate(typeInfo))
@@ -583,7 +589,7 @@ namespace Qmmands
             if (type is null)
                 throw new ArgumentNullException(nameof(type), "The type to add must not be null.");
 
-            var builder = ReflectionUtilities.CreateModuleBuilder(this, null, type.GetTypeInfo());
+            var builder = Utilities.CreateModuleBuilder(this, null, type.GetTypeInfo());
             action?.Invoke(builder);
             var module = builder.Build(this, null);
             AddModuleInternal(module);

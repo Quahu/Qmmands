@@ -9,10 +9,21 @@ namespace Qmmands
     public sealed class CommandServiceConfiguration
     {
         /// <summary>
-        ///     Gets or sets the <see cref="bool"/> which determines whether the commands should
-        ///     be case sensitive or not. Defaults to <see langword="false"/>.
+        ///     Gets or sets the <see cref="System.StringComparison"/> used for finding <see cref="Command"/>s and <see cref="Module"/>s,
+        ///     used by the default <see langword="enum"/> parsers, and comparing <see cref="NullableNouns"/>. Defaults to <see cref="StringComparison.OrdinalIgnoreCase"/>.
         /// </summary>
-        public bool IsCaseSensitive { get; set; }
+        public StringComparison StringComparison
+        {
+            get => _stringComparison;
+            set
+            {
+                if (!Enum.IsDefined(typeof(StringComparison), value))
+                    throw new ArgumentOutOfRangeException(nameof(value), "Invalid string comparison.");
+
+                _stringComparison = value;
+            }
+        }
+        private StringComparison _stringComparison = StringComparison.OrdinalIgnoreCase;
 
         /// <summary>
         ///     Gets or sets the <see cref="RunMode"/> which determines whether the commands should
@@ -81,7 +92,7 @@ namespace Qmmands
         public IReadOnlyDictionary<char, char> QuoteMap { get; set; }
 
         /// <summary>
-        ///     Gets or sets the collection of nouns to use for nullable value type parsing.
+        ///     Gets or sets the collection of nouns to use for <see cref="Nullable{T}"/> parsing.
         ///     If <see langword="null"/>, will default to <see cref="CommandUtilities.DefaultNullableNouns"/>.
         /// </summary>
         public IReadOnlyList<string> NullableNouns { get; set; }

@@ -53,7 +53,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefix"> The <see cref="char"/> prefix to check for. </param>
-        /// <param name="ignoreCase"> Whether to ignore casing or not. </param>
+        /// <param name="isCaseSensitive"> Whether the check is case-sensitive. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
@@ -61,15 +61,15 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The input must not be null.
         /// </exception>
-        public static bool HasPrefix(string input, char prefix, bool ignoreCase, out string output)
+        public static bool HasPrefix(string input, char prefix, bool isCaseSensitive, out string output)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
 
 #if NETCOREAPP
-            return HasPrefix(input.AsSpan(), prefix, ignoreCase, out output);
+            return HasPrefix(input.AsSpan(), prefix, isCaseSensitive, out output);
 #else
-            if (input.Length == 0 || input[0] != (ignoreCase ? char.ToLowerInvariant(prefix) : prefix))
+            if (input.Length == 0 || input[0] != (isCaseSensitive ? prefix : char.ToLowerInvariant(prefix)))
             {
                 output = null;
                 return false;
@@ -112,7 +112,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
-        /// <param name="ignoreCase"> Whether to ignore casing or not. </param>
+        /// <param name="isCaseSensitive"> Whether the check is case-sensitive. </param>
         /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix was not found. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
@@ -124,13 +124,13 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefixes must not be null.
         /// </exception>
-        public static bool HasAnyPrefix(string input, IReadOnlyList<char> prefixes, bool ignoreCase, out char prefix, out string output)
+        public static bool HasAnyPrefix(string input, IReadOnlyList<char> prefixes, bool isCaseSensitive, out char prefix, out string output)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
 
 #if NETCOREAPP
-            return HasAnyPrefix(input.AsSpan(), prefixes, ignoreCase, out prefix, out output);
+            return HasAnyPrefix(input.AsSpan(), prefixes, isCaseSensitive, out prefix, out output);
 #else
 
             if (prefixes is null)
@@ -139,7 +139,7 @@ namespace Qmmands
             for (var i = 0; i < prefixes.Count; i++)
             {
                 var currentPrefix = prefixes[i];
-                if (!HasPrefix(input, currentPrefix, ignoreCase, out output))
+                if (!HasPrefix(input, currentPrefix, isCaseSensitive, out output))
                     continue;
 
                 prefix = currentPrefix;
@@ -184,7 +184,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
-        /// <param name="ignoreCase"> Whether to ignore casing or not. </param>
+        /// <param name="isCaseSensitive"> Whether the check is case-sensitive. </param>
         /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix was not found. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
@@ -196,19 +196,19 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefixes must not be null.
         /// </exception>
-        public static bool HasAnyPrefix(string input, IEnumerable<char> prefixes, bool ignoreCase, out char prefix, out string output)
+        public static bool HasAnyPrefix(string input, IEnumerable<char> prefixes, bool isCaseSensitive, out char prefix, out string output)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
 #if NETCOREAPP
-            return HasAnyPrefix(input.AsSpan(), prefixes, ignoreCase, out prefix, out output);
+            return HasAnyPrefix(input.AsSpan(), prefixes, isCaseSensitive, out prefix, out output);
 #else
             if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
 
             foreach (var currentPrefix in prefixes)
             {
-                if (!HasPrefix(input, currentPrefix, ignoreCase, out output))
+                if (!HasPrefix(input, currentPrefix, isCaseSensitive, out output))
                     continue;
 
                 prefix = currentPrefix;
@@ -252,7 +252,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefix"> The <see cref="string"/> prefix to check for. </param>
-        /// <param name="stringComparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
+        /// <param name="comparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
@@ -263,17 +263,17 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefix must not be null.
         /// </exception>
-        public static bool HasPrefix(string input, string prefix, StringComparison stringComparison, out string output)
+        public static bool HasPrefix(string input, string prefix, StringComparison comparison, out string output)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
 #if NETCOREAPP
-            return HasPrefix(input.AsSpan(), prefix, stringComparison, out output);
+            return HasPrefix(input.AsSpan(), prefix, comparison, out output);
 #else
             if (prefix == null)
                 throw new ArgumentNullException(nameof(prefix), "The prefix must not be null.");
 
-            if (!input.StartsWith(prefix, stringComparison))
+            if (!input.StartsWith(prefix, comparison))
             {
                 output = null;
                 return false;
@@ -316,7 +316,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>
-        /// <param name="stringComparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
+        /// <param name="comparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
         /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix is not found. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
@@ -328,12 +328,12 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefixes must not be null.
         /// </exception>
-        public static bool HasAnyPrefix(string input, IReadOnlyList<string> prefixes, StringComparison stringComparison, out string prefix, out string output)
+        public static bool HasAnyPrefix(string input, IReadOnlyList<string> prefixes, StringComparison comparison, out string prefix, out string output)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
 #if NETCOREAPP
-            return HasAnyPrefix(input.AsSpan(), prefixes, stringComparison, out prefix, out output);
+            return HasAnyPrefix(input.AsSpan(), prefixes, comparison, out prefix, out output);
 #else
             if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
@@ -341,7 +341,7 @@ namespace Qmmands
             for (var i = 0; i < prefixes.Count; i++)
             {
                 var currentPrefix = prefixes[i];
-                if (!HasPrefix(input, currentPrefix, stringComparison, out output))
+                if (!HasPrefix(input, currentPrefix, comparison, out output))
                     continue;
 
                 prefix = currentPrefix;
@@ -386,7 +386,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="string"/> to check. </param>
         /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>
-        /// <param name="stringComparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
+        /// <param name="comparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
         /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix is not found. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
@@ -398,19 +398,19 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefixes must not be null.
         /// </exception>
-        public static bool HasAnyPrefix(string input, IEnumerable<string> prefixes, StringComparison stringComparison, out string prefix, out string output)
+        public static bool HasAnyPrefix(string input, IEnumerable<string> prefixes, StringComparison comparison, out string prefix, out string output)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
 #if NETCOREAPP
-            return HasAnyPrefix(input.AsSpan(), prefixes, stringComparison, out prefix, out output);
+            return HasAnyPrefix(input.AsSpan(), prefixes, comparison, out prefix, out output);
 #else
             if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
 
             foreach (var currentPrefix in prefixes)
             {
-                if (!HasPrefix(input, currentPrefix, stringComparison, out output))
+                if (!HasPrefix(input, currentPrefix, comparison, out output))
                     continue;
 
                 prefix = currentPrefix;
@@ -446,7 +446,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
         /// <param name="prefix"> The <see cref="char"/> prefix to check for. </param>
-        /// <param name="ignoreCase"> Whether to ignore casing or not. </param>
+        /// <param name="isCaseSensitive"> Whether the check is case-sensitive. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
@@ -454,9 +454,9 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The input must not be null.
         /// </exception>
-        public static bool HasPrefix(in ReadOnlySpan<char> input, char prefix, bool ignoreCase, out string output)
+        public static bool HasPrefix(in ReadOnlySpan<char> input, char prefix, bool isCaseSensitive, out string output)
         {
-            if (input.Length == 0 || input[0] != (ignoreCase ? char.ToLowerInvariant(prefix) : prefix))
+            if (input.Length == 0 || input[0] != (isCaseSensitive ? prefix : char.ToLowerInvariant(prefix)))
             {
                 output = null;
                 return false;
@@ -489,7 +489,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
         /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
-        /// <param name="ignoreCase"> Whether to ignore casing or not. </param>
+        /// <param name="isCaseSensitive"> Whether the check is case-sensitive. </param>
         /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix was not found. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
@@ -498,7 +498,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefixes must not be null.
         /// </exception>
-        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IReadOnlyList<char> prefixes, bool ignoreCase, out char prefix, out string output)
+        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IReadOnlyList<char> prefixes, bool isCaseSensitive, out char prefix, out string output)
         {
             if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
@@ -506,7 +506,7 @@ namespace Qmmands
             for (var i = 0; i < prefixes.Count; i++)
             {
                 var currentPrefix = prefixes[i];
-                if (!HasPrefix(input, currentPrefix, ignoreCase, out output))
+                if (!HasPrefix(input, currentPrefix, isCaseSensitive, out output))
                     continue;
 
                 prefix = currentPrefix;
@@ -541,7 +541,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
         /// <param name="prefixes"> The <see cref="char"/> prefixes to check for. </param>
-        /// <param name="ignoreCase"> Whether to ignore casing or not. </param>
+        /// <param name="isCaseSensitive"> Whether the check is case-sensitive. </param>
         /// <param name="prefix"> The found prefix. Default <see cref="char"/> if the prefix was not found. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
@@ -550,14 +550,14 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefixes must not be null.
         /// </exception>
-        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IEnumerable<char> prefixes, bool ignoreCase, out char prefix, out string output)
+        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IEnumerable<char> prefixes, bool isCaseSensitive, out char prefix, out string output)
         {
             if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
 
             foreach (var currentPrefix in prefixes)
             {
-                if (!HasPrefix(input, currentPrefix, ignoreCase, out output))
+                if (!HasPrefix(input, currentPrefix, isCaseSensitive, out output))
                     continue;
 
                 prefix = currentPrefix;
@@ -591,7 +591,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
         /// <param name="prefix"> The <see cref="string"/> prefix to check for. </param>
-        /// <param name="stringComparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
+        /// <param name="comparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
         ///     A <see cref="bool"/> which determines whether the prefix was found or not.
@@ -599,12 +599,12 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefix must not be null.
         /// </exception>
-        public static bool HasPrefix(in ReadOnlySpan<char> input, string prefix, StringComparison stringComparison, out string output)
+        public static bool HasPrefix(in ReadOnlySpan<char> input, string prefix, StringComparison comparison, out string output)
         {
             if (prefix == null)
                 throw new ArgumentNullException(nameof(prefix), "The prefix must not be null.");
 
-            if (!input.StartsWith(prefix, stringComparison))
+            if (!input.StartsWith(prefix, comparison))
             {
                 output = null;
                 return false;
@@ -637,7 +637,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
         /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>
-        /// <param name="stringComparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
+        /// <param name="comparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
         /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix is not found. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
@@ -646,7 +646,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefixes must not be null.
         /// </exception>
-        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IReadOnlyList<string> prefixes, StringComparison stringComparison, out string prefix, out string output)
+        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IReadOnlyList<string> prefixes, StringComparison comparison, out string prefix, out string output)
         {
             if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
@@ -654,7 +654,7 @@ namespace Qmmands
             for (var i = 0; i < prefixes.Count; i++)
             {
                 var currentPrefix = prefixes[i];
-                if (!HasPrefix(input, currentPrefix, stringComparison, out output))
+                if (!HasPrefix(input, currentPrefix, comparison, out output))
                     continue;
 
                 prefix = currentPrefix;
@@ -689,7 +689,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input <see cref="ReadOnlySpan{T}"/> to check. </param>
         /// <param name="prefixes"> The <see cref="string"/> prefixes to check for. </param>
-        /// <param name="stringComparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
+        /// <param name="comparison"> The <see cref="StringComparison"/> to use when checking for the prefix. </param>
         /// <param name="prefix"> The found prefix. <see langword="null"/> if the prefix is not found. </param>
         /// <param name="output"> The trimmed output. <see langword="null"/> if the prefix is not found. </param>
         /// <returns>
@@ -698,14 +698,14 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefixes must not be null.
         /// </exception>
-        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IEnumerable<string> prefixes, StringComparison stringComparison, out string prefix, out string output)
+        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IEnumerable<string> prefixes, StringComparison comparison, out string prefix, out string output)
         {
             if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
 
             foreach (var currentPrefix in prefixes)
             {
-                if (!HasPrefix(input, currentPrefix, stringComparison, out output))
+                if (!HasPrefix(input, currentPrefix, comparison, out output))
                     continue;
 
                 prefix = currentPrefix;

@@ -23,7 +23,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="serviceType"> The <see cref="Type"/> of the service to request. </param>
         /// <returns>
-        ///     <see langword="null"/>
+        ///     <see langword="null"/>.
         /// </returns>
         public object GetService(Type serviceType)
             => null;

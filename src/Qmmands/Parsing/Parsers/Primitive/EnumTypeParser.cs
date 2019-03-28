@@ -11,12 +11,12 @@ namespace Qmmands
         private readonly Dictionary<string, object> _enumByNames;
         private readonly Dictionary<T, object> _enumByValues;
 
-        public EnumTypeParser(Type enumType, bool ignoreCase)
+        public EnumTypeParser(Type enumType, CommandService service)
         {
-            _tryParse = (TryParseDelegate<T>) ReflectionUtilities.TryParseDelegates[typeof(T)];
+            _tryParse = (TryParseDelegate<T>) Utilities.TryParseDelegates[typeof(T)];
 
             var names = Enum.GetNames(enumType);
-            _enumByNames = new Dictionary<string, object>(names.Length, ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
+            _enumByNames = new Dictionary<string, object>(names.Length, service.StringComparer);
             _enumByValues = new Dictionary<T, object>();
             for (var i = 0; i < names.Length; i++)
             {

@@ -11,9 +11,10 @@ namespace Qmmands
     public interface ICommandService
     {
         /// <summary>
-        ///     Gets whether <see cref="FindModules"/>, <see cref="FindCommands"/> and primitive <see langword="enum"/> type parsers are case sensitive or not.
+        ///     Gets or sets the <see cref="System.StringComparison"/> used for finding <see cref="Command"/>s and <see cref="Module"/>s,
+        ///     used by the default <see langword="enum"/> parsers, and comparing <see cref="NullableNouns"/>.
         /// </summary>
-        bool IsCaseSensitive { get; }
+        StringComparison StringComparison { get; }
 
         /// <summary>
         ///     Gets the default <see cref="RunMode"/> for commands and modules.

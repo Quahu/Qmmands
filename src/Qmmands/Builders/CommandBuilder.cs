@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Qmmands
@@ -203,6 +203,7 @@ namespace Qmmands
         /// <summary>
         ///     Attempts to instantiate, modify, and add a <see cref="ParameterBuilder"/> to <see cref="Parameters"/>.
         /// </summary>
+        /// <param name="type"> The <see cref="Type"/> of the <see cref="Parameter"/>. </param>
         /// <param name="builderAction"> The action to perform on the builder. </param>
         public CommandBuilder AddParameter(Type type, Action<ParameterBuilder> builderAction)
         {

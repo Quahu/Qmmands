@@ -12,9 +12,10 @@ namespace Qmmands
     public abstract class ParameterCheckAttribute : Attribute
     {
         /// <summary>
-        ///     Gets the types supported by this <see cref="ParameterCheckAttribute"/>.
+        ///     Gets the <see cref="Predicate{T}"/> that determines which types are supported by this <see cref="ParameterCheckAttribute"/>.
+        ///     If <see langword="null"/>, any <see cref="Type"/> of parameters are accepted. 
         /// </summary>
-        public IReadOnlyList<Type> SupportedTypes { get; }
+        public Predicate<Type> Predicate { get; }
 
         /// <summary>
         ///     Gets the <see cref="Qmmands.Parameter"/> this <see cref="ParameterCheckAttribute"/> is for.
@@ -32,18 +33,10 @@ namespace Qmmands
         /// <summary>
         ///     Initialises a new <see cref="ParameterCheckAttribute"/> with the enumerable of supported <see cref="Type"/>s.
         /// </summary>
-        /// <param name="types"> The supported <see cref="Type"/>s. </param>
-        protected ParameterCheckAttribute(IEnumerable<Type> types)
+        /// <param name="predicate"> The optional <see cref="Predicate{T}"/> that determines what types are supported. </param>
+        protected ParameterCheckAttribute(Predicate<Type> predicate = null)
         {
-            if (types is null)
-                throw new ArgumentNullException(nameof(types));
-
-            SupportedTypes = types.ToImmutableArray();
-        }
-
-        internal ParameterCheckAttribute(ImmutableArray<Type> types)
-        {
-            SupportedTypes = types;
+            Predicate = predicate;
         }
 
         /// <summary>

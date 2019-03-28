@@ -18,7 +18,7 @@ namespace Qmmands
         /// </summary>
         /// <param name="maximum"> The maximum value. </param>
         public MaximumAttribute(double maximum)
-            : base(ReflectionUtilities.NumericTypes.Add(typeof(string)))
+            : base(Utilities.IsNumericOrStringType)
         {
             Maximum = maximum;
         }

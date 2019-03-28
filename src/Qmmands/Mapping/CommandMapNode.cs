@@ -14,9 +14,9 @@ namespace Qmmands
         public CommandMapNode(CommandService service)
         {
             _service = service;
-            _commands = new Dictionary<string, List<Command>>(_service.IsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
-            _modules = new Dictionary<string, List<Module>>(_service.IsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
-            _nodes = new Dictionary<string, CommandMapNode>(_service.IsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
+            _commands = new Dictionary<string, List<Command>>(_service.StringComparer);
+            _modules = new Dictionary<string, List<Module>>(_service.StringComparer);
+            _nodes = new Dictionary<string, CommandMapNode>(_service.StringComparer);
             _isNullOrWhitespaceSeparator = string.IsNullOrWhiteSpace(_service.Separator);
         }
 

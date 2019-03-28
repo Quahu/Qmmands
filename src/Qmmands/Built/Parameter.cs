@@ -91,7 +91,7 @@ namespace Qmmands
 
             if (builder.CustomTypeParserType != null)
             {
-                if (!ReflectionUtilities.IsValidParserDefinition(builder.CustomTypeParserType, Type))
+                if (!Utilities.IsValidParserDefinition(builder.CustomTypeParserType, Type))
                     throw new ParameterBuildingException(builder, $"{builder.CustomTypeParserType} is not a valid type parser for parameter of type {Type}.");
 
                 CustomTypeParserType = builder.CustomTypeParserType;
@@ -100,8 +100,8 @@ namespace Qmmands
             for (var i = 0; i < builder.Checks.Count; i++)
             {
                 var check = builder.Checks[i];
-                if (!((ImmutableArray<Type>) check.SupportedTypes).Any(x => x == Type))
-                    throw new ParameterBuildingException(builder, $"{check} is not a valid parameter check for parameter of type {Type}.");
+                if (check.Predicate != null && !check.Predicate(Type))
+                    throw new ParameterBuildingException(builder, $"{check} is not a valid parameter check for a parameter of type {Type}.");
 
                 check.Parameter = this;
             }

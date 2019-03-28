@@ -190,7 +190,7 @@ namespace Qmmands
             {
                 if (DefaultValue is null)
                 {
-                    if (Type.IsValueType && !ReflectionUtilities.IsNullable(Type))
+                    if (Type.IsValueType && !Utilities.IsNullable(Type))
                         throw new ParameterBuildingException(this, "Value type parameter's default value must not be null.");
                 }
 

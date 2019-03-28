@@ -7,6 +7,9 @@ namespace Qmmands
     /// <summary>
     ///     The base class for custom command contexts.
     /// </summary>
+    /// <remarks>
+    ///     The properties this class exposes may not always be present, depending on how the <see cref="Qmmands.Command"/> was executed.
+    /// </remarks>
     public abstract class CommandContext
     {
         /// <summary>

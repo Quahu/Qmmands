@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Qmmands
 {
-    internal static class ReflectionUtilities
+    internal static class Utilities
     {
         public static bool IsValidModuleDefinition(TypeInfo typeInfo)
             => typeof(IModuleBase).IsAssignableFrom(typeInfo) && !typeInfo.IsAbstract && !typeInfo.ContainsGenericParameters;
@@ -301,7 +301,7 @@ namespace Qmmands
             };
         }
 
-        private static readonly MethodInfo _getGenericTaskResultMethodInfo = typeof(ReflectionUtilities)
+        private static readonly MethodInfo _getGenericTaskResultMethodInfo = typeof(Utilities)
             .GetMethod(nameof(GetGenericTaskResult), BindingFlags.Static | BindingFlags.NonPublic);
 
         private static async Task<CommandResult> GetGenericTaskResult<T>(Task<T> task) where T : CommandResult
@@ -324,7 +324,7 @@ namespace Qmmands
         }
 
 #if NETCOREAPP
-        private static readonly MethodInfo _getGenericValueTaskResultMethodInfo = typeof(ReflectionUtilities)
+        private static readonly MethodInfo _getGenericValueTaskResultMethodInfo = typeof(Utilities)
             .GetMethod(nameof(GetGenericValueTaskResult), BindingFlags.Static | BindingFlags.NonPublic);
 
         private static async ValueTask<CommandResult> GetGenericValueTaskResult<T>(ValueTask<T> task) where T : CommandResult
@@ -432,13 +432,11 @@ namespace Qmmands
 
         public static readonly IReadOnlyDictionary<Type, Delegate> TryParseDelegates;
 
-        public static readonly ImmutableArray<Type> NumericTypes;
-
         public static IPrimitiveTypeParser CreatePrimitiveTypeParser(Type type)
             => Activator.CreateInstance(typeof(PrimitiveTypeParser<>).MakeGenericType(type)) as IPrimitiveTypeParser;
 
-        public static IPrimitiveTypeParser CreateEnumTypeParser(Type type, Type enumType, bool ignoreCase)
-            => typeof(EnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new object[] { enumType, ignoreCase }) as IPrimitiveTypeParser;
+        public static IPrimitiveTypeParser CreateEnumTypeParser(Type type, Type enumType, CommandService service)
+            => typeof(EnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new object[] { enumType, service }) as IPrimitiveTypeParser;
 
         public static IPrimitiveTypeParser CreateNullableEnumTypeParser(Type type, IPrimitiveTypeParser enumTypeParser)
             => typeof(NullableEnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new[] { enumTypeParser }) as IPrimitiveTypeParser;
@@ -449,7 +447,7 @@ namespace Qmmands
         public static ITypeParser CreateNullableTypeParser(Type nullableType, ITypeParser typeParser)
             => typeof(NullableTypeParser<>).MakeGenericType(nullableType).GetConstructors()[0].Invoke(new object[] { typeParser }) as ITypeParser;
 
-        static ReflectionUtilities()
+        static Utilities()
         {
             TryParseDelegates = new Dictionary<Type, Delegate>(13)
             {
@@ -472,20 +470,6 @@ namespace Qmmands
                 [typeof(double)] = (TryParseDelegate<double>) double.TryParse,
                 [typeof(decimal)] = (TryParseDelegate<decimal>) decimal.TryParse
             };
-
-            var builder = ImmutableArray.CreateBuilder<Type>(11);
-            builder.Add(typeof(byte));
-            builder.Add(typeof(sbyte));
-            builder.Add(typeof(short));
-            builder.Add(typeof(ushort));
-            builder.Add(typeof(int));
-            builder.Add(typeof(uint));
-            builder.Add(typeof(long));
-            builder.Add(typeof(ulong));
-            builder.Add(typeof(float));
-            builder.Add(typeof(double));
-            builder.Add(typeof(decimal));
-            NumericTypes = builder.MoveToImmutable();
         }
 #if NETCOREAPP
         private static bool TryParseChar(ReadOnlySpan<char> value, out char result)
@@ -498,6 +482,78 @@ namespace Qmmands
 
             result = default;
             return false;
+        }
+#endif
+
+        public static bool IsNumericType(Type type)
+            => type == typeof(byte)
+                || type == typeof(sbyte)
+                || type == typeof(short)
+                || type == typeof(ushort)
+                || type == typeof(int)
+                || type == typeof(uint)
+                || type == typeof(long)
+                || type == typeof(ulong)
+                || type == typeof(float)
+                || type == typeof(double)
+                || type == typeof(decimal);
+
+        public static bool IsStringType(Type type)
+            => type == typeof(string);
+
+        public static bool IsNumericOrStringType(Type type)
+            => IsNumericType(type) || IsStringType(type);
+
+        public static bool IsCaseSensitive(this StringComparison comparison)
+        {
+            switch (comparison)
+            {
+                case StringComparison.CurrentCulture:
+                case StringComparison.InvariantCulture:
+                case StringComparison.Ordinal:
+                    return true;
+
+                case StringComparison.CurrentCultureIgnoreCase:
+                case StringComparison.InvariantCultureIgnoreCase:
+                case StringComparison.OrdinalIgnoreCase:
+                    return false;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(comparison));
+            }
+        }
+
+        public static ImmutableArray<T> TryMoveToImmutable<T>(this ImmutableArray<T>.Builder builder)
+            => builder.Capacity == builder.Count
+                ? builder.MoveToImmutable()
+                : builder.ToImmutable();
+
+#if NETSTANDARD
+        public static StringComparer StringComparerFromComparison(StringComparison comparisonType)
+        {
+            switch (comparisonType)
+            {
+                case StringComparison.CurrentCulture:
+                    return StringComparer.CurrentCulture;
+
+                case StringComparison.CurrentCultureIgnoreCase:
+                    return StringComparer.CurrentCultureIgnoreCase;
+
+                case StringComparison.InvariantCulture:
+                    return StringComparer.InvariantCulture;
+
+                case StringComparison.InvariantCultureIgnoreCase:
+                    return StringComparer.InvariantCultureIgnoreCase;
+
+                case StringComparison.Ordinal:
+                    return StringComparer.Ordinal;
+
+                case StringComparison.OrdinalIgnoreCase:
+                    return StringComparer.OrdinalIgnoreCase;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(comparisonType));
+            }
         }
 #endif
     }
