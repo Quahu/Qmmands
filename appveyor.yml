@@ -25,29 +25,27 @@ after_build:
 
     if ($HasRepoTag)
     {
-       dotnet pack .\src\Qmmands -c Release -o .\..\..\artifacts --no-restore --no-build --version-suffix="$VersionSuffix" | Out-Host
+        dotnet pack .\src\Qmmands -c Release -o .\..\..\artifacts --no-restore --no-build | Out-Host
     }
     else
     {
-        dotnet pack .\src\Qmmands -c Release -o .\..\..\artifacts --no-restore --no-build | Out-Host
+        dotnet pack .\src\Qmmands -c Release -o .\..\..\artifacts --no-restore --no-build --version-suffix="$VersionSuffix" | Out-Host
     }
 
     docfx docs/docfx.json | Out-Host
 
 after_deploy:
-  - ps: $Directory = If ($HasRepoTag) {"stable\\"} Else {"nightly\\"}
+  - ps: $Directory = If ($HasRepoTag) {"gh-pages\\stable\\"} Else {"gh-pages\\nightly\\"}
   - git config --global credential.helper store
   - ps: Add-Content "$HOME\.git-credentials" "https://$($Env:ACCESS_TOKEN):x-oauth-basic@github.com`n"
   - ps: git config --global user.email $Env:EMAIL
   - git config --global user.name "Quahu"
-  - git checkout gh-pages
+  - git clone -q --branch=gh-pages https://github.com/Quahu/Qmmands.git gh-pages
   - ps: If (-Not (Test-Path $Directory)) {mkdir $Directory}
   - ps: Remove-Item "$Directory*" -Recurse
-  - git checkout -
   - ps: Copy-Item ".\docs\_site\*" -Destination $Directory -Force -Recurse
   - ps: cd $Directory
   - git add .
-  - git checkout gh-pages
   - ps: git commit -m "Updated docs to $VersionSuffix."
   - git push origin gh-pages
 
