@@ -6,7 +6,7 @@ namespace Qmmands
     /// <summary>
     ///     The base class for user type parsers.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T"> The <see cref="Type"/> parsed by this <see cref="TypeParser{T}"/>. </typeparam>
     public abstract class TypeParser<T> : ITypeParser
     {
         /// <summary>

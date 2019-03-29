@@ -1,1 +1,2 @@
-# Add your introductions here!
+## Hi
+Here you can find a bunch of guides that should help you get started with Qmmands.

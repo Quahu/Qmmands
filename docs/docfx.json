@@ -5,14 +5,15 @@
         {
           "src": "../src",
           "files": [
-            "**.cs"
+            "**.csproj"
           ]
         }
       ],
       "dest": "api",
-      "disableGitFeatures": false,
-      "disableDefaultFilter": false,
-      "filter": "filter.yml"
+      "filter": "filter.yml",
+      "properties": {
+        "TargetFramework": "netcoreapp2.2"
+      }
     }
   ],
   "build": {
@@ -50,17 +51,6 @@
         ]
       }
     ],
-    "dest": "_site",
-    "globalMetadataFiles": [],
-    "fileMetadataFiles": [],
-    "template": [
-      "default"
-    ],
-    "postProcessors": [],
-    "markdownEngineName": "markdig",
-    "noLangKeyword": false,
-    "keepFileLink": false,
-    "cleanupCacheHistory": false,
-    "disableGitFeatures": false
+    "dest": "_site"
   }
 }
