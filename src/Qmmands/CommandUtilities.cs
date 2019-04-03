@@ -750,7 +750,7 @@ namespace Qmmands
 
         /// <summary>
         ///     Recursively gets all of the checks the provided <see cref="Command"/>
-        ///     will require to pass before one of it can be executed.
+        ///     will require to pass before it can be executed.
         /// </summary>
         /// <param name="command"> The <see cref="Command"/> to get the checks for. </param>
         /// <returns>

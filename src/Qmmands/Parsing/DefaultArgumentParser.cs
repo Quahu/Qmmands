@@ -1,6 +1,4 @@
-﻿#if NETCOREAPP
-using System;
-#endif
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -49,13 +47,13 @@ namespace Qmmands
                     arguments = new Dictionary<Parameter, object>(command.Parameters.Count);
 
                 if (!currentParameter.IsMultiple)
+                {
                     arguments.Add(currentParameter, argumentBuilder.ToString());
-
+                }
                 else
                 {
                     if (arguments.TryGetValue(currentParameter, out var list))
                         ((List<object>) list).Add(argumentBuilder.ToString());
-
                     else
                         arguments[currentParameter] = new List<object> { argumentBuilder.ToString() };
                 }
@@ -75,17 +73,17 @@ namespace Qmmands
                         whitespaceSeparated = true;
                         continue;
                     }
-
                     else if (currentPosition != 0 && !whitespaceSeparated)
+                    {
                         return new ArgumentParserResult(command, null, context.RawArguments, arguments, command.Service.QuotationMarkMap.TryGetValue(character, out expectedQuote)
-                            &&
+                           &&
 #if NETCOREAPP
                             rawArguments.Slice(currentPosition + 1).IndexOf(expectedQuote)
 #else
                             rawArguments.IndexOf(expectedQuote, currentPosition + 1)
 #endif
                             == -1 ? ArgumentParserFailure.UnexpectedQuote : ArgumentParserFailure.NoWhitespaceBetweenArguments, currentPosition);
-
+                    }
                     else
                     {
                         currentParameter = (arguments == null || arguments.Count < command.Parameters.Count) && command.Parameters.Count > 0
@@ -95,13 +93,13 @@ namespace Qmmands
                         {
                             if (command.IgnoresExtraArguments)
                                 break;
-
                             else
                                 return new ArgumentParserResult(command, null, context.RawArguments, arguments, ArgumentParserFailure.TooManyArguments, currentPosition);
                         }
-
                         else if (currentParameter.IsMultiple)
+                        {
                             multipleParameter = currentParameter;
+                        }
                     }
                 }
 
@@ -193,7 +191,7 @@ namespace Qmmands
                     var parameter = command.Parameters[i];
                     if (parameter.IsMultiple)
                     {
-                        arguments.Add(parameter, new List<object>());
+                        arguments.Add(parameter, Array.Empty<object>());
                         break;
                     }
 

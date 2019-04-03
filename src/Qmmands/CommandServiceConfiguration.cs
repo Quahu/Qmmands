@@ -81,9 +81,24 @@ namespace Qmmands
         public IArgumentParser ArgumentParser { get; set; }
 
         /// <summary>
-        ///     The generator <see langword="delegate"/> to use for <see cref="Cooldown"/> bucket keys. Defaults to <see langword="null"/>.
+        ///     Gets or sets the generator <see langword="delegate"/> to use for <see cref="Cooldown"/> bucket keys.
+        ///     Defaults to <see langword="null"/>.
         /// </summary>
         public CooldownBucketKeyGeneratorDelegate CooldownBucketKeyGenerator { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the <see langword="delegate"/> that gets called after a <see cref="Command"/> was successfully executed.
+        ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
+        ///     Defaults to <see langword="null"/>.
+        /// </summary>
+        public CommandExecutedDelegate CommandExecuted { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the <see langword="delegate"/> that gets called after a <see cref="Command"/> failed to execute.
+        ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
+        ///     Defaults to <see langword="null"/>.
+        /// </summary>
+        public CommandErroredDelegate CommandErrored { get; set; }
 
         /// <summary>
         ///     Gets or sets the quotation mark map.

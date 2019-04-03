@@ -110,7 +110,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Runs parameter checks on this <see cref="Parameter"/>.
+        ///     Runs checks on this <see cref="Parameter"/>.
         /// </summary>
         /// <param name="argument"> The parsed argument value for this <see cref="Parameter"/>. </param>
         /// <param name="context"> The <see cref="CommandContext"/> used for execution. </param>
