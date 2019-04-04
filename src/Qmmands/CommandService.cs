@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Qommon.Events;
 
 namespace Qmmands
 {
@@ -51,18 +52,6 @@ namespace Qmmands
         public CooldownBucketKeyGeneratorDelegate CooldownBucketKeyGenerator { get; }
 
         /// <summary>
-        ///     Gets the <see langword="delegate"/> that gets called after a <see cref="Command"/> was successfully executed.
-        ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
-        /// </summary>
-        public CommandExecutedDelegate CommandExecuted { get; }
-
-        /// <summary>
-        ///     Gets the <see langword="delegate"/> that gets called after a <see cref="Command"/> failed to execute.
-        ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
-        /// </summary>
-        public CommandErroredDelegate CommandErrored { get; }
-
-        /// <summary>
         ///     Gets the quotation mark map used for non-remainder multi word arguments.
         /// </summary>
         public IReadOnlyDictionary<char, char> QuotationMarkMap { get; }
@@ -71,6 +60,28 @@ namespace Qmmands
         ///     Gets the collection of nouns used for nullable value type parsing.
         /// </summary>
         public IReadOnlyList<string> NullableNouns { get; }
+
+        /// <summary>
+        ///     Fires after a <see cref="Command"/> was successfully executed.
+        ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
+        /// </summary>
+        public event AsynchronousEventHandler<CommandExecutedEventArgs> CommandExecuted
+        {
+            add => _commandExecuted.Hook(value);
+            remove => _commandExecuted.Unhook(value);
+        }
+        private readonly AsynchronousEvent<CommandExecutedEventArgs> _commandExecuted = new AsynchronousEvent<CommandExecutedEventArgs>();
+
+        /// <summary>
+        ///     Fires after a <see cref="Command"/> failed to execute.
+        ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
+        /// </summary>
+        public event AsynchronousEventHandler<CommandErroredEventArgs> CommandErrored
+        {
+            add => _commandErrored.Hook(value);
+            remove => _commandErrored.Unhook(value);
+        }
+        private readonly AsynchronousEvent<CommandErroredEventArgs> _commandErrored = new AsynchronousEvent<CommandErroredEventArgs>();
 
         internal readonly StringComparer StringComparer;
 
@@ -101,8 +112,6 @@ namespace Qmmands
             SeparatorRequirement = configuration.SeparatorRequirement;
             ArgumentParser = configuration.ArgumentParser ?? DefaultArgumentParser.Instance;
             CooldownBucketKeyGenerator = configuration.CooldownBucketKeyGenerator;
-            CommandExecuted = configuration.CommandExecuted;
-            CommandErrored = configuration.CommandErrored;
             QuotationMarkMap = configuration.QuoteMap != null
                 ? new ReadOnlyDictionary<char, char>(configuration.QuoteMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value))
                 : CommandUtilities.DefaultQuotationMarkMap;
@@ -1073,36 +1082,10 @@ namespace Qmmands
             return (new TypeParseFailedResult(parameter, value, $"Failed to parse {friendlyName}."), default);
         }
 
-        private
-#if NETCOREAPP
-            ValueTask
-#else
-            Task
-#endif
-            InvokeCommandExecutedAsync(CommandResult result, CommandContext context, IServiceProvider provider)
-        {
-            var task = CommandExecuted?.Invoke(result, context, provider);
-#if NETCOREAPP
-            return task != null ? new ValueTask(task) : new ValueTask();
-#else
-            return task ?? Task.CompletedTask;
-#endif
-        }
+        private Task InvokeCommandExecutedAsync(CommandResult result, CommandContext context, IServiceProvider provider)
+            => _commandExecuted.InvokeAsync(new CommandExecutedEventArgs(result, context, provider));
 
-        private
-#if NETCOREAPP
-            ValueTask
-#else
-            Task
-#endif
-            InvokeCommandErroredAsync(ExecutionFailedResult result, CommandContext context, IServiceProvider provider)
-        {
-            var task = CommandErrored?.Invoke(result, context, provider);
-#if NETCOREAPP
-            return task != null ? new ValueTask(task) : new ValueTask();
-#else
-            return task ?? Task.CompletedTask;
-#endif
-        }
+        private Task InvokeCommandErroredAsync(ExecutionFailedResult result, CommandContext context, IServiceProvider provider)
+            => _commandErrored.InvokeAsync(new CommandErroredEventArgs(result, context, provider));
     }
 }

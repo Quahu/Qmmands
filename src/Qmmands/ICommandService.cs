@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using Qommon.Events;
 
 namespace Qmmands
 {
@@ -47,18 +48,6 @@ namespace Qmmands
         CooldownBucketKeyGeneratorDelegate CooldownBucketKeyGenerator { get; }
 
         /// <summary>
-        ///     Gets the <see langword="delegate"/> that gets called after a <see cref="Command"/> was successfully executed.
-        ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
-        /// </summary>
-        CommandExecutedDelegate CommandExecuted { get; }
-
-        /// <summary>
-        ///     Gets the <see langword="delegate"/> that gets called after a <see cref="Command"/> failed to execute.
-        ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
-        /// </summary>
-        CommandErroredDelegate CommandErrored { get; }
-
-        /// <summary>
         ///     Gets the quotation mark map used for non-remainder multi word arguments.
         /// </summary>
         IReadOnlyDictionary<char, char> QuotationMarkMap { get; }
@@ -67,6 +56,18 @@ namespace Qmmands
         ///     Gets the collection of nouns used for nullable value type parsing.
         /// </summary>
         IReadOnlyList<string> NullableNouns { get; }
+
+        /// <summary>
+        ///     Fires after a <see cref="Command"/> was successfully executed.
+        ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
+        /// </summary>
+        event AsynchronousEventHandler<CommandExecutedEventArgs> CommandExecuted;
+
+        /// <summary>
+        ///     Fires after a <see cref="Command"/> failed to execute.
+        ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
+        /// </summary>
+        event AsynchronousEventHandler<CommandErroredEventArgs> CommandErrored;
 
         /// <summary>
         ///     Gets all of the added <see cref="Command"/>s.
