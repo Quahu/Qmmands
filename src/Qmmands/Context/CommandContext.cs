@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using Qommon.Collections;
 
 namespace Qmmands
 {
@@ -44,11 +44,11 @@ namespace Qmmands
             {
                 var arguments = _arguments;
                 return arguments == null
-                    ? (_arguments = new ReadOnlyCollection<object>(InternalArguments ?? Array.Empty<object>()))
+                    ? (_arguments = new ReadOnlyList<object>(InternalArguments ?? Array.Empty<object>()))
                     : arguments;
             }
         }
-        private ReadOnlyCollection<object> _arguments;
+        private ReadOnlyList<object> _arguments;
 
         internal object[] InternalArguments { get; set; }
     }
