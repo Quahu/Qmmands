@@ -1,7 +1,7 @@
 # Qmmands
 [![Build Status](https://img.shields.io/appveyor/ci/Quahu/qmmands.svg?style=flat-square)](https://ci.appveyor.com/project/Quahu/qmmands)
 [![NuGet](https://img.shields.io/nuget/v/Qmmands.svg?style=flat-square)](https://www.nuget.org/packages/Qmmands/)
-[![MyGet](https://img.shields.io/myget/qmmands/vpre/Qmmands.svg?style=flat-square&label=myget)](https://www.myget.org/gallery/qmmands)
+[![MyGet](https://img.shields.io/myget/quahu/vpre/Qmmands.svg?style=flat-square&label=myget)](https://www.myget.org/feed/quahu/package/nuget/Qmmands)
 [![The Lab](https://img.shields.io/discord/416256456505950215.svg?style=flat-square&label=discord)](https://discord.gg/eUMSXGZ)  
 
 An asynchronous platform-independent .NET Standard 2.0 and .NET Core 2.1-2.2 command framework that can be used with any input source, whether that be Discord messages, IRC, or a terminal. 
@@ -38,6 +38,9 @@ There's currently no official documentation for Qmmands other than the community
 **CommandHandler.cs**
 ```cs
 private readonly CommandService _service = new CommandService();
+
+public void Setup()
+    => _service.AddModule<CommandModule>();
 
 // Imagine this being a message callback, whether it be from an IRC bot,
 // a Discord bot, or any other chat based service.
