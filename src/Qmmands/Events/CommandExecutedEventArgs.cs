@@ -8,22 +8,28 @@ namespace Qmmands
     public sealed class CommandExecutedEventArgs : EventArgs
     {
         /// <summary>
-        ///     The <see cref="CommandResult"/> of the <see cref="Command"/>. 
+        ///     Gets the <see cref="CommandResult"/> of the <see cref="Command"/>. 
         ///     <see langword="null"/> if the <see cref="Command"/> did not return anything.
         /// </summary>
         public CommandResult Result { get; }
 
         /// <summary>
-        ///     The <see cref="CommandContext"/> used for execution.
+        ///     Gets the <see cref="CommandContext"/> used for execution.
         /// </summary>
         public CommandContext Context { get; }
 
         /// <summary>
-        ///     The <see cref="IServiceProvider"/> used for execution.
+        ///     Gets the <see cref="IServiceProvider"/> used for execution.
         /// </summary>
         public IServiceProvider Provider { get; }
 
-        internal CommandExecutedEventArgs(CommandResult result, CommandContext context, IServiceProvider provider)
+        /// <summary>
+        ///     Initialises new <see cref="CommandExecutedEventArgs"/>.
+        /// </summary>
+        /// <param name="result"> The <see cref="CommandResult"/> from the <see cref="Command"/>. </param>
+        /// <param name="context"> The <see cref="CommandContext"/> used for execution. </param>
+        /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
+        public CommandExecutedEventArgs(CommandResult result, CommandContext context, IServiceProvider provider)
         {
             Result = result;
             Context = context;

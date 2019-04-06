@@ -8,21 +8,27 @@ namespace Qmmands
     public sealed class CommandErroredEventArgs : EventArgs
     {
         /// <summary>
-        ///     The <see cref="ExecutionFailedResult"/> returned from execution.
+        ///     Gets the <see cref="ExecutionFailedResult"/> returned from execution.
         /// </summary>
         public ExecutionFailedResult Result { get; }
 
         /// <summary>
-        ///     The <see cref="CommandContext"/> used for execution.
+        ///     Gets the <see cref="CommandContext"/> used for execution.
         /// </summary>
         public CommandContext Context { get; }
 
         /// <summary>
-        ///     The <see cref="IServiceProvider"/> used for execution.
+        ///     Gets the <see cref="IServiceProvider"/> used for execution.
         /// </summary>
         public IServiceProvider Provider { get; }
 
-        internal CommandErroredEventArgs(ExecutionFailedResult result, CommandContext context, IServiceProvider provider)
+        /// <summary>
+        ///     Initialises new <see cref="CommandErroredEventArgs"/>.
+        /// </summary>
+        /// <param name="result"> The <see cref="ExecutionFailedResult"/> returned from execution. </param>
+        /// <param name="context"> The <see cref="CommandContext"/> used for execution. </param>
+        /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
+        public CommandErroredEventArgs(ExecutionFailedResult result, CommandContext context, IServiceProvider provider)
         {
             Result = result;
             Context = context;
