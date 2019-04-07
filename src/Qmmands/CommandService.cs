@@ -273,9 +273,9 @@ namespace Qmmands
                 var existingParser = GetAnyTypeParser(type, true);
                 if (existingParser != null)
                     throw new ArgumentException($"There is already a custom type parser replacing the primitive parser for type {type} - {existingParser.GetType()}.");
-
-                AddTypeParserInternal(type, parser, replacePrimitive);
             }
+
+            AddTypeParserInternal(type, parser, replacePrimitive);
         }
 
         internal void AddTypeParserInternal(Type type, ITypeParser parser, bool replacePrimitive)
@@ -357,7 +357,9 @@ namespace Qmmands
             => GetSpecificTypeParser(typeof(T), typeof(TParser)) as TParser;
 
         internal ITypeParser GetSpecificTypeParser(Type type, Type parserType)
-            => _typeParsers.TryGetValue(type, out var typeParsers) && typeParsers.TryGetValue(parserType, out var typeParser) ? typeParser.Instance : null;
+            => _typeParsers.TryGetValue(type, out var typeParsers) && typeParsers.TryGetValue(parserType, out var typeParser)
+                ? typeParser.Instance
+                : null;
 
         internal ITypeParser GetAnyTypeParser(Type type, bool replacingPrimitive)
         {
