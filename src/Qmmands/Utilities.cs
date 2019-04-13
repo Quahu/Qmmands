@@ -237,6 +237,14 @@ namespace Qmmands
 
         public static Func<IServiceProvider, T> CreateProviderConstructor<T>(CommandService commandService, Type type)
         {
+            var constructors = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
+            if (constructors.Length == 0)
+                throw new InvalidOperationException($"{type} has no public non-static constructors.");
+
+            if (constructors.Length > 1)
+                throw new InvalidOperationException($"{type} has multiple public constructors.");
+
+            var constructor = constructors[0];
             object GetDependency(IServiceProvider provider, Type serviceType)
             {
                 if (serviceType == typeof(IServiceProvider) || serviceType == provider.GetType())
@@ -249,17 +257,8 @@ namespace Qmmands
                 if (!(service is null))
                     return service;
 
-                throw new InvalidOperationException($"Failed to instantiate {type}, dependency of type {serviceType} was not found.");
+                throw new InvalidOperationException($"Failed to instantiate {constructor.DeclaringType}, dependency of type {serviceType} was not found.");
             }
-
-            var constructors = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
-            if (constructors.Length == 0)
-                throw new InvalidOperationException($"{type} has no public non-static constructors.");
-
-            if (constructors.Length > 1)
-                throw new InvalidOperationException($"{type} has multiple public constructors.");
-
-            var constructor = constructors[0];
             var parameters = constructor.GetParameters();
             var arguments = new object[parameters.Length];
             var properties = new List<PropertyInfo>();
@@ -288,7 +287,7 @@ namespace Qmmands
                 }
                 catch (Exception ex)
                 {
-                    throw new InvalidOperationException($"Failed to instantiate {type}. See the inner exception for more details.", ex);
+                    throw new InvalidOperationException($"Failed to instantiate {constructor.DeclaringType}. See the inner exception for more details.", ex);
                 }
 
                 for (var i = 0; i < properties.Count; i++)
