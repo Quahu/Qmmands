@@ -58,6 +58,11 @@ namespace Qmmands
         IReadOnlyList<string> NullableNouns { get; }
 
         /// <summary>
+        ///     Gets the top-level modules.
+        /// </summary>
+        IReadOnlyList<Module> TopLevelModules { get; }
+
+        /// <summary>
         ///     Fires after a <see cref="Command"/> was successfully executed.
         ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
         /// </summary>

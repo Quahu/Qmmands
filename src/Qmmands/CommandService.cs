@@ -62,6 +62,20 @@ namespace Qmmands
         public IReadOnlyList<string> NullableNouns { get; }
 
         /// <summary>
+        ///     Gets the top-level modules.
+        /// </summary>
+        public IReadOnlyList<Module> TopLevelModules
+        {
+            get
+            {
+                lock (_moduleLock)
+                {
+                    return _modules.ToImmutableArray();
+                }
+            }
+        }
+
+        /// <summary>
         ///     Fires after a <see cref="Command"/> was successfully executed.
         ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
         /// </summary>
@@ -164,7 +178,9 @@ namespace Qmmands
             }
 
             lock (_moduleLock)
+            {
                 return _modules.SelectMany(GetCommands).ToImmutableArray();
+            }
         }
 
         /// <summary>
