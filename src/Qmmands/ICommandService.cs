@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using Qommon.Collections;
 using Qommon.Events;
 
 namespace Qmmands
@@ -60,7 +61,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the top-level modules.
         /// </summary>
-        IReadOnlyList<Module> TopLevelModules { get; }
+        ReadOnlySet<Module> TopLevelModules { get; }
 
         /// <summary>
         ///     Fires after a <see cref="Command"/> was successfully executed.

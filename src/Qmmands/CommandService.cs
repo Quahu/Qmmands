@@ -64,16 +64,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the top-level modules.
         /// </summary>
-        public IReadOnlyList<Module> TopLevelModules
-        {
-            get
-            {
-                lock (_moduleLock)
-                {
-                    return _modules.ToImmutableArray();
-                }
-            }
-        }
+        public ReadOnlySet<Module> TopLevelModules { get; }
 
         /// <summary>
         ///     Fires after a <see cref="Command"/> was successfully executed.
@@ -102,7 +93,7 @@ namespace Qmmands
         private readonly ConcurrentDictionary<Type, Dictionary<Type, (bool ReplacingPrimitive, ITypeParser Instance)>> _typeParsers;
         private readonly ConcurrentDictionary<Type, IPrimitiveTypeParser> _primitiveTypeParsers;
         private readonly Dictionary<Type, Module> _typeModules;
-        private readonly HashSet<Module> _modules;
+        private readonly HashSet<Module> _topLevelModules;
         private readonly CommandMap _map;
         private static readonly Type _stringType = typeof(string);
         private readonly object _moduleLock = new object();
@@ -141,7 +132,8 @@ namespace Qmmands
 #endif
 
             _typeModules = new Dictionary<Type, Module>();
-            _modules = new HashSet<Module>();
+            _topLevelModules = new HashSet<Module>();
+            TopLevelModules = new ReadOnlySet<Module>(_topLevelModules);
             _map = new CommandMap(this);
             _typeParsers = new ConcurrentDictionary<Type, Dictionary<Type, (bool, ITypeParser)>>();
             _primitiveTypeParsers = new ConcurrentDictionary<Type, IPrimitiveTypeParser>(Environment.ProcessorCount, Utilities.TryParseDelegates.Count * 2);
@@ -179,7 +171,7 @@ namespace Qmmands
 
             lock (_moduleLock)
             {
-                return _modules.SelectMany(GetCommands).ToImmutableArray();
+                return _topLevelModules.SelectMany(GetCommands).ToImmutableArray();
             }
         }
 
@@ -206,7 +198,7 @@ namespace Qmmands
             lock (_moduleLock)
             {
                 var builder = ImmutableArray.CreateBuilder<Module>();
-                foreach (var module in _modules)
+                foreach (var module in _topLevelModules)
                 {
                     builder.Add(module);
                     builder.AddRange(GetSubmodules(module));
@@ -593,14 +585,14 @@ namespace Qmmands
 
             lock (_moduleLock)
             {
-                if (_modules.Contains(module))
+                if (_topLevelModules.Contains(module))
                     throw new ArgumentException("This module has already been added.", nameof(module));
 
                 if (module.Type != null && _typeModules.ContainsKey(module.Type))
                     throw new ArgumentException($"{module.Type} has already been added as a module.", nameof(module));
 
                 _map.MapModule(module);
-                _modules.Add(module);
+                _topLevelModules.Add(module);
                 AddSubmodules(module);
             }
         }
@@ -628,7 +620,7 @@ namespace Qmmands
         /// </summary>
         public void RemoveAllModules()
         {
-            foreach (var module in _modules.ToArray())
+            foreach (var module in _topLevelModules.ToArray())
                 RemoveModuleInternal(module);
         }
 
@@ -647,11 +639,11 @@ namespace Qmmands
 
             lock (_moduleLock)
             {
-                if (!_modules.Contains(module))
+                if (!_topLevelModules.Contains(module))
                     throw new ArgumentException("This module has not been added.", nameof(module));
 
                 _map.UnmapModule(module);
-                _modules.Remove(module);
+                _topLevelModules.Remove(module);
                 if (module.Type != null)
                 {
                     _typeModules.Remove(module.Type);
