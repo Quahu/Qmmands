@@ -50,6 +50,6 @@ namespace Qmmands
         }
         private ReadOnlyList<object> _arguments;
 
-        internal object[] InternalArguments { get; set; }
+        internal object[] InternalArguments;
     }
 }

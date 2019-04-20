@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -53,7 +53,7 @@ namespace Qmmands
                 else
                 {
                     if (arguments.TryGetValue(currentParameter, out var list))
-                        ((List<object>) list).Add(argumentBuilder.ToString());
+                        (list as List<object>).Add(argumentBuilder.ToString());
                     else
                         arguments[currentParameter] = new List<object> { argumentBuilder.ToString() };
                 }

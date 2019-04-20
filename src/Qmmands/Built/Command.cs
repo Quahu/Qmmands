@@ -214,7 +214,7 @@ namespace Qmmands
             if (CooldownMap == null)
                 return;
 
-            CooldownMap.Buckets.Clear();
+            CooldownMap.Clear();
         }
 
         /// <summary>

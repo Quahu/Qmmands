@@ -338,8 +338,9 @@ namespace Qmmands
         /// </summary>
         public void RemoveAllTypeParsers()
         {
-            foreach (var typeParsers in _typeParsers.ToArray())
-                _typeParsers.TryRemove(typeParsers.Key, out _);
+            var typeParsers = _typeParsers.ToArray();
+            for (var i = 0; i < typeParsers.Length; i++)
+                _typeParsers.TryRemove(typeParsers[i].Key, out _);
         }
 
         /// <summary>
@@ -574,8 +575,9 @@ namespace Qmmands
         {
             void AddSubmodules(Module m)
             {
-                foreach (var submodule in m.Submodules)
+                for (var i = 0; i < m.Submodules.Count; i++)
                 {
+                    var submodule = m.Submodules[i];
                     if (submodule.Type != null)
                         _typeModules.Add(submodule.Type, submodule);
 
@@ -585,14 +587,14 @@ namespace Qmmands
 
             lock (_moduleLock)
             {
-                if (_topLevelModules.Contains(module))
-                    throw new ArgumentException("This module has already been added.", nameof(module));
-
                 if (module.Type != null && _typeModules.ContainsKey(module.Type))
                     throw new ArgumentException($"{module.Type} has already been added as a module.", nameof(module));
 
+                if (!_topLevelModules.Add(module))
+                    throw new ArgumentException("This module has already been added.", nameof(module));
+
+                _typeModules.Add(module.Type, module);
                 _map.MapModule(module);
-                _topLevelModules.Add(module);
                 AddSubmodules(module);
             }
         }
@@ -620,16 +622,22 @@ namespace Qmmands
         /// </summary>
         public void RemoveAllModules()
         {
-            foreach (var module in _topLevelModules.ToArray())
-                RemoveModuleInternal(module);
+            Module[] topLevelModules;
+            lock (_moduleLock)
+            {
+                topLevelModules = _topLevelModules.ToArray();
+                for (var i = 0; i < topLevelModules.Length; i++)
+                    RemoveModuleInternal(topLevelModules[i]);
+            }
         }
 
         private void RemoveModuleInternal(Module module)
         {
             void RemoveSubmodules(Module m)
             {
-                foreach (var submodule in m.Submodules)
+                for (var i = 0; i < m.Submodules.Count; i++)
                 {
+                    var submodule = m.Submodules[i];
                     if (submodule.Type != null)
                         _typeModules.Remove(submodule.Type);
 
@@ -639,11 +647,10 @@ namespace Qmmands
 
             lock (_moduleLock)
             {
-                if (!_topLevelModules.Contains(module))
+                if (!_topLevelModules.Remove(module))
                     throw new ArgumentException("This module has not been added.", nameof(module));
 
                 _map.UnmapModule(module);
-                _topLevelModules.Remove(module);
                 if (module.Type != null)
                 {
                     _typeModules.Remove(module.Type);
