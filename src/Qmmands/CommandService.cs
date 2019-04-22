@@ -593,7 +593,9 @@ namespace Qmmands
                 if (!_topLevelModules.Add(module))
                     throw new ArgumentException("This module has already been added.", nameof(module));
 
-                _typeModules.Add(module.Type, module);
+                if (module.Type != null)
+                    _typeModules.Add(module.Type, module);
+
                 _map.MapModule(module);
                 AddSubmodules(module);
             }
@@ -650,12 +652,11 @@ namespace Qmmands
                 if (!_topLevelModules.Remove(module))
                     throw new ArgumentException("This module has not been added.", nameof(module));
 
-                _map.UnmapModule(module);
                 if (module.Type != null)
-                {
                     _typeModules.Remove(module.Type);
-                    RemoveSubmodules(module);
-                }
+
+                _map.UnmapModule(module);
+                RemoveSubmodules(module);
             }
         }
 
