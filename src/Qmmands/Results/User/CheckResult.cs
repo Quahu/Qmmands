@@ -44,6 +44,15 @@
         public static CheckResult Unsuccessful(string reason)
             => new CheckResult(reason);
 
+        /// <summary>
+        ///     Returns <see cref="Reason"/>.
+        /// </summary>
+        /// <returns>
+        ///     The <see cref="Reason"/>.
+        /// </returns>
+        public override string ToString()
+            => Reason;
+
 #if NETCOREAPP
         /// <summary>
         ///     Implicitly wraps the provided <see cref="CheckResult"/> in <see cref="System.Threading.Tasks.ValueTask{TResult}"/>.
