@@ -230,29 +230,6 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Attempts to find <see cref="Module"/>s matching the provided path.
-        /// </summary>
-        /// <param name="path"> The path to use for searching. </param>
-        /// <returns>
-        ///     An ordered list of <see cref="ModuleMatch"/>es.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        ///     The path to find modules for must not be null.
-        /// </exception>
-        public IReadOnlyList<ModuleMatch> FindModules(string path)
-        {
-            if (path == null)
-                throw new ArgumentNullException(nameof(path), "The path to find modules for must not be null.");
-
-            lock (_moduleLock)
-            {
-                return _map.FindModules(path)
-                    .OrderByDescending(x => x.Path.Count)
-                    .ToImmutableArray();
-            }
-        }
-
-        /// <summary>
         ///     Adds a <see cref="TypeParser{T}"/> for the specified <typeparamref name="T"/> <see cref="Type"/>.
         /// </summary>
         /// <typeparam name="T"> The type to add the <paramref name="parser"/> for. </typeparam>
@@ -446,7 +423,17 @@ namespace Qmmands
                 if (predicate != null && !predicate(typeInfo))
                     continue;
 
-                modules.Add(AddModule(typeInfo.AsType(), action));
+                try
+                {
+                    modules.Add(AddModule(typeInfo.AsType(), action));
+                }
+                catch
+                {
+                    for (var j = 0; j < modules.Count; j++)
+                        RemoveModule(modules[j]);
+
+                    throw;
+                }
             }
 
             return modules.TryMoveToImmutable();
@@ -573,31 +560,19 @@ namespace Qmmands
 
         private void AddModuleInternal(Module module)
         {
-            void AddSubmodules(Module m)
-            {
-                for (var i = 0; i < m.Submodules.Count; i++)
-                {
-                    var submodule = m.Submodules[i];
-                    if (submodule.Type != null)
-                        _typeModules.Add(submodule.Type, submodule);
-
-                    AddSubmodules(submodule);
-                }
-            }
-
             lock (_moduleLock)
             {
                 if (module.Type != null && _typeModules.ContainsKey(module.Type))
                     throw new ArgumentException($"{module.Type} has already been added as a module.", nameof(module));
 
-                if (!_topLevelModules.Add(module))
+                if (_topLevelModules.Contains(module))
                     throw new ArgumentException("This module has already been added.", nameof(module));
 
                 if (module.Type != null)
                     _typeModules.Add(module.Type, module);
 
                 _map.MapModule(module);
-                AddSubmodules(module);
+                _topLevelModules.Add(module);
             }
         }
 
@@ -635,18 +610,6 @@ namespace Qmmands
 
         private void RemoveModuleInternal(Module module)
         {
-            void RemoveSubmodules(Module m)
-            {
-                for (var i = 0; i < m.Submodules.Count; i++)
-                {
-                    var submodule = m.Submodules[i];
-                    if (submodule.Type != null)
-                        _typeModules.Remove(submodule.Type);
-
-                    RemoveSubmodules(submodule);
-                }
-            }
-
             lock (_moduleLock)
             {
                 if (!_topLevelModules.Remove(module))
@@ -656,7 +619,6 @@ namespace Qmmands
                     _typeModules.Remove(module.Type);
 
                 _map.UnmapModule(module);
-                RemoveSubmodules(module);
             }
         }
 

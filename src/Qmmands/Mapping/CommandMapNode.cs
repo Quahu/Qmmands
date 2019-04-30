@@ -7,7 +7,6 @@ namespace Qmmands
     {
         private readonly CommandService _service;
         private readonly Dictionary<string, List<Command>> _commands;
-        private readonly Dictionary<string, List<Module>> _modules;
         private readonly Dictionary<string, CommandMapNode> _nodes;
         private readonly bool _isNullOrWhitespaceSeparator;
 
@@ -15,7 +14,6 @@ namespace Qmmands
         {
             _service = service;
             _commands = new Dictionary<string, List<Command>>(_service.StringComparer);
-            _modules = new Dictionary<string, List<Module>>(_service.StringComparer);
             _nodes = new Dictionary<string, CommandMapNode>(_service.StringComparer);
             _isNullOrWhitespaceSeparator = string.IsNullOrWhiteSpace(_service.Separator);
         }
@@ -25,81 +23,38 @@ namespace Qmmands
             if (startIndex >= text.Length)
                 yield break;
 
-            foreach (var kvp in _commands)
+            foreach (var (segment, commands) in _commands)
             {
-                var index = GetSegment(text, kvp.Key, startIndex, false, out var arguments, out _, out var hasWhitespaceSeparator);
+                var index = GetSegment(text, segment, startIndex, false, out var arguments, out _, out var hasWhitespaceSeparator);
                 if (index == -1 || !(hasWhitespaceSeparator || string.IsNullOrWhiteSpace(arguments)))
                     continue;
 
-                for (var i = 0; i < kvp.Value.Count; i++)
+                for (var i = 0; i < commands.Count; i++)
                 {
-                    path.Add(kvp.Key);
-                    yield return new CommandMatch(kvp.Value[i], kvp.Key, path, arguments);
+                    path.Add(segment);
+                    yield return new CommandMatch(commands[i], segment, path, arguments);
                     path.RemoveAt(path.Count - 1);
                 }
             }
 
-            foreach (var kvp in _nodes)
+            foreach (var (segment, node) in _nodes)
             {
-                var index = GetSegment(text, kvp.Key, startIndex, true, out _, out var hasSeparator, out _);
+                var index = GetSegment(text, segment, startIndex, true, out _, out var hasSeparator, out _);
                 if (index == -1 || !hasSeparator)
                     continue;
 
-                path.Add(kvp.Key);
-                foreach (var match in kvp.Value.FindCommands(path, text, index))
+                path.Add(segment);
+                foreach (var match in node.FindCommands(path, text, index))
                     yield return match;
+
                 path.RemoveAt(path.Count - 1);
             }
         }
 
-        public IEnumerable<ModuleMatch> FindModules(List<string> path, string text, int startIndex)
+        private int GetSegment(ReadOnlySpan<char> text, ReadOnlySpan<char> key, int startIndex, bool checkForSeparator,
+            out string arguments, out bool hasSeparator, out bool hasWhitespaceSeparator)
         {
-            if (startIndex >= text.Length)
-                yield break;
-
-            foreach (var kvp in _modules)
-            {
-                var index = GetSegment(text, kvp.Key, startIndex, false, out var arguments, out _, out var hasWhitespaceSeparator);
-                if (index == -1 || !(hasWhitespaceSeparator || string.IsNullOrWhiteSpace(arguments)))
-                    continue;
-
-                for (var i = 0; i < kvp.Value.Count; i++)
-                {
-                    path.Add(kvp.Key);
-                    yield return new ModuleMatch(kvp.Value[i], kvp.Key, path, arguments);
-                    path.RemoveAt(path.Count - 1);
-                }
-            }
-
-            foreach (var kvp in _nodes)
-            {
-                var index = GetSegment(text, kvp.Key, startIndex, true, out _, out var hasSeparator, out _);
-                if (index == -1 || !hasSeparator)
-                    continue;
-
-                path.Add(kvp.Key);
-                foreach (var match in kvp.Value.FindModules(path, text, index))
-                    yield return match;
-                path.RemoveAt(path.Count - 1);
-            }
-        }
-
-        private int GetSegment(
-#if NETCOREAPP
-            in ReadOnlySpan<char> text,
-            in ReadOnlySpan<char> key,
-#else
-            string text,
-            string key,
-#endif
-            int startIndex, bool checkForSeparator, out string arguments, out bool hasSeparator, out bool hasWhitespaceSeparator)
-        {
-            var index =
-#if NETCOREAPP
-                text.Slice(startIndex).IndexOf(key, _service.StringComparison) + startIndex;
-#else
-                text.IndexOf(key, startIndex, _service.StringComparison);
-#endif
+            var index = text.Slice(startIndex).IndexOf(key, _service.StringComparison) + startIndex;
             if (index == -1 || index != startIndex)
             {
                 arguments = null;
@@ -123,12 +78,7 @@ namespace Qmmands
                         index++;
                     }
 
-                    var separatorIndex =
-#if NETCOREAPP
-                        text.Slice(index).IndexOf(_service.Separator, _service.StringComparison) + index;
-#else
-                        text.IndexOf(_service.Separator, index, _service.StringComparison);
-#endif
+                    var separatorIndex = text.Slice(index).IndexOf(_service.Separator, _service.StringComparison) + index;
                     if (separatorIndex == index)
                     {
                         index += _service.Separator.Length;
@@ -146,11 +96,7 @@ namespace Qmmands
                     index++;
                 }
 
-#if NETCOREAPP
                 arguments = new string(text.Slice(index));
-#else
-                arguments = text.Substring(index);
-#endif
                 switch (_service.SeparatorRequirement)
                 {
                     case SeparatorRequirement.None:
@@ -173,81 +119,45 @@ namespace Qmmands
             }
         }
 
-        public void AddModule(Module module, IReadOnlyList<string> segments, int startIndex)
-        {
-            if (segments.Count == 0)
-                return;
-
-            var segment = segments[startIndex];
-            if (startIndex == segments.Count - 1)
-            {
-                if (_modules.TryGetValue(segment, out var modules))
-                    modules.Add(module);
-
-                else
-                    _modules.Add(segment, new List<Module> { module });
-            }
-
-            else
-            {
-                if (!_nodes.TryGetValue(segment, out var node))
-                {
-                    node = new CommandMapNode(_service);
-                    _nodes.Add(segment, node);
-                }
-
-                node.AddModule(module, segments, startIndex + 1);
-            }
-        }
-
-        public void RemoveModule(Module module, IReadOnlyList<string> segments, int startIndex)
-        {
-            if (segments.Count == 0)
-                return;
-
-            var segment = segments[startIndex];
-            if (startIndex == segments.Count - 1)
-            {
-                if (_modules.TryGetValue(segment, out var modules))
-                    modules.Remove(module);
-            }
-
-            else if (_nodes.TryGetValue(segment, out var node))
-                node.RemoveModule(module, segments, startIndex + 1);
-        }
-
-        public void AddCommand(Command command, IReadOnlyList<string> segments, int startIndex)
+        private void ValidateCommand(Command command, IReadOnlyList<string> segments, int startIndex,
+            out string segment, out List<Command> commands)
         {
             if (segments.Count == 0)
                 throw new CommandMappingException(command, null, "Cannot map commands without aliases to the root node.");
 
-            var segment = segments[startIndex];
+            segment = segments[startIndex];
+            if (!_commands.TryGetValue(segment, out commands))
+                return;
+
+            for (var i = 0; i < commands.Count; i++)
+            {
+                var otherCommand = commands[i];
+                var signature = command.SignatureIdentifier;
+                var otherSignature = otherCommand.SignatureIdentifier;
+                if (signature.Identifier != otherSignature.Identifier)
+                    continue;
+
+                if (signature.HasRemainder == otherSignature.HasRemainder)
+                    throw new CommandMappingException(command, segment,
+                        "Cannot map multiple overloads with the same signature.");
+
+                else if (!signature.HasRemainder && command.IgnoresExtraArguments || !otherSignature.HasRemainder && otherCommand.IgnoresExtraArguments)
+                    throw new CommandMappingException(command, segment,
+                        "Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.");
+            }
+        }
+
+        public void AddCommand(Command command, IReadOnlyList<string> segments, int startIndex)
+        {
+            ValidateCommand(command, segments, startIndex, out var segment, out var commands);
             if (startIndex == segments.Count - 1)
             {
-                if (_commands.TryGetValue(segment, out var commands))
-                {
-                    for (var i = 0; i < commands.Count; i++)
-                    {
-                        var otherCommand = commands[i];
-                        var signature = command.SignatureIdentifier;
-                        var otherSignature = otherCommand.SignatureIdentifier;
-                        if (signature.Identifier == otherSignature.Identifier)
-                        {
-                            if (signature.HasRemainder == otherSignature.HasRemainder)
-                                throw new CommandMappingException(command, segment, "Cannot map multiple overloads with the same signature.");
-
-                            else if (!signature.HasRemainder && command.IgnoresExtraArguments || !otherSignature.HasRemainder && otherCommand.IgnoresExtraArguments)
-                                throw new CommandMappingException(command, segment, "Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.");
-                        }
-                    }
-
+                if (commands != null)
                     commands.Add(command);
-                }
 
                 else
                     _commands.Add(segment, new List<Command> { command });
             }
-
             else
             {
                 if (!_nodes.TryGetValue(segment, out var node))
@@ -270,7 +180,12 @@ namespace Qmmands
             }
 
             else if (_nodes.TryGetValue(segment, out var node))
+            {
                 node.RemoveCommand(command, segments, startIndex + 1);
+
+                if (node._commands.Count == 0)
+                    _nodes.Remove(segment);
+            }
         }
     }
 }

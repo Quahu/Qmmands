@@ -101,15 +101,6 @@ namespace Qmmands
         IReadOnlyList<CommandMatch> FindCommands(string path);
 
         /// <summary>
-        ///     Attempts to find <see cref="Module"/>s matching the provided path.
-        /// </summary>
-        /// <param name="path"> The path to use for searching. </param>
-        /// <returns>
-        ///     A list of <see cref="ModuleMatch"/>es.
-        /// </returns>
-        IReadOnlyList<ModuleMatch> FindModules(string path);
-
-        /// <summary>
         ///     Adds a <see cref="TypeParser{T}"/> for the specified <typeparamref name="T"/> <see cref="Type"/>.
         /// </summary>
         /// <typeparam name="T"> The type to add the <paramref name="parser"/> for. </typeparam>

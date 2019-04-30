@@ -8,6 +8,8 @@ namespace Qmmands
     [AttributeUsage(AttributeTargets.Method)]
     public sealed class CommandAttribute : Attribute
     {
+        private static readonly string[] _groupAlias = new[] { "" };
+
         /// <summary>
         ///     Gets the aliases.
         /// </summary>
@@ -21,6 +23,13 @@ namespace Qmmands
         ///     Command aliases must not be null.
         /// </exception>
         public CommandAttribute(params string[] aliases)
-            => Aliases = aliases ?? throw new ArgumentNullException(nameof(aliases), "Command aliases must not be null.");
+        {
+            if (aliases == null)
+                throw new ArgumentNullException(nameof(aliases), "Command aliases must not be null.");
+
+            Aliases = aliases.Length == 0
+                ? _groupAlias
+                : aliases;
+        }
     }
 }

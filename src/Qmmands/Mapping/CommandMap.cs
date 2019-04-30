@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Qmmands
 {
@@ -7,85 +8,49 @@ namespace Qmmands
         private readonly CommandMapNode _rootNode;
 
         public CommandMap(CommandService service)
-            => _rootNode = new CommandMapNode(service);
+        {
+            _rootNode = new CommandMapNode(service);
+        }
 
         public IEnumerable<CommandMatch> FindCommands(string text)
             => _rootNode.FindCommands(new List<string>(), text, 0);
 
-        public IEnumerable<ModuleMatch> FindModules(string text)
-            => _rootNode.FindModules(new List<string>(), text, 0);
-
-        public void AddModule(Module module, IReadOnlyList<string> path)
-            => _rootNode.AddModule(module, path, 0);
-
-        public void RemoveModule(Module module, IReadOnlyList<string> path)
-            => _rootNode.RemoveModule(module, path, 0);
-
-        public void AddCommand(Command command, IReadOnlyList<string> path)
-            => _rootNode.AddCommand(command, path, 0);
-
-        public void RemoveCommand(Command command, IReadOnlyList<string> path)
-            => _rootNode.RemoveCommand(command, path, 0);
-
         public void MapModule(Module module)
-            => MapModule(module, new List<string>());
-
-        private void MapModule(Module module, List<string> path)
         {
-            if (module.Aliases.Count == 0)
+            try
             {
-                MapCommands(module, path);
-
-                for (var j = 0; j < module.Submodules.Count; j++)
-                    MapModule(module.Submodules[j], path);
-
-                AddModule(module, path);
+                MapModule(module, new List<string>());
             }
-
-            else
+            catch
             {
-                for (var i = 0; i < module.Aliases.Count; i++)
-                {
-                    var alias = module.Aliases[i];
-                    if (alias.Length == 0)
-                    {
-                        MapCommands(module, path);
-
-                        for (var j = 0; j < module.Submodules.Count; j++)
-                            MapModule(module.Submodules[j], path);
-
-                        AddModule(module, path);
-                    }
-                    else
-                    {
-                        path.Add(alias);
-                        MapCommands(module, path);
-
-                        for (var j = 0; j < module.Submodules.Count; j++)
-                            MapModule(module.Submodules[j], path);
-
-                        AddModule(module, path);
-                        path.RemoveAt(path.Count - 1);
-                    }
-                }
+                UnmapModule(module);
+                throw;
             }
         }
 
         public void UnmapModule(Module module)
             => UnmapModule(module, new List<string>());
 
+        private void MapModule(Module module, List<string> path)
+            => ModuleLoop(module, path, x => MapCommands(x, path));
+
         private void UnmapModule(Module module, List<string> path)
+            => ModuleLoop(module, path, x => UnmapCommands(x, path));
+
+        private void MapCommands(Module module, List<string> path)
+            => CommandsLoop(module, path, x => _rootNode.AddCommand(x, path, 0));
+
+        private void UnmapCommands(Module module, List<string> path)
+            => CommandsLoop(module, path, x => _rootNode.RemoveCommand(x, path, 0));
+
+        private void ModuleLoop(Module module, List<string> path, Action<Module> action)
         {
             if (module.Aliases.Count == 0)
             {
-                UnmapCommands(module, path);
-
+                action(module);
                 for (var j = 0; j < module.Submodules.Count; j++)
-                    UnmapModule(module.Submodules[j], path);
-
-                RemoveModule(module, path);
+                    ModuleLoop(module.Submodules[j], path, action);
             }
-
             else
             {
                 for (var i = 0; i < module.Aliases.Count; i++)
@@ -93,83 +58,49 @@ namespace Qmmands
                     var alias = module.Aliases[i];
                     if (alias.Length == 0)
                     {
-                        UnmapCommands(module, path);
-
+                        action(module);
                         for (var j = 0; j < module.Submodules.Count; j++)
-                            UnmapModule(module.Submodules[j], path);
-
-                        RemoveModule(module, path);
+                            ModuleLoop(module.Submodules[j], path, action);
                     }
                     else
                     {
                         path.Add(alias);
-                        UnmapCommands(module, path);
 
+                        action(module);
                         for (var j = 0; j < module.Submodules.Count; j++)
-                            UnmapModule(module.Submodules[j], path);
+                            ModuleLoop(module.Submodules[j], path, action);
 
-                        RemoveModule(module, path);
                         path.RemoveAt(path.Count - 1);
                     }
                 }
             }
         }
 
-        private void MapCommands(Module module, List<string> path)
+        private void CommandsLoop(Module module, List<string> path, Action<Command> action)
         {
             foreach (var command in module.Commands)
             {
                 if (command.Aliases.Count == 0)
-                    AddCommand(command, path);
-
-                else
                 {
-                    for (var i = 0; i < command.Aliases.Count; i++)
-                    {
-                        var alias = command.Aliases[i];
-                        if (alias.Length == 0)
-                        {
-                            if (path.Count == 0)
-                                continue;
-
-                            AddCommand(command, path);
-                        }
-                        else
-                        {
-                            path.Add(alias);
-                            AddCommand(command, path);
-                            path.RemoveAt(path.Count - 1);
-                        }
-                    }
+                    action(command);
+                    continue;
                 }
-            }
-        }
 
-        private void UnmapCommands(Module module, List<string> path)
-        {
-            foreach (var command in module.Commands)
-            {
-                if (command.Aliases.Count == 0)
-                    RemoveCommand(command, path);
-
-                else
+                for (var i = 0; i < command.Aliases.Count; i++)
                 {
-                    for (var i = 0; i < command.Aliases.Count; i++)
+                    var alias = command.Aliases[i];
+                    if (alias.Length == 0)
                     {
-                        var alias = command.Aliases[i];
-                        if (alias.Length == 0)
-                        {
-                            if (path.Count == 0)
-                                continue;
+                        if (path.Count == 0)
+                            continue;
 
-                            RemoveCommand(command, path);
-                        }
-                        else
-                        {
-                            path.Add(alias);
-                            RemoveCommand(command, path);
-                            path.RemoveAt(path.Count - 1);
-                        }
+                        action(command);
+                    }
+                    else
+                    {
+                        path.Add(alias);
+                        action(command);
+                        path.RemoveAt(path.Count - 1);
                     }
                 }
             }
