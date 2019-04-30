@@ -17,20 +17,9 @@ namespace Qmmands
         /// <param name="context"> The <see cref="CommandContext"/> used during execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> used during execution. </param>
         /// <returns> A <see cref="TypeParserResult{T}"/>. </returns>
-        public abstract
-#if NETCOREAPP
-        ValueTask<TypeParserResult<T>>
-#else
-        Task<TypeParserResult<T>>
-#endif
-        ParseAsync(Parameter parameter, string value, CommandContext context, IServiceProvider provider);
+        public abstract ValueTask<TypeParserResult<T>> ParseAsync(Parameter parameter, string value, CommandContext context, IServiceProvider provider);
 
-#if NETCOREAPP
-        async ValueTask<TypeParserResult<object>>
-#else
-        async Task<TypeParserResult<object>>
-#endif
-        ITypeParser.ParseAsync(Parameter parameter, string value, CommandContext context, IServiceProvider provider)
+        async ValueTask<TypeParserResult<object>> ITypeParser.ParseAsync(Parameter parameter, string value, CommandContext context, IServiceProvider provider)
         {
             var result = await ParseAsync(parameter, value, context, provider).ConfigureAwait(false);
             return result.IsSuccessful

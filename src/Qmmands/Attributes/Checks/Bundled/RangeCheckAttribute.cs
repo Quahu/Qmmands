@@ -62,31 +62,19 @@ namespace Qmmands
         }
 
         /// <inheritdoc />
-        public override
-#if NETCOREAPP
-            ValueTask<CheckResult>
-#else
-            Task<CheckResult>
-#endif
-            CheckAsync(object argument, CommandContext context, IServiceProvider provider)
+        public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context, IServiceProvider provider)
         {
             var value = (argument as string)?.Length ?? Convert.ToDouble(argument);
-            var success = IsMinimumInclusive && !IsMaximumInclusive
+            return (IsMinimumInclusive && !IsMaximumInclusive
                 ? Minimum <= value && value < Maximum
                 : !IsMinimumInclusive && IsMaximumInclusive
                     ? Minimum < value && value <= Maximum
                     : IsMinimumInclusive && IsMaximumInclusive
                         ? Minimum <= value && value <= Maximum
-                        : Minimum < value && value < Maximum;
-            var result = success
+                        : Minimum < value && value < Maximum)
                 ? CheckResult.Successful
                 : CheckResult.Unsuccessful(
                     $"The provided argument was outside of the range: {(IsMinimumInclusive ? '[' : '(')}{Minimum}, {Maximum}{(IsMaximumInclusive ? ']' : ')')}.");
-#if NETCOREAPP
-            return result;
-#else
-            return Task.FromResult(result);
-#endif
         }
     }
 }

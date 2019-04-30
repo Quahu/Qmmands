@@ -39,23 +39,10 @@ namespace Qmmands
         }
 
         /// <inheritdoc />
-        public override
-#if NETCOREAPP
-            ValueTask<CheckResult>
-#else
-            Task<CheckResult>
-#endif
-            CheckAsync(object argument, CommandContext context, IServiceProvider provider)
-        {
-            var result = (argument as string).StartsWith(Value, StringComparison)
+        public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context, IServiceProvider provider)
+            => (argument as string).StartsWith(Value, StringComparison)
                 ? CheckResult.Successful
                 : CheckResult.Unsuccessful(
                     $"The provided argument must start with the {(StringComparison.IsCaseSensitive() ? "case-sensitive" : "case-insensitive")} value: {Value}.");
-#if NETCOREAPP
-            return result;
-#else
-            return Task.FromResult(result);
-#endif
-        }
     }
 }

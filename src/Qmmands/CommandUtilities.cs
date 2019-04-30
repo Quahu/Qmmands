@@ -39,13 +39,7 @@ namespace Qmmands
         ///     The input must not be null.
         /// </exception>
         public static bool HasPrefix(string input, char prefix, out string output)
-            => HasPrefix(
-#if NETCOREAPP
-                input != null ? input.AsSpan() : throw new ArgumentNullException(nameof(input), "The input must not be null."),
-#else
-                input,
-#endif
-                prefix, false, out output);
+            => HasPrefix(input != null ? input.AsSpan() : throw new ArgumentNullException(nameof(input), "The input must not be null."), prefix, false, out output);
 
         /// <summary>
         ///     Checks if the provided <see cref="string"/> starts with the provided <see cref="char"/> prefix.
@@ -66,18 +60,7 @@ namespace Qmmands
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
 
-#if NETCOREAPP
             return HasPrefix(input.AsSpan(), prefix, isCaseSensitive, out output);
-#else
-            if (input.Length == 0 || input[0] != (isCaseSensitive ? prefix : char.ToLowerInvariant(prefix)))
-            {
-                output = null;
-                return false;
-            }
-
-            output = input.Substring(1).TrimStart();
-            return true;
-#endif
         }
 
         /// <summary>
@@ -98,13 +81,12 @@ namespace Qmmands
         ///     The prefixes must not be null.
         /// </exception>
         public static bool HasAnyPrefix(string input, IReadOnlyList<char> prefixes, out char prefix, out string output)
-            => HasAnyPrefix(
-#if NETCOREAPP
-                input != null ? input.AsSpan() : throw new ArgumentNullException(nameof(input), "The input must not be null."),
-#else
-                input,
-#endif
-                prefixes, false, out prefix, out output);
+        {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+
+            return HasAnyPrefix(input.AsSpan(), prefixes, false, out prefix, out output);
+        }
 
         /// <summary>
         ///     Checks if the provided <see cref="string"/> starts with any of the provided <see cref="char"/> prefixes.
@@ -129,27 +111,7 @@ namespace Qmmands
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
 
-#if NETCOREAPP
             return HasAnyPrefix(input.AsSpan(), prefixes, isCaseSensitive, out prefix, out output);
-#else
-
-            if (prefixes is null)
-                throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
-
-            for (var i = 0; i < prefixes.Count; i++)
-            {
-                var currentPrefix = prefixes[i];
-                if (!HasPrefix(input, currentPrefix, isCaseSensitive, out output))
-                    continue;
-
-                prefix = currentPrefix;
-                return true;
-            }
-
-            prefix = default;
-            output = null;
-            return false;
-#endif
         }
 
         /// <summary>
@@ -170,13 +132,12 @@ namespace Qmmands
         ///     The prefixes must not be null.
         /// </exception>
         public static bool HasAnyPrefix(string input, IEnumerable<char> prefixes, out char prefix, out string output)
-            => HasAnyPrefix(
-#if NETCOREAPP
-                input != null ? input.AsSpan() : throw new ArgumentNullException(nameof(input), "The input must not be null."),
-#else
-                input,
-#endif
-                prefixes, false, out prefix, out output);
+        {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+
+            return HasAnyPrefix(input.AsSpan(), prefixes, false, out prefix, out output);
+        }
 
         /// <summary>
         ///     Checks if the provided <see cref="string"/> starts with any of the provided <see cref="char"/> prefixes.
@@ -200,25 +161,8 @@ namespace Qmmands
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
-#if NETCOREAPP
+
             return HasAnyPrefix(input.AsSpan(), prefixes, isCaseSensitive, out prefix, out output);
-#else
-            if (prefixes is null)
-                throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
-
-            foreach (var currentPrefix in prefixes)
-            {
-                if (!HasPrefix(input, currentPrefix, isCaseSensitive, out output))
-                    continue;
-
-                prefix = currentPrefix;
-                return true;
-            }
-
-            prefix = default;
-            output = null;
-            return false;
-#endif
         }
 
         /// <summary>
@@ -238,13 +182,12 @@ namespace Qmmands
         ///     The prefix must not be null.
         /// </exception>
         public static bool HasPrefix(string input, string prefix, out string output)
-            => HasPrefix(
-#if NETCOREAPP
-                input != null ? input.AsSpan() : throw new ArgumentNullException(nameof(input), "The input must not be null."),
-#else
-                input,
-#endif
-                prefix, StringComparison.Ordinal, out output);
+        {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+
+            return HasPrefix(input.AsSpan(), prefix, StringComparison.Ordinal, out output);
+        }
 
         /// <summary>
         ///     Checks if the provided <see cref="string"/> starts with the provided <see cref="string"/> prefix.
@@ -267,21 +210,8 @@ namespace Qmmands
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
-#if NETCOREAPP
+
             return HasPrefix(input.AsSpan(), prefix, comparison, out output);
-#else
-            if (prefix == null)
-                throw new ArgumentNullException(nameof(prefix), "The prefix must not be null.");
-
-            if (!input.StartsWith(prefix, comparison))
-            {
-                output = null;
-                return false;
-            }
-
-            output = input.Substring(prefix.Length).TrimStart();
-            return true;
-#endif
         }
 
         /// <summary>
@@ -302,13 +232,12 @@ namespace Qmmands
         ///     The prefixes must not be null.
         /// </exception>
         public static bool HasAnyPrefix(string input, IReadOnlyList<string> prefixes, out string prefix, out string output)
-            => HasAnyPrefix(
-#if NETCOREAPP
-                input != null ? input.AsSpan() : throw new ArgumentNullException(nameof(input), "The input must not be null."),
-#else
-                input,
-#endif
-                prefixes, StringComparison.Ordinal, out prefix, out output);
+        {
+            if (input == null)
+                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+
+            return HasAnyPrefix(input.AsSpan(), prefixes, StringComparison.Ordinal, out prefix, out output);
+        }
 
         /// <summary>
         ///     Checks if the provided <see cref="string"/> starts with any of the provided <see cref="string"/> prefixes.
@@ -332,26 +261,8 @@ namespace Qmmands
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
-#if NETCOREAPP
+
             return HasAnyPrefix(input.AsSpan(), prefixes, comparison, out prefix, out output);
-#else
-            if (prefixes is null)
-                throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
-
-            for (var i = 0; i < prefixes.Count; i++)
-            {
-                var currentPrefix = prefixes[i];
-                if (!HasPrefix(input, currentPrefix, comparison, out output))
-                    continue;
-
-                prefix = currentPrefix;
-                return true;
-            }
-
-            prefix = null;
-            output = null;
-            return false;
-#endif
         }
 
         /// <summary>
@@ -372,13 +283,7 @@ namespace Qmmands
         ///     The prefixes must not be null.
         /// </exception>
         public static bool HasAnyPrefix(string input, IEnumerable<string> prefixes, out string prefix, out string output)
-            => HasAnyPrefix(
-#if NETCOREAPP
-                input != null ? input.AsSpan() : throw new ArgumentNullException(nameof(input), "The input must not be null."),
-#else
-                input,
-#endif
-                prefixes, StringComparison.Ordinal, out prefix, out output);
+            => HasAnyPrefix(input.AsSpan(), prefixes, StringComparison.Ordinal, out prefix, out output);
 
         /// <summary>
         ///     Checks if the provided <see cref="string"/> starts with any of the provided <see cref="string"/> prefixes.
@@ -402,28 +307,10 @@ namespace Qmmands
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
-#if NETCOREAPP
+
             return HasAnyPrefix(input.AsSpan(), prefixes, comparison, out prefix, out output);
-#else
-            if (prefixes is null)
-                throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
-
-            foreach (var currentPrefix in prefixes)
-            {
-                if (!HasPrefix(input, currentPrefix, comparison, out output))
-                    continue;
-
-                prefix = currentPrefix;
-                return true;
-            }
-
-            prefix = null;
-            output = null;
-            return false;
-#endif
         }
 
-#if NETCOREAPP
         /// <summary>
         ///     Checks if the provided <see cref="ReadOnlySpan{T}"/> starts with the provided <see cref="char"/> prefix.
         ///     If it does, returns <see langword="true"/> and the trimmed <paramref name="output"/>.
@@ -437,7 +324,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The input must not be null.
         /// </exception>
-        public static bool HasPrefix(in ReadOnlySpan<char> input, char prefix, out string output)
+        public static bool HasPrefix(ReadOnlySpan<char> input, char prefix, out string output)
             => HasPrefix(input, prefix, false, out output);
 
         /// <summary>
@@ -454,7 +341,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The input must not be null.
         /// </exception>
-        public static bool HasPrefix(in ReadOnlySpan<char> input, char prefix, bool isCaseSensitive, out string output)
+        public static bool HasPrefix(ReadOnlySpan<char> input, char prefix, bool isCaseSensitive, out string output)
         {
             if (input.Length == 0 || input[0] != (isCaseSensitive ? prefix : char.ToLowerInvariant(prefix)))
             {
@@ -480,7 +367,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefixes must not be null.
         /// </exception>
-        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IReadOnlyList<char> prefixes, out char prefix, out string output)
+        public static bool HasAnyPrefix(ReadOnlySpan<char> input, IReadOnlyList<char> prefixes, out char prefix, out string output)
             => HasAnyPrefix(input, prefixes, false, out prefix, out output);
 
         /// <summary>
@@ -498,7 +385,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefixes must not be null.
         /// </exception>
-        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IReadOnlyList<char> prefixes, bool isCaseSensitive, out char prefix, out string output)
+        public static bool HasAnyPrefix(ReadOnlySpan<char> input, IReadOnlyList<char> prefixes, bool isCaseSensitive, out char prefix, out string output)
         {
             if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
@@ -532,7 +419,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefixes must not be null.
         /// </exception>
-        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IEnumerable<char> prefixes, out char prefix, out string output)
+        public static bool HasAnyPrefix(ReadOnlySpan<char> input, IEnumerable<char> prefixes, out char prefix, out string output)
             => HasAnyPrefix(input, prefixes, false, out prefix, out output);
 
         /// <summary>
@@ -550,7 +437,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefixes must not be null.
         /// </exception>
-        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IEnumerable<char> prefixes, bool isCaseSensitive, out char prefix, out string output)
+        public static bool HasAnyPrefix(ReadOnlySpan<char> input, IEnumerable<char> prefixes, bool isCaseSensitive, out char prefix, out string output)
         {
             if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
@@ -582,7 +469,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefix must not be null.
         /// </exception>
-        public static bool HasPrefix(in ReadOnlySpan<char> input, string prefix, out string output)
+        public static bool HasPrefix(ReadOnlySpan<char> input, string prefix, out string output)
             => HasPrefix(input, prefix, StringComparison.Ordinal, out output);
 
         /// <summary>
@@ -599,7 +486,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefix must not be null.
         /// </exception>
-        public static bool HasPrefix(in ReadOnlySpan<char> input, string prefix, StringComparison comparison, out string output)
+        public static bool HasPrefix(ReadOnlySpan<char> input, string prefix, StringComparison comparison, out string output)
         {
             if (prefix == null)
                 throw new ArgumentNullException(nameof(prefix), "The prefix must not be null.");
@@ -628,7 +515,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefixes must not be null.
         /// </exception>
-        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IReadOnlyList<string> prefixes, out string prefix, out string output)
+        public static bool HasAnyPrefix(ReadOnlySpan<char> input, IReadOnlyList<string> prefixes, out string prefix, out string output)
             => HasAnyPrefix(input, prefixes, StringComparison.Ordinal, out prefix, out output);
 
         /// <summary>
@@ -646,7 +533,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefixes must not be null.
         /// </exception>
-        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IReadOnlyList<string> prefixes, StringComparison comparison, out string prefix, out string output)
+        public static bool HasAnyPrefix(ReadOnlySpan<char> input, IReadOnlyList<string> prefixes, StringComparison comparison, out string prefix, out string output)
         {
             if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
@@ -680,7 +567,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefixes must not be null.
         /// </exception>
-        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IEnumerable<string> prefixes, out string prefix, out string output)
+        public static bool HasAnyPrefix(ReadOnlySpan<char> input, IEnumerable<string> prefixes, out string prefix, out string output)
             => HasAnyPrefix(input, prefixes, StringComparison.Ordinal, out prefix, out output);
 
         /// <summary>
@@ -698,7 +585,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The prefixes must not be null.
         /// </exception>
-        public static bool HasAnyPrefix(in ReadOnlySpan<char> input, IEnumerable<string> prefixes, StringComparison comparison, out string prefix, out string output)
+        public static bool HasAnyPrefix(ReadOnlySpan<char> input, IEnumerable<string> prefixes, StringComparison comparison, out string prefix, out string output)
         {
             if (prefixes is null)
                 throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
@@ -716,7 +603,6 @@ namespace Qmmands
             output = null;
             return false;
         }
-#endif
 
         /// <summary>
         ///     Recursively gets all of the checks the provided <see cref="Module"/>

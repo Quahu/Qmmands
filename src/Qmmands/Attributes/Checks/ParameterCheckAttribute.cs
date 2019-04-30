@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Threading.Tasks;
 
 namespace Qmmands
@@ -48,12 +46,6 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="CheckResult"/> which determines whether this <see cref="ParameterCheckAttribute"/> succeeded or not.
         /// </returns>
-        public abstract
-#if NETCOREAPP
-            ValueTask<CheckResult>
-#else
-            Task<CheckResult>
-#endif
-            CheckAsync(object argument, CommandContext context, IServiceProvider provider);
+        public abstract ValueTask<CheckResult> CheckAsync(object argument, CommandContext context, IServiceProvider provider);
     }
 }

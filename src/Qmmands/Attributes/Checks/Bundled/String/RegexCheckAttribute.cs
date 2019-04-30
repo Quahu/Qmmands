@@ -34,22 +34,9 @@ namespace Qmmands
         }
 
         /// <inheritdoc />
-        public override
-#if NETCOREAPP
-            ValueTask<CheckResult>
-#else
-            Task<CheckResult>
-#endif
-            CheckAsync(object argument, CommandContext context, IServiceProvider provider)
-        {
-            var result = Regex.IsMatch(argument as string)
+        public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context, IServiceProvider provider)
+            => Regex.IsMatch(argument as string)
                 ? CheckResult.Successful
                 : CheckResult.Unsuccessful($"The provided argument must match the regex pattern: {Regex}.");
-#if NETCOREAPP
-            return result;
-#else
-            return Task.FromResult(result);
-#endif
-        }
     }
 }

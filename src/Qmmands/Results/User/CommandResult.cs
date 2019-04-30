@@ -1,4 +1,6 @@
-﻿namespace Qmmands
+﻿using System.Threading.Tasks;
+
+namespace Qmmands
 {
     /// <summary>
     ///     The abstract class to use for implementing results that can be returned from <see cref="Qmmands.Command"/>s.
@@ -15,13 +17,11 @@
         /// </summary>
         public Command Command { get; internal set; }
 
-#if NETCOREAPP
         /// <summary>
         ///     Implicitly wraps the provided <see cref="CommandResult"/> in <see cref="System.Threading.Tasks.ValueTask{TResult}"/>.
         /// </summary>
         /// <param name="result"></param>
-        public static implicit operator System.Threading.Tasks.ValueTask<CommandResult>(CommandResult result)
-            => new System.Threading.Tasks.ValueTask<CommandResult>(result);
-#endif
+        public static implicit operator ValueTask<CommandResult>(CommandResult result)
+            => new ValueTask<CommandResult>(result);
     }
 }

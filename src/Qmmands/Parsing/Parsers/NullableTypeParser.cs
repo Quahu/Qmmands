@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,18 +15,12 @@ namespace Qmmands
             _typeParser = typeParser;
         }
 
-#if NETCOREAPP
-        public override ValueTask<TypeParserResult<T>>
-#else
-        public override Task<TypeParserResult<T>>
-#endif
-        ParseAsync(Parameter parameter, string value, CommandContext context, IServiceProvider provider)
-            => parameter.Service.NullableNouns.Any(x => value.Equals(x, parameter.Service.StringComparison))
-#if NETCOREAPP
+        public override ValueTask<TypeParserResult<T>> ParseAsync(Parameter parameter, string value, CommandContext context, IServiceProvider provider)
+        {
+            var nouns = (ImmutableArray<string>) parameter.Service.NullableNouns;
+            return nouns.Any(x => value.Equals(x, parameter.Service.StringComparison))
                 ? new ValueTask<TypeParserResult<T>>(new TypeParserResult<T>(false))
-#else
-                ? Task.FromResult(new TypeParserResult<T>(false))
-#endif
                 : _typeParser.ParseAsync(parameter, value, context, provider);
+        }
     }
 }

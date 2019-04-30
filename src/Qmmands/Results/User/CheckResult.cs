@@ -1,4 +1,6 @@
-﻿namespace Qmmands
+﻿using System.Threading.Tasks;
+
+namespace Qmmands
 {
     /// <summary>
     ///     Represents a <see cref="CheckAttribute"/>'s result.
@@ -53,13 +55,11 @@
         public override string ToString()
             => Reason;
 
-#if NETCOREAPP
         /// <summary>
-        ///     Implicitly wraps the provided <see cref="CheckResult"/> in <see cref="System.Threading.Tasks.ValueTask{TResult}"/>.
+        ///     Implicitly wraps the provided <see cref="CheckResult"/> in <see cref="ValueTask{TResult}"/>.
         /// </summary>
         /// <param name="result"></param>
-        public static implicit operator System.Threading.Tasks.ValueTask<CheckResult>(CheckResult result)
-            => new System.Threading.Tasks.ValueTask<CheckResult>(result);
-#endif
+        public static implicit operator ValueTask<CheckResult>(CheckResult result)
+            => new ValueTask<CheckResult>(result);
     }
 }

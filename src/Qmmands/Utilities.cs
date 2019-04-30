@@ -268,7 +268,9 @@ namespace Qmmands
                 {
                     if (property.SetMethod != null && !property.SetMethod.IsStatic && property.SetMethod.IsPublic
                         && property.GetCustomAttribute<DoNotInjectAttribute>() == null)
+                    {
                         properties.Add(property);
+                    }
                 }
 
                 type = type.BaseType.GetTypeInfo();
@@ -346,18 +348,13 @@ namespace Qmmands
 
         public static CommandCallbackDelegate CreateCommandCallback(CommandService service, Type type, MethodInfo method)
         {
-#if NETCOREAPP
             Func<object, object[], Task> taskDelegate = null;
             Func<object, object[], ValueTask<CommandResult>> valueTaskDelegate = null;
             if (method.ReturnType == typeof(Task) || method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>))
                 taskDelegate = CreateTaskDelegate(type, method);
             else
                 valueTaskDelegate = CreateValueTaskDelegate(type, method);
-#else
-            var taskDelegate = CreateTaskDelegate(type, method);
-#endif
             var constructor = CreateProviderConstructor<IModuleBase>(service, type);
-
             return async (context, provider) =>
             {
                 var instance = constructor(provider);
@@ -450,12 +447,7 @@ namespace Qmmands
         {
             TryParseDelegates = new Dictionary<Type, Delegate>(13)
             {
-                [typeof(char)] =
-#if NETCOREAPP
-                    (TryParseDelegate<char>) TryParseChar,
-#else
-                    (TryParseDelegate<char>) char.TryParse,
-#endif
+                [typeof(char)] = (TryParseDelegate<char>) TryParseChar,
                 [typeof(bool)] = (TryParseDelegate<bool>) bool.TryParse,
                 [typeof(byte)] = (TryParseDelegate<byte>) byte.TryParse,
                 [typeof(sbyte)] = (TryParseDelegate<sbyte>) sbyte.TryParse,
@@ -470,7 +462,7 @@ namespace Qmmands
                 [typeof(decimal)] = (TryParseDelegate<decimal>) decimal.TryParse
             };
         }
-#if NETCOREAPP
+
         private static bool TryParseChar(ReadOnlySpan<char> value, out char result)
         {
             if (value.Length == 1)
@@ -482,7 +474,6 @@ namespace Qmmands
             result = default;
             return false;
         }
-#endif
 
         public static bool IsNumericType(Type type)
             => type == typeof(byte)
@@ -526,34 +517,5 @@ namespace Qmmands
             => builder.Capacity == builder.Count
                 ? builder.MoveToImmutable()
                 : builder.ToImmutable();
-
-#if NETSTANDARD
-        public static StringComparer StringComparerFromComparison(StringComparison comparisonType)
-        {
-            switch (comparisonType)
-            {
-                case StringComparison.CurrentCulture:
-                    return StringComparer.CurrentCulture;
-
-                case StringComparison.CurrentCultureIgnoreCase:
-                    return StringComparer.CurrentCultureIgnoreCase;
-
-                case StringComparison.InvariantCulture:
-                    return StringComparer.InvariantCulture;
-
-                case StringComparison.InvariantCultureIgnoreCase:
-                    return StringComparer.InvariantCultureIgnoreCase;
-
-                case StringComparison.Ordinal:
-                    return StringComparer.Ordinal;
-
-                case StringComparison.OrdinalIgnoreCase:
-                    return StringComparer.OrdinalIgnoreCase;
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(comparisonType));
-            }
-        }
-#endif
     }
 }

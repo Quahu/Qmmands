@@ -5,11 +5,6 @@ namespace Qmmands
 {
     internal interface ITypeParser
     {
-#if NETCOREAPP
-        ValueTask<TypeParserResult<object>>
-#else
-        Task<TypeParserResult<object>>
-#endif
-        ParseAsync(Parameter parameter, string value, CommandContext context, IServiceProvider provider);
+        ValueTask<TypeParserResult<object>> ParseAsync(Parameter parameter, string value, CommandContext context, IServiceProvider provider);
     }
 }

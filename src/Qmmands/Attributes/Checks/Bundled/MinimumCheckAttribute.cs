@@ -24,26 +24,15 @@ namespace Qmmands
         }
 
         /// <inheritdoc />
-        public override
-#if NETCOREAPP
-            ValueTask<CheckResult>
-#else
-            Task<CheckResult>
-#endif
-            CheckAsync(object argument, CommandContext context, IServiceProvider provider)
+        public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context, IServiceProvider provider)
         {
             var isString = argument is string;
             var value = isString
                 ? (argument as string).Length
                 : Convert.ToDouble(argument);
-            var result = value >= Minimum
+            return value >= Minimum
                 ? CheckResult.Successful
                 : CheckResult.Unsuccessful($"The provided argument must have a minimum {(isString ? "length" : "value")} of {Minimum}.");
-#if NETCOREAPP
-            return result;
-#else
-            return Task.FromResult(result);
-#endif
         }
     }
 }
