@@ -124,12 +124,7 @@ namespace Qmmands
                 ? configuration.NullableNouns.ToImmutableArray()
                 : CommandUtilities.DefaultNullableNouns;
 
-            StringComparer =
-#if NETCOREAPP
-                StringComparer.FromComparison(StringComparison);
-#else
-                Utilities.StringComparerFromComparison(StringComparison);
-#endif
+            StringComparer = StringComparer.FromComparison(StringComparison);
 
             _typeModules = new Dictionary<Type, Module>();
             _topLevelModules = new HashSet<Module>();
@@ -888,18 +883,34 @@ namespace Qmmands
             {
                 try
                 {
-                    var result = await context.Command.Callback(context, provider).ConfigureAwait(false);
-                    if (result is ExecutionFailedResult executionFailedResult)
-                        await InvokeCommandErroredAsync(executionFailedResult, context, provider).ConfigureAwait(false);
-
-                    else
+                    IResult result;
+                    switch (context.Command.Callback)
                     {
-                        if (result is CommandResult commandResult)
-                            commandResult.Command = context.Command;
+                        case InternalCommandCallbackDelegate internalCallback:
+                        {
+                            result = await internalCallback(context, provider).ConfigureAwait(false);
+                            if (result is ExecutionFailedResult executionFailedResult)
+                            {
+                                await InvokeCommandErroredAsync(executionFailedResult, context, provider).ConfigureAwait(false);
+                                return result;
+                            }
+                            break;
+                        }
 
-                        await InvokeCommandExecutedAsync(result as CommandResult, context, provider).ConfigureAwait(false);
+                        case CommandCallbackDelegate callback:
+                        {
+                            result = await callback(context, provider).ConfigureAwait(false);
+                            break;
+                        }
+
+                        default:
+                            throw new InvalidOperationException("Unknown callback type.");
                     }
 
+                    if (result is CommandResult commandResult)
+                        commandResult.Command = context.Command;
+
+                    await InvokeCommandExecutedAsync(result as CommandResult, context, provider).ConfigureAwait(false);
                     return result ?? new SuccessfulResult();
                 }
                 catch (Exception ex)

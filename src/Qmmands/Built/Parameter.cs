@@ -71,7 +71,10 @@ namespace Qmmands
         /// </summary>
         public Command Command { get; }
 
-        internal CommandService Service => Command.Service;
+        /// <summary>
+        ///     Gets the <see cref="CommandService"/> of this <see cref="Parameter"/>.
+        /// </summary>
+        public CommandService Service => Command.Service;
 
         internal Parameter(ParameterBuilder builder, Command command)
         {

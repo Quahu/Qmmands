@@ -80,13 +80,16 @@ namespace Qmmands
         /// </summary>
         public Module Module { get; }
 
-        internal CommandCallbackDelegate Callback { get; }
+        /// <summary>
+        ///     Gets the <see cref="CommandService"/> of this <see cref="Command"/>.
+        /// </summary>
+        public CommandService Service => Module.Service;
 
-        internal (bool HasRemainder, string Identifier) SignatureIdentifier { get; }
+        internal readonly object Callback;
 
-        internal CommandService Service => Module.Service;
+        internal readonly (bool HasRemainder, string Identifier) SignatureIdentifier;
 
-        internal CooldownMap CooldownMap { get; }
+        internal readonly CooldownMap CooldownMap;
 
         internal Command(CommandBuilder builder, Module module)
         {

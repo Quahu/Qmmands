@@ -80,7 +80,10 @@ namespace Qmmands
         /// </summary>
         public Type Type { get; }
 
-        internal CommandService Service { get; }
+        /// <summary>
+        ///     Gets the <see cref="CommandService"/> of this <see cref="Module"/>.
+        /// </summary>
+        public CommandService Service { get; }
 
         internal Module(CommandService service, ModuleBuilder builder, Module parent)
         {

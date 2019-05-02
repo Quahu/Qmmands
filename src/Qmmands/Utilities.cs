@@ -27,11 +27,7 @@ namespace Qmmands
                 return false;
 
             var genericTypeDefinition = methodInfo.ReturnType.GetGenericTypeDefinition();
-            return (genericTypeDefinition == typeof(Task<>)
-#if NETCOREAPP
-                || genericTypeDefinition == typeof(ValueTask<>)
-#endif
-                )
+            return (genericTypeDefinition == typeof(Task<>) || genericTypeDefinition == typeof(ValueTask<>))
                 && typeof(CommandResult).IsAssignableFrom(methodInfo.ReturnType.GenericTypeArguments[0]);
         }
 
@@ -324,7 +320,6 @@ namespace Qmmands
                     Expression.Call(_getGenericTaskResultMethodInfo.MakeGenericMethod(method.ReturnType.GenericTypeArguments[0]), call), instance, arguments).Compile();
         }
 
-#if NETCOREAPP
         private static readonly MethodInfo _getGenericValueTaskResultMethodInfo = typeof(Utilities)
             .GetMethod(nameof(GetGenericValueTaskResult), BindingFlags.Static | BindingFlags.NonPublic);
 
@@ -344,9 +339,8 @@ namespace Qmmands
             return Expression.Lambda<Func<object, object[], ValueTask<CommandResult>>>(
                     Expression.Call(_getGenericValueTaskResultMethodInfo.MakeGenericMethod(method.ReturnType.GenericTypeArguments[0]), call), instance, arguments).Compile();
         }
-#endif
 
-        public static CommandCallbackDelegate CreateCommandCallback(CommandService service, Type type, MethodInfo method)
+        public static InternalCommandCallbackDelegate CreateCommandCallback(CommandService service, Type type, MethodInfo method)
         {
             Func<object, object[], Task> taskDelegate = null;
             Func<object, object[], ValueTask<CommandResult>> valueTaskDelegate = null;
@@ -373,7 +367,6 @@ namespace Qmmands
                         return new ExecutionFailedResult(context.Command, CommandExecutionStep.BeforeExecuted, ex);
                     }
 
-#if NETCOREAPP
                     if (taskDelegate != null)
                     {
                         switch (taskDelegate(instance, context.InternalArguments))
@@ -390,17 +383,6 @@ namespace Qmmands
                     {
                         return await valueTaskDelegate(instance, context.InternalArguments).ConfigureAwait(false);
                     }
-#else
-                    switch (taskDelegate(instance, context.InternalArguments))
-                    {
-                        case Task<CommandResult> genericTask:
-                            return await genericTask.ConfigureAwait(false);
-
-                        case Task task:
-                            await task.ConfigureAwait(false);
-                            break;
-                    }
-#endif
 
                     return null;
                 }

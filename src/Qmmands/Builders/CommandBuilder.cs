@@ -79,9 +79,9 @@ namespace Qmmands
         /// </summary>
         public ModuleBuilder Module { get; }
 
-        internal CommandCallbackDelegate Callback { get; }
+        internal readonly object Callback;
 
-        internal CommandBuilder(ModuleBuilder module, CommandCallbackDelegate callback)
+        internal CommandBuilder(ModuleBuilder module, object callback)
         {
             Module = module;
             Callback = callback;
