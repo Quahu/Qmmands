@@ -27,7 +27,7 @@ namespace Qmmands
         protected virtual Task AfterExecutedAsync()
             => Task.CompletedTask;
 
-        internal void Prepare(CommandContext context) 
+        internal void Prepare(CommandContext context)
             => Context = context as TContext ?? throw new InvalidOperationException($"Unable to set the context. Expected {typeof(TContext)}, got {context.GetType()}.");
 
         Task IModuleBase.BeforeExecutedAsync()

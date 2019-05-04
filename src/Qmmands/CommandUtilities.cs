@@ -745,11 +745,13 @@ namespace Qmmands
                 IEnumerable<Module> GetModules(Module rModule)
                 {
                     for (var i = 0; i < rModule.Submodules.Count; i++)
-                        yield return rModule.Submodules[i];
+                    {
+                        var submodule = rModule.Submodules[i];
+                        yield return submodule;
 
-                    for (var i = 0; i < rModule.Submodules.Count; i++)
-                        foreach (var command in GetModules(rModule.Submodules[i]))
-                            yield return command;
+                        foreach (var subsubmodule in GetModules(submodule))
+                            yield return subsubmodule;
+                    }
                 }
 
                 foreach (var submodule in GetModules(module))
@@ -777,11 +779,13 @@ namespace Qmmands
                 IEnumerable<ModuleBuilder> GetModules(ModuleBuilder rBuilder)
                 {
                     for (var i = 0; i < rBuilder.Submodules.Count; i++)
-                        yield return rBuilder.Submodules[i];
+                    {
+                        var submodule = rBuilder.Submodules[i];
+                        yield return submodule;
 
-                    for (var i = 0; i < rBuilder.Submodules.Count; i++)
-                        foreach (var command in GetModules(rBuilder.Submodules[i]))
-                            yield return command;
+                        foreach (var subsubmodule in GetModules(submodule))
+                            yield return subsubmodule;
+                    }
                 }
 
                 foreach (var submodule in GetModules(builder))
