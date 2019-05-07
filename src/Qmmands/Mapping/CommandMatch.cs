@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace Qmmands
@@ -19,12 +19,12 @@ namespace Qmmands
         public string Alias { get; }
 
         /// <summary>
-        ///     Gets the alias path to the found <see cref="Qmmands.Command"/>.
+        ///     Gets the alias path to the found <see cref="Qmmands.Command"/> in the order they were matched.
         /// </summary>
         public IReadOnlyList<string> Path { get; }
 
         /// <summary>
-        ///     Gets the raw arguments.
+        ///     Gets the extracted raw arguments after the matched aliases.
         /// </summary>
         public string RawArguments { get; }
 

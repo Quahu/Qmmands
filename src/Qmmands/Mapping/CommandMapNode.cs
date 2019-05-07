@@ -119,16 +119,8 @@ namespace Qmmands
             }
         }
 
-        private void ValidateCommand(Command command, IReadOnlyList<string> segments, int startIndex,
-            out string segment, out List<Command> commands)
+        private void ValidateCommand(Command command, string segment, List<Command> commands)
         {
-            if (segments.Count == 0)
-                throw new CommandMappingException(command, null, "Cannot map commands without aliases to the root node.");
-
-            segment = segments[startIndex];
-            if (!_commands.TryGetValue(segment, out commands))
-                return;
-
             for (var i = 0; i < commands.Count; i++)
             {
                 var otherCommand = commands[i];
@@ -149,11 +141,17 @@ namespace Qmmands
 
         public void AddCommand(Command command, IReadOnlyList<string> segments, int startIndex)
         {
-            ValidateCommand(command, segments, startIndex, out var segment, out var commands);
+            if (segments.Count == 0)
+                throw new CommandMappingException(command, null, "Cannot map commands without aliases to the root node.");
+
+            var segment = segments[startIndex];
             if (startIndex == segments.Count - 1)
             {
-                if (commands != null)
+                if (_commands.TryGetValue(segment, out var commands))
+                {
+                    ValidateCommand(command, segment, commands);
                     commands.Add(command);
+                }
 
                 else
                     _commands.Add(segment, new List<Command> { command });
