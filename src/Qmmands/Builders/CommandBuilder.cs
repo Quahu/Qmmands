@@ -239,7 +239,7 @@ namespace Qmmands
 
         internal Command Build(Module module)
         {
-            if (Callback is null)
+            if (Callback == null)
                 throw new CommandBuildingException(this, "Command's callback must not be null.");
 
             var aliases = new List<string>(Aliases.Count);

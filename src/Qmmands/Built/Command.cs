@@ -131,9 +131,13 @@ namespace Qmmands
                             fullAliases.Add(moduleAlias);
                         }
                         else if (absolute)
+                        {
                             fullAliases.Add(alias);
+                        }
                         else
+                        {
                             fullAliases.Add(string.Concat(moduleAlias, Service.Separator, alias));
+                        }
                     }
                 }
             }
@@ -164,7 +168,7 @@ namespace Qmmands
 
             if (Cooldowns.Count != 0)
             {
-                if (Service.CooldownBucketKeyGenerator is null)
+                if (Service.CooldownBucketKeyGenerator == null)
                     throw new CommandBuildingException(builder, "Cooldown bucket key generator delegate has not been set.");
 
                 CooldownMap = new CooldownMap(this);
@@ -181,7 +185,7 @@ namespace Qmmands
         /// </returns>
         public async Task<IResult> RunChecksAsync(CommandContext context, IServiceProvider provider = null)
         {
-            if (provider is null)
+            if (provider == null)
                 provider = DummyServiceProvider.Instance;
 
             var result = await Module.RunChecksAsync(context, provider).ConfigureAwait(false);
@@ -235,7 +239,7 @@ namespace Qmmands
             if (CooldownMap == null)
                 return;
 
-            if (provider is null)
+            if (provider == null)
                 provider = DummyServiceProvider.Instance;
 
             var bucket = CooldownMap.GetBucket(cooldown, context, provider);
@@ -254,7 +258,7 @@ namespace Qmmands
         {
             if (CooldownMap != null)
             {
-                if (provider is null)
+                if (provider == null)
                     provider = DummyServiceProvider.Instance;
 
                 CooldownMap.Update();

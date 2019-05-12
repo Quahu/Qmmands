@@ -96,7 +96,7 @@ namespace Qmmands
         ///     Gets or sets the collection of nouns to use for <see cref="Nullable{T}"/> parsing.
         ///     If <see langword="null"/>, will default to <see cref="CommandUtilities.DefaultNullableNouns"/>.
         /// </summary>
-        public IReadOnlyList<string> NullableNouns { get; set; }
+        public IEnumerable<string> NullableNouns { get; set; }
 
         /// <summary>
         ///     Initialises a new <see cref="CommandServiceConfiguration"/>.

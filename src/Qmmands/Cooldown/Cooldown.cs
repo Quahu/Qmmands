@@ -45,7 +45,7 @@ namespace Qmmands
             if (per <= TimeSpan.Zero)
                 throw new ArgumentOutOfRangeException(nameof(per), "Per must be a positive time span.");
 
-            if (bucketType is null)
+            if (bucketType == null)
                 throw new ArgumentNullException(nameof(bucketType), "Bucket type must not be null.");
 
             if (!bucketType.GetType().IsEnum)

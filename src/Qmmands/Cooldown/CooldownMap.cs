@@ -33,7 +33,7 @@ namespace Qmmands
         public CooldownBucket GetBucket(Cooldown cooldown, CommandContext context, IServiceProvider provider)
         {
             var key = _command.Service.CooldownBucketKeyGenerator(cooldown.BucketType, context, provider);
-            return key is null ? null : _buckets.GetOrAdd(key, new CooldownBucket(cooldown));
+            return key == null ? null : _buckets.GetOrAdd(key, new CooldownBucket(cooldown));
         }
     }
 }

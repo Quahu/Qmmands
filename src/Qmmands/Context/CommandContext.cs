@@ -43,9 +43,7 @@ namespace Qmmands
             get
             {
                 var arguments = _arguments;
-                return arguments == null
-                    ? (_arguments = new ReadOnlyList<object>(InternalArguments ?? Array.Empty<object>()))
-                    : arguments;
+                return arguments ?? (_arguments = new ReadOnlyList<object>(InternalArguments ?? Array.Empty<object>()));
             }
         }
         private ReadOnlyList<object> _arguments;

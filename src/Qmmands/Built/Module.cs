@@ -164,7 +164,7 @@ namespace Qmmands
         /// </returns>
         public async Task<IResult> RunChecksAsync(CommandContext context, IServiceProvider provider = null)
         {
-            if (provider is null)
+            if (provider == null)
                 provider = DummyServiceProvider.Instance;
 
             if (Parent != null)

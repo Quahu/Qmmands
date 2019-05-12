@@ -225,7 +225,7 @@ namespace Qmmands
                 builder.WithIsOptional(true)
                     .WithDefaultValue(Array.CreateInstance(builder.Type, 0));
 
-            if (builder.Name is null)
+            if (builder.Name == null)
                 builder.WithName(parameterInfo.Name);
 
             return builder;
@@ -240,8 +240,7 @@ namespace Qmmands
             if (constructors.Length > 1)
                 throw new InvalidOperationException($"{type} has multiple public constructors.");
 
-            var constructor = constructors[0];
-            object GetDependency(IServiceProvider provider, Type serviceType)
+            object GetDependency(ConstructorInfo ctor, IServiceProvider provider, Type serviceType)
             {
                 if (serviceType == typeof(IServiceProvider) || serviceType == provider.GetType())
                     return provider;
@@ -250,22 +249,25 @@ namespace Qmmands
                     return commandService;
 
                 var service = provider.GetService(serviceType);
-                if (!(service is null))
+                if (service != null)
                     return service;
 
-                throw new InvalidOperationException($"Failed to instantiate {constructor.DeclaringType}, dependency of type {serviceType} was not found.");
+                throw new InvalidOperationException($"Failed to instantiate {ctor.DeclaringType}, dependency of type {serviceType} was not found.");
             }
+            var constructor = constructors[0];
             var parameters = constructor.GetParameters();
             var arguments = new object[parameters.Length];
-            var properties = new List<PropertyInfo>();
+            var propertiesToInject = new List<PropertyInfo>();
             do
             {
-                foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                for (var i = 0; i < properties.Length; i++)
                 {
+                    var property = properties[i];
                     if (property.SetMethod != null && !property.SetMethod.IsStatic && property.SetMethod.IsPublic
                         && property.GetCustomAttribute<DoNotInjectAttribute>() == null)
                     {
-                        properties.Add(property);
+                        propertiesToInject.Add(property);
                     }
                 }
 
@@ -276,7 +278,7 @@ namespace Qmmands
             return (provider) =>
             {
                 for (var i = 0; i < parameters.Length; i++)
-                    arguments[i] = GetDependency(provider, parameters[i].ParameterType);
+                    arguments[i] = GetDependency(constructor, provider, parameters[i].ParameterType);
 
                 T instance;
                 try
@@ -288,10 +290,10 @@ namespace Qmmands
                     throw new InvalidOperationException($"Failed to instantiate {constructor.DeclaringType}. See the inner exception for more details.", ex);
                 }
 
-                for (var i = 0; i < properties.Count; i++)
+                for (var i = 0; i < propertiesToInject.Count; i++)
                 {
-                    var property = properties[i];
-                    property.SetValue(instance, GetDependency(provider, property.PropertyType));
+                    var property = propertiesToInject[i];
+                    property.SetValue(instance, GetDependency(constructor, provider, property.PropertyType));
                 }
 
                 return instance;

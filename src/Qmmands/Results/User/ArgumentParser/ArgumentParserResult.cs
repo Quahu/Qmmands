@@ -6,7 +6,7 @@ namespace Qmmands
     /// <summary>
     ///     Represents an <see cref="IArgumentParser.Parse"/> result.
     /// </summary>
-    public struct ArgumentParserResult : IResult
+    public readonly struct ArgumentParserResult : IResult
     {
         private static readonly IReadOnlyDictionary<Parameter, object> _emptyParameterDictionary =
             new ReadOnlyDictionary<Parameter, object>(new Dictionary<Parameter, object>(0));

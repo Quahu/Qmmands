@@ -37,27 +37,6 @@ namespace Qmmands
             var whitespaceSeparated = false;
             var isEscaping = false;
 
-            void NextParameter()
-            {
-                if (arguments == null)
-                    arguments = new Dictionary<Parameter, object>(command.Parameters.Count);
-
-                if (!currentParameter.IsMultiple)
-                {
-                    arguments.Add(currentParameter, argumentBuilder.ToString());
-                }
-                else
-                {
-                    if (arguments.TryGetValue(currentParameter, out var list))
-                        (list as List<object>).Add(argumentBuilder.ToString());
-                    else
-                        arguments[currentParameter] = new List<object> { argumentBuilder.ToString() };
-                }
-
-                argumentBuilder.Clear();
-                currentParameter = null;
-            }
-
             for (var currentPosition = 0; currentPosition < rawArguments.Length; currentPosition++)
             {
                 char character;
@@ -114,7 +93,7 @@ namespace Qmmands
                     if (char.IsWhiteSpace(character))
                     {
                         whitespaceSeparated = true;
-                        NextParameter();
+                        NextParameter(command, ref currentParameter, argumentBuilder, ref arguments);
                         continue;
                     }
 
@@ -151,7 +130,7 @@ namespace Qmmands
                     {
                         currentQuote = '\0';
                         expectedQuote = '\0';
-                        NextParameter();
+                        NextParameter(command, ref currentParameter, argumentBuilder, ref arguments);
                         continue;
                     }
                 }
@@ -164,7 +143,7 @@ namespace Qmmands
                 return new ArgumentParserResult(command, currentParameter, context.RawArguments, arguments, ArgumentParserFailure.UnclosedQuote, rawArguments.LastIndexOf(currentQuote));
 
             if (currentParameter != null)
-                NextParameter();
+                NextParameter(command, ref currentParameter, argumentBuilder, ref arguments);
 
             if (arguments == null && command.Parameters.Count > 0)
                 arguments = new Dictionary<Parameter, object>(command.Parameters.Count);
@@ -188,6 +167,27 @@ namespace Qmmands
             }
 
             return new ArgumentParserResult(command, context.RawArguments, arguments);
+        }
+
+        private void NextParameter(Command command, ref Parameter currentParameter, StringBuilder argumentBuilder, ref Dictionary<Parameter, object> arguments)
+        {
+            if (arguments == null)
+                arguments = new Dictionary<Parameter, object>(command.Parameters.Count);
+
+            if (!currentParameter.IsMultiple)
+            {
+                arguments.Add(currentParameter, argumentBuilder.ToString());
+            }
+            else
+            {
+                if (arguments.TryGetValue(currentParameter, out var list))
+                    (list as List<object>).Add(argumentBuilder.ToString());
+                else
+                    arguments[currentParameter] = new List<object> { argumentBuilder.ToString() };
+            }
+
+            argumentBuilder.Clear();
+            currentParameter = null;
         }
     }
 }

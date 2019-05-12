@@ -188,14 +188,15 @@ namespace Qmmands
         {
             if (IsOptional)
             {
-                if (DefaultValue is null)
+                if (DefaultValue == null)
                 {
                     if (Type.IsValueType && !Utilities.IsNullable(Type))
                         throw new ParameterBuildingException(this, "Value type parameter's default value must not be null.");
                 }
-
                 else if (DefaultValue.GetType() != (IsMultiple ? Type.MakeArrayType() : Type))
+                {
                     throw new ParameterBuildingException(this, $"Parameter type and default value mismatch. Expected {Type}, got {DefaultValue.GetType()}.");
+                }
             }
 
             return new Parameter(this, command);

@@ -108,7 +108,9 @@ namespace Qmmands
                         break;
 
                     case SeparatorRequirement.Separator:
-                        hasSeparator = _isNullOrWhitespaceSeparator ? hasConfigSeparator || hasWhitespaceSeparator : hasConfigSeparator;
+                        hasSeparator = _isNullOrWhitespaceSeparator
+                            ? hasConfigSeparator || hasWhitespaceSeparator
+                            : hasConfigSeparator;
                         break;
 
                     default:
@@ -130,12 +132,15 @@ namespace Qmmands
                     continue;
 
                 if (signature.HasRemainder == otherSignature.HasRemainder)
+                {
                     throw new CommandMappingException(command, segment,
-                        "Cannot map multiple overloads with the same signature.");
-
+                       "Cannot map multiple overloads with the same signature.");
+                }
                 else if (!signature.HasRemainder && command.IgnoresExtraArguments || !otherSignature.HasRemainder && otherCommand.IgnoresExtraArguments)
+                {
                     throw new CommandMappingException(command, segment,
-                        "Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.");
+                       "Cannot map multiple overloads with the same argument types, with one of them being a remainder, if the other one ignores extra arguments.");
+                }
             }
         }
 
@@ -152,9 +157,10 @@ namespace Qmmands
                     ValidateCommand(command, segment, commands);
                     commands.Add(command);
                 }
-
                 else
+                {
                     _commands.Add(segment, new List<Command> { command });
+                }
             }
             else
             {
@@ -176,7 +182,6 @@ namespace Qmmands
                 if (_commands.TryGetValue(segment, out var commands))
                     commands.Remove(command);
             }
-
             else if (_nodes.TryGetValue(segment, out var node))
             {
                 node.RemoveCommand(command, segments, startIndex + 1);
