@@ -47,7 +47,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the aliases of the <see cref="Module"/>.
         /// </summary>
-        public List<string> Aliases { get; }
+        public HashSet<string> Aliases { get; }
 
         /// <summary>
         ///     Gets the checks of the <see cref="Module"/>.
@@ -83,7 +83,7 @@ namespace Qmmands
         internal ModuleBuilder(ModuleBuilder parent)
         {
             Parent = parent;
-            Aliases = new List<string>();
+            Aliases = new HashSet<string>();
             Checks = new List<CheckAttribute>();
             Attributes = new List<Attribute>();
             Commands = new List<CommandBuilder>();
@@ -141,18 +141,14 @@ namespace Qmmands
         /// <summary>
         ///     Adds an alias to <see cref="Aliases"/>.
         /// </summary>
+        /// <exception cref="ArgumentException">
+        ///     This alias has already been added.
+        /// </exception>
         public ModuleBuilder AddAlias(string alias)
         {
-            Aliases.Add(alias);
-            return this;
-        }
+            if (!Aliases.Add(alias))
+                throw new ArgumentException($"This alias has already been added ({alias}).", nameof(alias));
 
-        /// <summary>
-        ///     Adds aliases to <see cref="Aliases"/>.
-        /// </summary>
-        public ModuleBuilder AddAliases(params string[] aliases)
-        {
-            Aliases.AddRange(aliases);
             return this;
         }
 
@@ -166,29 +162,11 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Adds checks to <see cref="Checks"/>.
-        /// </summary>
-        public ModuleBuilder AddChecks(params CheckAttribute[] checks)
-        {
-            Checks.AddRange(checks);
-            return this;
-        }
-
-        /// <summary>
         ///     Adds an attribute to <see cref="Attributes"/>.
         /// </summary>
         public ModuleBuilder AddAttribute(Attribute attribute)
         {
             Attributes.Add(attribute);
-            return this;
-        }
-
-        /// <summary>
-        ///     Adds attributes to <see cref="Attributes"/>.
-        /// </summary>
-        public ModuleBuilder AddAttributes(params Attribute[] attributes)
-        {
-            Attributes.AddRange(attributes);
             return this;
         }
 
@@ -228,27 +206,17 @@ namespace Qmmands
 
         internal Module Build(CommandService service, Module parent)
         {
-            var aliases = new List<string>(Aliases.Count);
-            for (var i = 0; i < Aliases.Count; i++)
+            foreach (var alias in Aliases)
             {
-                var alias = Aliases[i];
                 if (alias == null)
                     throw new ModuleBuildingException(this, "Module's group aliases must not contain null entries.");
-
-                if (aliases.Contains(alias))
-                    throw new ModuleBuildingException(this, "Module's group aliases must not contain duplicate.");
 
                 if (alias.IndexOf(' ') != -1)
                     throw new ModuleBuildingException(this, "Module's group aliases must not contain whitespace.");
 
                 if (alias.IndexOf(service.Separator, service.StringComparison) != -1)
                     throw new ModuleBuildingException(this, "Module's group aliases must not contain the separator.");
-
-                aliases.Add(alias);
             }
-            Aliases.Clear();
-            for (var i = 0; i < aliases.Count; i++)
-                Aliases.Add(aliases[i]);
 
             return new Module(service, this, parent);
         }

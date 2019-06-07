@@ -152,7 +152,7 @@ namespace Qmmands
 
             var hasRemainder = false;
             var sb = new StringBuilder();
-            var parameters = ImmutableArray.CreateBuilder<Parameter>();
+            var parameters = ImmutableArray.CreateBuilder<Parameter>(builder.Parameters.Count);
             for (var i = 0; i < builder.Parameters.Count; i++)
             {
                 var parameter = builder.Parameters[i].Build(this);

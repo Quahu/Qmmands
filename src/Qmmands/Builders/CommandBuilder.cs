@@ -57,7 +57,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the aliases of the <see cref="Command"/>.
         /// </summary>
-        public List<string> Aliases { get; }
+        public HashSet<string> Aliases { get; }
 
         /// <summary>
         ///     Gets the checks of the <see cref="Command"/>.
@@ -86,7 +86,7 @@ namespace Qmmands
             Module = module;
             Callback = callback;
             Cooldowns = new List<Cooldown>();
-            Aliases = new List<string>();
+            Aliases = new HashSet<string>(1);
             Checks = new List<CheckAttribute>();
             Attributes = new List<Attribute>();
             Parameters = new List<ParameterBuilder>();
@@ -156,29 +156,16 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Adds <see cref="Cooldown"/>s to <see cref="Cooldowns"/>.
-        /// </summary>
-        public CommandBuilder AddCooldowns(params Cooldown[] cooldowns)
-        {
-            Cooldowns.AddRange(cooldowns);
-            return this;
-        }
-
-        /// <summary>
         ///     Adds an alias to <see cref="Aliases"/>.
         /// </summary>
+        /// <exception cref="ArgumentException">
+        ///     This alias has already been added.
+        /// </exception>
         public CommandBuilder AddAlias(string alias)
         {
-            Aliases.Add(alias);
-            return this;
-        }
+            if (!Aliases.Add(alias))
+                throw new ArgumentException($"This alias has already been added ({alias}).", nameof(alias));
 
-        /// <summary>
-        ///     Adds aliases to <see cref="Aliases"/>.
-        /// </summary>
-        public CommandBuilder AddAliases(params string[] aliases)
-        {
-            Aliases.AddRange(aliases);
             return this;
         }
 
@@ -188,15 +175,6 @@ namespace Qmmands
         public CommandBuilder AddCheck(CheckAttribute check)
         {
             Checks.Add(check);
-            return this;
-        }
-
-        /// <summary>
-        ///     Adds checks to <see cref="Checks"/>.
-        /// </summary>
-        public CommandBuilder AddChecks(params CheckAttribute[] checks)
-        {
-            Checks.AddRange(checks);
             return this;
         }
 
@@ -228,41 +206,22 @@ namespace Qmmands
             return this;
         }
 
-        /// <summary>
-        ///     Adds attributes to <see cref="Attributes"/>.
-        /// </summary>
-        public CommandBuilder AddAttributes(params Attribute[] attributes)
-        {
-            Attributes.AddRange(attributes);
-            return this;
-        }
-
         internal Command Build(Module module)
         {
             if (Callback == null)
                 throw new CommandBuildingException(this, "Command's callback must not be null.");
 
-            var aliases = new List<string>(Aliases.Count);
-            for (var i = 0; i < Aliases.Count; i++)
+            foreach (var alias in Aliases)
             {
-                var alias = Aliases[i];
                 if (alias == null)
                     throw new CommandBuildingException(this, "Command's aliases must not contain null entries.");
-
-                if (aliases.Contains(alias))
-                    throw new CommandBuildingException(this, "Command's aliases must not contain duplicates.");
 
                 if (alias.IndexOf(' ') != -1)
                     throw new CommandBuildingException(this, "Command's aliases must not contain whitespace.");
 
                 if (alias.IndexOf(module.Service.Separator, module.Service.StringComparison) != -1)
                     throw new CommandBuildingException(this, "Command's aliases must not contain the separator.");
-
-                aliases.Add(alias);
             }
-            Aliases.Clear();
-            for (var i = 0; i < aliases.Count; i++)
-                Aliases.Add(aliases[i]);
 
             ParameterBuilder previous = null;
             for (var i = 0; i < Parameters.Count; i++)

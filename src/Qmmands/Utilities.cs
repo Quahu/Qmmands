@@ -86,7 +86,8 @@ namespace Qmmands
                         break;
 
                     case GroupAttribute groupAttribute:
-                        builder.AddAliases(groupAttribute.Aliases);
+                        for (var j = 0; j < groupAttribute.Aliases.Length; j++)
+                            builder.AddAlias(groupAttribute.Aliases[j]);
                         break;
 
                     case CheckAttribute checkAttribute:
@@ -145,7 +146,8 @@ namespace Qmmands
                         break;
 
                     case CommandAttribute commandAttribute:
-                        builder.AddAliases(commandAttribute.Aliases);
+                        for (var j = 0; j < commandAttribute.Aliases.Length; j++)
+                            builder.AddAlias(commandAttribute.Aliases[j]);
                         break;
 
                     case CheckAttribute checkAttribute:
