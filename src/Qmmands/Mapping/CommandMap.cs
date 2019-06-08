@@ -14,9 +14,9 @@ namespace Qmmands
 
         public IReadOnlyList<CommandMatch> FindCommands(string text)
         {
-            var matches = new List<CommandMatch>();
-            _rootNode.FindCommands(matches, new List<string>(), text);
-            return matches;
+            List<CommandMatch> matches = null;
+            _rootNode.FindCommands(ref matches, new List<string>(), text);
+            return matches ?? Array.Empty<CommandMatch>() as IReadOnlyList<CommandMatch>;
         }
 
         public void MapModule(Module module)

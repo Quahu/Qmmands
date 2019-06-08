@@ -8,7 +8,7 @@ namespace Qmmands
         private readonly CommandService _service;
         private readonly Dictionary<string, List<Command>> _commands;
         private readonly Dictionary<string, CommandMapNode> _nodes;
-        private readonly bool _isSeparatorWhitespace;
+        private readonly bool _isSeparatorSingleWhitespace;
 
         public CommandMapNode(CommandService service)
         {
@@ -16,10 +16,10 @@ namespace Qmmands
             _commands = new Dictionary<string, List<Command>>(_service.StringComparer);
             _nodes = new Dictionary<string, CommandMapNode>(_service.StringComparer);
             var separatorSpan = _service.Separator.AsSpan();
-            _isSeparatorWhitespace = separatorSpan.Length == 1 && char.IsWhiteSpace(separatorSpan[0]);
+            _isSeparatorSingleWhitespace = separatorSpan.Length == 1 && char.IsWhiteSpace(separatorSpan[0]);
         }
 
-        public void FindCommands(List<CommandMatch> matches, List<string> path, ReadOnlySpan<char> span)
+        public void FindCommands(ref List<CommandMatch> matches, List<string> path, ReadOnlySpan<char> span)
         {
             if (path.Count == 0)
                 span = span.TrimStart();
@@ -35,18 +35,24 @@ namespace Qmmands
             if (!encounteredSeparator && !(encounteredWhitespace && remaining.IsEmpty) && _commands.TryGetValue(stringSegment, out var commands))
             {
                 path.Add(stringSegment);
+
                 var stringRemaining = remaining.IsEmpty
                     ? string.Empty
                     : new string(remaining);
+
+                if (matches == null)
+                    matches = new List<CommandMatch>(commands.Count);
+
                 for (var i = 0; i < commands.Count; i++)
                     matches.Add(new CommandMatch(commands[i], stringSegment, path, stringRemaining));
+
                 path.RemoveAt(path.Count - 1);
             }
 
             bool hasSeparator;
             switch (_service.SeparatorRequirement)
             {
-                case SeparatorRequirement.Separator when _isSeparatorWhitespace:
+                case SeparatorRequirement.Separator when _isSeparatorSingleWhitespace:
                 {
                     hasSeparator = encounteredWhitespace;
                     break;
@@ -71,7 +77,7 @@ namespace Qmmands
             if (hasSeparator && _nodes.TryGetValue(stringSegment, out var node))
             {
                 path.Add(stringSegment);
-                node.FindCommands(matches, path, remaining);
+                node.FindCommands(ref matches, path, remaining);
                 path.RemoveAt(path.Count - 1);
             }
         }
@@ -84,10 +90,9 @@ namespace Qmmands
             var segmentIndex = 0;
             var nextSegmentIndex = 0;
             var separator = _service.Separator;
-            var separatorIndex = _isSeparatorWhitespace
+            var separatorIndex = _isSeparatorSingleWhitespace
                 ? -1
                 : span.IndexOf(separator, _service.StringComparison);
-            // group >> ping 123
             for (var i = 0; i < span.Length; i++)
             {
                 if (segmentIndex != 0)
@@ -95,7 +100,7 @@ namespace Qmmands
                     if (i == separatorIndex)
                     {
                         encounteredSeparator = true;
-                        if (!_isSeparatorWhitespace)
+                        if (!_isSeparatorSingleWhitespace)
                             encounteredWhitespace = false;
                         i += separator.Length - 1;
                         nextSegmentIndex += separator.Length;
@@ -180,7 +185,11 @@ namespace Qmmands
             if (startIndex == segments.Count - 1)
             {
                 if (_commands.TryGetValue(segment, out var commands))
+                {
                     commands.Remove(command);
+                    if (commands.Count == 0)
+                        _commands.Remove(segment);
+                }
             }
             else if (_nodes.TryGetValue(segment, out var node))
             {
