@@ -46,7 +46,7 @@ after_deploy:
   - ps: Copy-Item ".\docs\_site\*" -Destination $Directory -Force -Recurse
   - ps: cd $Directory
   - git add .
-  - ps: git commit -m "Updated docs to $VersionSuffix."
+  - ps: git commit --allow-empty -m "Build successful. Updated $Directory to $VersionSuffix."
   - git push origin gh-pages
 
 nuget:
