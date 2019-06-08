@@ -12,8 +12,12 @@ namespace Qmmands
             _rootNode = new CommandMapNode(service);
         }
 
-        public IEnumerable<CommandMatch> FindCommands(string text)
-            => _rootNode.FindCommands(new List<string>(), text, 0);
+        public IReadOnlyList<CommandMatch> FindCommands(string text)
+        {
+            var matches = new List<CommandMatch>();
+            _rootNode.FindCommands(matches, new List<string>(), text);
+            return matches;
+        }
 
         public void MapModule(Module module)
         {

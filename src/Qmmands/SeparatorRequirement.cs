@@ -6,18 +6,13 @@
     public enum SeparatorRequirement
     {
         /// <summary>
-        ///     Groups and commands do not have to be separated by anything.
+        ///     Groups and commands must be separated by the specified separator.
         /// </summary>
-        None,
+        Separator,
 
         /// <summary>
         ///     Groups and commands must be separated either by the specified separator or whitespace characters.
         /// </summary>
-        SeparatorOrWhitespace,
-
-        /// <summary>
-        ///     Groups and commands must be separated by the specified separator.
-        /// </summary>
-        Separator
+        SeparatorOrWhitespace
     }
 }

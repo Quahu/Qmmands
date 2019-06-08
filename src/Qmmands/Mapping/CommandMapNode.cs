@@ -8,117 +8,117 @@ namespace Qmmands
         private readonly CommandService _service;
         private readonly Dictionary<string, List<Command>> _commands;
         private readonly Dictionary<string, CommandMapNode> _nodes;
-        private readonly bool _isNullOrWhitespaceSeparator;
+        private readonly bool _isSeparatorWhitespace;
 
         public CommandMapNode(CommandService service)
         {
             _service = service;
             _commands = new Dictionary<string, List<Command>>(_service.StringComparer);
             _nodes = new Dictionary<string, CommandMapNode>(_service.StringComparer);
-            _isNullOrWhitespaceSeparator = string.IsNullOrWhiteSpace(_service.Separator);
+            var separatorSpan = _service.Separator.AsSpan();
+            _isSeparatorWhitespace = separatorSpan.Length == 1 && char.IsWhiteSpace(separatorSpan[0]);
         }
 
-        public IEnumerable<CommandMatch> FindCommands(List<string> path, string text, int startIndex)
+        public void FindCommands(List<CommandMatch> matches, List<string> path, ReadOnlySpan<char> span)
         {
-            if (startIndex >= text.Length)
-                yield break;
+            if (path.Count == 0)
+                span = span.TrimStart();
 
-            foreach (var (segment, commands) in _commands)
+            if (span.IsEmpty)
+                return;
+
+            var segment = FindNextSegment(span, out var encounteredWhitespace, out var encounteredSeparator, out var remaining);
+            if (encounteredSeparator && remaining.IsEmpty)
+                return;
+
+            var stringSegment = new string(segment);
+            if (!encounteredSeparator && !(encounteredWhitespace && remaining.IsEmpty) && _commands.TryGetValue(stringSegment, out var commands))
             {
-                var index = GetSegment(text, segment, startIndex, false, out var arguments, out _, out var hasWhitespaceSeparator);
-                if (index == -1 || !(hasWhitespaceSeparator || string.IsNullOrWhiteSpace(arguments)))
-                    continue;
-
+                path.Add(stringSegment);
+                var stringRemaining = remaining.IsEmpty
+                    ? string.Empty
+                    : new string(remaining);
                 for (var i = 0; i < commands.Count; i++)
-                {
-                    path.Add(segment);
-                    yield return new CommandMatch(commands[i], segment, path, arguments);
-                    path.RemoveAt(path.Count - 1);
-                }
+                    matches.Add(new CommandMatch(commands[i], stringSegment, path, stringRemaining));
+                path.RemoveAt(path.Count - 1);
             }
 
-            foreach (var (segment, node) in _nodes)
+            bool hasSeparator;
+            switch (_service.SeparatorRequirement)
             {
-                var index = GetSegment(text, segment, startIndex, true, out _, out var hasSeparator, out _);
-                if (index == -1 || !hasSeparator)
-                    continue;
+                case SeparatorRequirement.Separator when _isSeparatorWhitespace:
+                {
+                    hasSeparator = encounteredWhitespace;
+                    break;
+                }
 
-                path.Add(segment);
-                foreach (var match in node.FindCommands(path, text, index))
-                    yield return match;
+                case SeparatorRequirement.Separator:
+                {
+                    hasSeparator = encounteredSeparator;
+                    break;
+                }
 
+                case SeparatorRequirement.SeparatorOrWhitespace:
+                {
+                    hasSeparator = encounteredWhitespace || encounteredSeparator;
+                    break;
+                }
+
+                default:
+                    throw new InvalidOperationException("Invalid separator requirement.");
+            }
+
+            if (hasSeparator && _nodes.TryGetValue(stringSegment, out var node))
+            {
+                path.Add(stringSegment);
+                node.FindCommands(matches, path, remaining);
                 path.RemoveAt(path.Count - 1);
             }
         }
 
-        private int GetSegment(ReadOnlySpan<char> text, ReadOnlySpan<char> key, int startIndex, bool checkForSeparator,
-            out string arguments, out bool hasSeparator, out bool hasWhitespaceSeparator)
+        private ReadOnlySpan<char> FindNextSegment(ReadOnlySpan<char> span,
+            out bool encounteredWhitespace, out bool encounteredSeparator, out ReadOnlySpan<char> remaining)
         {
-            var index = text.Slice(startIndex).IndexOf(key, _service.StringComparison) + startIndex;
-            if (index == -1 || index != startIndex)
+            encounteredWhitespace = false;
+            encounteredSeparator = false;
+            var segmentIndex = 0;
+            var nextSegmentIndex = 0;
+            var separator = _service.Separator;
+            var separatorIndex = _isSeparatorWhitespace
+                ? -1
+                : span.IndexOf(separator, _service.StringComparison);
+            // group >> ping 123
+            for (var i = 0; i < span.Length; i++)
             {
-                arguments = null;
-                hasSeparator = false;
-                hasWhitespaceSeparator = false;
-                return -1;
-            }
-            else
-            {
-                index += key.Length;
-                var hasConfigSeparator = false;
-                hasWhitespaceSeparator = false;
-                if (!_isNullOrWhitespaceSeparator && checkForSeparator)
+                if (segmentIndex != 0)
                 {
-                    for (var i = index; i < text.Length; i++)
+                    if (i == separatorIndex)
                     {
-                        if (!char.IsWhiteSpace(text[i]))
-                            break;
-
-                        hasWhitespaceSeparator = true;
-                        index++;
+                        encounteredSeparator = true;
+                        if (!_isSeparatorWhitespace)
+                            encounteredWhitespace = false;
+                        i += separator.Length - 1;
+                        nextSegmentIndex += separator.Length;
+                        continue;
                     }
 
-                    var separatorIndex = text.Slice(index).IndexOf(_service.Separator, _service.StringComparison) + index;
-                    if (separatorIndex == index)
+                    if (char.IsWhiteSpace(span[i]))
                     {
-                        index += _service.Separator.Length;
-                        hasConfigSeparator = true;
-                        hasWhitespaceSeparator = false;
+                        encounteredWhitespace = true;
+                        nextSegmentIndex++;
+                        continue;
                     }
                 }
 
-                for (var i = index; i < text.Length; i++)
-                {
-                    if (!char.IsWhiteSpace(text[i]))
-                        break;
+                if (segmentIndex != nextSegmentIndex)
+                    break;
 
-                    hasWhitespaceSeparator = true;
-                    index++;
-                }
-
-                arguments = new string(text.Slice(index));
-                switch (_service.SeparatorRequirement)
-                {
-                    case SeparatorRequirement.None:
-                        hasSeparator = true;
-                        break;
-
-                    case SeparatorRequirement.SeparatorOrWhitespace:
-                        hasSeparator = hasConfigSeparator || hasWhitespaceSeparator;
-                        break;
-
-                    case SeparatorRequirement.Separator:
-                        hasSeparator = _isNullOrWhitespaceSeparator
-                            ? hasConfigSeparator || hasWhitespaceSeparator
-                            : hasConfigSeparator;
-                        break;
-
-                    default:
-                        throw new InvalidOperationException("Invalid separator requirement.");
-                }
-
-                return index;
+                segmentIndex++;
+                nextSegmentIndex++;
             }
+
+            remaining = span.Slice(nextSegmentIndex);
+            return span.Slice(0, segmentIndex);
         }
 
         private void ValidateCommand(Command command, string segment, List<Command> commands)
