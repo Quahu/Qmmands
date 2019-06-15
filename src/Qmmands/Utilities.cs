@@ -94,6 +94,10 @@ namespace Qmmands
                         builder.AddCheck(checkAttribute);
                         break;
 
+                    case DisabledAttribute disabledAttribute:
+                        builder.WithIsEnabled(!disabledAttribute.Value);
+                        break;
+
                     case Attribute attribute:
                         builder.AddAttribute(attribute);
                         break;
@@ -152,6 +156,10 @@ namespace Qmmands
 
                     case CheckAttribute checkAttribute:
                         builder.AddCheck(checkAttribute);
+                        break;
+
+                    case DisabledAttribute disabledAttribute:
+                        builder.WithIsEnabled(!disabledAttribute.Value);
                         break;
 
                     case Attribute attribute:

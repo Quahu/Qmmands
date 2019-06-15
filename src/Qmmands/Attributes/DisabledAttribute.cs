@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Qmmands.Attributes
+namespace Qmmands
 {
     /// <summary>
     ///     Sets the <see cref="Module.IsEnabled"/> or <see cref="Command.IsEnabled"/> to <see langword="false"/>.
