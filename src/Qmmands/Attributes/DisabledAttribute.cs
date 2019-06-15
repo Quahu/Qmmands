@@ -3,7 +3,7 @@
 namespace Qmmands
 {
     /// <summary>
-    ///     Sets the <see cref="Module.IsEnabled"/> or <see cref="Command.IsEnabled"/> to <see langword="false"/>.
+    ///     Sets whether the <see cref="Module"/> or <see cref="Command"/> is disabled.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public sealed class DisabledAttribute : Attribute
