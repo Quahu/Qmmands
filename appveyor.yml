@@ -9,7 +9,7 @@ environment:
     secure: JIG9V7Fvjdpl1FvBGSTbv5s29nbAL3RcHiHgSaNC7WwoO2jUOBviIPHvQz2TcI/v
 
 install:
-  - ps: choco install docfx -y
+  - ps: choco install docfx -y --version 2.42.4.0
 
 build_script:
 - ps: dotnet restore .\src\Qmmands.sln | Out-Host
