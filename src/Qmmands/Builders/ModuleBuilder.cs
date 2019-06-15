@@ -70,6 +70,12 @@ namespace Qmmands
         public List<ModuleBuilder> Submodules { get; }
 
         /// <summary>
+        ///     Gets or sets whether the <see cref="Module"/> will be enabled or not.
+        ///     Defaults to <see langword="true"/>.
+        /// </summary>
+        public bool IsEnabled { get; set; } = true;
+
+        /// <summary>
         ///     Gets the parent module of the <see cref="Module"/>.
         /// </summary>
         public ModuleBuilder Parent { get; }
@@ -201,6 +207,15 @@ namespace Qmmands
             var builder = new ModuleBuilder(this);
             builderAction(builder);
             Submodules.Add(builder);
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the <see cref="IsEnabled"/>.
+        /// </summary>
+        public ModuleBuilder WithIsEnabled(bool isEnabled)
+        {
+            IsEnabled = isEnabled;
             return this;
         }
 

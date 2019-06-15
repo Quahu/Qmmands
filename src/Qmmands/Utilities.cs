@@ -66,23 +66,23 @@ namespace Qmmands
                 switch (attributes[i])
                 {
                     case NameAttribute nameAttribute:
-                        builder.WithName(nameAttribute.Name);
+                        builder.WithName(nameAttribute.Value);
                         break;
 
                     case DescriptionAttribute descriptionAttribute:
-                        builder.WithDescription(descriptionAttribute.Description);
+                        builder.WithDescription(descriptionAttribute.Value);
                         break;
 
                     case RemarksAttribute remarksAttribute:
-                        builder.WithRemarks(remarksAttribute.Remarks);
+                        builder.WithRemarks(remarksAttribute.Value);
                         break;
 
                     case RunModeAttribute runModeAttribute:
-                        builder.WithRunMode(runModeAttribute.RunMode);
+                        builder.WithRunMode(runModeAttribute.Value);
                         break;
 
-                    case IgnoreExtraArgumentsAttribute ignoreExtraArgumentsAttribute:
-                        builder.WithIgnoresExtraArguments(ignoreExtraArgumentsAttribute.IgnoreExtraArguments);
+                    case IgnoresExtraArgumentsAttribute ignoreExtraArgumentsAttribute:
+                        builder.WithIgnoresExtraArguments(ignoreExtraArgumentsAttribute.Value);
                         break;
 
                     case GroupAttribute groupAttribute:
@@ -118,31 +118,31 @@ namespace Qmmands
                 switch (attributes[i])
                 {
                     case NameAttribute nameAttribute:
-                        builder.WithName(nameAttribute.Name);
+                        builder.WithName(nameAttribute.Value);
                         break;
 
                     case DescriptionAttribute descriptionAttribute:
-                        builder.WithDescription(descriptionAttribute.Description);
+                        builder.WithDescription(descriptionAttribute.Value);
                         break;
 
                     case RemarksAttribute remarksAttribute:
-                        builder.WithRemarks(remarksAttribute.Remarks);
+                        builder.WithRemarks(remarksAttribute.Value);
                         break;
 
                     case PriorityAttribute priorityAttribute:
-                        builder.WithPriority(priorityAttribute.Priority);
+                        builder.WithPriority(priorityAttribute.Value);
                         break;
 
                     case RunModeAttribute runModeAttribute:
-                        builder.WithRunMode(runModeAttribute.RunMode);
+                        builder.WithRunMode(runModeAttribute.Value);
                         break;
 
                     case CooldownAttribute cooldownAttribute:
                         builder.AddCooldown(new Cooldown(cooldownAttribute.Amount, cooldownAttribute.Per, cooldownAttribute.BucketType));
                         break;
 
-                    case IgnoreExtraArgumentsAttribute ignoreExtraArgumentsAttribute:
-                        builder.WithIgnoresExtraArguments(ignoreExtraArgumentsAttribute.IgnoreExtraArguments);
+                    case IgnoresExtraArgumentsAttribute ignoreExtraArgumentsAttribute:
+                        builder.WithIgnoresExtraArguments(ignoreExtraArgumentsAttribute.Value);
                         break;
 
                     case CommandAttribute commandAttribute:
@@ -176,15 +176,15 @@ namespace Qmmands
                 switch (attributes[i])
                 {
                     case NameAttribute nameAttribute:
-                        builder.WithName(nameAttribute.Name);
+                        builder.WithName(nameAttribute.Value);
                         break;
 
                     case DescriptionAttribute descriptionAttribute:
-                        builder.WithDescription(descriptionAttribute.Description);
+                        builder.WithDescription(descriptionAttribute.Value);
                         break;
 
                     case RemarksAttribute remarksAttribute:
-                        builder.WithRemarks(remarksAttribute.Remarks);
+                        builder.WithRemarks(remarksAttribute.Value);
                         break;
 
                     case ParamArrayAttribute _:
@@ -203,7 +203,7 @@ namespace Qmmands
                         break;
 
                     case OverrideTypeParserAttribute overwriteTypeParserAttribute:
-                        builder.WithCustomTypeParserType(overwriteTypeParserAttribute.CustomTypeParserType);
+                        builder.WithCustomTypeParserType(overwriteTypeParserAttribute.Value);
 
                         if (overwriteTypeParserAttribute.GetType() != typeof(OverrideTypeParserAttribute))
                             builder.AddAttribute(overwriteTypeParserAttribute);

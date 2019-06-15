@@ -11,13 +11,15 @@ namespace Qmmands
         /// <summary>
         ///     Gets the description.
         /// </summary>
-        public string Description { get; }
+        public string Value { get; }
 
         /// <summary>
         ///     Initialises a new <see cref="DescriptionAttribute"/> with the specified <paramref name="description"/>.
         /// </summary>
-        /// <param name="description"> The description to set. </param>
+        /// <param name="description"> The value to set. </param>
         public DescriptionAttribute(string description)
-            => Description = description;
+        {
+            Value = description;
+        }
     }
 }

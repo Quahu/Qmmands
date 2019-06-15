@@ -11,7 +11,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the <see cref="Type"/> of the custom type parser.
         /// </summary>
-        public Type CustomTypeParserType { get; }
+        public Type Value { get; }
 
         /// <summary>
         ///     Initialises a new <see cref="OverrideTypeParserAttribute"/> with the specified custom type parser's <see cref="Type"/>.
@@ -21,7 +21,7 @@ namespace Qmmands
         ///     Custom type parser type must not be null.
         /// </exception>
         public OverrideTypeParserAttribute(Type customTypeParserType)
-            => CustomTypeParserType = customTypeParserType
+            => Value = customTypeParserType
                 ?? throw new ArgumentNullException(nameof(customTypeParserType), "Custom type parser type must not be null.");
     }
 }

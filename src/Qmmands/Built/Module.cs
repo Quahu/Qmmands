@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Qmmands
@@ -70,6 +71,13 @@ namespace Qmmands
         public IReadOnlyList<Command> Commands { get; }
 
         /// <summary>
+        ///     Gets whether this <see cref="Module"/> is enabled or not.
+        /// </summary>
+        public bool IsEnabled => Parent != null
+            ? Parent.IsEnabled && Volatile.Read(ref _isEnabled)
+            : Volatile.Read(ref _isEnabled);
+
+        /// <summary>
         ///     Gets the parent <see cref="Module"/> of this <see cref="Module"/>.
         /// </summary>
         public Module Parent { get; }
@@ -84,6 +92,8 @@ namespace Qmmands
         ///     Gets the <see cref="CommandService"/> of this <see cref="Module"/>.
         /// </summary>
         public CommandService Service { get; }
+
+        private bool _isEnabled;
 
         internal Module(CommandService service, ModuleBuilder builder, Module parent)
         {
@@ -152,6 +162,8 @@ namespace Qmmands
             for (var i = 0; i < builder.Commands.Count; i++)
                 commands.Add(builder.Commands[i].Build(this));
             Commands = commands.TryMoveToImmutable();
+
+            _isEnabled = builder.IsEnabled;
         }
 
         /// <summary>
@@ -191,6 +203,18 @@ namespace Qmmands
 
             return new SuccessfulResult();
         }
+
+        /// <summary>
+        ///     Enables this <see cref="Module"/>.
+        /// </summary>
+        public void Enable()
+            => Volatile.Write(ref _isEnabled, true);
+
+        /// <summary>
+        ///     Enables this <see cref="Module"/>.
+        /// </summary>
+        public void Disable()
+            => Volatile.Write(ref _isEnabled, false);
 
         /// <summary>
         ///     Returns <see cref="Name"/> or calls <see cref="object.ToString"/> if it is <see langword="null"/>.

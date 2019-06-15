@@ -11,13 +11,15 @@ namespace Qmmands
         /// <summary>
         ///     Gets the remarks.
         /// </summary>
-        public string Remarks { get; }
+        public string Value { get; }
 
         /// <summary>
         ///     Initialises a new <see cref="RemarksAttribute"/> with the specified <paramref name="remarks"/>.
         /// </summary>
-        /// <param name="remarks"> The remarks to set. </param>
+        /// <param name="remarks"> The value to set. </param>
         public RemarksAttribute(string remarks)
-            => Remarks = remarks;
+        {
+            Value = remarks;
+        }
     }
 }

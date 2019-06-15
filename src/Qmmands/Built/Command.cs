@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Qmmands
@@ -56,7 +57,8 @@ namespace Qmmands
         ///     Gets the full aliases of this <see cref="Command"/>.
         /// </summary>
         /// <remarks>
-        ///     Aliases of parent <see cref="Qmmands.Module"/>s and this <see cref="Command"/> concatenated using the <see cref="CommandService.Separator"/>.
+        ///     Aliases of parent <see cref="Qmmands.Module"/>s and this <see cref="Command"/>
+        ///     concatenated using the <see cref="CommandService.Separator"/>.
         /// </remarks>
         public IReadOnlyList<string> FullAliases { get; }
 
@@ -76,6 +78,11 @@ namespace Qmmands
         public IReadOnlyList<Parameter> Parameters { get; }
 
         /// <summary>
+        ///     Gets whether this <see cref="Command"/> is enabled or not.
+        /// </summary>
+        public bool IsEnabled => Module.IsEnabled && Volatile.Read(ref _isEnabled);
+
+        /// <summary>
         ///     Gets the <see cref="Qmmands.Module"/> of this <see cref="Command"/>.
         /// </summary>
         public Module Module { get; }
@@ -90,6 +97,8 @@ namespace Qmmands
         internal readonly (bool HasRemainder, string Identifier) SignatureIdentifier;
 
         internal readonly CooldownMap CooldownMap;
+
+        private bool _isEnabled;
 
         internal Command(CommandBuilder builder, Module module)
         {
@@ -173,6 +182,8 @@ namespace Qmmands
 
                 CooldownMap = new CooldownMap(this);
             }
+
+            _isEnabled = builder.IsEnabled;
         }
 
         /// <summary>
@@ -323,6 +334,18 @@ namespace Qmmands
         /// </exception>
         public Task<IResult> ExecuteAsync(IEnumerable<object> arguments, CommandContext context, IServiceProvider provider = null)
             => Service.ExecuteAsync(this, arguments, context, provider);
+
+        /// <summary>
+        ///     Enables this <see cref="Command"/>.
+        /// </summary>
+        public void Enable()
+            => Volatile.Write(ref _isEnabled, true);
+
+        /// <summary>
+        ///     Enables this <see cref="Command"/>.
+        /// </summary>
+        public void Disable()
+            => Volatile.Write(ref _isEnabled, false);
 
         /// <summary>
         ///     Returns <see cref="Name"/> or calls <see cref="object.ToString"/> if it is <see langword="null"/>.

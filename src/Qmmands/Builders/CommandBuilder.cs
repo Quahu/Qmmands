@@ -75,6 +75,12 @@ namespace Qmmands
         public List<ParameterBuilder> Parameters { get; }
 
         /// <summary>
+        ///     Gets or sets whether the <see cref="Command"/> will be enabled or not.
+        ///     Defaults to <see langword="true"/>.
+        /// </summary>
+        public bool IsEnabled { get; set; } = true;
+
+        /// <summary>
         ///     Gets the module of the <see cref="Command"/>.
         /// </summary>
         public ModuleBuilder Module { get; }
@@ -203,6 +209,15 @@ namespace Qmmands
         public CommandBuilder AddAttribute(Attribute attribute)
         {
             Attributes.Add(attribute);
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the <see cref="IsEnabled"/>.
+        /// </summary>
+        public CommandBuilder WithIsEnabled(bool isEnabled)
+        {
+            IsEnabled = isEnabled;
             return this;
         }
 

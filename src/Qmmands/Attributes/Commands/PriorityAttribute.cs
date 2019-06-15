@@ -11,13 +11,15 @@ namespace Qmmands
         /// <summary>
         ///     Gets the priority.
         /// </summary>
-        public int Priority { get; }
+        public int Value { get; }
 
         /// <summary>
         ///     Initialises a new <see cref="PriorityAttribute"/> with the specified priority.
         /// </summary>
         /// <param name="priority"> The priority to set. </param>
         public PriorityAttribute(int priority)
-            => Priority = priority;
+        {
+            Value = priority;
+        }
     }
 }

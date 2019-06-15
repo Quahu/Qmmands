@@ -691,6 +691,9 @@ namespace Qmmands
                 if (match.Path.Count < pathLength)
                     continue;
 
+                if (!match.Command.IsEnabled)
+                    return new CommandDisabledResult(match.Command);
+
                 context.Command = match.Command;
                 context.Alias = match.Alias;
                 context.Path = match.Path;
@@ -806,6 +809,9 @@ namespace Qmmands
             if (provider == null)
                 provider = DummyServiceProvider.Instance;
 
+            if (!command.IsEnabled)
+                return new CommandDisabledResult(command);
+
             context.Command = command;
             context.RawArguments = rawArguments;
             try
@@ -887,6 +893,9 @@ namespace Qmmands
 
             if (provider == null)
                 provider = DummyServiceProvider.Instance;
+
+            if (!command.IsEnabled)
+                return new CommandDisabledResult(command);
 
             context.Command = command;
             context.InternalArguments = arguments.ToArray();

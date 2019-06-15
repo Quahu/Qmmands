@@ -18,6 +18,8 @@ namespace Qmmands
         public IReadOnlyDictionary<Command, FailedResult> FailedOverloads { get; }
 
         internal OverloadsFailedResult(IReadOnlyDictionary<Command, FailedResult> failedOverloads)
-            => FailedOverloads = failedOverloads;
+        { 
+            FailedOverloads = failedOverloads;
+        }
     }
 }
