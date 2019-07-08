@@ -169,7 +169,8 @@ namespace Qmmands
             return new ArgumentParserResult(command, context.RawArguments, arguments);
         }
 
-        private void NextParameter(Command command, ref Parameter currentParameter, StringBuilder argumentBuilder, ref Dictionary<Parameter, object> arguments)
+        private static void NextParameter(Command command, ref Parameter currentParameter, StringBuilder argumentBuilder,
+            ref Dictionary<Parameter, object> arguments)
         {
             if (arguments == null)
                 arguments = new Dictionary<Parameter, object>(command.Parameters.Count);

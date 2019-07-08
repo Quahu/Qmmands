@@ -692,7 +692,10 @@ namespace Qmmands
                     continue;
 
                 if (!match.Command.IsEnabled)
-                    return new CommandDisabledResult(match.Command);
+                {
+                    AddFailedOverload(ref failedOverloads, match.Command, new CommandDisabledResult(match.Command));
+                    continue;
+                }
 
                 context.Command = match.Command;
                 context.Alias = match.Alias;
@@ -707,10 +710,7 @@ namespace Qmmands
                         if (checksFailedResult.Module != null || matches.Length == 1)
                             return checksFailedResult;
 
-                        if (failedOverloads == null)
-                            failedOverloads = new Dictionary<Command, FailedResult>(4);
-
-                        failedOverloads[match.Command] = checksFailedResult;
+                        AddFailedOverload(ref failedOverloads, match.Command, checksFailedResult);
                         continue;
                     }
                 }
@@ -730,10 +730,7 @@ namespace Qmmands
                         if (matches.Length == 1)
                             return new ArgumentParseFailedResult(match.Command, parseResult);
 
-                        if (failedOverloads == null)
-                            failedOverloads = new Dictionary<Command, FailedResult>(4);
-
-                        failedOverloads[match.Command] = new ArgumentParseFailedResult(match.Command, parseResult);
+                        AddFailedOverload(ref failedOverloads, match.Command, new ArgumentParseFailedResult(match.Command, parseResult));
                         continue;
                     }
                 }
@@ -753,10 +750,7 @@ namespace Qmmands
                         if (matches.Length == 1)
                             return result.FailedResult;
 
-                        if (failedOverloads == null)
-                            failedOverloads = new Dictionary<Command, FailedResult>(4);
-
-                        failedOverloads[match.Command] = result.FailedResult;
+                        AddFailedOverload(ref failedOverloads, match.Command, result.FailedResult);
                         continue;
                     }
 
@@ -774,6 +768,15 @@ namespace Qmmands
             }
 
             return new OverloadsFailedResult(failedOverloads);
+        }
+
+        private static void AddFailedOverload(ref Dictionary<Command, FailedResult> failedOverloads,
+            Command command, FailedResult result)
+        {
+            if (failedOverloads == null)
+                failedOverloads = new Dictionary<Command, FailedResult>(4);
+
+            failedOverloads[command] = result;
         }
 
         /// <summary>
