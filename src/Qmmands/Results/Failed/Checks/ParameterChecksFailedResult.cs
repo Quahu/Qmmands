@@ -32,6 +32,10 @@ namespace Qmmands
             Parameter = parameter;
             Argument = argument;
             FailedChecks = failedChecks;
+
+            if (!parameter.Service.HasDefaultFailureReasons)
+                return;
+
             Reason = $"{(FailedChecks.Count == 1 ? "One check" : "Multiple checks")} failed for the parameter {Parameter.Name} in the command {Parameter.Command}.";
         }
     }

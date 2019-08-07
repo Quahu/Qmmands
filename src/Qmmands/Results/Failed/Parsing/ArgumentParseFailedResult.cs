@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 
 namespace Qmmands
@@ -53,6 +52,10 @@ namespace Qmmands
             Arguments = argumentParseResult.Arguments;
             ArgumentParserFailure = argumentParseResult.ArgumentParserFailure ?? throw new ArgumentException("Argument parser failure must not be null.", nameof(argumentParseResult));
             Position = argumentParseResult.FailurePosition;
+
+            if (!command.Service.HasDefaultFailureReasons)
+                return;
+
             switch (argumentParseResult.ArgumentParserFailure)
             {
                 case ArgumentParserFailure.UnclosedQuote:
@@ -68,7 +71,7 @@ namespace Qmmands
                     break;
 
                 case ArgumentParserFailure.TooFewArguments:
-                    var missingParameters = Command.Parameters.SkipWhile(x => x != Parameter).Where(x => !x.IsOptional).Select(x => $"'{x}'").ToImmutableArray();
+                    var missingParameters = Command.Parameters.SkipWhile(x => x != Parameter).Where(x => !x.IsOptional).Select(x => $"'{x}'").ToArray();
                     Reason = $"Required {(missingParameters.Length == 1 ? "parameter" : "parameters")} " +
                              $"{string.Join(", ", missingParameters)} {(missingParameters.Length == 1 ? "is" : "are")} missing.";
                     break;

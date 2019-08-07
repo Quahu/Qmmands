@@ -29,13 +29,6 @@ namespace Qmmands
         public T Value { get; }
 
         /// <summary>
-        ///     Initialises a new <see cref="TypeParserResult{T}"/> with the specified error reason.
-        /// </summary>
-        /// <param name="reason"> The error reason. </param>
-        public TypeParserResult(string reason)
-            => Reason = reason;
-
-        /// <summary>
         ///     Initialises a new <see cref="TypeParserResult{T}"/> with the specified parsed value.
         /// </summary>
         /// <param name="value"> The parsed value. </param>
@@ -45,8 +38,19 @@ namespace Qmmands
             Value = value;
         }
 
+        /// <summary>
+        ///     Initialises a new <see cref="TypeParserResult{T}"/> with the specified error reason.
+        /// </summary>
+        /// <param name="reason"> The error reason. </param>
+        public TypeParserResult(string reason)
+        {
+            Reason = reason;
+        }
+
         internal TypeParserResult(bool hasValue)
-            => HasValue = hasValue;
+        {
+            HasValue = hasValue;
+        }
 
         /// <summary>
         ///     Initialises a new successful <see cref="TypeParserResult{T}"/> with the specified parsed value.
@@ -69,9 +73,9 @@ namespace Qmmands
             => new TypeParserResult<T>(reason);
 
         /// <summary>
-        ///     Implicitly wraps the provided <see cref="TypeParserResult{T}"/> in <see cref="System.Threading.Tasks.ValueTask{TResult}"/>.
+        ///     Implicitly wraps the provided <see cref="TypeParserResult{T}"/> in a <see cref="ValueTask{TResult}"/>.
         /// </summary>
-        /// <param name="result"></param>
+        /// <param name="result"> The result to wrap. </param>
         public static implicit operator ValueTask<TypeParserResult<T>>(TypeParserResult<T> result)
             => new ValueTask<TypeParserResult<T>>(result);
     }

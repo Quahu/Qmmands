@@ -28,7 +28,9 @@ namespace Qmmands
         /// </summary>
         /// <param name="reason"> The error reason. </param>
         public CheckResult(string reason)
-            => Reason = reason;
+        {
+            Reason = reason;
+        }
 
         /// <summary>
         ///     Gets a successful <see cref="CheckResult"/>.
@@ -56,9 +58,9 @@ namespace Qmmands
             => Reason;
 
         /// <summary>
-        ///     Implicitly wraps the provided <see cref="CheckResult"/> in <see cref="ValueTask{TResult}"/>.
+        ///     Implicitly wraps the provided <see cref="CheckResult"/> in a <see cref="ValueTask{TResult}"/>.
         /// </summary>
-        /// <param name="result"></param>
+        /// <param name="result"> The result to wrap. </param>
         public static implicit operator ValueTask<CheckResult>(CheckResult result)
             => new ValueTask<CheckResult>(result);
     }

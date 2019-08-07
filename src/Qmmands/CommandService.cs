@@ -27,9 +27,14 @@ namespace Qmmands
         public RunMode DefaultRunMode { get; }
 
         /// <summary>
-        ///     Gets whether commands should ignore extra arguments by default or not.
+        ///     Gets whether <see cref="Command"/>s should ignore extra arguments by default or not.
         /// </summary>
         public bool IgnoresExtraArguments { get; }
+
+        /// <summary>
+        ///     Gets whether <see cref="FailedResult.Reason"/> should be set.
+        /// </summary>
+        public bool HasDefaultFailureReasons { get; }
 
         /// <summary>
         ///     Gets the <see cref="string"/> separator used between groups and commands.
@@ -113,6 +118,7 @@ namespace Qmmands
             StringComparison = configuration.StringComparison;
             DefaultRunMode = configuration.DefaultRunMode;
             IgnoresExtraArguments = configuration.IgnoresExtraArguments;
+            HasDefaultFailureReasons = configuration.HasDefaultFailureReasons;
             Separator = configuration.Separator;
             SeparatorRequirement = configuration.SeparatorRequirement;
             ArgumentParser = configuration.ArgumentParser ?? DefaultArgumentParser.Instance;

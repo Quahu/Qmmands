@@ -37,6 +37,9 @@ namespace Qmmands
             while (Exception is TargetInvocationException)
                 Exception = Exception.InnerException;
 
+            if (!command.Service.HasDefaultFailureReasons)
+                return;
+
             switch (CommandExecutionStep)
             {
                 case CommandExecutionStep.Checks:

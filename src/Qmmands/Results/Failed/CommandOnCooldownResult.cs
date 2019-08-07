@@ -28,6 +28,10 @@ namespace Qmmands
         {
             Command = command;
             Cooldowns = cooldowns;
+
+            if (!command.Service.HasDefaultFailureReasons)
+                return;
+
             Reason = cooldowns.Count == 1
                 ? $"Command {command} is on a '{cooldowns[0].Cooldown.BucketType}' cooldown. Retry after {cooldowns[0].RetryAfter}."
                 : $"Command {command} is on multiple cooldowns: {string.Join(", ", cooldowns.Select(x => $"'{x.Cooldown.BucketType}' - retry after {x.RetryAfter}"))}";

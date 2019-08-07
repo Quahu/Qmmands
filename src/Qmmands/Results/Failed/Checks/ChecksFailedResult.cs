@@ -31,6 +31,10 @@ namespace Qmmands
         {
             Command = command;
             FailedChecks = failedChecks;
+
+            if (!command.Service.HasDefaultFailureReasons)
+                return;
+
             Reason = $"{(FailedChecks.Count == 1 ? "One check" : "Multiple checks")} failed for the command {Command}.";
         }
 
@@ -38,6 +42,10 @@ namespace Qmmands
         {
             Module = module;
             FailedChecks = failedChecks;
+
+            if (!module.Service.HasDefaultFailureReasons)
+                return;
+
             Reason = $"{(FailedChecks.Count == 1 ? "One check" : "Multiple checks")} failed for the module {Module}.";
         }
     }

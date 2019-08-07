@@ -18,9 +18,9 @@ namespace Qmmands
         public Command Command { get; internal set; }
 
         /// <summary>
-        ///     Implicitly wraps the provided <see cref="CommandResult"/> in <see cref="System.Threading.Tasks.ValueTask{TResult}"/>.
+        ///     Implicitly wraps the provided <see cref="CommandResult"/> in a <see cref="ValueTask{TResult}"/>.
         /// </summary>
-        /// <param name="result"></param>
+        /// <param name="result"> The result to wrap. </param>
         public static implicit operator ValueTask<CommandResult>(CommandResult result)
             => new ValueTask<CommandResult>(result);
     }
