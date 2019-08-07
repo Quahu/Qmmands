@@ -81,12 +81,12 @@ namespace Qmmands
         ///     Fires after a <see cref="Command"/> failed to execute.
         ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
         /// </summary>
-        public event AsynchronousEventHandler<CommandErroredEventArgs> CommandErrored
+        public event AsynchronousEventHandler<CommandExecutionFailedEventArgs> CommandExecutionFailed
         {
-            add => _commandErrored.Hook(value);
-            remove => _commandErrored.Unhook(value);
+            add => _commandExecutionFailed.Hook(value);
+            remove => _commandExecutionFailed.Unhook(value);
         }
-        private readonly AsynchronousEvent<CommandErroredEventArgs> _commandErrored = new AsynchronousEvent<CommandErroredEventArgs>();
+        private readonly AsynchronousEvent<CommandExecutionFailedEventArgs> _commandExecutionFailed = new AsynchronousEvent<CommandExecutionFailedEventArgs>();
 
         internal readonly StringComparer StringComparer;
 
@@ -1118,6 +1118,6 @@ namespace Qmmands
             => _commandExecuted.InvokeAsync(new CommandExecutedEventArgs(result, context, provider));
 
         private Task InvokeCommandErroredAsync(ExecutionFailedResult result, CommandContext context, IServiceProvider provider)
-            => _commandErrored.InvokeAsync(new CommandErroredEventArgs(result, context, provider));
+            => _commandExecutionFailed.InvokeAsync(new CommandExecutionFailedEventArgs(result, context, provider));
     }
 }

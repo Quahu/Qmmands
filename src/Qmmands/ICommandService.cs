@@ -73,7 +73,7 @@ namespace Qmmands
         ///     Fires after a <see cref="Command"/> failed to execute.
         ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
         /// </summary>
-        event AsynchronousEventHandler<CommandErroredEventArgs> CommandErrored;
+        event AsynchronousEventHandler<CommandExecutionFailedEventArgs> CommandExecutionFailed;
 
         /// <summary>
         ///     Gets all of the added <see cref="Command"/>s.

@@ -5,7 +5,7 @@ namespace Qmmands
     /// <summary>
     ///     Represents the event data for when a command errored during execution.
     /// </summary>
-    public sealed class CommandErroredEventArgs : EventArgs
+    public sealed class CommandExecutionFailedEventArgs : EventArgs
     {
         /// <summary>
         ///     Gets the <see cref="ExecutionFailedResult"/> returned from execution.
@@ -23,12 +23,12 @@ namespace Qmmands
         public IServiceProvider Provider { get; }
 
         /// <summary>
-        ///     Initialises new <see cref="CommandErroredEventArgs"/>.
+        ///     Initialises new <see cref="CommandExecutionFailedEventArgs"/>.
         /// </summary>
         /// <param name="result"> The <see cref="ExecutionFailedResult"/> returned from execution. </param>
         /// <param name="context"> The <see cref="CommandContext"/> used for execution. </param>
         /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
-        public CommandErroredEventArgs(ExecutionFailedResult result, CommandContext context, IServiceProvider provider)
+        public CommandExecutionFailedEventArgs(ExecutionFailedResult result, CommandContext context, IServiceProvider provider)
         {
             Result = result;
             Context = context;
