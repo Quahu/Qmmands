@@ -51,15 +51,17 @@ namespace Qmmands
                     else if (currentPosition != 0 && !whitespaceSeparated)
                     {
                         return new ArgumentParserResult(command, null, context.RawArguments, arguments,
-                            command.Service.QuotationMarkMap.TryGetValue(character, out expectedQuote) && rawArguments.Slice(currentPosition + 1).IndexOf(expectedQuote) == -1
+                            command.Service.QuotationMarkMap.TryGetValue(character, out expectedQuote) &&
+                            rawArguments.Slice(currentPosition + 1).IndexOf(expectedQuote) == -1
                                 ? ArgumentParserFailure.UnexpectedQuote
                                 : ArgumentParserFailure.NoWhitespaceBetweenArguments, currentPosition);
                     }
                     else
                     {
-                        currentParameter = (arguments == null || arguments.Count < command.Parameters.Count) && command.Parameters.Count > 0
-                            ? command.Parameters[arguments?.Count ?? 0]
-                            : multipleParameter;
+                        currentParameter = (arguments == null || arguments.Count < command.Parameters.Count) &&
+                            command.Parameters.Count > 0
+                                ? command.Parameters[arguments?.Count ?? 0]
+                                : multipleParameter;
                         if (currentParameter == null)
                         {
                             if (command.IgnoresExtraArguments)
@@ -184,7 +186,7 @@ namespace Qmmands
                 if (arguments.TryGetValue(currentParameter, out var list))
                     (list as List<object>).Add(argumentBuilder.ToString());
                 else
-                    arguments[currentParameter] = new List<object> { argumentBuilder.ToString() };
+                    arguments.Add(currentParameter, new List<object> { argumentBuilder.ToString() });
             }
 
             argumentBuilder.Clear();
