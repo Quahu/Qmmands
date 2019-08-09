@@ -22,10 +22,8 @@ namespace Qmmands
             {
                 var name = names[i];
                 var value = Enum.Parse(enumType, name);
-                _enumByNames.Add(name, value);
-
-                if (!_enumByValues.ContainsKey((T) value))
-                    _enumByValues.Add((T) value, value);
+                _enumByNames[name] = value;
+                _enumByValues[(T) value] = value;
             }
         }
 

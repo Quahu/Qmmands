@@ -1108,16 +1108,7 @@ namespace Qmmands
             if (primitiveParser.TryParse(parameter, value, out var result))
                 return (null, result);
 
-            var type = Nullable.GetUnderlyingType(parameter.Type);
-            var friendlyName = type == null
-                ? CommandUtilities.FriendlyPrimitiveTypeNames.TryGetValue(parameter.Type, out var name)
-                    ? name
-                    : parameter.Type.Name
-                : CommandUtilities.FriendlyPrimitiveTypeNames.TryGetValue(type, out name)
-                    ? $"nullable {name}"
-                    : $"nullable {type.Name}";
-
-            return (new TypeParseFailedResult(parameter, value, $"Failed to parse {friendlyName}."), default);
+            return (new TypeParseFailedResult(parameter, value), default);
         }
 
         private Task InvokeCommandExecutedAsync(CommandResult result, CommandContext context, IServiceProvider provider)
