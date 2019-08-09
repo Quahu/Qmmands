@@ -50,9 +50,9 @@ namespace Qmmands
 
         /// <summary>
         ///     Gets or sets the <see cref="bool"/> which determines whether the <see cref="FailedResult.Reason"/>
-        ///     should be set by the <see cref="CommandService"/>.
+        ///     should be set by the <see cref="CommandService"/>. Defaults to <see langword="true"/>.
         /// </summary>
-        public bool HasDefaultFailureReasons { get; set; }
+        public bool HasDefaultFailureReasons { get; set; } = true;
 
         /// <summary>
         ///     Gets or sets the <see cref="string"/> separator to use between groups and commands.
