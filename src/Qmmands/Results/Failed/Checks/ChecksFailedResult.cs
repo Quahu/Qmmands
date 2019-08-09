@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Qmmands
 {
@@ -10,7 +11,8 @@ namespace Qmmands
         /// <summary>
         ///     Gets the reason of this failed result.
         /// </summary>
-        public override string Reason { get; }
+        public override string Reason => _lazyReason.Value;
+        private readonly Lazy<string> _lazyReason;
 
         /// <summary>
         ///     Gets the <see cref="Qmmands.Module"/> the checks failed on, <see langword="null"/> if <see cref="Command"/> has a value.
@@ -31,22 +33,14 @@ namespace Qmmands
         {
             Command = command;
             FailedChecks = failedChecks;
-
-            if (!command.Service.HasDefaultFailureReasons)
-                return;
-
-            Reason = $"{(FailedChecks.Count == 1 ? "One check" : "Multiple checks")} failed for the command {Command}.";
+            _lazyReason = new Lazy<string>(() => $"{(FailedChecks.Count == 1 ? "One check" : "Multiple checks")} failed for the command {Command}.", true);
         }
 
         internal ChecksFailedResult(Module module, IReadOnlyList<(CheckAttribute Check, CheckResult Result)> failedChecks)
         {
             Module = module;
             FailedChecks = failedChecks;
-
-            if (!module.Service.HasDefaultFailureReasons)
-                return;
-
-            Reason = $"{(FailedChecks.Count == 1 ? "One check" : "Multiple checks")} failed for the module {Module}.";
+            _lazyReason = new Lazy<string>(() => $"{(FailedChecks.Count == 1 ? "One check" : "Multiple checks")} failed for the module {Module}.", true);
         }
     }
 }

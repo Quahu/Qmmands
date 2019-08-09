@@ -12,7 +12,8 @@ namespace Qmmands
         /// <summary>
         ///     Gets the reason of this failed result.
         /// </summary>
-        public override string Reason { get; }
+        public override string Reason => _lazyReason.Value;
+        private readonly Lazy<string> _lazyReason;
 
         /// <summary>
         ///     Gets the <see cref="Qmmands.Command"/> that is on cooldown.
@@ -29,12 +30,12 @@ namespace Qmmands
             Command = command;
             Cooldowns = cooldowns;
 
-            if (!command.Service.HasDefaultFailureReasons)
-                return;
-
-            Reason = cooldowns.Count == 1
-                ? $"Command {command} is on a '{cooldowns[0].Cooldown.BucketType}' cooldown. Retry after {cooldowns[0].RetryAfter}."
-                : $"Command {command} is on multiple cooldowns: {string.Join(", ", cooldowns.Select(x => $"'{x.Cooldown.BucketType}' - retry after {x.RetryAfter}"))}";
+            _lazyReason = new Lazy<string>(() =>
+            {
+                return cooldowns.Count == 1
+                    ? $"Command {command} is on a '{cooldowns[0].Cooldown.BucketType}' cooldown. Retry after {cooldowns[0].RetryAfter}."
+                    : $"Command {command} is on multiple cooldowns: {string.Join(", ", cooldowns.Select(x => $"'{x.Cooldown.BucketType}' - retry after {x.RetryAfter}"))}";
+            }, true);
         }
     }
 }

@@ -11,7 +11,8 @@ namespace Qmmands
         /// <summary>
         ///     Gets the reason of this failed result.
         /// </summary>s
-        public override string Reason { get; }
+        public override string Reason => _lazyReason.Value;
+        private readonly Lazy<string> _lazyReason;
 
         /// <summary>
         ///     Gets the <see cref="Qmmands.Command"/> that failed to execute.
@@ -37,31 +38,29 @@ namespace Qmmands
             while (Exception is TargetInvocationException)
                 Exception = Exception.InnerException;
 
-            if (!command.Service.HasDefaultFailureReasons)
-                return;
-
-            switch (CommandExecutionStep)
+            _lazyReason = new Lazy<string>(() =>
             {
-                case CommandExecutionStep.Checks:
-                    Reason = $"An exception occurred while running checks for {Command}.";
-                    break;
+                switch (CommandExecutionStep)
+                {
+                    case CommandExecutionStep.Checks:
+                        return $"An exception occurred while running checks for {Command}.";
 
-                case CommandExecutionStep.ArgumentParsing:
-                    Reason = $"An exception occurred while parsing raw arguments for {Command}.";
-                    break;
+                    case CommandExecutionStep.ArgumentParsing:
+                        return $"An exception occurred while parsing raw arguments for {Command}.";
 
-                case CommandExecutionStep.TypeParsing:
-                    Reason = $"An exception occurred while type parsing arguments for {Command}.";
-                    break;
+                    case CommandExecutionStep.TypeParsing:
+                        return $"An exception occurred while type parsing arguments for {Command}.";
 
-                case CommandExecutionStep.BeforeExecuted:
-                    Reason = $"An exception occurred while calling before executed for {Command}.";
-                    break;
+                    case CommandExecutionStep.BeforeExecuted:
+                        return $"An exception occurred while calling before executed for {Command}.";
 
-                case CommandExecutionStep.Command:
-                    Reason = $"An exception occurred while executing {Command}.";
-                    break;
-            }
+                    case CommandExecutionStep.Command:
+                        return $"An exception occurred while executing {Command}.";
+
+                    default:
+                        throw new InvalidOperationException("Invalid command execution step.");
+                }
+            }, true);
         }
     }
 }

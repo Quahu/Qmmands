@@ -18,10 +18,6 @@
         internal CommandDisabledResult(Command command)
         {
             Command = command;
-
-            if (!command.Service.HasDefaultFailureReasons)
-                return;
-
             Reason = $"Command {command} is disabled.";
         }
     }

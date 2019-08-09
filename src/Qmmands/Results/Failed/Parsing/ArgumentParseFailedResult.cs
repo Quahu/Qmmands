@@ -12,7 +12,8 @@ namespace Qmmands
         /// <summary>
         ///     Gets the reason of this failed result.
         /// </summary>
-        public override string Reason { get; }
+        public override string Reason => _lazyReason.Value;
+        private readonly Lazy<string> _lazyReason;
 
         /// <summary>
         ///     Gets the <see cref="Qmmands.Command"/> the parse failed for.
@@ -53,33 +54,31 @@ namespace Qmmands
             ArgumentParserFailure = argumentParseResult.ArgumentParserFailure ?? throw new ArgumentException("Argument parser failure must not be null.", nameof(argumentParseResult));
             Position = argumentParseResult.FailurePosition;
 
-            if (!command.Service.HasDefaultFailureReasons)
-                return;
-
-            switch (argumentParseResult.ArgumentParserFailure)
+            _lazyReason = new Lazy<string>(() =>
             {
-                case ArgumentParserFailure.UnclosedQuote:
-                    Reason = "A quotation mark was left unclosed.";
-                    break;
+                switch (argumentParseResult.ArgumentParserFailure)
+                {
+                    case ArgumentParserFailure.UnclosedQuote:
+                        return "A quotation mark was left unclosed.";
 
-                case ArgumentParserFailure.UnexpectedQuote:
-                    Reason = "Encountered an unexpected quotation mark.";
-                    break;
+                    case ArgumentParserFailure.UnexpectedQuote:
+                        return "Encountered an unexpected quotation mark.";
 
-                case ArgumentParserFailure.NoWhitespaceBetweenArguments:
-                    Reason = "Whitespace is required between arguments.";
-                    break;
+                    case ArgumentParserFailure.NoWhitespaceBetweenArguments:
+                        return "Whitespace is required between arguments.";
 
-                case ArgumentParserFailure.TooFewArguments:
-                    var missingParameters = Command.Parameters.SkipWhile(x => x != Parameter).Where(x => !x.IsOptional).Select(x => $"'{x}'").ToArray();
-                    Reason = $"Required {(missingParameters.Length == 1 ? "parameter" : "parameters")} " +
-                             $"{string.Join(", ", missingParameters)} {(missingParameters.Length == 1 ? "is" : "are")} missing.";
-                    break;
+                    case ArgumentParserFailure.TooFewArguments:
+                        var missingParameters = Command.Parameters.SkipWhile(x => x != Parameter).Where(x => !x.IsOptional).Select(x => $"'{x}'").ToArray();
+                        return $"Required {(missingParameters.Length == 1 ? "parameter" : "parameters")} " +
+                                 $"{string.Join(", ", missingParameters)} {(missingParameters.Length == 1 ? "is" : "are")} missing.";
 
-                case ArgumentParserFailure.TooManyArguments:
-                    Reason = "Too many arguments provided.";
-                    break;
-            }
+                    case ArgumentParserFailure.TooManyArguments:
+                        return "Too many arguments provided.";
+
+                    default:
+                        throw new InvalidOperationException("Invalid argument parser failure.");
+                }
+            }, true);
         }
     }
 }
