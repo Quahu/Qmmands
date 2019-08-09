@@ -18,22 +18,22 @@ namespace Qmmands
         /// <summary>
         ///     Fires before a <see cref="Command"/> in this <see cref="Module"/> is executed.
         /// </summary>
-        protected virtual Task BeforeExecutedAsync()
-            => Task.CompletedTask;
+        protected virtual ValueTask BeforeExecutedAsync()
+            => default;
 
         /// <summary>
         ///     Fires after a <see cref="Command"/> in this <see cref="Module"/> is executed.
         /// </summary>
-        protected virtual Task AfterExecutedAsync()
-            => Task.CompletedTask;
+        protected virtual ValueTask AfterExecutedAsync()
+            => default;
 
         internal void Prepare(CommandContext context)
             => Context = context as TContext ?? throw new InvalidOperationException($"Unable to set the context. Expected {typeof(TContext)}, got {context.GetType()}.");
 
-        Task IModuleBase.BeforeExecutedAsync()
+        ValueTask IModuleBase.BeforeExecutedAsync()
             => BeforeExecutedAsync();
 
-        Task IModuleBase.AfterExecutedAsync()
+        ValueTask IModuleBase.AfterExecutedAsync()
             => AfterExecutedAsync();
 
         void IModuleBase.Prepare(CommandContext context)

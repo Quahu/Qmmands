@@ -4,9 +4,9 @@ namespace Qmmands
 {
     internal interface IModuleBase
     {
-        Task BeforeExecutedAsync();
+        ValueTask BeforeExecutedAsync();
 
-        Task AfterExecutedAsync();
+        ValueTask AfterExecutedAsync();
 
         void Prepare(CommandContext context);
     }
