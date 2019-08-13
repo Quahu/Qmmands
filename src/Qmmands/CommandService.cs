@@ -725,12 +725,15 @@ namespace Qmmands
                 try
                 {
                     parseResult = ArgumentParser.Parse(context);
+                    if (parseResult == null)
+                        throw new InvalidOperationException("The result from IArgumentParser.Parse must not be null.");
+
                     if (!parseResult.IsSuccessful)
                     {
                         if (matches.Length == 1)
-                            return new ArgumentParseFailedResult(match.Command, parseResult);
+                            return new ArgumentParseFailedResult(context, parseResult);
 
-                        AddFailedOverload(ref failedOverloads, match.Command, new ArgumentParseFailedResult(match.Command, parseResult));
+                        AddFailedOverload(ref failedOverloads, match.Command, new ArgumentParseFailedResult(context, parseResult));
                         continue;
                     }
                 }
@@ -834,8 +837,11 @@ namespace Qmmands
             try
             {
                 parseResult = ArgumentParser.Parse(context);
+                if (parseResult == null)
+                    throw new InvalidOperationException("The result from IArgumentParser.Parse must not be null.");
+
                 if (!parseResult.IsSuccessful)
-                    return new ArgumentParseFailedResult(command, parseResult);
+                    return new ArgumentParseFailedResult(context, parseResult);
             }
             catch (Exception ex)
             {
