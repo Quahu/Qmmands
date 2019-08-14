@@ -26,6 +26,11 @@ namespace Qmmands
         public static readonly IReadOnlyDictionary<Type, string> FriendlyPrimitiveTypeNames;
 
         /// <summary>
+        ///     Gets the default amount of primitive type parsers.
+        /// </summary>
+        public static int PrimitiveTypeParserCount => Utilities.TryParseDelegates.Count;
+
+        /// <summary>
         ///     Checks if the provided <see cref="string"/> starts with the provided <see cref="char"/> prefix.
         ///     If it does, returns <see langword="true"/> and the trimmed <paramref name="output"/>.
         /// </summary>
@@ -615,7 +620,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The module must not be null.
         /// </exception>
-        public static IEnumerable<CheckAttribute> GetAllChecks(Module module)
+        public static IEnumerable<CheckAttribute> EnumerateAllChecks(Module module)
         {
             if (module == null)
                 throw new ArgumentNullException(nameof(module), "The module must not be null.");
@@ -627,7 +632,7 @@ namespace Qmmands
         {
             if (module.Parent != null)
             {
-                foreach (var check in GetAllChecks(module.Parent))
+                foreach (var check in EnumerateAllChecks(module.Parent))
                     yield return check;
             }
 
@@ -646,7 +651,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The command must not be null.
         /// </exception>
-        public static IEnumerable<CheckAttribute> GetAllChecks(Command command)
+        public static IEnumerable<CheckAttribute> EnumerateAllChecks(Command command)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command), "The command must not be null.");
@@ -656,7 +661,7 @@ namespace Qmmands
 
         private static IEnumerable<CheckAttribute> GetAllChecksIterator(Command command)
         {
-            foreach (var check in GetAllChecks(command.Module))
+            foreach (var check in EnumerateAllChecks(command.Module))
                 yield return check;
 
             for (var i = 0; i < command.Checks.Count; i++)
@@ -672,7 +677,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The module must not be null.
         /// </exception>
-        public static IEnumerable<Command> GetAllCommands(Module module)
+        public static IEnumerable<Command> EnumerateAllCommands(Module module)
         {
             if (module == null)
                 throw new ArgumentNullException(nameof(module), "The module must not be null.");
@@ -707,7 +712,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The builder must not be null.
         /// </exception>
-        public static IEnumerable<CommandBuilder> GetAllCommands(ModuleBuilder builder)
+        public static IEnumerable<CommandBuilder> EnumerateAllCommands(ModuleBuilder builder)
         {
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder), "The builder must not be null.");
@@ -734,7 +739,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Recursively gets all of the submodules in the provided <see cref="Module"/> and its submodules.
+        ///     Recursively Enumerates all of the submodules in the provided <see cref="Module"/> and its submodules.
         /// </summary>
         /// <returns>
         ///     An enumerator of all <see cref="Module"/>s.
@@ -742,7 +747,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The module must not be null.
         /// </exception>
-        public static IEnumerable<Module> GetAllSubmodules(Module module)
+        public static IEnumerable<Module> EnumerateAllSubmodules(Module module)
         {
             if (module == null)
                 throw new ArgumentNullException(nameof(module), "The module must not be null.");
@@ -769,7 +774,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Recursively gets all of the submodules in the provided <see cref="ModuleBuilder"/> and its submodules.
+        ///     Recursively Enumerates all of the submodules in the provided <see cref="ModuleBuilder"/> and its submodules.
         /// </summary>
         /// <returns>
         ///     An enumerator of all <see cref="ModuleBuilder"/>s.
@@ -777,7 +782,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The builder must not be null.
         /// </exception>
-        public static IEnumerable<ModuleBuilder> GetAllSubmodules(ModuleBuilder builder)
+        public static IEnumerable<ModuleBuilder> EnumerateAllSubmodules(ModuleBuilder builder)
         {
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder), "The builder must not be null.");
@@ -820,7 +825,7 @@ namespace Qmmands
             nullableNounsBuilder.Add("undefined");
             DefaultNullableNouns = nullableNounsBuilder.TryMoveToImmutable();
 
-            FriendlyPrimitiveTypeNames = new ReadOnlyDictionary<Type, string>(new Dictionary<Type, string>(13)
+            FriendlyPrimitiveTypeNames = new ReadOnlyDictionary<Type, string>(new Dictionary<Type, string>(PrimitiveTypeParserCount)
             {
                 [typeof(char)] = "char",
                 [typeof(bool)] = "bool",

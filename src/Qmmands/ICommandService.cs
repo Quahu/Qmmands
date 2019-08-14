@@ -41,7 +41,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the default argument parser.
         /// </summary>
-        IArgumentParser ArgumentParser { get; }
+        IArgumentParser DefaultArgumentParser { get; }
 
         /// <summary>
         ///     Gets the generator <see langword="delegate"/> to use for <see cref="Cooldown"/> bucket keys.
@@ -99,6 +99,48 @@ namespace Qmmands
         ///     A list of <see cref="CommandMatch"/>es.
         /// </returns>
         IReadOnlyList<CommandMatch> FindCommands(string path);
+
+        /// <summary>
+        ///     Sets an <see cref="IArgumentParser"/> as the default parser.
+        /// </summary>
+        /// <param name="parser"> The <see cref="IArgumentParser"/> to set. </param>
+        void SetDefaultArgumentParser(IArgumentParser parser);
+
+        /// <summary>
+        ///     Adds an <see cref="IArgumentParser"/>.
+        /// </summary>
+        /// <param name="parser"> The <see cref="IArgumentParser"/> to add. </param>
+        void AddArgumentParser(IArgumentParser parser);
+
+        /// <summary>
+        ///     Removes an <see cref="IArgumentParser"/> of the specified <typeparamref name="T"/> <see cref="Type"/>.
+        /// </summary>
+        /// <typeparam name="T"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </typeparam>
+        void RemoveArgumentParser<T>() where T : IArgumentParser;
+
+        /// <summary>
+        ///     Removes an <see cref="IArgumentParser"/> of the specified <see cref="Type"/>.
+        /// </summary>
+        /// <param name="type"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </param>
+        void RemoveArgumentParser(Type type);
+
+        /// <summary>
+        ///     Retrieves an <see cref="IArgumentParser"/> of the specified <typeparamref name="T"/> <see cref="Type"/>.
+        /// </summary>
+        /// <typeparam name="T"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </typeparam>
+        /// <returns>
+        ///     The <see cref="IArgumentParser"/> or <see langword="null"/>.
+        /// </returns>
+        IArgumentParser GetArgumentParser<T>() where T : IArgumentParser;
+
+        /// <summary>
+        ///     Retrieves an <see cref="IArgumentParser"/> of the specified <see cref="Type"/>.
+        /// </summary>
+        /// <param name="type"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </param>
+        /// <returns>
+        ///     The <see cref="IArgumentParser"/> or <see langword="null"/>.
+        /// </returns>
+        IArgumentParser GetArgumentParser(Type type);
 
         /// <summary>
         ///     Adds a <see cref="TypeParser{T}"/> for the specified <typeparamref name="T"/> <see cref="Type"/>.

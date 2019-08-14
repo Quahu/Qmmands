@@ -44,7 +44,7 @@ namespace Qmmands
         public object DefaultValue { get; set; }
 
         /// <summary>
-        ///     Gets or sets the custom <see cref="TypeParser{T}"/>'s type of the <see cref="Parameter"/>.
+        ///     Gets or sets the <see cref="System.Type"/> of a custom <see cref="TypeParser{T}"/>.
         /// </summary>
         public Type CustomTypeParserType { get; set; }
 
@@ -142,9 +142,9 @@ namespace Qmmands
         /// <summary>
         ///     Sets the <see cref="CustomTypeParserType"/>.
         /// </summary>
-        public ParameterBuilder WithCustomTypeParserType(Type customTypeParser)
+        public ParameterBuilder WithCustomTypeParserType(Type customTypeParserType)
         {
-            CustomTypeParserType = customTypeParser;
+            CustomTypeParserType = customTypeParserType;
             return this;
         }
 
@@ -186,6 +186,9 @@ namespace Qmmands
 
         internal Parameter Build(Command command)
         {
+            if (CustomTypeParserType != null && !Utilities.IsValidTypeParserDefinition(CustomTypeParserType, Type))
+                throw new ParameterBuildingException(this, $"{CustomTypeParserType} is not a valid type parser for parameter of type {Type}.");
+
             if (IsOptional)
             {
                 if (DefaultValue == null)

@@ -45,6 +45,11 @@ namespace Qmmands
         public bool? IgnoresExtraArguments { get; set; }
 
         /// <summary>
+        ///     Gets or sets the <see cref="Type"/> of a custom <see cref="IArgumentParser"/>.
+        /// </summary>
+        public Type CustomArgumentParserType { get; set; }
+
+        /// <summary>
         ///     Gets the aliases of the <see cref="Module"/>.
         /// </summary>
         public HashSet<string> Aliases { get; }
@@ -145,6 +150,15 @@ namespace Qmmands
         }
 
         /// <summary>
+        ///     Sets the <see cref="CustomArgumentParserType"/>.
+        /// </summary>
+        public ModuleBuilder WithCustomArgumentParserType(Type customArgumentParserType)
+        {
+            CustomArgumentParserType = customArgumentParserType;
+            return this;
+        }
+
+        /// <summary>
         ///     Adds an alias to <see cref="Aliases"/>.
         /// </summary>
         /// <exception cref="ArgumentException">
@@ -221,6 +235,9 @@ namespace Qmmands
 
         internal Module Build(CommandService service, Module parent)
         {
+            if (CustomArgumentParserType != null && !Utilities.IsValidArgumentParserDefinition(CustomArgumentParserType))
+                throw new ModuleBuildingException(this, $"{CustomArgumentParserType} is not a valid argument parser type.");
+
             foreach (var alias in Aliases)
             {
                 if (alias == null)

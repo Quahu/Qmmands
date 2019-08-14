@@ -24,11 +24,6 @@ namespace Qmmands
         public string Remarks { get; set; }
 
         /// <summary>
-        ///     Gets or sets whether the <see cref="Command"/> should ignore extra arguments or not.
-        /// </summary>
-        public bool? IgnoresExtraArguments { get; set; }
-
-        /// <summary>
         ///     Gets or sets the priority of the <see cref="Command"/>.
         /// </summary>
         public int Priority { get; set; }
@@ -48,6 +43,16 @@ namespace Qmmands
             }
         }
         private RunMode? _runMode;
+
+        /// <summary>
+        ///     Gets or sets whether the <see cref="Command"/> should ignore extra arguments or not.
+        /// </summary>
+        public bool? IgnoresExtraArguments { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the <see cref="Type"/> of a custom <see cref="IArgumentParser"/>.
+        /// </summary>
+        public Type CustomArgumentParserType { get; set; }
 
         /// <summary>
         ///     Gets the <see cref="Cooldown"/>s of the <see cref="Command"/>.
@@ -126,15 +131,6 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Sets the <see cref="IgnoresExtraArguments"/>.
-        /// </summary>
-        public CommandBuilder WithIgnoresExtraArguments(bool? ignoresExtraArguments)
-        {
-            IgnoresExtraArguments = ignoresExtraArguments;
-            return this;
-        }
-
-        /// <summary>
         ///     Sets the <see cref="Priority"/>.
         /// </summary>
         public CommandBuilder WithPriority(int priority)
@@ -149,6 +145,24 @@ namespace Qmmands
         public CommandBuilder WithRunMode(RunMode? runMode)
         {
             RunMode = runMode;
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the <see cref="IgnoresExtraArguments"/>.
+        /// </summary>
+        public CommandBuilder WithIgnoresExtraArguments(bool? ignoresExtraArguments)
+        {
+            IgnoresExtraArguments = ignoresExtraArguments;
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the <see cref="CustomArgumentParserType"/>.
+        /// </summary>
+        public CommandBuilder WithCustomArgumentParserType(Type customArgumentParserType)
+        {
+            CustomArgumentParserType = customArgumentParserType;
             return this;
         }
 
@@ -223,8 +237,8 @@ namespace Qmmands
 
         internal Command Build(Module module)
         {
-            if (Callback == null)
-                throw new CommandBuildingException(this, "Command's callback must not be null.");
+            if (CustomArgumentParserType != null && !Utilities.IsValidArgumentParserDefinition(CustomArgumentParserType))
+                throw new CommandBuildingException(this, $"{CustomArgumentParserType} is not a valid argument parser type.");
 
             foreach (var alias in Aliases)
             {

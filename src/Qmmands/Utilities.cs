@@ -31,8 +31,11 @@ namespace Qmmands
                 && typeof(CommandResult).IsAssignableFrom(methodInfo.ReturnType.GenericTypeArguments[0]);
         }
 
-        public static bool IsValidParserDefinition(Type parserType, Type parameterType)
+        public static bool IsValidTypeParserDefinition(Type parserType, Type parameterType)
             => typeof(ITypeParser).IsAssignableFrom(parserType) && !parserType.IsAbstract && Array.Exists(parserType.BaseType.GetGenericArguments(), x => x == parameterType);
+
+        public static bool IsValidArgumentParserDefinition(Type parserType)
+            => typeof(IArgumentParser).IsAssignableFrom(parserType) && !parserType.IsAbstract;
 
         public static bool IsNullable(Type type)
             => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
@@ -83,6 +86,13 @@ namespace Qmmands
 
                     case IgnoresExtraArgumentsAttribute ignoreExtraArgumentsAttribute:
                         builder.WithIgnoresExtraArguments(ignoreExtraArgumentsAttribute.Value);
+                        break;
+
+                    case OverrideArgumentParserAttribute overrideArgumentParserAttribute:
+                        builder.WithCustomArgumentParserType(overrideArgumentParserAttribute.Value);
+
+                        if (overrideArgumentParserAttribute.GetType() != typeof(OverrideArgumentParserAttribute))
+                            builder.AddAttribute(overrideArgumentParserAttribute);
                         break;
 
                     case GroupAttribute groupAttribute:
@@ -149,6 +159,13 @@ namespace Qmmands
                         builder.WithIgnoresExtraArguments(ignoreExtraArgumentsAttribute.Value);
                         break;
 
+                    case OverrideArgumentParserAttribute overrideArgumentParserAttribute:
+                        builder.WithCustomArgumentParserType(overrideArgumentParserAttribute.Value);
+
+                        if (overrideArgumentParserAttribute.GetType() != typeof(OverrideArgumentParserAttribute))
+                            builder.AddAttribute(overrideArgumentParserAttribute);
+                        break;
+
                     case CommandAttribute commandAttribute:
                         for (var j = 0; j < commandAttribute.Aliases.Length; j++)
                             builder.AddAlias(commandAttribute.Aliases[j]);
@@ -210,11 +227,11 @@ namespace Qmmands
                         builder.WithIsRemainder(true);
                         break;
 
-                    case OverrideTypeParserAttribute overwriteTypeParserAttribute:
-                        builder.WithCustomTypeParserType(overwriteTypeParserAttribute.Value);
+                    case OverrideTypeParserAttribute overrideTypeParserAttribute:
+                        builder.WithCustomTypeParserType(overrideTypeParserAttribute.Value);
 
-                        if (overwriteTypeParserAttribute.GetType() != typeof(OverrideTypeParserAttribute))
-                            builder.AddAttribute(overwriteTypeParserAttribute);
+                        if (overrideTypeParserAttribute.GetType() != typeof(OverrideTypeParserAttribute))
+                            builder.AddAttribute(overrideTypeParserAttribute);
                         break;
 
                     case ParameterCheckAttribute parameterCheckAttribute:

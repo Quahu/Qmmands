@@ -75,10 +75,10 @@ namespace Qmmands
         private SeparatorRequirement _separatorRequirement = SeparatorRequirement.Separator;
 
         /// <summary>
-        ///     Gets or sets the argument parser.
-        ///     If <see langword="null"/>, will default to <see cref="Qmmands.DefaultArgumentParser"/>.
+        ///     Gets or sets the default argument parser.
+        ///     If <see langword="null"/>, will default to <see cref="DefaultArgumentParser.Instance"/>.
         /// </summary>
-        public IArgumentParser ArgumentParser { get; set; }
+        public IArgumentParser DefaultArgumentParser { get; set; }
 
         /// <summary>
         ///     Gets or sets the generator <see langword="delegate"/> to use for <see cref="Cooldown"/> bucket keys.

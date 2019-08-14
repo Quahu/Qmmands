@@ -81,7 +81,7 @@ namespace Qmmands
                     return "Whitespace is required between arguments.";
 
                 case DefaultArgumentParserFailure.TooFewArguments:
-                    var missingParameters = Command.Parameters.SkipWhile(x => x != Parameter).Where(x => !x.IsOptional).Select(x => $"'{x}'").ToArray();
+                    var missingParameters = EnumerateMissingParameters().Select(x => $"'{x}'").ToArray();
                     return $"Required {(missingParameters.Length == 1 ? "parameter" : "parameters")} " +
                              $"{string.Join(", ", missingParameters)} {(missingParameters.Length == 1 ? "is" : "are")} missing.";
 
@@ -91,6 +91,17 @@ namespace Qmmands
                 default:
                     throw new InvalidOperationException("Invalid argument parser failure.");
             }
+        }
+
+        /// <summary>
+        ///     Enumerates missing <see cref="Qmmands.Parameter"/>s.
+        /// </summary>
+        public IEnumerable<Parameter> EnumerateMissingParameters()
+        {
+            if (Parameter == null)
+                return Enumerable.Empty<Parameter>();
+
+            return Command.Parameters.SkipWhile(x => x != Parameter).Where(x => !x.IsOptional);
         }
     }
 }

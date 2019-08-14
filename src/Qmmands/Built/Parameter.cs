@@ -47,12 +47,7 @@ namespace Qmmands
         public object DefaultValue { get; }
 
         /// <summary>
-        ///     Gets the <see cref="System.Type"/> of this <see cref="Parameter"/>.
-        /// </summary>
-        public Type Type { get; }
-
-        /// <summary>
-        ///     Gets the custom <see cref="TypeParser{T}"/>'s type of this <see cref="Parameter"/>.
+        ///     Gets or sets the <see cref="System.Type"/> of a custom <see cref="TypeParser{T}"/>.
         /// </summary>
         public Type CustomTypeParserType { get; }
 
@@ -65,6 +60,11 @@ namespace Qmmands
         ///     Gets the attributes of this <see cref="Parameter"/>.
         /// </summary>
         public IReadOnlyList<Attribute> Attributes { get; }
+
+        /// <summary>
+        ///     Gets the <see cref="System.Type"/> of this <see cref="Parameter"/>.
+        /// </summary>
+        public Type Type { get; }
 
         /// <summary>
         ///     Gets the <see cref="Qmmands.Command"/> of this <see cref="Parameter"/>.
@@ -92,14 +92,7 @@ namespace Qmmands
             if (Type.IsEnum)
                 _ = Service.GetPrimitiveTypeParser(Type);
 
-            if (builder.CustomTypeParserType != null)
-            {
-                if (!Utilities.IsValidParserDefinition(builder.CustomTypeParserType, Type))
-                    throw new ParameterBuildingException(builder, $"{builder.CustomTypeParserType} is not a valid type parser for parameter of type {Type}.");
-
-                CustomTypeParserType = builder.CustomTypeParserType;
-            }
-
+            CustomTypeParserType = builder.CustomTypeParserType;
             for (var i = 0; i < builder.Checks.Count; i++)
             {
                 var check = builder.Checks[i];

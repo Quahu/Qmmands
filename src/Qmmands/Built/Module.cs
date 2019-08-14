@@ -38,6 +38,11 @@ namespace Qmmands
         public bool IgnoresExtraArguments { get; }
 
         /// <summary>
+        ///     Gets or sets the <see cref="Type"/> of a custom <see cref="IArgumentParser"/>.
+        /// </summary>
+        public Type CustomArgumentParserType { get; }
+
+        /// <summary>
         ///     Gets the aliases of this <see cref="Module"/>.
         /// </summary>
         public IReadOnlyList<string> Aliases { get; }
@@ -105,6 +110,7 @@ namespace Qmmands
             Remarks = builder.Remarks;
             RunMode = builder.RunMode ?? Parent?.RunMode ?? Service.DefaultRunMode;
             IgnoresExtraArguments = builder.IgnoresExtraArguments ?? Parent?.IgnoresExtraArguments ?? Service.IgnoresExtraArguments;
+            CustomArgumentParserType = builder.CustomArgumentParserType ?? Parent?.CustomArgumentParserType;
             var aliases = builder.Aliases.ToImmutableArray();
             Aliases = aliases;
 

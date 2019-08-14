@@ -42,9 +42,9 @@ namespace Qmmands
         public SeparatorRequirement SeparatorRequirement { get; }
 
         /// <summary>
-        ///     Gets the argument parser.
+        ///     Gets the default <see cref="IArgumentParser"/>.
         /// </summary>
-        public IArgumentParser ArgumentParser { get; }
+        public IArgumentParser DefaultArgumentParser { get; private set; }
 
         /// <summary>
         ///     Gets the generator <see langword="delegate"/> to use for <see cref="Cooldown"/> bucket keys.
@@ -95,6 +95,7 @@ namespace Qmmands
         private readonly Dictionary<Type, Module> _typeModules;
         private readonly HashSet<Module> _topLevelModules;
         private readonly CommandMap _map;
+        private readonly ConcurrentDictionary<Type, IArgumentParser> _argumentParsers;
         private static readonly Type _stringType = typeof(string);
         private readonly object _moduleLock = new object();
 
@@ -115,7 +116,6 @@ namespace Qmmands
             IgnoresExtraArguments = configuration.IgnoresExtraArguments;
             Separator = configuration.Separator;
             SeparatorRequirement = configuration.SeparatorRequirement;
-            ArgumentParser = configuration.ArgumentParser ?? DefaultArgumentParser.Instance;
             CooldownBucketKeyGenerator = configuration.CooldownBucketKeyGenerator;
             QuotationMarkMap = configuration.QuoteMap != null
                 ? new ReadOnlyDictionary<char, char>(configuration.QuoteMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value))
@@ -130,8 +130,10 @@ namespace Qmmands
             _topLevelModules = new HashSet<Module>();
             TopLevelModules = new ReadOnlySet<Module>(_topLevelModules);
             _map = new CommandMap(this);
+            _argumentParsers = new ConcurrentDictionary<Type, IArgumentParser>(Environment.ProcessorCount, 1);
+            SetDefaultArgumentParser(configuration.DefaultArgumentParser ?? Qmmands.DefaultArgumentParser.Instance);
             _typeParsers = new ConcurrentDictionary<Type, Dictionary<Type, (bool, ITypeParser)>>();
-            _primitiveTypeParsers = new ConcurrentDictionary<Type, IPrimitiveTypeParser>(Environment.ProcessorCount, Utilities.TryParseDelegates.Count * 2);
+            _primitiveTypeParsers = new ConcurrentDictionary<Type, IPrimitiveTypeParser>(Environment.ProcessorCount, CommandUtilities.PrimitiveTypeParserCount * 2);
             foreach (var type in Utilities.TryParseDelegates.Keys)
             {
                 var primitiveTypeParser = Utilities.CreatePrimitiveTypeParser(type);
@@ -225,6 +227,79 @@ namespace Qmmands
                     .ToImmutableArray();
             }
         }
+
+        /// <summary>
+        ///     Sets an <see cref="IArgumentParser"/> as the default parser.
+        /// </summary>
+        /// <param name="parser"> The <see cref="IArgumentParser"/> to set. </param>
+        public void SetDefaultArgumentParser(IArgumentParser parser)
+        {
+            TryAddArgumentParser(parser);
+            DefaultArgumentParser = parser;
+        }
+
+        /// <summary>
+        ///     Adds an <see cref="IArgumentParser"/>.
+        /// </summary>
+        /// <param name="parser"> The <see cref="IArgumentParser"/> to add. </param>
+        public void AddArgumentParser(IArgumentParser parser)
+        {
+            if (!TryAddArgumentParser(parser))
+                throw new ArgumentException("This argument parser has already been added.", nameof(parser));
+        }
+
+        private bool TryAddArgumentParser(IArgumentParser parser)
+        {
+            if (parser == null)
+                throw new ArgumentNullException(nameof(parser), "The argument parser to add must not be null.");
+
+            return _argumentParsers.TryAdd(parser.GetType(), parser);
+        }
+
+        /// <summary>
+        ///     Removes an <see cref="IArgumentParser"/> of the specified <typeparamref name="T"/> <see cref="Type"/>.
+        /// </summary>
+        /// <typeparam name="T"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </typeparam>
+        public void RemoveArgumentParser<T>() where T : IArgumentParser
+            => RemoveArgumentParser(typeof(T));
+
+        /// <summary>
+        ///     Removes an <see cref="IArgumentParser"/> of the specified <see cref="Type"/>.
+        /// </summary>
+        /// <param name="type"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </param>
+        public void RemoveArgumentParser(Type type)
+        {
+            if (type == null)
+                throw new ArgumentNullException(nameof(type), "The argument parser type to remove must not be null.");
+
+            if (DefaultArgumentParser.GetType() == type)
+                throw new ArgumentException("The argument parser type to remove must not be the default argument parser's type.", nameof(type));
+
+            if (!_argumentParsers.TryRemove(type, out _))
+                throw new ArgumentException("This argument parser type has not been added.", nameof(type));
+        }
+
+        /// <summary>
+        ///     Retrieves an <see cref="IArgumentParser"/> of the specified <typeparamref name="T"/> <see cref="Type"/>.
+        /// </summary>
+        /// <typeparam name="T"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </typeparam>
+        /// <returns>
+        ///     The <see cref="IArgumentParser"/> or <see langword="null"/>.
+        /// </returns>
+        public IArgumentParser GetArgumentParser<T>() where T : IArgumentParser
+            => GetArgumentParser(typeof(T));
+
+        /// <summary>
+        ///     Retrieves an <see cref="IArgumentParser"/> of the specified <see cref="Type"/>.
+        /// </summary>
+        /// <param name="type"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </param>
+        /// <returns>
+        ///     The <see cref="IArgumentParser"/> or <see langword="null"/>.
+        /// </returns>
+        public IArgumentParser GetArgumentParser(Type type)
+            => _argumentParsers.TryGetValue(type, out var parser)
+                ? parser
+                : null;
 
         /// <summary>
         ///     Adds a <see cref="TypeParser{T}"/> for the specified <typeparamref name="T"/> <see cref="Type"/>.
@@ -721,19 +796,31 @@ namespace Qmmands
                     return executionFailedResult;
                 }
 
-                ArgumentParserResult parseResult;
+                ArgumentParserResult argumentParserResult;
                 try
                 {
-                    parseResult = ArgumentParser.Parse(context);
-                    if (parseResult == null)
+                    IArgumentParser argumentParser;
+                    if (match.Command.CustomArgumentParserType != null)
+                    {
+                        argumentParser = GetArgumentParser(match.Command.CustomArgumentParserType);
+                        if (argumentParser == null)
+                            throw new InvalidOperationException($"Custom argument parser of type {match.Command.CustomArgumentParserType} for command {match.Command} not found.");
+                    }
+                    else
+                    {
+                        argumentParser = DefaultArgumentParser;
+                    }
+
+                    argumentParserResult = argumentParser.Parse(context);
+                    if (argumentParserResult == null)
                         throw new InvalidOperationException("The result from IArgumentParser.Parse must not be null.");
 
-                    if (!parseResult.IsSuccessful)
+                    if (!argumentParserResult.IsSuccessful)
                     {
                         if (matches.Length == 1)
-                            return new ArgumentParseFailedResult(context, parseResult);
+                            return new ArgumentParseFailedResult(context, argumentParserResult);
 
-                        AddFailedOverload(ref failedOverloads, match.Command, new ArgumentParseFailedResult(context, parseResult));
+                        AddFailedOverload(ref failedOverloads, match.Command, new ArgumentParseFailedResult(context, argumentParserResult));
                         continue;
                     }
                 }
@@ -747,7 +834,7 @@ namespace Qmmands
                 object[] parsedArguments;
                 try
                 {
-                    var result = await CreateArgumentsAsync(parseResult, context, provider).ConfigureAwait(false);
+                    var result = await CreateArgumentsAsync(argumentParserResult, context, provider).ConfigureAwait(false);
                     if (result.FailedResult != null)
                     {
                         if (matches.Length == 1)
@@ -833,15 +920,27 @@ namespace Qmmands
                 return executionFailedResult;
             }
 
-            ArgumentParserResult parseResult;
+            ArgumentParserResult argumentParserResult;
             try
             {
-                parseResult = ArgumentParser.Parse(context);
-                if (parseResult == null)
+                IArgumentParser argumentParser;
+                if (command.CustomArgumentParserType != null)
+                {
+                    argumentParser = GetArgumentParser(command.CustomArgumentParserType);
+                    if (argumentParser == null)
+                        throw new InvalidOperationException($"Custom argument parser of type {command.CustomArgumentParserType} for command {command} not found.");
+                }
+                else
+                {
+                    argumentParser = DefaultArgumentParser;
+                }
+
+                argumentParserResult = DefaultArgumentParser.Parse(context);
+                if (argumentParserResult == null)
                     throw new InvalidOperationException("The result from IArgumentParser.Parse must not be null.");
 
-                if (!parseResult.IsSuccessful)
-                    return new ArgumentParseFailedResult(context, parseResult);
+                if (!argumentParserResult.IsSuccessful)
+                    return new ArgumentParseFailedResult(context, argumentParserResult);
             }
             catch (Exception ex)
             {
@@ -853,7 +952,7 @@ namespace Qmmands
             object[] parsedArguments;
             try
             {
-                var result = await CreateArgumentsAsync(parseResult, context, provider).ConfigureAwait(false);
+                var result = await CreateArgumentsAsync(argumentParserResult, context, provider).ConfigureAwait(false);
                 if (result.FailedResult != null)
                     return result.FailedResult;
 
@@ -1013,7 +1112,7 @@ namespace Qmmands
             {
                 var parameter = context.Command.Parameters[i];
                 if (!parserResult.Arguments.TryGetValue(parameter, out var value))
-                    throw new InvalidOperationException($"No value for parameter {parameter.Name} ({parameter.Type}) was returned by the argument parser ({ArgumentParser.GetType()}).");
+                    throw new InvalidOperationException($"No value for parameter {parameter.Name} ({parameter.Type}) was returned by the argument parser ({DefaultArgumentParser.GetType()}).");
 
                 if (!parameter.IsMultiple)
                 {
@@ -1080,7 +1179,7 @@ namespace Qmmands
             {
                 var customParser = GetSpecificTypeParser(parameter.Type, parameter.CustomTypeParserType);
                 if (customParser == null)
-                    throw new InvalidOperationException($"Custom parser of type {parameter.CustomTypeParserType} for parameter {parameter} not found.");
+                    throw new InvalidOperationException($"Custom type parser of type {parameter.CustomTypeParserType} for parameter {parameter} not found.");
 
                 var typeParserResult = await customParser.ParseAsync(parameter, value, context, provider).ConfigureAwait(false);
                 if (!typeParserResult.IsSuccessful)

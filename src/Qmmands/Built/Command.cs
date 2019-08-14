@@ -44,6 +44,11 @@ namespace Qmmands
         public bool IgnoresExtraArguments { get; }
 
         /// <summary>
+        ///     Gets or sets the <see cref="Type"/> of a custom <see cref="IArgumentParser"/>.
+        /// </summary>
+        public Type CustomArgumentParserType { get; }
+
+        /// <summary>
         ///     Gets the <see cref="Cooldown"/>s of this <see cref="Command"/>.
         /// </summary>
         public IReadOnlyList<Cooldown> Cooldowns { get; }
@@ -109,6 +114,7 @@ namespace Qmmands
             Priority = builder.Priority;
             RunMode = builder.RunMode ?? module.RunMode;
             IgnoresExtraArguments = builder.IgnoresExtraArguments ?? module.IgnoresExtraArguments;
+            CustomArgumentParserType = builder.CustomArgumentParserType ?? module.CustomArgumentParserType;
             Callback = builder.Callback;
             Cooldowns = builder.Cooldowns.OrderBy(x => x.Amount).ToImmutableArray();
             var aliases = builder.Aliases.ToImmutableArray();
