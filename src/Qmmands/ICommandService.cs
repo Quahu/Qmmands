@@ -101,6 +101,18 @@ namespace Qmmands
         IReadOnlyList<CommandMatch> FindCommands(string path);
 
         /// <summary>
+        ///     Sets an <see cref="IArgumentParser"/> of the specified <typeparamref name="T"/> <see cref="Type"/> as the default parser.
+        /// </summary>
+        /// <typeparam name="T"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </typeparam>
+        void SetDefaultArgumentParser<T>() where T : IArgumentParser;
+
+        /// <summary>
+        ///     Sets an <see cref="IArgumentParser"/> of the specified <see cref="Type"/> as the default parser.
+        /// </summary>
+        /// <typeparam name="T"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </typeparam>
+        void SetDefaultArgumentParser(Type type);
+
+        /// <summary>
         ///     Sets an <see cref="IArgumentParser"/> as the default parser.
         /// </summary>
         /// <param name="parser"> The <see cref="IArgumentParser"/> to set. </param>

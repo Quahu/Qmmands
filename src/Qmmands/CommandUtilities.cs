@@ -26,7 +26,7 @@ namespace Qmmands
         public static readonly IReadOnlyDictionary<Type, string> FriendlyPrimitiveTypeNames;
 
         /// <summary>
-        ///     Gets the default amount of primitive type parsers.
+        ///     Gets the amount of primitive type parsers.
         /// </summary>
         public static int PrimitiveTypeParserCount => Utilities.TryParseDelegates.Count;
 

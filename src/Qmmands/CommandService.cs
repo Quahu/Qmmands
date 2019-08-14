@@ -229,6 +229,29 @@ namespace Qmmands
         }
 
         /// <summary>
+        ///     Sets an <see cref="IArgumentParser"/> of the specified <typeparamref name="T"/> <see cref="Type"/> as the default parser.
+        /// </summary>
+        /// <typeparam name="T"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </typeparam>
+        public void SetDefaultArgumentParser<T>() where T : IArgumentParser
+            => SetDefaultArgumentParser(typeof(T));
+
+        /// <summary>
+        ///     Sets an <see cref="IArgumentParser"/> of the specified <see cref="Type"/> as the default parser.
+        /// </summary>
+        /// <typeparam name="T"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </typeparam>
+        public void SetDefaultArgumentParser(Type type)
+        {
+            if (type == null)
+                throw new ArgumentNullException(nameof(type), "The argument parser type to set must not be null.");
+
+            var parser = GetArgumentParser(type);
+            if (parser == null)
+                throw new ArgumentException("An argument parser of this type has not been added.", nameof(type));
+
+            DefaultArgumentParser = parser;
+        }
+
+        /// <summary>
         ///     Sets an <see cref="IArgumentParser"/> as the default parser.
         /// </summary>
         /// <param name="parser"> The <see cref="IArgumentParser"/> to set. </param>
