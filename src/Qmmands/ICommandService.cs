@@ -109,7 +109,7 @@ namespace Qmmands
         /// <summary>
         ///     Sets an <see cref="IArgumentParser"/> of the specified <see cref="Type"/> as the default parser.
         /// </summary>
-        /// <typeparam name="T"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </typeparam>
+        /// <param name="type"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </param>
         void SetDefaultArgumentParser(Type type);
 
         /// <summary>

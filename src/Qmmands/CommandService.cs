@@ -238,7 +238,7 @@ namespace Qmmands
         /// <summary>
         ///     Sets an <see cref="IArgumentParser"/> of the specified <see cref="Type"/> as the default parser.
         /// </summary>
-        /// <typeparam name="T"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </typeparam>
+        /// <param name="type"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </param>
         public void SetDefaultArgumentParser(Type type)
         {
             if (type == null)
@@ -1050,12 +1050,12 @@ namespace Qmmands
         {
             try
             {
-                IResult result;
+                IResult result = null;
                 switch (context.Command.Callback)
                 {
-                    case InternalCommandCallbackDelegate internalCallback:
+                    case ModuleBaseCommandCallbackDelegate moduleBaseCallback:
                     {
-                        result = await internalCallback(context, provider).ConfigureAwait(false);
+                        result = await moduleBaseCallback(context, provider).ConfigureAwait(false);
                         if (result is ExecutionFailedResult executionFailedResult)
                         {
                             await InvokeCommandErroredAsync(executionFailedResult, context, provider).ConfigureAwait(false);
@@ -1064,9 +1064,39 @@ namespace Qmmands
                         break;
                     }
 
-                    case CommandCallbackDelegate callback:
+                    case TaskCommandCallbackDelegate callback:
+                    {
+                        await callback(context, provider).ConfigureAwait(false);
+                        break;
+                    }
+
+                    case TaskResultCommandCallbackDelegate callback:
                     {
                         result = await callback(context, provider).ConfigureAwait(false);
+                        break;
+                    }
+
+                    case ValueTaskCommandCallbackDelegate callback:
+                    {
+                        await callback(context, provider).ConfigureAwait(false);
+                        break;
+                    }
+
+                    case ValueTaskResultCommandCallbackDelegate callback:
+                    {
+                        result = await callback(context, provider).ConfigureAwait(false);
+                        break;
+                    }
+
+                    case VoidCommandCallbackDelegate callback:
+                    {
+                        callback(context, provider);
+                        break;
+                    }
+
+                    case ResultCommandCallbackDelegate callback:
+                    {
+                        result = callback(context, provider);
                         break;
                     }
 

@@ -15,22 +15,6 @@ namespace Qmmands
         public static bool IsValidModuleDefinition(TypeInfo typeInfo)
             => typeof(IModuleBase).IsAssignableFrom(typeInfo) && !typeInfo.IsAbstract && !typeInfo.ContainsGenericParameters;
 
-        public static bool IsValidCommandDefinition(MethodInfo methodInfo)
-        {
-            if (!methodInfo.IsPublic || methodInfo.IsStatic || methodInfo.GetCustomAttribute<CommandAttribute>() == null)
-                return false;
-
-            if (methodInfo.ReturnType == typeof(Task))
-                return true;
-
-            if (methodInfo.ReturnType.GenericTypeArguments.Length == 0)
-                return false;
-
-            var genericTypeDefinition = methodInfo.ReturnType.GetGenericTypeDefinition();
-            return (genericTypeDefinition == typeof(Task<>) || genericTypeDefinition == typeof(ValueTask<>))
-                && typeof(CommandResult).IsAssignableFrom(methodInfo.ReturnType.GenericTypeArguments[0]);
-        }
-
         public static bool IsValidTypeParserDefinition(Type parserType, Type parameterType)
             => typeof(ITypeParser).IsAssignableFrom(parserType) && !parserType.IsAbstract && Array.Exists(parserType.BaseType.GetGenericArguments(), x => x == parameterType);
 
@@ -55,7 +39,7 @@ namespace Qmmands
         }
 
         public static IEnumerable<MethodInfo> GetValidCommands(TypeInfo typeInfo)
-            => typeInfo.DeclaredMethods.Where(IsValidCommandDefinition);
+            => typeInfo.DeclaredMethods.Where(x => x.GetCustomAttribute<CommandAttribute>() != null);
 
         public static ModuleBuilder CreateModuleBuilder(CommandService service, ModuleBuilder parent, TypeInfo typeInfo)
         {
@@ -115,7 +99,12 @@ namespace Qmmands
             }
 
             foreach (var command in GetValidCommands(typeInfo))
+            {
+                if (!command.IsPublic || command.IsStatic || command.IsGenericMethod)
+                    throw new ArgumentException($"{command} must not be non-public, static, and must not be a generic method.");
+
                 builder.Commands.Add(CreateCommandBuilder(service, builder, typeInfo, command));
+            }
 
             foreach (var submodule in GetValidModules(typeInfo))
                 builder.Submodules.Add(CreateModuleBuilder(service, builder, submodule));
@@ -125,7 +114,7 @@ namespace Qmmands
 
         public static CommandBuilder CreateCommandBuilder(CommandService service, ModuleBuilder module, TypeInfo typeInfo, MethodInfo methodInfo)
         {
-            var builder = new CommandBuilder(module, CreateCommandCallback(service, typeInfo, methodInfo));
+            var builder = new CommandBuilder(module, CreateModuleBaseCommandCallback(service, typeInfo, methodInfo));
             var attributes = methodInfo.GetCustomAttributes(false);
             for (var i = 0; i < attributes.Length; i++)
             {
@@ -333,29 +322,18 @@ namespace Qmmands
         private static async Task<CommandResult> GetGenericTaskResult<T>(Task<T> task) where T : CommandResult
             => task != null ? await task.ConfigureAwait(false) as CommandResult : null;
 
-        private static Func<object, object[], Task> CreateTaskDelegate(Type type, MethodInfo method)
-        {
-            var methodParameters = method.GetParameters();
-            var instance = Expression.Parameter(typeof(object));
-            var arguments = Expression.Parameter(typeof(object[]));
-            var parameters = new Expression[methodParameters.Length];
-            for (var i = 0; i < methodParameters.Length; i++)
-                parameters[i] = Expression.Convert(Expression.ArrayIndex(arguments, Expression.Constant(i)), methodParameters[i].ParameterType);
-
-            var call = Expression.Call(Expression.Convert(instance, type), method, parameters);
-            return method.ReturnType == typeof(Task)
-                ? Expression.Lambda<Func<object, object[], Task>>(call, instance, arguments).Compile()
-                : Expression.Lambda<Func<object, object[], Task>>(
-                    Expression.Call(_getGenericTaskResultMethodInfo.MakeGenericMethod(method.ReturnType.GenericTypeArguments[0]), call), instance, arguments).Compile();
-        }
-
         private static readonly MethodInfo _getGenericValueTaskResultMethodInfo = typeof(Utilities)
             .GetMethod(nameof(GetGenericValueTaskResult), BindingFlags.Static | BindingFlags.NonPublic);
 
         private static async ValueTask<CommandResult> GetGenericValueTaskResult<T>(ValueTask<T> task) where T : CommandResult
             => await task.ConfigureAwait(false);
 
-        private static Func<object, object[], ValueTask<CommandResult>> CreateValueTaskDelegate(Type type, MethodInfo method)
+        private delegate T CallbackFunc<T>(object instance, object[] arguments);
+
+        private static CallbackFunc<T> CreateFunc<T>(Expression body, params ParameterExpression[] parameters)
+            => Expression.Lambda<CallbackFunc<T>>(body, parameters).Compile();
+
+        private static object CreateDelegate(Type type, MethodInfo method)
         {
             var methodParameters = method.GetParameters();
             var instance = Expression.Parameter(typeof(object));
@@ -365,18 +343,49 @@ namespace Qmmands
                 parameters[i] = Expression.Convert(Expression.ArrayIndex(arguments, Expression.Constant(i)), methodParameters[i].ParameterType);
 
             var call = Expression.Call(Expression.Convert(instance, type), method, parameters);
-            return Expression.Lambda<Func<object, object[], ValueTask<CommandResult>>>(
-                    Expression.Call(_getGenericValueTaskResultMethodInfo.MakeGenericMethod(method.ReturnType.GenericTypeArguments[0]), call), instance, arguments).Compile();
+            if (method.ReturnType == typeof(void))
+            {
+                return Expression.Lambda<Action<object, object[]>>(call, instance, arguments).Compile();
+            }
+            else
+            {
+                if (!method.ReturnType.IsGenericType)
+                {
+                    if (typeof(CommandResult).IsAssignableFrom(method.ReturnType))
+                    {
+                        return CreateFunc<CommandResult>(Expression.Convert(call, typeof(CommandResult)), instance, arguments);
+                    }
+                    else if (method.ReturnType == typeof(Task))
+                    {
+                        return CreateFunc<Task>(call, instance, arguments);
+                    }
+                    else if (method.ReturnType == typeof(ValueTask))
+                    {
+                        return CreateFunc<ValueTask>(call, instance, arguments);
+                    }
+                }
+                else
+                {
+                    var genericDefinition = method.ReturnType.GetGenericTypeDefinition();
+                    if (genericDefinition == typeof(Task<>))
+                    {
+                        return CreateFunc<Task<CommandResult>>(
+                            Expression.Call(_getGenericTaskResultMethodInfo.MakeGenericMethod(method.ReturnType.GenericTypeArguments[0]), call), instance, arguments);
+                    }
+                    else if (genericDefinition == typeof(ValueTask<>))
+                    {
+                        return CreateFunc<ValueTask<CommandResult>>(
+                            Expression.Call(_getGenericValueTaskResultMethodInfo.MakeGenericMethod(method.ReturnType.GenericTypeArguments[0]), call), instance, arguments);
+                    }
+                }
+            }
+
+            throw new ArgumentException($"Unsupported method return type: {method.ReturnType}.", nameof(method));
         }
 
-        public static InternalCommandCallbackDelegate CreateCommandCallback(CommandService service, Type type, MethodInfo method)
+        public static ModuleBaseCommandCallbackDelegate CreateModuleBaseCommandCallback(CommandService service, Type type, MethodInfo method)
         {
-            Func<object, object[], Task> taskDelegate = null;
-            Func<object, object[], ValueTask<CommandResult>> valueTaskDelegate = null;
-            if (method.ReturnType == typeof(Task) || method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>))
-                taskDelegate = CreateTaskDelegate(type, method);
-            else
-                valueTaskDelegate = CreateValueTaskDelegate(type, method);
+            var callbackDelegate = CreateDelegate(type, method);
             var constructor = CreateProviderConstructor<IModuleBase>(service, type);
             return async (context, provider) =>
             {
@@ -396,21 +405,40 @@ namespace Qmmands
                         return new ExecutionFailedResult(context.Command, CommandExecutionStep.BeforeExecuted, ex);
                     }
 
-                    if (taskDelegate != null)
+                    switch (callbackDelegate)
                     {
-                        switch (taskDelegate(instance, context.InternalArguments))
+                        case CallbackFunc<Task> taskCallback:
                         {
-                            case Task<CommandResult> genericTask:
-                                return await genericTask.ConfigureAwait(false);
-
-                            case Task task:
-                                await task.ConfigureAwait(false);
-                                break;
+                            await taskCallback(instance, context.InternalArguments).ConfigureAwait(false);
+                            break;
                         }
-                    }
-                    else
-                    {
-                        return await valueTaskDelegate(instance, context.InternalArguments).ConfigureAwait(false);
+
+                        case CallbackFunc<Task<CommandResult>> taskResultCallback:
+                        {
+                            return await taskResultCallback(instance, context.InternalArguments).ConfigureAwait(false);
+                        }
+
+                        case CallbackFunc<ValueTask> valueTaskCallback:
+                        {
+                            await valueTaskCallback(instance, context.InternalArguments).ConfigureAwait(false);
+                            break;
+                        }
+
+                        case CallbackFunc<ValueTask<CommandResult>> valueTaskResultCallback:
+                        {
+                            return await valueTaskResultCallback(instance, context.InternalArguments).ConfigureAwait(false);
+                        }
+
+                        case Action<object, object[]> voidCallback:
+                        {
+                            voidCallback(instance, context.InternalArguments);
+                            break;
+                        }
+
+                        case CallbackFunc<CommandResult> resultCallback:
+                        {
+                            return resultCallback(instance, context.InternalArguments);
+                        }
                     }
 
                     return null;

@@ -195,7 +195,50 @@ namespace Qmmands
         /// </summary>
         /// <param name="callback"> The callback of the <see cref="Command"/>. </param>
         /// <param name="builderAction"> The action to perform on the builder. </param>
-        public ModuleBuilder AddCommand(CommandCallbackDelegate callback, Action<CommandBuilder> builderAction)
+        public ModuleBuilder AddCommand(VoidCommandCallbackDelegate callback, Action<CommandBuilder> builderAction)
+            => AddCommandInternal(callback, builderAction);
+
+        /// <summary>
+        ///     Attempts to instantiate, modify, and add a <see cref="CommandBuilder"/> to <see cref="Commands"/>.
+        /// </summary>
+        /// <param name="callback"> The callback of the <see cref="Command"/>. </param>
+        /// <param name="builderAction"> The action to perform on the builder. </param>
+        public ModuleBuilder AddCommand(ResultCommandCallbackDelegate callback, Action<CommandBuilder> builderAction)
+            => AddCommandInternal(callback, builderAction);
+
+        /// <summary>
+        ///     Attempts to instantiate, modify, and add a <see cref="CommandBuilder"/> to <see cref="Commands"/>.
+        /// </summary>
+        /// <param name="callback"> The callback of the <see cref="Command"/>. </param>
+        /// <param name="builderAction"> The action to perform on the builder. </param>
+        public ModuleBuilder AddCommand(TaskCommandCallbackDelegate callback, Action<CommandBuilder> builderAction)
+            => AddCommandInternal(callback, builderAction);
+
+        /// <summary>
+        ///     Attempts to instantiate, modify, and add a <see cref="CommandBuilder"/> to <see cref="Commands"/>.
+        /// </summary>
+        /// <param name="callback"> The callback of the <see cref="Command"/>. </param>
+        /// <param name="builderAction"> The action to perform on the builder. </param>
+        public ModuleBuilder AddCommand(TaskResultCommandCallbackDelegate callback, Action<CommandBuilder> builderAction)
+            => AddCommandInternal(callback, builderAction);
+
+        /// <summary>
+        ///     Attempts to instantiate, modify, and add a <see cref="CommandBuilder"/> to <see cref="Commands"/>.
+        /// </summary>
+        /// <param name="callback"> The callback of the <see cref="Command"/>. </param>
+        /// <param name="builderAction"> The action to perform on the builder. </param>
+        public ModuleBuilder AddCommand(ValueTaskCommandCallbackDelegate callback, Action<CommandBuilder> builderAction)
+            => AddCommandInternal(callback, builderAction);
+
+        /// <summary>
+        ///     Attempts to instantiate, modify, and add a <see cref="CommandBuilder"/> to <see cref="Commands"/>.
+        /// </summary>
+        /// <param name="callback"> The callback of the <see cref="Command"/>. </param>
+        /// <param name="builderAction"> The action to perform on the builder. </param>
+        public ModuleBuilder AddCommand(ValueTaskResultCommandCallbackDelegate callback, Action<CommandBuilder> builderAction)
+            => AddCommandInternal(callback, builderAction);
+
+        private ModuleBuilder AddCommandInternal(object callback, Action<CommandBuilder> builderAction)
         {
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
