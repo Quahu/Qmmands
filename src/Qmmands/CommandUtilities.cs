@@ -610,7 +610,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Recursively gets all of the checks the provided <see cref="Module"/>
+        ///     Recursively enumerates all of the checks the provided <see cref="Module"/>
         ///     will require to pass before one of its <see cref="Command"/>s can be executed.
         /// </summary>
         /// <param name="module"> The <see cref="Module"/> to get the checks for. </param>
@@ -641,7 +641,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Recursively gets all of the checks the provided <see cref="Command"/>
+        ///     Recursively enumerates all of the checks the provided <see cref="Command"/>
         ///     will require to pass before it can be executed.
         /// </summary>
         /// <param name="command"> The <see cref="Command"/> to get the checks for. </param>
@@ -669,7 +669,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Recursively gets all of the <see cref="Command"/>s in the provided <see cref="Module"/> and its submodules.
+        ///     Recursively enumerates all of the <see cref="Command"/>s in the provided <see cref="Module"/> and its submodules.
         /// </summary>
         /// <returns>
         ///     An enumerator of all <see cref="Command"/>s.
@@ -704,7 +704,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Recursively gets all of the <see cref="CommandBuilder"/>s in the provided <see cref="ModuleBuilder"/> and its submodules.
+        ///     Recursively enumerates all of the <see cref="CommandBuilder"/>s in the provided <see cref="ModuleBuilder"/> and its submodules.
         /// </summary>
         /// <returns>
         ///     An enumerator of all <see cref="CommandBuilder"/>s.
@@ -739,7 +739,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Recursively Enumerates all of the submodules in the provided <see cref="Module"/> and its submodules.
+        ///     Recursively enumerates all of the submodules in the provided <see cref="Module"/> and its submodules.
         /// </summary>
         /// <returns>
         ///     An enumerator of all <see cref="Module"/>s.
@@ -774,7 +774,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Recursively Enumerates all of the submodules in the provided <see cref="ModuleBuilder"/> and its submodules.
+        ///     Recursively enumerates all of the submodules in the provided <see cref="ModuleBuilder"/> and its submodules.
         /// </summary>
         /// <returns>
         ///     An enumerator of all <see cref="ModuleBuilder"/>s.
@@ -817,12 +817,8 @@ namespace Qmmands
                 ['„'] = '‟'
             });
 
-            var nullableNounsBuilder = ImmutableArray.CreateBuilder<string>(5);
-            nullableNounsBuilder.Add("nil");
-            nullableNounsBuilder.Add("none");
-            nullableNounsBuilder.Add("nothing");
+            var nullableNounsBuilder = ImmutableArray.CreateBuilder<string>(1);
             nullableNounsBuilder.Add("null");
-            nullableNounsBuilder.Add("undefined");
             DefaultNullableNouns = nullableNounsBuilder.TryMoveToImmutable();
 
             FriendlyPrimitiveTypeNames = new ReadOnlyDictionary<Type, string>(new Dictionary<Type, string>(PrimitiveTypeParserCount)
