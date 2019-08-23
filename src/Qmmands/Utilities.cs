@@ -16,7 +16,16 @@ namespace Qmmands
             => typeof(IModuleBase).IsAssignableFrom(typeInfo) && !typeInfo.IsAbstract && !typeInfo.ContainsGenericParameters;
 
         public static bool IsValidTypeParserDefinition(Type parserType, Type parameterType)
-            => typeof(ITypeParser).IsAssignableFrom(parserType) && !parserType.IsAbstract && Array.Exists(parserType.BaseType.GetGenericArguments(), x => x == parameterType);
+        {
+            if (!typeof(ITypeParser).IsAssignableFrom(parserType) || parserType.IsAbstract)
+                return false;
+
+            var baseType = parserType.BaseType;
+            while (!baseType.IsGenericType || baseType.GetGenericTypeDefinition() != typeof(TypeParser<>))
+                baseType = baseType.BaseType;
+
+            return Array.Exists(baseType.GetGenericArguments(), x => x == parameterType);
+        }
 
         public static bool IsValidArgumentParserDefinition(Type parserType)
             => typeof(IArgumentParser).IsAssignableFrom(parserType) && !parserType.IsAbstract;
