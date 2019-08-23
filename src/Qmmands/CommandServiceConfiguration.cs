@@ -52,7 +52,18 @@ namespace Qmmands
         ///     Gets or sets the <see cref="string"/> separator to use between groups and commands.
         ///     Defaults to a single whitespace character.
         /// </summary>
-        public string Separator { get; set; } = " ";
+        public string Separator
+        {
+            get => _separator;
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value), "The separator must not be null.");
+
+                _separator = value;
+            }
+        }
+        private string _separator = " ";
 
         /// <summary>
         ///     Gets or sets the <see cref="Qmmands.SeparatorRequirement"/> for group and command pathing.
