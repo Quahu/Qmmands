@@ -36,74 +36,75 @@ namespace Qmmands
             => UnmapModule(module, new List<string>());
 
         private void MapModule(Module module, List<string> path)
-            => ModuleLoop(module, path, x => MapCommands(x, path));
+            => ModuleLoop(module, path, (map, x) => map.MapCommands(x, path));
 
         private void UnmapModule(Module module, List<string> path)
-            => ModuleLoop(module, path, x => UnmapCommands(x, path));
+            => ModuleLoop(module, path, (map, x) => map.UnmapCommands(x, path));
 
         private void MapCommands(Module module, List<string> path)
-            => CommandsLoop(module, path, x => _rootNode.AddCommand(x, path, 0));
+            => CommandsLoop(module, path, (map, x) => map._rootNode.AddCommand(x, path, 0));
 
         private void UnmapCommands(Module module, List<string> path)
-            => CommandsLoop(module, path, x => _rootNode.RemoveCommand(x, path, 0));
+            => CommandsLoop(module, path, (map, x) => map._rootNode.RemoveCommand(x, path, 0));
 
-        private void ModuleLoop(Module module, List<string> path, Action<Module> action)
+        private void ModuleLoop(Module module, List<string> path, Action<CommandMap, Module> action)
         {
             if (module.Aliases.Count == 0)
             {
-                action(module);
+                action(this, module);
                 for (var j = 0; j < module.Submodules.Count; j++)
                     ModuleLoop(module.Submodules[j], path, action);
+
+                return;
             }
-            else
+
+            for (var i = 0; i < module.Aliases.Count; i++)
             {
-                for (var i = 0; i < module.Aliases.Count; i++)
+                var alias = module.Aliases[i];
+                if (alias.Length == 0)
                 {
-                    var alias = module.Aliases[i];
-                    if (alias.Length == 0)
-                    {
-                        action(module);
-                        for (var j = 0; j < module.Submodules.Count; j++)
-                            ModuleLoop(module.Submodules[j], path, action);
-                    }
-                    else
-                    {
-                        path.Add(alias);
+                    action(this, module);
+                    for (var j = 0; j < module.Submodules.Count; j++)
+                        ModuleLoop(module.Submodules[j], path, action);
+                }
+                else
+                {
+                    path.Add(alias);
 
-                        action(module);
-                        for (var j = 0; j < module.Submodules.Count; j++)
-                            ModuleLoop(module.Submodules[j], path, action);
+                    action(this, module);
+                    for (var j = 0; j < module.Submodules.Count; j++)
+                        ModuleLoop(module.Submodules[j], path, action);
 
-                        path.RemoveAt(path.Count - 1);
-                    }
+                    path.RemoveAt(path.Count - 1);
                 }
             }
         }
 
-        private void CommandsLoop(Module module, List<string> path, Action<Command> action)
+        private void CommandsLoop(Module module, List<string> path, Action<CommandMap, Command> action)
         {
-            foreach (var command in module.Commands)
+            for (var i = 0; i < module.Commands.Count; i++)
             {
+                var command = module.Commands[i];
                 if (command.Aliases.Count == 0)
                 {
-                    action(command);
+                    action(this, command);
                     continue;
                 }
 
-                for (var i = 0; i < command.Aliases.Count; i++)
+                for (var o = 0; o < command.Aliases.Count; o++)
                 {
-                    var alias = command.Aliases[i];
+                    var alias = command.Aliases[o];
                     if (alias.Length == 0)
                     {
                         if (path.Count == 0)
                             continue;
 
-                        action(command);
+                        action(this, command);
                     }
                     else
                     {
                         path.Add(alias);
-                        action(command);
+                        action(this, command);
                         path.RemoveAt(path.Count - 1);
                     }
                 }

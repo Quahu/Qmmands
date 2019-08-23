@@ -15,8 +15,7 @@ namespace Qmmands
             _service = service;
             _commands = new Dictionary<string, List<Command>>(_service.StringComparer);
             _nodes = new Dictionary<string, CommandMapNode>(_service.StringComparer);
-            var separatorSpan = _service.Separator.AsSpan();
-            _isSeparatorSingleWhitespace = separatorSpan.Length == 1 && char.IsWhiteSpace(separatorSpan[0]);
+            _isSeparatorSingleWhitespace = _service.Separator.Length == 1 && char.IsWhiteSpace(_service.Separator[0]);
         }
 
         public void FindCommands(ref List<CommandMatch> matches, List<string> path, ReadOnlySpan<char> span)
