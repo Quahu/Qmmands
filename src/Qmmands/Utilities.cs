@@ -556,5 +556,27 @@ namespace Qmmands
             => builder.Capacity == builder.Count
                 ? builder.MoveToImmutable()
                 : builder.ToImmutable();
+
+        internal sealed class CommandOverloadComparer : IComparer<CommandMatch>
+        {
+            public static readonly CommandOverloadComparer Instance = new CommandOverloadComparer();
+
+            private CommandOverloadComparer()
+            { }
+
+            public int Compare(CommandMatch x, CommandMatch y)
+            {
+                var pathCompare = x.Path.Count.CompareTo(y.Path.Count);
+                if (pathCompare != 0)
+                    return pathCompare;
+
+                var priorityCompare = x.Command.Priority.CompareTo(y.Command.Priority);
+                if (priorityCompare != 0)
+                    return priorityCompare;
+
+                var parametersCompare = x.Command.Parameters.Count.CompareTo(y.Command.Parameters.Count);
+                return parametersCompare;
+            }
+        }
     }
 }

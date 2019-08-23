@@ -219,19 +219,28 @@ namespace Qmmands
             if (path == null)
                 throw new ArgumentNullException(nameof(path), "The path to find commands for must not be null.");
 
+            List<CommandMatch> list;
             lock (_moduleLock)
             {
-                return _map.FindCommands(path).OrderByDescending(x => x.Path.Count)
-                    .ThenByDescending(x => x.Command.Priority)
-                    .ThenByDescending(x => x.Command.Parameters.Count)
-                    .ToImmutableArray();
+                var matches = _map.FindCommands(path);
+                if (matches.Count == 0)
+                    return matches;
+
+                // TODO nuke this if custom maps are a thing
+                list = matches as List<CommandMatch>;
             }
+
+            list.Sort(Utilities.CommandOverloadComparer.Instance);
+            return new ReadOnlyList<CommandMatch>(list);
         }
 
         /// <summary>
         ///     Sets an <see cref="IArgumentParser"/> of the specified <typeparamref name="T"/> <see cref="Type"/> as the default parser.
         /// </summary>
         /// <typeparam name="T"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </typeparam>
+        /// <exception cref="ArgumentException">
+        ///     An argument parser of this type has not been added.
+        /// </exception>
         public void SetDefaultArgumentParser<T>() where T : IArgumentParser
             => SetDefaultArgumentParser(typeof(T));
 
@@ -239,6 +248,12 @@ namespace Qmmands
         ///     Sets an <see cref="IArgumentParser"/> of the specified <see cref="Type"/> as the default parser.
         /// </summary>
         /// <param name="type"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </param>
+        /// <exception cref="ArgumentNullException">
+        ///     The argument parser type to set must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     An argument parser of this type has not been added.
+        /// </exception>
         public void SetDefaultArgumentParser(Type type)
         {
             if (type == null)
@@ -252,12 +267,18 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Sets an <see cref="IArgumentParser"/> as the default parser.
+        ///     Sets and adds, if it has not been added before, an <see cref="IArgumentParser"/> as the default parser.
         /// </summary>
         /// <param name="parser"> The <see cref="IArgumentParser"/> to set. </param>
+        /// <exception cref="ArgumentNullException">
+        ///     The argument parser to set must not be null.
+        /// </exception>
         public void SetDefaultArgumentParser(IArgumentParser parser)
         {
-            TryAddArgumentParser(parser);
+            if (parser == null)
+                throw new ArgumentNullException(nameof(parser), "The argument parser to add must not be null.");
+
+            _argumentParsers.TryAdd(parser.GetType(), parser);
             DefaultArgumentParser = parser;
         }
 
@@ -265,18 +286,16 @@ namespace Qmmands
         ///     Adds an <see cref="IArgumentParser"/>.
         /// </summary>
         /// <param name="parser"> The <see cref="IArgumentParser"/> to add. </param>
+        /// <exception cref="ArgumentNullException">
+        ///     The argument parser to add must not be null.
+        /// </exception>
         public void AddArgumentParser(IArgumentParser parser)
-        {
-            if (!TryAddArgumentParser(parser))
-                throw new ArgumentException("This argument parser has already been added.", nameof(parser));
-        }
-
-        private bool TryAddArgumentParser(IArgumentParser parser)
         {
             if (parser == null)
                 throw new ArgumentNullException(nameof(parser), "The argument parser to add must not be null.");
 
-            return _argumentParsers.TryAdd(parser.GetType(), parser);
+            if (!_argumentParsers.TryAdd(parser.GetType(), parser))
+                throw new ArgumentException("This argument parser has already been added.", nameof(parser));
         }
 
         /// <summary>
@@ -290,6 +309,15 @@ namespace Qmmands
         ///     Removes an <see cref="IArgumentParser"/> of the specified <see cref="Type"/>.
         /// </summary>
         /// <param name="type"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </param>
+        /// <exception cref="ArgumentNullException">
+        ///     The argument parser type to remove must not be null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     The argument parser type to remove must not be the default argument parser's type.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     This argument parser type has not been added.
+        /// </exception>
         public void RemoveArgumentParser(Type type)
         {
             if (type == null)
@@ -319,10 +347,18 @@ namespace Qmmands
         /// <returns>
         ///     The <see cref="IArgumentParser"/> or <see langword="null"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     The argument parser type to get must not be null.
+        /// </exception>
         public IArgumentParser GetArgumentParser(Type type)
-            => _argumentParsers.TryGetValue(type, out var parser)
-                ? parser
-                : null;
+        {
+            if (type == null)
+                throw new ArgumentNullException(nameof(type), "The argument parser type to get must not be null.");
+
+            return _argumentParsers.TryGetValue(type, out var parser)
+                  ? parser
+                  : null;
+        }
 
         /// <summary>
         ///     Adds a <see cref="TypeParser{T}"/> for the specified <typeparamref name="T"/> <see cref="Type"/>.
@@ -769,21 +805,10 @@ namespace Qmmands
             if (provider == null)
                 provider = DummyServiceProvider.Instance;
 
-            CommandMatch[] matches;
-            lock (_moduleLock)
-            {
-                matches = _map.FindCommands(input).OrderByDescending(x => x.Path.Count)
-                    .ThenByDescending(x => x.Command.Priority)
-                    .ThenByDescending(x => x.Command.Parameters.Count)
-                    .ToArray();
-            }
-
-            if (matches.Length == 0)
-                return new CommandNotFoundResult();
-
+            var matches = FindCommands(input);
             var pathLength = matches[0].Path.Count;
             Dictionary<Command, FailedResult> failedOverloads = null;
-            for (var i = 0; i < matches.Length; i++)
+            for (var i = 0; i < matches.Count; i++)
             {
                 var match = matches[i];
                 if (match.Path.Count < pathLength)
@@ -805,7 +830,7 @@ namespace Qmmands
                     var checkResult = await match.Command.RunChecksAsync(context, provider).ConfigureAwait(false);
                     if (checkResult is ChecksFailedResult checksFailedResult)
                     {
-                        if (checksFailedResult.Module != null || matches.Length == 1)
+                        if (checksFailedResult.Module != null || matches.Count == 1)
                             return checksFailedResult;
 
                         AddFailedOverload(ref failedOverloads, match.Command, checksFailedResult);
@@ -840,7 +865,7 @@ namespace Qmmands
 
                     if (!argumentParserResult.IsSuccessful)
                     {
-                        if (matches.Length == 1)
+                        if (matches.Count == 1)
                             return new ArgumentParseFailedResult(context, argumentParserResult);
 
                         AddFailedOverload(ref failedOverloads, match.Command, new ArgumentParseFailedResult(context, argumentParserResult));
@@ -860,7 +885,7 @@ namespace Qmmands
                     var result = await CreateArgumentsAsync(argumentParserResult, context, provider).ConfigureAwait(false);
                     if (result.FailedResult != null)
                     {
-                        if (matches.Length == 1)
+                        if (matches.Count == 1)
                             return result.FailedResult;
 
                         AddFailedOverload(ref failedOverloads, match.Command, result.FailedResult);
