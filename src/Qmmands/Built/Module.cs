@@ -176,18 +176,14 @@ namespace Qmmands
         ///     Runs checks on parent <see cref="Module"/>s and this <see cref="Module"/>.
         /// </summary>
         /// <param name="context"> The <see cref="CommandContext"/> used for execution. </param>
-        /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
         /// <returns>
         ///     A <see cref="SuccessfulResult"/> if all of the checks pass, otherwise a <see cref="ChecksFailedResult"/>.
         /// </returns>
-        public async Task<IResult> RunChecksAsync(CommandContext context, IServiceProvider provider = null)
+        public async Task<IResult> RunChecksAsync(CommandContext context)
         {
-            if (provider == null)
-                provider = DummyServiceProvider.Instance;
-
             if (Parent != null)
             {
-                var result = await Parent.RunChecksAsync(context, provider).ConfigureAwait(false);
+                var result = await Parent.RunChecksAsync(context).ConfigureAwait(false);
                 if (!result.IsSuccessful)
                     return result;
             }
@@ -196,7 +192,7 @@ namespace Qmmands
             {
                 async Task<(CheckAttribute Check, CheckResult Result)> RunCheckAsync(CheckAttribute check)
                 {
-                    var checkResult = await check.CheckAsync(context, provider).ConfigureAwait(false);
+                    var checkResult = await check.CheckAsync(context).ConfigureAwait(false);
                     return (check, checkResult);
                 }
 
@@ -217,7 +213,7 @@ namespace Qmmands
             => Volatile.Write(ref _isEnabled, true);
 
         /// <summary>
-        ///     Enables this <see cref="Module"/>.
+        ///     Disables this <see cref="Module"/>.
         /// </summary>
         public void Disable()
             => Volatile.Write(ref _isEnabled, false);

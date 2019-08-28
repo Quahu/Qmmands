@@ -30,9 +30,9 @@ namespace Qmmands
         public void Clear()
             => _buckets.Clear();
 
-        public CooldownBucket GetBucket(Cooldown cooldown, CommandContext context, IServiceProvider provider)
+        public CooldownBucket GetBucket(Cooldown cooldown, CommandContext context)
         {
-            var key = _command.Service.CooldownBucketKeyGenerator(cooldown.BucketType, context, provider);
+            var key = _command.Service.CooldownBucketKeyGenerator(cooldown.BucketType, context);
             return key == null ? null : _buckets.GetOrAdd(key, new CooldownBucket(cooldown));
         }
     }

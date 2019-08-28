@@ -196,16 +196,12 @@ namespace Qmmands
         ///     Runs checks on parent <see cref="Qmmands.Module"/>s and this <see cref="Command"/>.
         /// </summary>
         /// <param name="context"> The <see cref="CommandContext"/> used for execution. </param>
-        /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
         /// <returns>
         ///     A <see cref="SuccessfulResult"/> if all of the checks pass, otherwise a <see cref="ChecksFailedResult"/>.
         /// </returns>
-        public async Task<IResult> RunChecksAsync(CommandContext context, IServiceProvider provider = null)
+        public async Task<IResult> RunChecksAsync(CommandContext context)
         {
-            if (provider == null)
-                provider = DummyServiceProvider.Instance;
-
-            var result = await Module.RunChecksAsync(context, provider).ConfigureAwait(false);
+            var result = await Module.RunChecksAsync(context).ConfigureAwait(false);
             if (!result.IsSuccessful)
                 return result;
 
@@ -213,7 +209,7 @@ namespace Qmmands
             {
                 async Task<(CheckAttribute Check, CheckResult Result)> RunCheckAsync(CheckAttribute check)
                 {
-                    var checkResult = await check.CheckAsync(context, provider).ConfigureAwait(false);
+                    var checkResult = await check.CheckAsync(context).ConfigureAwait(false);
                     return (check, checkResult);
                 }
 
@@ -242,24 +238,19 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Resets the <see cref="Cooldown"/> bucket with a key generated from the provided
-        ///     <see cref="CommandContext"/> and <see cref="IServiceProvider"/> on this <see cref="Command"/>.
+        ///     Resets the <see cref="Cooldown"/> bucket with a key generated from the provided <see cref="CommandContext"/> on this <see cref="Command"/>.
         /// </summary>
         /// <param name="cooldown"> The <see cref="Cooldown"/> to reset. </param>
         /// <param name="context"> The <see cref="CommandContext"/> to use for bucket key generation. </param>
-        /// <param name="provider"> The <see cref="IServiceProvider"/> to use for bucket key generation. </param>
         /// <exception cref="InvalidOperationException">
         ///     This command does not have any assigned cooldowns.
         /// </exception>
-        public void ResetCooldown(Cooldown cooldown, CommandContext context, IServiceProvider provider = null)
+        public void ResetCooldown(Cooldown cooldown, CommandContext context)
         {
             if (CooldownMap == null)
                 return;
 
-            if (provider == null)
-                provider = DummyServiceProvider.Instance;
-
-            var bucket = CooldownMap.GetBucket(cooldown, context, provider);
+            var bucket = CooldownMap.GetBucket(cooldown, context);
             bucket?.Reset();
         }
 
@@ -267,19 +258,15 @@ namespace Qmmands
         ///     Runs cooldowns on this <see cref="Command"/>.
         /// </summary>
         /// <param name="context"> The <see cref="CommandContext"/> used for execution. </param>
-        /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
         /// <returns>
         ///     A <see cref="SuccessfulResult"/> if no buckets are rate-limited, otherwise a <see cref="CommandOnCooldownResult"/>.
         /// </returns>
-        public IResult RunCooldowns(CommandContext context, IServiceProvider provider = null)
+        public IResult RunCooldowns(CommandContext context)
         {
             if (CooldownMap != null)
             {
-                if (provider == null)
-                    provider = DummyServiceProvider.Instance;
-
                 CooldownMap.Update();
-                var buckets = Cooldowns.Select(x => CooldownMap.GetBucket(x, context, provider)).ToArray();
+                var buckets = Cooldowns.Select(x => CooldownMap.GetBucket(x, context)).ToArray();
                 var rateLimited = ImmutableArray.CreateBuilder<(Cooldown, TimeSpan)>(buckets.Length);
                 for (var i = 0; i < buckets.Length; i++)
                 {
@@ -300,11 +287,10 @@ namespace Qmmands
 
         /// <summary>
         ///     Attempts to parse the raw arguments for this <see cref="Command"/> and execute it.
-        ///     Short for <see cref="CommandService.ExecuteAsync(Command, string, CommandContext, IServiceProvider)"/>
+        ///     Short for <see cref="CommandService.ExecuteAsync(Command, string, CommandContext)"/>
         /// </summary>
         /// <param name="rawArguments"> The raw arguments to use for this <see cref="Command"/>'s <see cref="Parameter"/>s. </param>
         /// <param name="context"> The <see cref="CommandContext"/> to use during execution. </param>
-        /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns>
         ///     An <see cref="IResult"/>.
         /// </returns>
@@ -317,15 +303,14 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The context must not be null.
         /// </exception>
-        public Task<IResult> ExecuteAsync(string rawArguments, CommandContext context, IServiceProvider provider = null)
-            => Service.ExecuteAsync(this, rawArguments, context, provider);
+        public Task<IResult> ExecuteAsync(string rawArguments, CommandContext context)
+            => Service.ExecuteAsync(this, rawArguments, context);
 
         /// <summary>
         ///     Executes this <see cref="Command"/>.
         /// </summary>
         /// <param name="arguments"> The parsed arguments to use for this <see cref="Command"/>'s <see cref="Parameter"/>s. </param>
         /// <param name="context"> The <see cref="CommandContext"/> to use during execution. </param>
-        /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns>
         ///     An <see cref="IResult"/>.
         /// </returns>
@@ -338,8 +323,8 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The context must not be null.
         /// </exception>
-        public Task<IResult> ExecuteAsync(IEnumerable<object> arguments, CommandContext context, IServiceProvider provider = null)
-            => Service.ExecuteAsync(this, arguments, context, provider);
+        public Task<IResult> ExecuteAsync(IEnumerable<object> arguments, CommandContext context)
+            => Service.ExecuteAsync(this, arguments, context);
 
         /// <summary>
         ///     Enables this <see cref="Command"/>.
@@ -348,7 +333,7 @@ namespace Qmmands
             => Volatile.Write(ref _isEnabled, true);
 
         /// <summary>
-        ///     Enables this <see cref="Command"/>.
+        ///     Disables this <see cref="Command"/>.
         /// </summary>
         public void Disable()
             => Volatile.Write(ref _isEnabled, false);

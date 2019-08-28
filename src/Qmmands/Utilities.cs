@@ -396,9 +396,9 @@ namespace Qmmands
         {
             var callbackDelegate = CreateDelegate(type, method);
             var constructor = CreateProviderConstructor<IModuleBase>(service, type);
-            return async (context, provider) =>
+            return async context =>
             {
-                var instance = constructor(provider);
+                var instance = constructor(context.ServiceProvider);
                 instance.Prepare(context);
 
                 var executeAfter = true;
@@ -480,16 +480,16 @@ namespace Qmmands
             => Activator.CreateInstance(typeof(PrimitiveTypeParser<>).MakeGenericType(type)) as IPrimitiveTypeParser;
 
         public static IPrimitiveTypeParser CreateEnumTypeParser(Type type, Type enumType, CommandService service)
-            => typeof(EnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new object[] { enumType, service }) as IPrimitiveTypeParser;
+            => Activator.CreateInstance(typeof(EnumTypeParser<>).MakeGenericType(type), new object[] { enumType, service }) as IPrimitiveTypeParser;
 
         public static IPrimitiveTypeParser CreateNullableEnumTypeParser(Type type, IPrimitiveTypeParser enumTypeParser)
-            => typeof(NullableEnumTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new[] { enumTypeParser }) as IPrimitiveTypeParser;
+            => Activator.CreateInstance(typeof(NullableEnumTypeParser<>).MakeGenericType(type), new[] { enumTypeParser }) as IPrimitiveTypeParser;
 
         public static IPrimitiveTypeParser CreateNullablePrimitiveTypeParser(Type type, IPrimitiveTypeParser primitiveTypeParser)
-            => typeof(NullablePrimitiveTypeParser<>).MakeGenericType(type).GetConstructors()[0].Invoke(new[] { primitiveTypeParser }) as IPrimitiveTypeParser;
+            => Activator.CreateInstance(typeof(NullablePrimitiveTypeParser<>).MakeGenericType(type), new[] { primitiveTypeParser }) as IPrimitiveTypeParser;
 
         public static ITypeParser CreateNullableTypeParser(Type nullableType, ITypeParser typeParser)
-            => typeof(NullableTypeParser<>).MakeGenericType(nullableType).GetConstructors()[0].Invoke(new object[] { typeParser }) as ITypeParser;
+            => Activator.CreateInstance(typeof(NullableTypeParser<>).MakeGenericType(nullableType), new object[] { typeParser }) as ITypeParser;
 
         static Utilities()
         {

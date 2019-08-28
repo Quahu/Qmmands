@@ -18,21 +18,14 @@ namespace Qmmands
         public CommandContext Context { get; }
 
         /// <summary>
-        ///     Gets the <see cref="IServiceProvider"/> used for execution.
-        /// </summary>
-        public IServiceProvider Provider { get; }
-
-        /// <summary>
         ///     Initialises new <see cref="CommandExecutionFailedEventArgs"/>.
         /// </summary>
         /// <param name="result"> The <see cref="ExecutionFailedResult"/> returned from execution. </param>
         /// <param name="context"> The <see cref="CommandContext"/> used for execution. </param>
-        /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
-        public CommandExecutionFailedEventArgs(ExecutionFailedResult result, CommandContext context, IServiceProvider provider)
+        public CommandExecutionFailedEventArgs(ExecutionFailedResult result, CommandContext context)
         {
             Result = result;
             Context = context;
-            Provider = provider;
         }
     }
 }

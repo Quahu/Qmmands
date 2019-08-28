@@ -110,20 +110,16 @@ namespace Qmmands
         /// </summary>
         /// <param name="argument"> The parsed argument value for this <see cref="Parameter"/>. </param>
         /// <param name="context"> The <see cref="CommandContext"/> used for execution. </param>
-        /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
         /// <returns>
         ///     A <see cref="SuccessfulResult"/> if all of the checks pass, otherwise a <see cref="ChecksFailedResult"/>.
         /// </returns>
-        public async Task<IResult> RunChecksAsync(object argument, CommandContext context, IServiceProvider provider = null)
+        public async Task<IResult> RunChecksAsync(object argument, CommandContext context)
         {
-            if (provider == null)
-                provider = DummyServiceProvider.Instance;
-
             if (Checks.Count > 0)
             {
                 async Task<(ParameterCheckAttribute Check, CheckResult Result)> RunCheckAsync(ParameterCheckAttribute check)
                 {
-                    var checkResult = await check.CheckAsync(argument, context, provider).ConfigureAwait(false);
+                    var checkResult = await check.CheckAsync(argument, context).ConfigureAwait(false);
                     return (check, checkResult);
                 }
 

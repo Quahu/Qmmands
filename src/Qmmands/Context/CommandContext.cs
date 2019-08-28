@@ -49,5 +49,21 @@ namespace Qmmands
         private ReadOnlyList<object> _arguments;
 
         internal object[] InternalArguments;
+
+        /// <summary>
+        ///     Gets the <see cref="IServiceProvider"/> used for execution.
+        /// </summary>
+        public IServiceProvider ServiceProvider { get; }
+
+        /// <summary>
+        ///     Initialises a new instance of the <see cref="CommandContext"/>.
+        /// </summary>
+        /// <param name="serviceProvider">
+        ///     The <see cref="IServiceProvider"/> to use for execution. Passing <see langword="null"/> will make it default to a <see cref="DummyServiceProvider"/>.
+        /// </param>
+        protected CommandContext(IServiceProvider serviceProvider)
+        {
+            ServiceProvider = serviceProvider ?? DummyServiceProvider.Instance;
+        }
     }
 }

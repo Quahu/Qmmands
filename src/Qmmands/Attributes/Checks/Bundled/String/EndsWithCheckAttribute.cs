@@ -39,7 +39,7 @@ namespace Qmmands
         }
 
         /// <inheritdoc />
-        public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context, IServiceProvider provider)
+        public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context)
             => (argument as string).EndsWith(Value, StringComparison)
                 ? CheckResult.Successful
                 : CheckResult.Unsuccessful(

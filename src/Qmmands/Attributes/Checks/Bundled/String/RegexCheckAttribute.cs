@@ -34,7 +34,7 @@ namespace Qmmands
         }
 
         /// <inheritdoc />
-        public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context, IServiceProvider provider)
+        public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context)
             => Regex.IsMatch(argument as string)
                 ? CheckResult.Successful
                 : CheckResult.Unsuccessful($"The provided argument must match the regex pattern: {Regex}.");

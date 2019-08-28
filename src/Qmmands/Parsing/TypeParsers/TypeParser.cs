@@ -15,13 +15,12 @@ namespace Qmmands
         /// <param name="parameter"> The currently parsed <see cref="Parameter"/>. </param>
         /// <param name="value"> The raw argument to parse. </param>
         /// <param name="context"> The <see cref="CommandContext"/> used during execution. </param>
-        /// <param name="provider"> The <see cref="IServiceProvider"/> used during execution. </param>
         /// <returns> A <see cref="TypeParserResult{T}"/>. </returns>
-        public abstract ValueTask<TypeParserResult<T>> ParseAsync(Parameter parameter, string value, CommandContext context, IServiceProvider provider);
+        public abstract ValueTask<TypeParserResult<T>> ParseAsync(Parameter parameter, string value, CommandContext context);
 
-        async ValueTask<TypeParserResult<object>> ITypeParser.ParseAsync(Parameter parameter, string value, CommandContext context, IServiceProvider provider)
+        async ValueTask<TypeParserResult<object>> ITypeParser.ParseAsync(Parameter parameter, string value, CommandContext context)
         {
-            var result = await ParseAsync(parameter, value, context, provider).ConfigureAwait(false);
+            var result = await ParseAsync(parameter, value, context).ConfigureAwait(false);
             return result.IsSuccessful
                 ? result.HasValue
                     ? new TypeParserResult<object>(result.Value)

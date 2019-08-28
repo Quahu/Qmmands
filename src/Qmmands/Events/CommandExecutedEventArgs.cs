@@ -19,21 +19,14 @@ namespace Qmmands
         public CommandContext Context { get; }
 
         /// <summary>
-        ///     Gets the <see cref="IServiceProvider"/> used for execution.
-        /// </summary>
-        public IServiceProvider Provider { get; }
-
-        /// <summary>
         ///     Initialises new <see cref="CommandExecutedEventArgs"/>.
         /// </summary>
         /// <param name="result"> The <see cref="CommandResult"/> from the <see cref="Command"/>. </param>
         /// <param name="context"> The <see cref="CommandContext"/> used for execution. </param>
-        /// <param name="provider"> The <see cref="IServiceProvider"/> used for execution. </param>
-        public CommandExecutedEventArgs(CommandResult result, CommandContext context, IServiceProvider provider)
+        public CommandExecutedEventArgs(CommandResult result, CommandContext context)
         {
             Result = result;
             Context = context;
-            Provider = provider;
         }
     }
 }

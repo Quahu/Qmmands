@@ -33,10 +33,9 @@ namespace Qmmands
         ///     A method which determines whether the <see cref="Module"/> or <see cref="Command"/> can execute in given circumstances.
         /// </summary>
         /// <param name="context"> The <see cref="CommandContext"/> used during execution. </param>
-        /// <param name="provider"> The <see cref="IServiceProvider"/> used during execution. </param>
         /// <returns>
         ///     A <see cref="CheckResult"/> which determines whether this <see cref="CheckAttribute"/> succeeded or not.
         /// </returns>
-        public abstract ValueTask<CheckResult> CheckAsync(CommandContext context, IServiceProvider provider);
+        public abstract ValueTask<CheckResult> CheckAsync(CommandContext context);
     }
 }

@@ -816,11 +816,7 @@ namespace Qmmands
                 ['“'] = '”',
                 ['„'] = '‟'
             });
-
-            var nullableNounsBuilder = ImmutableArray.CreateBuilder<string>(1);
-            nullableNounsBuilder.Add("null");
-            DefaultNullableNouns = nullableNounsBuilder.TryMoveToImmutable();
-
+            DefaultNullableNouns = ImmutableArray.Create("null");
             FriendlyPrimitiveTypeNames = new ReadOnlyDictionary<Type, string>(new Dictionary<Type, string>(PrimitiveTypeParserCount)
             {
                 [typeof(char)] = "char",

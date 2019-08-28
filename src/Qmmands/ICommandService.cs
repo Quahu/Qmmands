@@ -256,11 +256,10 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input. </param>
         /// <param name="context"> The <see cref="CommandContext"/> to use during execution. </param>
-        /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns>
         ///     An <see cref="IResult"/>.
         /// </returns>
-        Task<IResult> ExecuteAsync(string input, CommandContext context, IServiceProvider provider = null);
+        Task<IResult> ExecuteAsync(string input, CommandContext context);
 
         /// <summary>
         ///     Attempts to parse the arguments for the provided <see cref="Command"/> and execute it.
@@ -268,10 +267,9 @@ namespace Qmmands
         /// <param name="command"> The <see cref="Command"/> to execute. </param>
         /// <param name="rawArguments"> The raw arguments to use for this <see cref="Command"/>'s parameters. </param>
         /// <param name="context"> The <see cref="CommandContext"/> to use during execution. </param>
-        /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns>
         ///     An <see cref="IResult"/>.
         /// </returns>
-        Task<IResult> ExecuteAsync(Command command, string rawArguments, CommandContext context, IServiceProvider provider = null);
+        Task<IResult> ExecuteAsync(Command command, string rawArguments, CommandContext context);
     }
 }

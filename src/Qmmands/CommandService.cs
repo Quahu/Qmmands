@@ -784,7 +784,6 @@ namespace Qmmands
         /// </summary>
         /// <param name="input"> The input. </param>
         /// <param name="context"> The <see cref="CommandContext"/> to use during execution. </param>
-        /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns>
         ///     An <see cref="IResult"/>.
         /// </returns>
@@ -794,16 +793,13 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The context must not be null.
         /// </exception>
-        public async Task<IResult> ExecuteAsync(string input, CommandContext context, IServiceProvider provider = null)
+        public async Task<IResult> ExecuteAsync(string input, CommandContext context)
         {
             if (input == null)
                 throw new ArgumentNullException(nameof(input), "The input must not be null.");
 
             if (context == null)
                 throw new ArgumentNullException(nameof(context), "The context must not be null.");
-
-            if (provider == null)
-                provider = DummyServiceProvider.Instance;
 
             var matches = FindCommands(input);
             var pathLength = matches[0].Path.Count;
@@ -827,7 +823,7 @@ namespace Qmmands
 
                 try
                 {
-                    var checkResult = await match.Command.RunChecksAsync(context, provider).ConfigureAwait(false);
+                    var checkResult = await match.Command.RunChecksAsync(context).ConfigureAwait(false);
                     if (checkResult is ChecksFailedResult checksFailedResult)
                     {
                         if (checksFailedResult.Module != null || matches.Count == 1)
@@ -840,7 +836,7 @@ namespace Qmmands
                 catch (Exception ex)
                 {
                     var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.Checks, ex);
-                    await InvokeCommandErroredAsync(executionFailedResult, context, provider).ConfigureAwait(false);
+                    await InvokeCommandErroredAsync(executionFailedResult, context).ConfigureAwait(false);
                     return executionFailedResult;
                 }
 
@@ -875,14 +871,14 @@ namespace Qmmands
                 catch (Exception ex)
                 {
                     var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.ArgumentParsing, ex);
-                    await InvokeCommandErroredAsync(executionFailedResult, context, provider).ConfigureAwait(false);
+                    await InvokeCommandErroredAsync(executionFailedResult, context).ConfigureAwait(false);
                     return executionFailedResult;
                 }
 
                 object[] parsedArguments;
                 try
                 {
-                    var result = await CreateArgumentsAsync(argumentParserResult, context, provider).ConfigureAwait(false);
+                    var result = await CreateArgumentsAsync(argumentParserResult, context).ConfigureAwait(false);
                     if (result.FailedResult != null)
                     {
                         if (matches.Count == 1)
@@ -897,12 +893,12 @@ namespace Qmmands
                 catch (Exception ex)
                 {
                     var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.TypeParsing, ex);
-                    await InvokeCommandErroredAsync(executionFailedResult, context, provider).ConfigureAwait(false);
+                    await InvokeCommandErroredAsync(executionFailedResult, context).ConfigureAwait(false);
                     return executionFailedResult;
                 }
 
                 context.InternalArguments = parsedArguments;
-                return await InternalExecuteAsync(context, provider).ConfigureAwait(false);
+                return await InternalExecuteAsync(context).ConfigureAwait(false);
             }
 
             return new OverloadsFailedResult(failedOverloads);
@@ -923,7 +919,6 @@ namespace Qmmands
         /// <param name="command"> The <see cref="Command"/> to execute. </param>
         /// <param name="rawArguments"> The raw arguments to use for this <see cref="Command"/>'s parameters. </param>
         /// <param name="context"> The <see cref="CommandContext"/> to use during execution. </param>
-        /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns>
         ///     An <see cref="IResult"/>.
         /// </returns>
@@ -936,7 +931,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The context must not be null.
         /// </exception>
-        public async Task<IResult> ExecuteAsync(Command command, string rawArguments, CommandContext context, IServiceProvider provider = null)
+        public async Task<IResult> ExecuteAsync(Command command, string rawArguments, CommandContext context)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command), "The command must not be null.");
@@ -947,9 +942,6 @@ namespace Qmmands
             if (context == null)
                 throw new ArgumentNullException(nameof(context), "The context must not be null.");
 
-            if (provider == null)
-                provider = DummyServiceProvider.Instance;
-
             if (!command.IsEnabled)
                 return new CommandDisabledResult(command);
 
@@ -957,14 +949,14 @@ namespace Qmmands
             context.RawArguments = rawArguments;
             try
             {
-                var checkResult = await command.RunChecksAsync(context, provider).ConfigureAwait(false);
+                var checkResult = await command.RunChecksAsync(context).ConfigureAwait(false);
                 if (!checkResult.IsSuccessful)
                     return checkResult;
             }
             catch (Exception ex)
             {
                 var executionFailedResult = new ExecutionFailedResult(command, CommandExecutionStep.Checks, ex);
-                await InvokeCommandErroredAsync(executionFailedResult, context, provider).ConfigureAwait(false);
+                await InvokeCommandErroredAsync(executionFailedResult, context).ConfigureAwait(false);
                 return executionFailedResult;
             }
 
@@ -993,14 +985,14 @@ namespace Qmmands
             catch (Exception ex)
             {
                 var executionFailedResult = new ExecutionFailedResult(command, CommandExecutionStep.ArgumentParsing, ex);
-                await InvokeCommandErroredAsync(executionFailedResult, context, provider).ConfigureAwait(false);
+                await InvokeCommandErroredAsync(executionFailedResult, context).ConfigureAwait(false);
                 return executionFailedResult;
             }
 
             object[] parsedArguments;
             try
             {
-                var result = await CreateArgumentsAsync(argumentParserResult, context, provider).ConfigureAwait(false);
+                var result = await CreateArgumentsAsync(argumentParserResult, context).ConfigureAwait(false);
                 if (result.FailedResult != null)
                     return result.FailedResult;
 
@@ -1009,12 +1001,12 @@ namespace Qmmands
             catch (Exception ex)
             {
                 var executionFailedResult = new ExecutionFailedResult(command, CommandExecutionStep.TypeParsing, ex);
-                await InvokeCommandErroredAsync(executionFailedResult, context, provider).ConfigureAwait(false);
+                await InvokeCommandErroredAsync(executionFailedResult, context).ConfigureAwait(false);
                 return executionFailedResult;
             }
 
             context.InternalArguments = parsedArguments;
-            return await InternalExecuteAsync(context, provider).ConfigureAwait(false);
+            return await InternalExecuteAsync(context).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -1023,7 +1015,6 @@ namespace Qmmands
         /// <param name="command"> The <see cref="Command"/> to execute. </param>
         /// <param name="arguments"> The arguments to use for this <see cref="Command"/>'s parameters. </param>
         /// <param name="context"> The <see cref="CommandContext"/> to use during execution. </param>
-        /// <param name="provider"> The <see cref="IServiceProvider"/> to use during execution. </param>
         /// <returns>
         ///     An <see cref="IResult"/>.
         /// </returns>
@@ -1036,7 +1027,7 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The context must not be null.
         /// </exception>
-        public async Task<IResult> ExecuteAsync(Command command, IEnumerable<object> arguments, CommandContext context, IServiceProvider provider = null)
+        public async Task<IResult> ExecuteAsync(Command command, IEnumerable<object> arguments, CommandContext context)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command), "The command must not be null.");
@@ -1047,9 +1038,6 @@ namespace Qmmands
             if (context == null)
                 throw new ArgumentNullException(nameof(context), "The context must not be null.");
 
-            if (provider == null)
-                provider = DummyServiceProvider.Instance;
-
             if (!command.IsEnabled)
                 return new CommandDisabledResult(command);
 
@@ -1057,21 +1045,21 @@ namespace Qmmands
             context.InternalArguments = arguments.ToArray();
             try
             {
-                var checkResult = await command.RunChecksAsync(context, provider).ConfigureAwait(false);
+                var checkResult = await command.RunChecksAsync(context).ConfigureAwait(false);
                 if (!checkResult.IsSuccessful)
                     return checkResult;
             }
             catch (Exception ex)
             {
                 var executionFailedResult = new ExecutionFailedResult(command, CommandExecutionStep.Checks, ex);
-                await InvokeCommandErroredAsync(executionFailedResult, context, provider).ConfigureAwait(false);
+                await InvokeCommandErroredAsync(executionFailedResult, context).ConfigureAwait(false);
                 return executionFailedResult;
             }
 
-            return await InternalExecuteAsync(context, provider).ConfigureAwait(false);
+            return await InternalExecuteAsync(context).ConfigureAwait(false);
         }
 
-        private async Task<IResult> InternalExecuteCallbackAsync(CommandContext context, IServiceProvider provider)
+        private async Task<IResult> InternalExecuteCallbackAsync(CommandContext context)
         {
             try
             {
@@ -1080,10 +1068,10 @@ namespace Qmmands
                 {
                     case ModuleBaseCommandCallbackDelegate moduleBaseCallback:
                     {
-                        result = await moduleBaseCallback(context, provider).ConfigureAwait(false);
+                        result = await moduleBaseCallback(context).ConfigureAwait(false);
                         if (result is ExecutionFailedResult executionFailedResult)
                         {
-                            await InvokeCommandErroredAsync(executionFailedResult, context, provider).ConfigureAwait(false);
+                            await InvokeCommandErroredAsync(executionFailedResult, context).ConfigureAwait(false);
                             return result;
                         }
                         break;
@@ -1091,37 +1079,37 @@ namespace Qmmands
 
                     case TaskCommandCallbackDelegate callback:
                     {
-                        await callback(context, provider).ConfigureAwait(false);
+                        await callback(context).ConfigureAwait(false);
                         break;
                     }
 
                     case TaskResultCommandCallbackDelegate callback:
                     {
-                        result = await callback(context, provider).ConfigureAwait(false);
+                        result = await callback(context).ConfigureAwait(false);
                         break;
                     }
 
                     case ValueTaskCommandCallbackDelegate callback:
                     {
-                        await callback(context, provider).ConfigureAwait(false);
+                        await callback(context).ConfigureAwait(false);
                         break;
                     }
 
                     case ValueTaskResultCommandCallbackDelegate callback:
                     {
-                        result = await callback(context, provider).ConfigureAwait(false);
+                        result = await callback(context).ConfigureAwait(false);
                         break;
                     }
 
                     case VoidCommandCallbackDelegate callback:
                     {
-                        callback(context, provider);
+                        callback(context);
                         break;
                     }
 
                     case ResultCommandCallbackDelegate callback:
                     {
-                        result = callback(context, provider);
+                        result = callback(context);
                         break;
                     }
 
@@ -1132,39 +1120,39 @@ namespace Qmmands
                 if (result is CommandResult commandResult)
                     commandResult.Command = context.Command;
 
-                await InvokeCommandExecutedAsync(result as CommandResult, context, provider).ConfigureAwait(false);
+                await InvokeCommandExecutedAsync(result as CommandResult, context).ConfigureAwait(false);
                 return result ?? new SuccessfulResult();
             }
             catch (Exception ex)
             {
                 var result = new ExecutionFailedResult(context.Command, CommandExecutionStep.Command, ex);
-                await InvokeCommandErroredAsync(result, context, provider).ConfigureAwait(false);
+                await InvokeCommandErroredAsync(result, context).ConfigureAwait(false);
                 return result;
             }
         }
 
-        private async Task<IResult> InternalExecuteAsync(CommandContext context, IServiceProvider provider)
+        private async Task<IResult> InternalExecuteAsync(CommandContext context)
         {
             try
             {
-                var cooldownResult = context.Command.RunCooldowns(context, provider);
+                var cooldownResult = context.Command.RunCooldowns(context);
                 if (!cooldownResult.IsSuccessful)
                     return cooldownResult;
             }
             catch (Exception ex)
             {
                 var result = new ExecutionFailedResult(context.Command, CommandExecutionStep.CooldownBucketKeyGenerating, ex);
-                await InvokeCommandErroredAsync(result, context, provider).ConfigureAwait(false);
+                await InvokeCommandErroredAsync(result, context).ConfigureAwait(false);
                 return result;
             }
 
             switch (context.Command.RunMode)
             {
                 case RunMode.Sequential:
-                    return await InternalExecuteCallbackAsync(context, provider).ConfigureAwait(false);
+                    return await InternalExecuteCallbackAsync(context).ConfigureAwait(false);
 
                 case RunMode.Parallel:
-                    _ = Task.Run(() => InternalExecuteCallbackAsync(context, provider));
+                    _ = Task.Run(() => InternalExecuteCallbackAsync(context));
                     return new SuccessfulResult();
 
                 default:
@@ -1172,20 +1160,18 @@ namespace Qmmands
             }
         }
 
-        private async Task<(FailedResult FailedResult, object[] ParsedArguments)> CreateArgumentsAsync(ArgumentParserResult parserResult, CommandContext context, IServiceProvider provider = null)
+        private async Task<(FailedResult FailedResult, object[] ParsedArguments)> CreateArgumentsAsync(ArgumentParserResult parserResult, CommandContext context)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context), "The context must not be null.");
 
-            if (provider == null)
-                provider = DummyServiceProvider.Instance;
+            if (context.Command.Parameters.Count == 0)
+                return (default, Array.Empty<object>());
 
-            var parsedArguments = new object[context.Command.Parameters.Count];
-            if (parsedArguments.Length == 0)
-                return (default, parsedArguments);
-            else if (parsedArguments.Length != parserResult.Arguments.Count)
+            if (parserResult.Arguments.Count != context.Command.Parameters.Count)
                 throw new ArgumentException("The amount of arguments must match the amount of parameters.");
 
+            var parsedArguments = new object[context.Command.Parameters.Count];
             for (var i = 0; i < context.Command.Parameters.Count; i++)
             {
                 var parameter = context.Command.Parameters[i];
@@ -1194,11 +1180,11 @@ namespace Qmmands
 
                 if (!parameter.IsMultiple)
                 {
-                    var (result, parsedArgument) = await ParseArgumentAsync(parameter, value, context, provider).ConfigureAwait(false);
+                    var (result, parsedArgument) = await ParseArgumentAsync(parameter, value, context).ConfigureAwait(false);
                     if (result != null)
                         return (result, default);
 
-                    var checkResult = await parameter.RunChecksAsync(parsedArgument, context, provider).ConfigureAwait(false);
+                    var checkResult = await parameter.RunChecksAsync(parsedArgument, context).ConfigureAwait(false);
                     if (!checkResult.IsSuccessful)
                         return (checkResult as FailedResult, default);
 
@@ -1215,7 +1201,7 @@ namespace Qmmands
                         array = Array.CreateInstance(parameter.Type, argumentsList.Count);
                         for (var j = 0; j < argumentsList.Count; j++)
                         {
-                            var (result, parsedArgument) = await ParseArgumentAsync(parameter, argumentsList[j], context, provider).ConfigureAwait(false);
+                            var (result, parsedArgument) = await ParseArgumentAsync(parameter, argumentsList[j], context).ConfigureAwait(false);
                             if (result != null)
                                 return (result, default);
 
@@ -1228,7 +1214,7 @@ namespace Qmmands
                         var j = 0;
                         foreach (var argument in argumentsEnumerable)
                         {
-                            var (result, parsedArgument) = await ParseArgumentAsync(parameter, argument, context, provider).ConfigureAwait(false);
+                            var (result, parsedArgument) = await ParseArgumentAsync(parameter, argument, context).ConfigureAwait(false);
                             if (result != null)
                                 return (result, default);
 
@@ -1236,7 +1222,7 @@ namespace Qmmands
                         }
                     }
 
-                    var checkResult = await parameter.RunChecksAsync(array, context, provider).ConfigureAwait(false);
+                    var checkResult = await parameter.RunChecksAsync(array, context).ConfigureAwait(false);
                     if (!checkResult.IsSuccessful)
                         return (checkResult as FailedResult, default);
 
@@ -1247,7 +1233,7 @@ namespace Qmmands
             return (default, parsedArguments);
         }
 
-        private async Task<(TypeParseFailedResult TypeParseFailedResult, object ParsedArgument)> ParseArgumentAsync(Parameter parameter, object argument, CommandContext context, IServiceProvider provider)
+        private async Task<(TypeParseFailedResult TypeParseFailedResult, object ParsedArgument)> ParseArgumentAsync(Parameter parameter, object argument, CommandContext context)
         {
             if (!(argument is string value))
                 return (null, argument);
@@ -1259,7 +1245,7 @@ namespace Qmmands
                 if (customParser == null)
                     throw new InvalidOperationException($"Custom type parser of type {parameter.CustomTypeParserType} for parameter {parameter} not found.");
 
-                var typeParserResult = await customParser.ParseAsync(parameter, value, context, provider).ConfigureAwait(false);
+                var typeParserResult = await customParser.ParseAsync(parameter, value, context).ConfigureAwait(false);
                 if (!typeParserResult.IsSuccessful)
                     return (new TypeParseFailedResult(parameter, value, typeParserResult.Reason), default);
 
@@ -1272,7 +1258,7 @@ namespace Qmmands
             var parser = GetAnyTypeParser(parameter.Type, (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) != null);
             if (parser != null)
             {
-                var typeParserResult = await parser.ParseAsync(parameter, value, context, provider).ConfigureAwait(false);
+                var typeParserResult = await parser.ParseAsync(parameter, value, context).ConfigureAwait(false);
                 if (!typeParserResult.IsSuccessful)
                     return (new TypeParseFailedResult(parameter, value, typeParserResult.Reason), default);
 
@@ -1288,10 +1274,10 @@ namespace Qmmands
             return (new TypeParseFailedResult(parameter, value), default);
         }
 
-        private Task InvokeCommandExecutedAsync(CommandResult result, CommandContext context, IServiceProvider provider)
-            => _commandExecuted.InvokeAsync(new CommandExecutedEventArgs(result, context, provider));
+        private Task InvokeCommandExecutedAsync(CommandResult result, CommandContext context)
+            => _commandExecuted.InvokeAsync(new CommandExecutedEventArgs(result, context));
 
-        private Task InvokeCommandErroredAsync(ExecutionFailedResult result, CommandContext context, IServiceProvider provider)
-            => _commandExecutionFailed.InvokeAsync(new CommandExecutionFailedEventArgs(result, context, provider));
+        private Task InvokeCommandErroredAsync(ExecutionFailedResult result, CommandContext context)
+            => _commandExecutionFailed.InvokeAsync(new CommandExecutionFailedEventArgs(result, context));
     }
 }
