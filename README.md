@@ -4,22 +4,14 @@
 [![MyGet](https://img.shields.io/myget/quahu/vpre/Qmmands.svg?style=flat-square&label=myget)](https://www.myget.org/feed/quahu/package/nuget/Qmmands)
 [![The Lab](https://img.shields.io/discord/416256456505950215.svg?style=flat-square&label=discord)](https://discord.gg/eUMSXGZ)  
 
-An asynchronous platform-independent .NET Standard 2.0 and .NET Core 2.1-2.2 command framework that can be used with any input source, whether that be Discord messages, IRC, or a terminal. 
+An asynchronous platform-independent .NET Core 2.1-2.2 command framework that can be used with any input source, whether that be Discord messages, IRC, or a terminal. 
 
 Inspired by [Discord.Net.Commands](https://github.com/RogueException/Discord.Net/tree/dev/src/Discord.Net.Commands) and [DSharpPlus.CommandsNext](https://github.com/DSharpPlus/DSharpPlus/tree/master/DSharpPlus.CommandsNext).
 
 
 ## Installing
 Stable Qmmands builds can be pulled from NuGet.
-For nightly builds add `https://www.myget.org/F/quahu/api/v3/index.json` (the nightly feed) to your project's package sources.
-
-
-## Key Features
-- Advanced parameter parsing support (including custom type parsers, optional parameters, and remainder support)
-- Support for returning custom `CommandResult` implementations for advanced post-execution handling
-- Command module discovery via assembly crawling for valid types
-- Support for adding custom modules and commands at runtime with builders or types
-- Built-in (optional) command cooldown system with support for custom cooldown types
+For nightly builds add `https://www.myget.org/F/quahu/api/v3/index.json` (the nightly feed) to your project's package sources and pull from there instead.
 
 
 ## Documentation
@@ -29,8 +21,6 @@ There's currently no official documentation for Qmmands other than the community
 
 
 ### Community Projects:
-* [Kiritsu](https://github.com/Kiritsu)'s Discord bot: [FoxBot](https://github.com/Kiritsu/FoxBot) (DSharpPlus)
-* [GreemDev](https://github.com/GreemDev)'s Discord bot: [Volte](https://github.com/GreemDev/Volte) (DSharpPlus)
 * [TheCasino](https://github.com/TheCasino)'s Discord bot: [Espeon](https://github.com/TheCasino/Espeon) (Discord.Net)
 * [BlowaXD](https://github.com/BlowaXD)'s Nostale Server Emulator: [SaltyEmu](https://github.com/BlowaXD/SaltyEmu) 
 
@@ -62,15 +52,18 @@ public sealed class CustomCommandContext : CommandContext
     
     public Channel Channel => Message.Channel;
   
-    public CustomCommandContext(Message message)
-      => Message = message;
+    // Pass your service provider to the base command context.
+    public CustomCommandContext(Message message, IServiceProvider provider = null) : base(provider)
+    {
+        Message = message;
+    }
 }
 ```
 **CommandModule.cs**
 ```cs
 public sealed class CommandModule : ModuleBase<CustomCommandContext>
 {
-    // Dependency Injection via a constructor or public settable properties.
+    // Dependency Injection via the constructor or public settable properties.
     // CommandService and IServiceProvider self-inject into modules,
     // properties and other types are requested from the provided IServiceProvider
     public CommandService Service { get; set; }
