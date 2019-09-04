@@ -802,6 +802,9 @@ namespace Qmmands
                 throw new ArgumentNullException(nameof(context), "The context must not be null.");
 
             var matches = FindCommands(input);
+            if (matches.Count == 0)
+                return new CommandNotFoundResult();
+
             var pathLength = matches[0].Path.Count;
             Dictionary<Command, FailedResult> failedOverloads = null;
             for (var i = 0; i < matches.Count; i++)
