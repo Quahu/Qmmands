@@ -51,15 +51,15 @@ namespace Qmmands
                     else if (currentPosition != 0 && !whitespaceSeparated)
                     {
                         return new DefaultArgumentParserResult(command, null, arguments,
-                            command.Service.QuotationMarkMap.TryGetValue(character, out expectedQuote) &&
-                            rawArguments.Slice(currentPosition + 1).IndexOf(expectedQuote) == -1
+                            command.Service.QuotationMarkMap.TryGetValue(character, out expectedQuote)
+                            && rawArguments.Slice(currentPosition + 1).IndexOf(expectedQuote) == -1
                                 ? DefaultArgumentParserFailure.UnexpectedQuote
                                 : DefaultArgumentParserFailure.NoWhitespaceBetweenArguments, currentPosition);
                     }
                     else
                     {
-                        currentParameter = (arguments == null || arguments.Count < command.Parameters.Count) &&
-                            command.Parameters.Count > 0
+                        currentParameter = (arguments == null || arguments.Count < command.Parameters.Count)
+                            && command.Parameters.Count > 0
                                 ? command.Parameters[arguments?.Count ?? 0]
                                 : multipleParameter;
                         if (currentParameter == null)

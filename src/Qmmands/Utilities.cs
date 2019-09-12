@@ -575,15 +575,15 @@ namespace Qmmands
 
             public int Compare(CommandMatch x, CommandMatch y)
             {
-                var pathCompare = x.Path.Count.CompareTo(y.Path.Count);
+                var pathCompare = y.Path.Count.CompareTo(x.Path.Count);
                 if (pathCompare != 0)
                     return pathCompare;
 
-                var priorityCompare = x.Command.Priority.CompareTo(y.Command.Priority);
+                var priorityCompare = y.Command.Priority.CompareTo(x.Command.Priority);
                 if (priorityCompare != 0)
                     return priorityCompare;
 
-                var parametersCompare = x.Command.Parameters.Count.CompareTo(y.Command.Parameters.Count);
+                var parametersCompare = y.Command.Parameters.Count.CompareTo(x.Command.Parameters.Count);
                 return parametersCompare;
             }
         }
