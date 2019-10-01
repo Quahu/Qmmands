@@ -25,8 +25,8 @@ namespace Qmmands
         /// <summary>
         ///     Initialises a new <see cref="Cooldown"/> with the specified properties.
         /// </summary>
-        /// <param name="amount"> The starting uses amount. </param>
-        /// <param name="per"> The use time window. </param>
+        /// <param name="amount"> The amount of uses per given window. </param>
+        /// <param name="per"> The bucket time window. </param>
         /// <param name="bucketType"> The <see langword="enum"/> bucket type. </param>
         /// <exception cref="ArgumentOutOfRangeException">
         ///     Amount and per must be positive values.

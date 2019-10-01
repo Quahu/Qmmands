@@ -19,7 +19,7 @@ namespace Qmmands
         public CommandContext Context { get; }
 
         /// <summary>
-        ///     Initialises new <see cref="CommandExecutedEventArgs"/>.
+        ///     Initialises a new <see cref="CommandExecutedEventArgs"/>.
         /// </summary>
         /// <param name="result"> The <see cref="CommandResult"/> from the <see cref="Command"/>. </param>
         /// <param name="context"> The <see cref="CommandContext"/> used for execution. </param>

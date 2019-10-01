@@ -17,6 +17,9 @@ namespace Qmmands
         ///     Initialises a new <see cref="PriorityAttribute"/> with the specified priority.
         /// </summary>
         /// <param name="priority"> The priority to set. </param>
+        /// <remarks>
+        ///    The <see cref="CommandService"/> will try to execute higher priority commands first.
+        /// </remarks>
         public PriorityAttribute(int priority)
         {
             Value = priority;

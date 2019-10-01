@@ -5,6 +5,9 @@ namespace Qmmands
     /// <summary>
     ///     Overrides the type parser for the <see cref="Parameter"/>.
     /// </summary>
+    /// <remarks>
+    ///    The type parser must still be added to the <see cref="CommandService"/>.
+    /// </remarks>
     [AttributeUsage(AttributeTargets.Parameter)]
     public class OverrideTypeParserAttribute : Attribute
     {

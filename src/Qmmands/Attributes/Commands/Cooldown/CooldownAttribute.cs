@@ -26,9 +26,9 @@ namespace Qmmands
         /// <summary>
         ///     Initialises a new <see cref="CooldownAttribute"/> with the specified <see cref="Cooldown"/> properties.
         /// </summary>
-        /// <param name="amount"> The starting uses amount. </param>
-        /// <param name="per"> The use time window. </param>
-        /// <param name="cooldownMeasure"> The <see cref="CooldownMeasure"/> to convert <paramref name="per"/> with. </param>
+        /// <param name="amount"> The amount of uses per given window. </param>
+        /// <param name="per"> The bucket time window. </param>
+        /// <param name="cooldownMeasure"> The unit of time of the given window. </param>
         /// <param name="bucketType"> The bucket type. Has to be an <see langword="enum"/>. </param>
         /// <exception cref="ArgumentOutOfRangeException">
         ///     Not a valid cooldown measure.

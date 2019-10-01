@@ -11,7 +11,7 @@ namespace Qmmands
         where TContext : CommandContext
     {
         /// <summary>
-        ///     The command context.
+        ///     The execution context.
         /// </summary>
         protected TContext Context { get; private set; }
 

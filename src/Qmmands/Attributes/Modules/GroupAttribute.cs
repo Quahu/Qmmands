@@ -16,7 +16,7 @@ namespace Qmmands
         /// <summary>
         ///     Initialises a new <see cref="GroupAttribute"/> with the specified <paramref name="aliases"/>.
         /// </summary>
-        /// <param name="aliases"> The aliases to set. </param>
+        /// <param name="aliases"> The aliases of the module. </param>
         /// <exception cref="ArgumentNullException">
         ///     Group aliases must not be null."
         /// </exception>
