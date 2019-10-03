@@ -11,12 +11,12 @@ using Qommon.Events;
 namespace Qmmands
 {
     /// <summary>
-    ///     Provides a framework for creating text based commands.
+    ///     Provides a framework for handling text based commands.
     /// </summary>
     public class CommandService : ICommandService
     {
         /// <summary>
-        ///     Gets or sets the <see cref="System.StringComparison"/> used for finding <see cref="Command"/>s and <see cref="Module"/>s,
+        ///     Gets the <see cref="System.StringComparison"/> used for finding <see cref="Command"/>s and <see cref="Module"/>s,
         ///     used by the default <see langword="enum"/> parsers, and comparing <see cref="NullableNouns"/>.
         /// </summary>
         public StringComparison StringComparison { get; }
@@ -27,7 +27,7 @@ namespace Qmmands
         public RunMode DefaultRunMode { get; }
 
         /// <summary>
-        ///     Gets whether <see cref="Command"/>s should ignore extra arguments by default or not.
+        ///     Gets whether <see cref="Command"/>s ignore extra arguments by default or not.
         /// </summary>
         public bool IgnoresExtraArguments { get; }
 
@@ -47,7 +47,7 @@ namespace Qmmands
         public IArgumentParser DefaultArgumentParser { get; private set; }
 
         /// <summary>
-        ///     Gets the generator <see langword="delegate"/> to use for <see cref="Cooldown"/> bucket keys.
+        ///     Gets the generator <see langword="delegate"/> used for <see cref="Cooldown"/> bucket keys.
         /// </summary>
         public CooldownBucketKeyGeneratorDelegate CooldownBucketKeyGenerator { get; }
 
@@ -214,6 +214,9 @@ namespace Qmmands
         /// <returns>
         ///     An ordered list of <see cref="CommandMatch"/>es.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///    The path must not be null.
+        /// </exception>
         public IReadOnlyList<CommandMatch> FindCommands(string path)
         {
             if (path == null)
@@ -331,7 +334,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Retrieves an <see cref="IArgumentParser"/> of the specified <typeparamref name="T"/> <see cref="Type"/>.
+        ///     Gets an <see cref="IArgumentParser"/> of the specified <typeparamref name="T"/> <see cref="Type"/>.
         /// </summary>
         /// <typeparam name="T"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </typeparam>
         /// <returns>
@@ -341,7 +344,7 @@ namespace Qmmands
             => GetArgumentParser(typeof(T));
 
         /// <summary>
-        ///     Retrieves an <see cref="IArgumentParser"/> of the specified <see cref="Type"/>.
+        ///     Gets an <see cref="IArgumentParser"/> of the specified <see cref="Type"/>.
         /// </summary>
         /// <param name="type"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </param>
         /// <returns>

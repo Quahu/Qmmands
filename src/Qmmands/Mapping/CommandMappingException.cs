@@ -13,7 +13,7 @@ namespace Qmmands
         public Command Command { get; }
 
         /// <summary>
-        ///     Gets the segment to map this exception occurred for.
+        ///     Gets the segment to the map this exception occurred at.
         ///     <see langword="null"/> if there were no segments (an attempt was made to map an ungrouped <see cref="Qmmands.Command"/> without any aliases)
         /// </summary>
         public string Segment { get; }

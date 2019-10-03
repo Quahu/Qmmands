@@ -13,7 +13,7 @@ namespace Qmmands
     public interface ICommandService
     {
         /// <summary>
-        ///     Gets or sets the <see cref="System.StringComparison"/> used for finding <see cref="Command"/>s and <see cref="Module"/>s,
+        ///     Gets the <see cref="System.StringComparison"/> used for finding <see cref="Command"/>s and <see cref="Module"/>s,
         ///     used by the default <see langword="enum"/> parsers, and comparing <see cref="NullableNouns"/>.
         /// </summary>
         StringComparison StringComparison { get; }
@@ -24,7 +24,7 @@ namespace Qmmands
         RunMode DefaultRunMode { get; }
 
         /// <summary>
-        ///     Gets whether commands should ignore extra arguments by default or not.
+        ///     Gets whether commands ignore extra arguments by default or not.
         /// </summary>
         bool IgnoresExtraArguments { get; }
 
@@ -44,7 +44,7 @@ namespace Qmmands
         IArgumentParser DefaultArgumentParser { get; }
 
         /// <summary>
-        ///     Gets the generator <see langword="delegate"/> to use for <see cref="Cooldown"/> bucket keys.
+        ///     Gets the generator <see langword="delegate"/> used for <see cref="Cooldown"/> bucket keys.
         /// </summary>
         CooldownBucketKeyGeneratorDelegate CooldownBucketKeyGenerator { get; }
 
@@ -137,7 +137,7 @@ namespace Qmmands
         void RemoveArgumentParser(Type type);
 
         /// <summary>
-        ///     Retrieves an <see cref="IArgumentParser"/> of the specified <typeparamref name="T"/> <see cref="Type"/>.
+        ///     Gets an <see cref="IArgumentParser"/> of the specified <typeparamref name="T"/> <see cref="Type"/>.
         /// </summary>
         /// <typeparam name="T"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </typeparam>
         /// <returns>
@@ -146,7 +146,7 @@ namespace Qmmands
         IArgumentParser GetArgumentParser<T>() where T : IArgumentParser;
 
         /// <summary>
-        ///     Retrieves an <see cref="IArgumentParser"/> of the specified <see cref="Type"/>.
+        ///     Gets an <see cref="IArgumentParser"/> of the specified <see cref="Type"/>.
         /// </summary>
         /// <param name="type"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </param>
         /// <returns>

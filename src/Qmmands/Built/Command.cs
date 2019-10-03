@@ -242,9 +242,6 @@ namespace Qmmands
         /// </summary>
         /// <param name="cooldown"> The <see cref="Cooldown"/> to reset. </param>
         /// <param name="context"> The <see cref="CommandContext"/> to use for bucket key generation. </param>
-        /// <exception cref="InvalidOperationException">
-        ///     This command does not have any assigned cooldowns.
-        /// </exception>
         public void ResetCooldown(Cooldown cooldown, CommandContext context)
         {
             if (CooldownMap == null)
