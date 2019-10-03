@@ -16,7 +16,7 @@ namespace Qmmands
         /// <summary>
         ///     Initialises a new <see cref="CommandAttribute"/> with the specified aliases.
         /// </summary>
-        /// <param name="aliases"> The aliases to set1. </param>
+        /// <param name="aliases"> The aliases to set. </param>
         /// <exception cref="ArgumentNullException">
         ///     Command aliases must not be null.
         /// </exception>
