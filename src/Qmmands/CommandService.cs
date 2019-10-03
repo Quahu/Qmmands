@@ -270,7 +270,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Sets and adds (if it has not been added before) an <see cref="IArgumentParser"/> as the default parser.
+        ///     Sets and adds, if it has not been added before, an <see cref="IArgumentParser"/> as the default parser.
         /// </summary>
         /// <param name="parser"> The <see cref="IArgumentParser"/> to set. </param>
         /// <exception cref="ArgumentNullException">
