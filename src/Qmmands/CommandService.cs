@@ -67,11 +67,9 @@ namespace Qmmands
         public ReadOnlySet<Module> TopLevelModules { get; }
 
         /// <summary>
-        ///     Fires after a <see cref="Command"/> was successfully executed.     
+        ///     Fires after a <see cref="Command"/> was successfully executed.
+        ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
         /// </summary>
-        /// <remarks>
-        ///    You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
-        /// </remarks>
         public event AsynchronousEventHandler<CommandExecutedEventArgs> CommandExecuted
         {
             add => _commandExecuted.Hook(value);
@@ -81,10 +79,8 @@ namespace Qmmands
 
         /// <summary>
         ///     Fires after a <see cref="Command"/> failed to execute.
+        ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
         /// </summary>
-        /// <remarks>
-        ///    You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
-        /// </remarks>
         public event AsynchronousEventHandler<CommandExecutionFailedEventArgs> CommandExecutionFailed
         {
             add => _commandExecutionFailed.Hook(value);

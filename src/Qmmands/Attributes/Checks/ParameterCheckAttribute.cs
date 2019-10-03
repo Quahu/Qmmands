@@ -29,7 +29,7 @@ namespace Qmmands
         public string Group { get; set; }
 
         /// <summary>
-        ///     Initialises a new <see cref="ParameterCheckAttribute"/> with the predicate of supported <see cref="Type"/>s.
+        ///     Initialises a new <see cref="ParameterCheckAttribute"/> with the predicate that determines what <see cref="Type"/>s are supported.
         /// </summary>
         /// <param name="predicate"> The optional <see cref="Predicate{T}"/> that determines what types are supported. </param>
         protected ParameterCheckAttribute(Predicate<Type> predicate = null)

@@ -65,18 +65,14 @@ namespace Qmmands
 
         /// <summary>
         ///     Fires after a <see cref="Command"/> was successfully executed.
+        ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
         /// </summary>
-        /// <remarks>
-        ///    You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
-        /// </remarks>
         event AsynchronousEventHandler<CommandExecutedEventArgs> CommandExecuted;
 
         /// <summary>
         ///     Fires after a <see cref="Command"/> failed to execute.
-        /// </summary>
-        /// <remarks>
         ///     You must use this to handle <see cref="RunMode.Parallel"/> <see cref="Command"/>s.
-        /// </remarks>
+        /// </summary>
         event AsynchronousEventHandler<CommandExecutionFailedEventArgs> CommandExecutionFailed;
 
         /// <summary>
