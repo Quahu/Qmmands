@@ -57,6 +57,9 @@ namespace Qmmands
                     case CommandExecutionStep.Command:
                         return $"An exception occurred while executing {Command}.";
 
+                    case CommandExecutionStep.CooldownBucketKeyGenerating:
+                        return $"An exception occurred while generating the cooldown bucket key for {Command}.";
+
                     default:
                         throw new InvalidOperationException("Invalid command execution step.");
                 }
