@@ -11,7 +11,7 @@
         Checks,
 
         /// <summary>
-        ///     An exception occurred in <see cref="IArgumentParser.Parse"/> during raw argument parsing.
+        ///     An exception occurred in <see cref="IArgumentParser.ParseAsync"/> during raw argument parsing.
         /// </summary>
         ArgumentParsing,
 

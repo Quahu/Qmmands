@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Qommon.Collections;
 
 namespace Qmmands
 {
     /// <summary>
-    ///     The base interface for <see cref="IArgumentParser.Parse"/> results.
+    ///     The base interface for <see cref="IArgumentParser.ParseAsync"/> results.
     /// </summary>
     public abstract class ArgumentParserResult : IResult
     {
@@ -12,6 +13,11 @@ namespace Qmmands
         ///     Gets whether the result was successful or not.
         /// </summary>
         public abstract bool IsSuccessful { get; }
+
+        /// <summary>
+        ///     Gets the failure reason of this <see cref="ArgumentParserResult"/>.
+        /// </summary>
+        public abstract string Reason { get; }
 
         /// <summary>
         ///     Gets the successfully parsed arguments.
@@ -31,8 +37,10 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Returns the failure reason of this <see cref="ArgumentParserResult"/>.
+        ///     Implicitly wraps the provided <see cref="ArgumentParserResult"/> in a <see cref="ValueTask{TResult}"/>.
         /// </summary>
-        public abstract string GetFailureReason();
+        /// <param name="result"> The result to wrap. </param>
+        public static implicit operator ValueTask<ArgumentParserResult>(ArgumentParserResult result)
+            => new ValueTask<ArgumentParserResult>(result);
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Qmmands
+﻿namespace Qmmands
 {
     /// <summary>
     ///     Represents an argument parse failure.
@@ -12,9 +8,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the reason of this failed result.
         /// </summary>
-        public override string Reason => _lazyReason.Value;
-        private readonly Lazy<string> _lazyReason;
-
+        public override string Reason => ParserResult.Reason;
         /// <summary>
         ///     Gets the <see cref="Qmmands.Command"/> the parse failed for.
         /// </summary>
@@ -26,7 +20,7 @@ namespace Qmmands
         public string RawArguments { get; }
 
         /// <summary>
-        ///     Gets the result returned from <see cref="IArgumentParser.Parse"/>.
+        ///     Gets the result returned from <see cref="IArgumentParser.ParseAsync"/>.
         /// </summary>
         public ArgumentParserResult ParserResult { get; }
 
@@ -35,8 +29,6 @@ namespace Qmmands
             Command = context.Command;
             RawArguments = context.RawArguments;
             ParserResult = parserResult;
-
-            _lazyReason = new Lazy<string>(() => parserResult.GetFailureReason(), true);
         }
     }
 }

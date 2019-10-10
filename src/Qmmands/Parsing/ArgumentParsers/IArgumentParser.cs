@@ -1,4 +1,6 @@
-﻿namespace Qmmands
+﻿using System.Threading.Tasks;
+
+namespace Qmmands
 {
     /// <summary>
     ///     Represents the interface for raw argument parsers.
@@ -12,6 +14,6 @@
         /// <returns>
         ///     An <see cref="ArgumentParserResult"/>.
         /// </returns>
-        ArgumentParserResult Parse(CommandContext context);
+        ValueTask<ArgumentParserResult> ParseAsync(CommandContext context);
     }
 }

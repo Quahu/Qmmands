@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Qmmands
 {
@@ -22,9 +23,9 @@ namespace Qmmands
         /// </summary>
         /// <param name="context"> The <see cref="CommandContext"/> to parse raw arguments for. </param>
         /// <returns>
-        ///     An <see cref="DefaultArgumentParserResult"/>.
+        ///     A <see cref="DefaultArgumentParserResult"/>.
         /// </returns>
-        public DefaultArgumentParserResult Parse(CommandContext context)
+        public ValueTask<ArgumentParserResult> ParseAsync(CommandContext context)
         {
             var command = context.Command;
             var rawArguments = context.RawArguments.AsSpan();
@@ -192,8 +193,5 @@ namespace Qmmands
             argumentBuilder.Clear();
             currentParameter = null;
         }
-
-        ArgumentParserResult IArgumentParser.Parse(CommandContext context)
-            => Parse(context);
     }
 }

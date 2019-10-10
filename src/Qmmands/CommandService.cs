@@ -861,9 +861,9 @@ namespace Qmmands
                         argumentParser = DefaultArgumentParser;
                     }
 
-                    argumentParserResult = argumentParser.Parse(context);
+                    argumentParserResult = await argumentParser.ParseAsync(context).ConfigureAwait(false);
                     if (argumentParserResult == null)
-                        throw new InvalidOperationException("The result from IArgumentParser.Parse must not be null.");
+                        throw new InvalidOperationException("The result from IArgumentParser.ParseAsync must not be null.");
 
                     if (!argumentParserResult.IsSuccessful)
                     {
@@ -981,9 +981,9 @@ namespace Qmmands
                     argumentParser = DefaultArgumentParser;
                 }
 
-                argumentParserResult = DefaultArgumentParser.Parse(context);
+                argumentParserResult = await DefaultArgumentParser.ParseAsync(context).ConfigureAwait(false);
                 if (argumentParserResult == null)
-                    throw new InvalidOperationException("The result from IArgumentParser.Parse must not be null.");
+                    throw new InvalidOperationException("The result from IArgumentParser.ParseAsync must not be null.");
 
                 if (!argumentParserResult.IsSuccessful)
                     return new ArgumentParseFailedResult(context, argumentParserResult);

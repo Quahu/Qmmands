@@ -5,7 +5,7 @@ using System.Linq;
 namespace Qmmands
 {
     /// <summary>
-    ///     Represents a <see cref="DefaultArgumentParser.Parse"/> result.
+    ///     Represents a <see cref="DefaultArgumentParser.ParseAsync"/> result.
     /// </summary>
     public sealed class DefaultArgumentParserResult : ArgumentParserResult
     {
@@ -13,6 +13,12 @@ namespace Qmmands
         ///     Gets whether the result was successful or not.
         /// </summary>
         public override bool IsSuccessful => Failure == null;
+
+        /// <summary>
+        ///     Gets the failure reason of this <see cref="DefaultArgumentParserResult"/>.
+        /// </summary>
+        public override string Reason => _lazyReason.Value;
+        private readonly Lazy<string> _lazyReason;
 
         /// <summary>
         ///     Gets the <see cref="Qmmands.Command"/>.
@@ -62,35 +68,31 @@ namespace Qmmands
         public DefaultArgumentParserResult(Command command, IReadOnlyDictionary<Parameter, object> arguments) : base(arguments)
         {
             Command = command;
-        }
-
-        /// <summary>
-        ///     Returns the failure reason of this <see cref="ArgumentParserResult"/>.
-        /// </summary>
-        public override string GetFailureReason()
-        {
-            switch (Failure)
+            _lazyReason = new Lazy<string>(() =>
             {
-                case DefaultArgumentParserFailure.UnclosedQuote:
-                    return "A quotation mark was left unclosed.";
+                switch (Failure)
+                {
+                    case DefaultArgumentParserFailure.UnclosedQuote:
+                        return "A quotation mark was left unclosed.";
 
-                case DefaultArgumentParserFailure.UnexpectedQuote:
-                    return "Encountered an unexpected quotation mark.";
+                    case DefaultArgumentParserFailure.UnexpectedQuote:
+                        return "Encountered an unexpected quotation mark.";
 
-                case DefaultArgumentParserFailure.NoWhitespaceBetweenArguments:
-                    return "Whitespace is required between arguments.";
+                    case DefaultArgumentParserFailure.NoWhitespaceBetweenArguments:
+                        return "Whitespace is required between arguments.";
 
-                case DefaultArgumentParserFailure.TooFewArguments:
-                    var missingParameters = EnumerateMissingParameters().Select(x => $"'{x}'").ToArray();
-                    return $"Required {(missingParameters.Length == 1 ? "parameter" : "parameters")} " +
-                             $"{string.Join(", ", missingParameters)} {(missingParameters.Length == 1 ? "is" : "are")} missing.";
+                    case DefaultArgumentParserFailure.TooFewArguments:
+                        var missingParameters = EnumerateMissingParameters().Select(x => $"'{x}'").ToArray();
+                        return $"Required {(missingParameters.Length == 1 ? "parameter" : "parameters")} " +
+                                 $"{string.Join(", ", missingParameters)} {(missingParameters.Length == 1 ? "is" : "are")} missing.";
 
-                case DefaultArgumentParserFailure.TooManyArguments:
-                    return "Too many arguments provided.";
+                    case DefaultArgumentParserFailure.TooManyArguments:
+                        return "Too many arguments provided.";
 
-                default:
-                    throw new InvalidOperationException("Invalid argument parser failure.");
-            }
+                    default:
+                        throw new InvalidOperationException("Invalid argument parser failure.");
+                }
+            }, true);
         }
 
         /// <summary>
