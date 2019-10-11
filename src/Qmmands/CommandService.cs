@@ -372,9 +372,6 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The type parser to add must not be null.
         /// </exception>
-        /// <exception cref="ArgumentException">
-        ///     Custom enum type parsers are not supported.
-        /// </exception>
         public void AddTypeParser<T>(TypeParser<T> parser, bool replacePrimitive = false)
         {
             if (parser == null)
