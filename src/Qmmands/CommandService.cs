@@ -1268,7 +1268,7 @@ namespace Qmmands
                 return (null, typeParserResult.HasValue ? typeParserResult.Value : null);
             }
 
-            if (primitiveParser == null && (primitiveParser = GetPrimitiveTypeParser(parameter.Type)) == null)
+            if (primitiveParser == null)
                 throw new InvalidOperationException($"No type parser found for parameter {parameter} ({parameter.Type}).");
 
             if (primitiveParser.TryParse(parameter, value, out var result))
