@@ -1,4 +1,6 @@
-﻿namespace Qmmands
+﻿using Qmmands.Delegates;
+
+namespace Qmmands
 {
     internal class PrimitiveTypeParser<T> : IPrimitiveTypeParser
         where T : struct

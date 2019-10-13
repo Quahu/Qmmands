@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Qmmands
+namespace Qmmands.Delegates
 {
     /// <summary>
     ///     Represents a <see cref="void"/> <see cref="Command"/> callback method.

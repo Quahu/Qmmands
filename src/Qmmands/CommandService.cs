@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Qmmands.Delegates;
 using Qommon.Collections;
 using Qommon.Events;
 

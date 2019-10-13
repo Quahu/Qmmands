@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using Qmmands.Delegates;
 using Qommon.Collections;
 using Qommon.Events;
 
