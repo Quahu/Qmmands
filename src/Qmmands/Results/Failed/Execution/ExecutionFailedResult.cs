@@ -34,32 +34,17 @@ namespace Qmmands
             CommandExecutionStep = commandExecutionStep;
             Exception = exception;
 
-            _lazyReason = new Lazy<string>(() =>
-            {
-                switch (CommandExecutionStep)
+            _lazyReason = new Lazy<string>(
+                () => CommandExecutionStep switch
                 {
-                    case CommandExecutionStep.Checks:
-                        return $"An exception occurred while running checks for {Command}.";
-
-                    case CommandExecutionStep.ArgumentParsing:
-                        return $"An exception occurred while parsing raw arguments for {Command}.";
-
-                    case CommandExecutionStep.TypeParsing:
-                        return $"An exception occurred while type parsing arguments for {Command}.";
-
-                    case CommandExecutionStep.BeforeExecuted:
-                        return $"An exception occurred while calling before executed for {Command}.";
-
-                    case CommandExecutionStep.Command:
-                        return $"An exception occurred while executing {Command}.";
-
-                    case CommandExecutionStep.CooldownBucketKeyGenerating:
-                        return $"An exception occurred while generating the cooldown bucket key for {Command}.";
-
-                    default:
-                        throw new InvalidOperationException("Invalid command execution step.");
-                }
-            }, true);
+                    CommandExecutionStep.Checks => $"An exception occurred while running checks for {Command}.",
+                    CommandExecutionStep.ArgumentParsing => $"An exception occurred while parsing raw arguments for {Command}.",
+                    CommandExecutionStep.TypeParsing => $"An exception occurred while type parsing arguments for {Command}.",
+                    CommandExecutionStep.BeforeExecuted => $"An exception occurred while calling before executed for {Command}.",
+                    CommandExecutionStep.Command => $"An exception occurred while executing {Command}.",
+                    CommandExecutionStep.CooldownBucketKeyGenerating => $"An exception occurred while generating the cooldown bucket key for {Command}.",
+                    _ => throw new InvalidOperationException("Invalid command execution step."),
+                }, true);
         }
     }
 }

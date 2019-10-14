@@ -3,7 +3,7 @@
   <PropertyGroup>
     <VersionPrefix>3.0.0</VersionPrefix>
     <TargetFrameworks>netcoreapp2.1;netcoreapp2.2</TargetFrameworks>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>Quahu</Authors>
     <Description>An asynchronous .NET Standard command framework.</Description>

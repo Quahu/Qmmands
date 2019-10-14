@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace Qmmands
 {
@@ -36,33 +36,15 @@ namespace Qmmands
         public CooldownAttribute(int amount, double per, CooldownMeasure cooldownMeasure, object bucketType)
         {
             Amount = amount;
-
-            switch (cooldownMeasure)
+            Per = cooldownMeasure switch
             {
-                case CooldownMeasure.Milliseconds:
-                    Per = TimeSpan.FromMilliseconds(per);
-                    break;
-
-                case CooldownMeasure.Seconds:
-                    Per = TimeSpan.FromSeconds(per);
-                    break;
-
-                case CooldownMeasure.Minutes:
-                    Per = TimeSpan.FromMinutes(per);
-                    break;
-
-                case CooldownMeasure.Hours:
-                    Per = TimeSpan.FromHours(per);
-                    break;
-
-                case CooldownMeasure.Days:
-                    Per = TimeSpan.FromDays(per);
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(cooldownMeasure), "Invalid cooldown measure.");
-            }
-
+                CooldownMeasure.Milliseconds => TimeSpan.FromMilliseconds(per),
+                CooldownMeasure.Seconds => TimeSpan.FromSeconds(per),
+                CooldownMeasure.Minutes => TimeSpan.FromMinutes(per),
+                CooldownMeasure.Hours => TimeSpan.FromHours(per),
+                CooldownMeasure.Days => TimeSpan.FromDays(per),
+                _ => throw new ArgumentOutOfRangeException(nameof(cooldownMeasure), "Invalid cooldown measure."),
+            };
             BucketType = bucketType;
         }
     }

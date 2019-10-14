@@ -687,7 +687,7 @@ namespace Qmmands
 
         private static IEnumerable<Command> GetAllCommandsIterator(Module module)
         {
-            IEnumerable<Command> GetCommands(Module rModule)
+            static IEnumerable<Command> GetCommands(Module rModule)
             {
                 for (var i = 0; i < rModule.Commands.Count; i++)
                     yield return rModule.Commands[i];
@@ -722,7 +722,7 @@ namespace Qmmands
 
         private static IEnumerable<CommandBuilder> GetAllCommandsIterator(ModuleBuilder builder)
         {
-            IEnumerable<CommandBuilder> GetCommands(ModuleBuilder rBuilder)
+            static IEnumerable<CommandBuilder> GetCommands(ModuleBuilder rBuilder)
             {
                 for (var i = 0; i < rBuilder.Commands.Count; i++)
                     yield return rBuilder.Commands[i];
@@ -757,7 +757,7 @@ namespace Qmmands
 
         private static IEnumerable<Module> GetAllSubmodulesIterator(Module module)
         {
-            IEnumerable<Module> GetModules(Module rModule)
+            static IEnumerable<Module> GetModules(Module rModule)
             {
                 for (var i = 0; i < rModule.Submodules.Count; i++)
                 {
@@ -792,7 +792,7 @@ namespace Qmmands
 
         private static IEnumerable<ModuleBuilder> GetAllSubmodulesIterator(ModuleBuilder builder)
         {
-            IEnumerable<ModuleBuilder> GetModules(ModuleBuilder rBuilder)
+            static IEnumerable<ModuleBuilder> GetModules(ModuleBuilder rBuilder)
             {
                 for (var i = 0; i < rBuilder.Submodules.Count; i++)
                 {
