@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Qmmands
 {
@@ -19,7 +19,7 @@ namespace Qmmands
         public TimeSpan Per { get; }
 
         /// <summary>
-        ///     Gets the <see langword="enum"/> bucket type to use with the <see cref="CooldownBucketKeyGeneratorDelegate"/>.
+        ///     Gets the <see langword="enum"/> bucket type to use with the <see cref="Delegates.CooldownBucketKeyGeneratorDelegate"/>.
         /// </summary>
         public object BucketType { get; }
 
