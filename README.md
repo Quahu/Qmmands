@@ -21,7 +21,7 @@ There's currently no official documentation for Qmmands other than the community
 
 
 ### Community Projects:
-* [TheCasino](https://github.com/TheCasino)'s Discord bot: [Espeon](https://github.com/TheCasino/Espeon) (Disqord)
+* [k-boyle](https://github.com/k-boyle)'s Discord bot: [Espeon](https://github.com/k-boyle/Espeon) (Disqord)
 * [BlowaXD](https://github.com/BlowaXD)'s Nostale Server Emulator: [SaltyEmu](https://github.com/BlowaXD/SaltyEmu) 
 
 ### A Simple Usage Example
