@@ -6,7 +6,7 @@ namespace Qmmands
     ///     Represents a <see cref="TypeParser{T}"/> result.
     /// </summary>
     /// <typeparam name="T"> The type handled by the type parser. </typeparam>
-    public sealed class TypeParserResult<T> : IResult
+    public class TypeParserResult<T> : IResult
     {
         /// <summary>
         ///     Gets whether the result was successful or not.
