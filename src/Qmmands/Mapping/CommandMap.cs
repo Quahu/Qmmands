@@ -36,22 +36,22 @@ namespace Qmmands
             => UnmapModule(module, new List<string>());
 
         private void MapModule(Module module, List<string> path)
-            => ModuleLoop(module, path, (map, x) => map.MapCommands(x, path));
+            => ModuleLoop(module, path, (map, path, x) => map.MapCommands(x, path));
 
         private void UnmapModule(Module module, List<string> path)
-            => ModuleLoop(module, path, (map, x) => map.UnmapCommands(x, path));
+            => ModuleLoop(module, path, (map, path, x) => map.UnmapCommands(x, path));
 
         private void MapCommands(Module module, List<string> path)
-            => CommandsLoop(module, path, (map, x) => map._rootNode.AddCommand(x, path, 0));
+            => CommandsLoop(module, path, (map, path, x) => map._rootNode.AddCommand(x, path, 0));
 
         private void UnmapCommands(Module module, List<string> path)
-            => CommandsLoop(module, path, (map, x) => map._rootNode.RemoveCommand(x, path, 0));
+            => CommandsLoop(module, path, (map, path, x) => map._rootNode.RemoveCommand(x, path, 0));
 
-        private void ModuleLoop(Module module, List<string> path, Action<CommandMap, Module> action)
+        private void ModuleLoop(Module module, List<string> path, Action<CommandMap, List<string>, Module> action)
         {
             if (module.Aliases.Count == 0)
             {
-                action(this, module);
+                action(this, path, module);
                 for (var j = 0; j < module.Submodules.Count; j++)
                     ModuleLoop(module.Submodules[j], path, action);
 
@@ -63,7 +63,7 @@ namespace Qmmands
                 var alias = module.Aliases[i];
                 if (alias.Length == 0)
                 {
-                    action(this, module);
+                    action(this, path, module);
                     for (var j = 0; j < module.Submodules.Count; j++)
                         ModuleLoop(module.Submodules[j], path, action);
                 }
@@ -71,7 +71,7 @@ namespace Qmmands
                 {
                     path.Add(alias);
 
-                    action(this, module);
+                    action(this, path, module);
                     for (var j = 0; j < module.Submodules.Count; j++)
                         ModuleLoop(module.Submodules[j], path, action);
 
@@ -80,14 +80,14 @@ namespace Qmmands
             }
         }
 
-        private void CommandsLoop(Module module, List<string> path, Action<CommandMap, Command> action)
+        private void CommandsLoop(Module module, List<string> path, Action<CommandMap, List<string>, Command> action)
         {
             for (var i = 0; i < module.Commands.Count; i++)
             {
                 var command = module.Commands[i];
                 if (command.Aliases.Count == 0)
                 {
-                    action(this, command);
+                    action(this, path, command);
                     continue;
                 }
 
@@ -99,12 +99,12 @@ namespace Qmmands
                         if (path.Count == 0)
                             continue;
 
-                        action(this, command);
+                        action(this, path, command);
                     }
                     else
                     {
                         path.Add(alias);
-                        action(this, command);
+                        action(this, path, command);
                         path.RemoveAt(path.Count - 1);
                     }
                 }
