@@ -93,7 +93,6 @@ namespace Qmmands
 
         private readonly ConcurrentDictionary<Type, Dictionary<Type, (bool ReplacingPrimitive, ITypeParser Instance)>> _typeParsers;
         private readonly ConcurrentDictionary<Type, IPrimitiveTypeParser> _primitiveTypeParsers;
-        private readonly Dictionary<Type, Module> _typeModules;
         private readonly HashSet<Module> _topLevelModules;
         private readonly CommandMap _map;
         private readonly ConcurrentDictionary<Type, IArgumentParser> _argumentParsers;
@@ -127,7 +126,6 @@ namespace Qmmands
 
             StringComparer = StringComparer.FromComparison(StringComparison);
 
-            _typeModules = new Dictionary<Type, Module>();
             _topLevelModules = new HashSet<Module>();
             TopLevelModules = new ReadOnlySet<Module>(_topLevelModules);
             _map = new CommandMap(this);
@@ -655,7 +653,13 @@ namespace Qmmands
             if (module.Parent != null)
                 throw new ArgumentException("The module to add must not be a nested module.", nameof(module));
 
-            AddModuleInternal(module);
+            lock (_moduleLock)
+            {
+                if (_topLevelModules.Contains(module))
+                    throw new ArgumentException("This module has already been added.", nameof(module));
+
+                AddModuleInternal(module);
+            }
         }
 
         /// <summary>
@@ -720,15 +724,6 @@ namespace Qmmands
         {
             lock (_moduleLock)
             {
-                if (module.Type != null && _typeModules.ContainsKey(module.Type))
-                    throw new ArgumentException($"{module.Type} has already been added as a module.", nameof(module));
-
-                if (_topLevelModules.Contains(module))
-                    throw new ArgumentException("This module has already been added.", nameof(module));
-
-                if (module.Type != null)
-                    _typeModules.Add(module.Type, module);
-
                 _map.MapModule(module);
                 _topLevelModules.Add(module);
             }
@@ -772,9 +767,6 @@ namespace Qmmands
             {
                 if (!_topLevelModules.Remove(module))
                     throw new ArgumentException("This module has not been added.", nameof(module));
-
-                if (module.Type != null)
-                    _typeModules.Remove(module.Type);
 
                 _map.UnmapModule(module);
             }
