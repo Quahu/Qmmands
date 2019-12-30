@@ -470,6 +470,17 @@ namespace Qmmands
                             }
                             catch { }
                         }
+
+#if NETCOREAPP3_0
+                        if (instance is IAsyncDisposable asyncDisposable)
+                        {
+                            try
+                            {
+                                await asyncDisposable.DisposeAsync().ConfigureAwait(false);
+                            }
+                            catch { }
+                        }
+#endif
                     }
                 }
             };
