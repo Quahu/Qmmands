@@ -62,7 +62,7 @@ namespace Qmmands.Delegates
     /// <returns>
     ///     A <see cref="Cooldown"/> bucket key.
     /// </returns>
-    public delegate object CooldownBucketKeyGeneratorDelegate(object bucketType, CommandContext context);
+    public delegate object CooldownBucketKeyGeneratorDelegate(Enum bucketType, CommandContext context);
 
     internal delegate Task<IResult> ModuleBaseCommandCallbackDelegate(CommandContext context);
 

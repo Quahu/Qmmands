@@ -20,7 +20,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the <see langword="enum"/> bucket type to use with the <see cref="Delegates.CooldownBucketKeyGeneratorDelegate"/>.
         /// </summary>
-        public object BucketType { get; }
+        public Enum BucketType { get; }
 
         /// <summary>
         ///     Initialises a new <see cref="Cooldown"/> with the specified properties.
@@ -37,7 +37,7 @@ namespace Qmmands
         /// <exception cref="ArgumentException">
         ///     Bucket type must be an <see langword="enum"/>.
         /// </exception>
-        public Cooldown(int amount, TimeSpan per, object bucketType)
+        public Cooldown(int amount, TimeSpan per, Enum bucketType)
         {
             if (amount <= 0)
                 throw new ArgumentOutOfRangeException(nameof(amount), "Amount must be a positive integer.");
@@ -47,9 +47,6 @@ namespace Qmmands
 
             if (bucketType == null)
                 throw new ArgumentNullException(nameof(bucketType), "Bucket type must not be null.");
-
-            if (!bucketType.GetType().IsEnum)
-                throw new ArgumentException("Bucket type must be an enum.", nameof(bucketType));
 
             Amount = amount;
             Per = per;

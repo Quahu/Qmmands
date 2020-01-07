@@ -30,12 +30,9 @@ namespace Qmmands
             Command = command;
             Cooldowns = cooldowns;
 
-            _lazyReason = new Lazy<string>(() =>
-            {
-                return cooldowns.Count == 1
-                    ? $"Command {command} is on a '{cooldowns[0].Cooldown.BucketType}' cooldown. Retry after {cooldowns[0].RetryAfter}."
-                    : $"Command {command} is on multiple cooldowns: {string.Join(", ", cooldowns.Select(x => $"'{x.Cooldown.BucketType}' - retry after {x.RetryAfter}"))}";
-            }, true);
+            _lazyReason = new Lazy<string>(() => cooldowns.Count == 1
+                ? $"Command {command} is on a '{cooldowns[0].Cooldown.BucketType}' cooldown. Retry after {cooldowns[0].RetryAfter}."
+                : $"Command {command} is on multiple cooldowns: {string.Join(", ", cooldowns.Select(x => $"'{x.Cooldown.BucketType}' - retry after {x.RetryAfter}"))}", true);
         }
     }
 }

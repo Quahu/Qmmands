@@ -21,7 +21,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the <see langword="enum"/> bucket type to use with the <see cref="Delegates.CooldownBucketKeyGeneratorDelegate"/>.
         /// </summary>
-        public object BucketType { get; }
+        public Enum BucketType { get; }
 
         /// <summary>
         ///     Initialises a new <see cref="CooldownAttribute"/> with the specified <see cref="Cooldown"/> properties.
@@ -35,6 +35,9 @@ namespace Qmmands
         /// </exception>
         public CooldownAttribute(int amount, double per, CooldownMeasure cooldownMeasure, object bucketType)
         {
+            if (!(bucketType is Enum enumBucketType))
+                throw new ArgumentException("Bucket type must be an enum.", nameof(bucketType));
+
             Amount = amount;
             Per = cooldownMeasure switch
             {
@@ -45,7 +48,7 @@ namespace Qmmands
                 CooldownMeasure.Days => TimeSpan.FromDays(per),
                 _ => throw new ArgumentOutOfRangeException(nameof(cooldownMeasure), "Invalid cooldown measure."),
             };
-            BucketType = bucketType;
+            BucketType = enumBucketType;
         }
     }
 }

@@ -155,7 +155,7 @@ namespace Qmmands
         /// </returns>
         public IReadOnlyList<Command> GetAllCommands()
         {
-            IEnumerable<Command> GetCommands(Module module)
+            static IEnumerable<Command> GetCommands(Module module)
             {
                 for (var i = 0; i < module.Commands.Count; i++)
                     yield return module.Commands[i];
@@ -181,7 +181,7 @@ namespace Qmmands
         /// </returns>
         public IReadOnlyList<Module> GetAllModules()
         {
-            IEnumerable<Module> GetSubmodules(Module module)
+            static IEnumerable<Module> GetSubmodules(Module module)
             {
                 for (var i = 0; i < module.Submodules.Count; i++)
                 {
