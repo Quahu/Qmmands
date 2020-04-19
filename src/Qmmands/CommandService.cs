@@ -395,13 +395,14 @@ namespace Qmmands
 
         internal void AddTypeParserInternal(Type type, ITypeParser parser, bool replacePrimitive)
         {
+            var parserType = parser.GetType();
             _typeParsers.AddOrUpdate(type,
-                _ => new Dictionary<Type, (bool, ITypeParser)> { [parser.GetType()] = (replacePrimitive, parser) },
+                _ => new Dictionary<Type, (bool, ITypeParser)> { [parserType] = (replacePrimitive, parser) },
                 (_, v) =>
                 {
                     lock (v)
                     {
-                        v.Add(parser.GetType(), (replacePrimitive, parser));
+                        v.Add(parserType, (replacePrimitive, parser));
                         return v;
                     }
                 });
@@ -410,12 +411,12 @@ namespace Qmmands
             {
                 var nullableParser = Utilities.CreateNullableTypeParser(type, parser);
                 _typeParsers.AddOrUpdate(Utilities.MakeNullable(type),
-                    _ => new Dictionary<Type, (bool, ITypeParser)> { [nullableParser.GetType()] = (replacePrimitive, nullableParser) },
+                    _ => new Dictionary<Type, (bool, ITypeParser)> { [parserType] = (replacePrimitive, nullableParser) },
                     (_, v) =>
                     {
                         lock (v)
                         {
-                            v.Add(nullableParser.GetType(), (replacePrimitive, nullableParser));
+                            v.Add(parserType, (replacePrimitive, nullableParser));
                             return v;
                         }
                     });
@@ -439,12 +440,13 @@ namespace Qmmands
                 throw new ArgumentNullException(nameof(parser), "The type parser to remove must not be null.");
 
             var type = typeof(T);
+            var parserType = parser.GetType();
             bool found;
             if (_typeParsers.TryGetValue(type, out var typeParsers))
             {
                 lock (typeParsers)
                 {
-                    found = typeParsers.Remove(parser.GetType());
+                    found = typeParsers.Remove(parserType);
                 }
             }
             else
@@ -456,7 +458,16 @@ namespace Qmmands
                 throw new ArgumentException("The type parser to remove has not been added.");
 
             if (type.IsValueType)
-                typeParsers.Remove(Utilities.MakeNullable(type));
+            {
+                var nullableType = Utilities.MakeNullable(type);
+                if (_typeParsers.TryGetValue(nullableType, out var nullableTypeParsers))
+                {
+                    lock (nullableTypeParsers)
+                    {
+                        nullableTypeParsers.Remove(parserType);
+                    }
+                }
+            }
         }
 
         /// <summary>
