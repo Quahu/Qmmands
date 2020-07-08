@@ -91,9 +91,9 @@ namespace Qmmands
                     continue;
                 }
 
-                for (var o = 0; o < command.Aliases.Count; o++)
+                for (var j = 0; j < command.Aliases.Count; j++)
                 {
-                    var alias = command.Aliases[o];
+                    var alias = command.Aliases[j];
                     if (alias.Length == 0)
                     {
                         if (path.Count == 0)

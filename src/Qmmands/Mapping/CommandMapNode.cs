@@ -180,6 +180,9 @@ namespace Qmmands
 
         public void RemoveCommand(Command command, IReadOnlyList<string> segments, int startIndex)
         {
+            if (segments.Count == 0)
+                return;
+
             var segment = segments[startIndex];
             if (startIndex == segments.Count - 1)
             {
