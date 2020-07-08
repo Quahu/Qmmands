@@ -156,16 +156,8 @@ namespace Qmmands
                 for (var i = arguments.Count; i < command.Parameters.Count; i++)
                 {
                     var parameter = command.Parameters[i];
-                    if (parameter.IsMultiple)
-                    {
-                        arguments.Add(parameter, Array.Empty<object>());
-                        break;
-                    }
-
                     if (!parameter.IsOptional)
                         return new DefaultArgumentParserResult(command, parameter, arguments, DefaultArgumentParserFailure.TooFewArguments, null);
-
-                    arguments.Add(parameter, parameter.DefaultValue);
                 }
             }
 

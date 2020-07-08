@@ -1175,15 +1175,19 @@ namespace Qmmands
             if (context.Command.Parameters.Count == 0)
                 return (default, Array.Empty<object>());
 
-            if (parserResult.Arguments.Count != context.Command.Parameters.Count)
-                throw new ArgumentException("The amount of arguments must match the amount of parameters.");
-
             var parsedArguments = new object[context.Command.Parameters.Count];
             for (var i = 0; i < context.Command.Parameters.Count; i++)
             {
                 var parameter = context.Command.Parameters[i];
-                if (!parserResult.Arguments.TryGetValue(parameter, out var value))
-                    throw new InvalidOperationException($"No value for parameter {parameter.Name} ({parameter.Type}) was returned by the argument parser ({DefaultArgumentParser.GetType()}).");
+                var hasValue = parserResult.Arguments.TryGetValue(parameter, out var value);
+                if (!hasValue && !parameter.IsOptional)
+                    throw new InvalidOperationException($"No value for the required parameter {parameter.Name} ({parameter.Type}) was returned by the argument parser ({context.Command.CustomArgumentParserType ?? DefaultArgumentParser.GetType()}).");
+
+                if (!hasValue)
+                {
+                    parsedArguments[i] = parameter.DefaultValue;
+                    continue;
+                }
 
                 if (!parameter.IsMultiple)
                 {
