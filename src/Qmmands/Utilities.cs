@@ -257,7 +257,7 @@ namespace Qmmands
             return builder;
         }
 
-        public static Func<IServiceProvider, T> CreateProviderConstructor<T>(CommandService commandService, Type type)
+        public static Func<CommandService, IServiceProvider, T> CreateProviderConstructor<T>(CommandService commandService, Type type)
         {
             var constructors = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
             if (constructors.Length == 0)
@@ -266,7 +266,7 @@ namespace Qmmands
             if (constructors.Length > 1)
                 throw new InvalidOperationException($"{type} has multiple public constructors.");
 
-            object GetDependency(ConstructorInfo ctor, IServiceProvider provider, Type serviceType)
+            static object GetDependency(CommandService commandService, ConstructorInfo ctor, IServiceProvider provider, Type serviceType)
             {
                 if (serviceType == typeof(IServiceProvider) || serviceType == provider.GetType())
                     return provider;
@@ -283,7 +283,7 @@ namespace Qmmands
             var constructor = constructors[0];
             var parameters = constructor.GetParameters();
             var arguments = new object[parameters.Length];
-            var propertiesToInject = new List<PropertyInfo>();
+            IList<PropertyInfo> propertiesToInject = new List<PropertyInfo>();
             do
             {
                 var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
@@ -300,11 +300,12 @@ namespace Qmmands
                 type = type.BaseType.GetTypeInfo();
             }
             while (type != typeof(object));
+            propertiesToInject = (propertiesToInject as List<PropertyInfo>).ToArray();
 
-            return (provider) =>
+            return (commandService, provider) =>
             {
                 for (var i = 0; i < parameters.Length; i++)
-                    arguments[i] = GetDependency(constructor, provider, parameters[i].ParameterType);
+                    arguments[i] = GetDependency(commandService, constructor, provider, parameters[i].ParameterType);
 
                 T instance;
                 try
@@ -319,7 +320,7 @@ namespace Qmmands
                 for (var i = 0; i < propertiesToInject.Count; i++)
                 {
                     var property = propertiesToInject[i];
-                    property.SetValue(instance, GetDependency(constructor, provider, property.PropertyType));
+                    property.SetValue(instance, GetDependency(commandService, constructor, provider, property.PropertyType));
                 }
 
                 return instance;
@@ -399,7 +400,7 @@ namespace Qmmands
             var constructor = CreateProviderConstructor<IModuleBase>(service, type);
             return async context =>
             {
-                var instance = constructor(context.ServiceProvider);
+                var instance = constructor(service, context.ServiceProvider);
                 instance.Prepare(context);
 
                 var executeAfter = true;
