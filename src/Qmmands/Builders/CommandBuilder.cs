@@ -97,7 +97,14 @@ namespace Qmmands
             Module = module;
             Callback = callback;
             Cooldowns = new List<Cooldown>();
+
+            #if NETSTANDARD2_0
+            Aliases = new HashSet<string>();
+            #else
             Aliases = new HashSet<string>(1);
+            #endif
+
+
             Checks = new List<CheckAttribute>();
             Attributes = new List<Attribute>();
             Parameters = new List<ParameterBuilder>();
