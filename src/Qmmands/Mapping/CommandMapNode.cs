@@ -91,7 +91,7 @@ namespace Qmmands
             var separator = _service.Separator;
             var separatorIndex = _isSeparatorSingleWhitespace
                 ? -1
-                : span.IndexOf(separator, _service.StringComparison);
+                : span.IndexOf(separator.AsSpan(), _service.StringComparison);
             for (var i = 0; i < span.Length; i++)
             {
                 if (segmentIndex != 0)

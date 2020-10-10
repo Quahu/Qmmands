@@ -496,7 +496,7 @@ namespace Qmmands
             if (prefix == null)
                 throw new ArgumentNullException(nameof(prefix), "The prefix must not be null.");
 
-            if (!input.StartsWith(prefix, comparison))
+            if (!input.StartsWith(prefix.AsSpan(), comparison))
             {
                 output = null;
                 return false;

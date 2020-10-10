@@ -29,6 +29,6 @@ namespace Qmmands
         }
 
         public bool TryParse(Parameter parameter, string value, out object result)
-            => _tryParse(value, out var numericResult) ? _enumByValues.TryGetValue(numericResult, out result) : _enumByNames.TryGetValue(value, out result);
+            => _tryParse(value.AsSpan(), out var numericResult) ? _enumByValues.TryGetValue(numericResult, out result) : _enumByNames.TryGetValue(value, out result);
     }
 }

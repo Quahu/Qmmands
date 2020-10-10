@@ -1,4 +1,5 @@
-﻿using Qmmands.Delegates;
+﻿using System;
+using Qmmands.Delegates;
 
 namespace Qmmands
 {
@@ -13,7 +14,7 @@ namespace Qmmands
         }
 
         public bool TryParse(string value, out T result)
-            => _tryParse(value, out result);
+            => _tryParse(value.AsSpan(), out result);
 
         bool IPrimitiveTypeParser.TryParse(Parameter parameter, string value, out object result)
         {

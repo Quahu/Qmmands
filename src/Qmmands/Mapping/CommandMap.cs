@@ -15,7 +15,7 @@ namespace Qmmands
         public IReadOnlyList<CommandMatch> FindCommands(string text)
         {
             List<CommandMatch> matches = null;
-            _rootNode.FindCommands(ref matches, new List<string>(), text);
+            _rootNode.FindCommands(ref matches, new List<string>(), text.AsSpan());
             return matches ?? Array.Empty<CommandMatch>() as IReadOnlyList<CommandMatch>;
         }
 
