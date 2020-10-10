@@ -30,7 +30,7 @@ namespace Qmmands
 
             if (reason != null)
             {
-                _lazyReason = new Lazy<string>(reason);
+                _lazyReason = new Lazy<string>(() => reason);
                 return;
             }
 
