@@ -79,7 +79,12 @@ namespace Qmmands
 
                 if (currentParameter.IsRemainder)
                 {
+                    #if NETSTANDARD2_0
+                    argumentBuilder.Append(rawArguments.Slice(currentPosition).ToString());
+                    #else
                     argumentBuilder.Append(rawArguments.Slice(currentPosition));
+                    #endif
+
                     break;
                 }
 
