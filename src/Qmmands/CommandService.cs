@@ -124,7 +124,11 @@ namespace Qmmands
                 ? configuration.NullableNouns.ToImmutableArray()
                 : CommandUtilities.DefaultNullableNouns;
 
+            #if NETSTANDARD2_0
+            StringComparer = StringComparerExtensions.FromComparison(StringComparison);
+            #else
             StringComparer = StringComparer.FromComparison(StringComparison);
+            #endif
 
             _topLevelModules = new HashSet<Module>();
             TopLevelModules = new ReadOnlySet<Module>(_topLevelModules);
