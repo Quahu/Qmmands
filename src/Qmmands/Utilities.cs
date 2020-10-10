@@ -506,6 +506,24 @@ namespace Qmmands
 
         static Utilities()
         {
+            #if NETSTANDARD2_0
+            TryParseDelegates = new Dictionary<Type, Delegate>(13)
+            {
+                [typeof(char)] = (TryParseDelegate<char>) TryParseChar,
+                [typeof(bool)] = (TryParseDelegate<bool>) TryParseBool,
+                [typeof(byte)] = (TryParseDelegate<byte>) TryParseByte,
+                [typeof(sbyte)] = (TryParseDelegate<sbyte>) TryParseSByte,
+                [typeof(short)] = (TryParseDelegate<short>) TryParseShort,
+                [typeof(ushort)] = (TryParseDelegate<ushort>) TryParseUShort,
+                [typeof(int)] = (TryParseDelegate<int>) TryParseInt,
+                [typeof(uint)] = (TryParseDelegate<uint>) TryParseUInt,
+                [typeof(long)] = (TryParseDelegate<long>) TryParseLong,
+                [typeof(ulong)] = (TryParseDelegate<ulong>) TryParseULong,
+                [typeof(float)] = (TryParseDelegate<float>) TryParseFloat,
+                [typeof(double)] = (TryParseDelegate<double>) TryParseDouble,
+                [typeof(decimal)] = (TryParseDelegate<decimal>) TryParseDecimal
+            };
+            #else
             TryParseDelegates = new Dictionary<Type, Delegate>(13)
             {
                 [typeof(char)] = (TryParseDelegate<char>) TryParseChar,
@@ -522,7 +540,46 @@ namespace Qmmands
                 [typeof(double)] = (TryParseDelegate<double>) double.TryParse,
                 [typeof(decimal)] = (TryParseDelegate<decimal>) decimal.TryParse
             };
+            #endif
         }
+
+        #if  NETSTANDARD2_0
+        private static bool TryParseBool(ReadOnlySpan<char> span, out bool result) =>
+            bool.TryParse(span.ToString(), out result);
+
+        private static bool TryParseByte(ReadOnlySpan<char> span, out byte result) =>
+            byte.TryParse(span.ToString(), out result);
+
+        private static bool TryParseSByte(ReadOnlySpan<char> span, out sbyte result) =>
+            sbyte.TryParse(span.ToString(), out result);
+
+        private static bool TryParseShort(ReadOnlySpan<char> span, out short result) =>
+            short.TryParse(span.ToString(), out result);
+
+        private static bool TryParseUShort(ReadOnlySpan<char> span, out ushort result) =>
+            ushort.TryParse(span.ToString(), out result);
+
+        private static bool TryParseInt(ReadOnlySpan<char> span, out int result) =>
+            int.TryParse(span.ToString(), out result);
+
+        private static bool TryParseUInt(ReadOnlySpan<char> span, out uint result) =>
+            uint.TryParse(span.ToString(), out result);
+
+        private static bool TryParseLong(ReadOnlySpan<char> span, out long result) =>
+            long.TryParse(span.ToString(), out result);
+
+        private static bool TryParseULong(ReadOnlySpan<char> span, out ulong result) =>
+            ulong.TryParse(span.ToString(), out result);
+
+        private static bool TryParseFloat(ReadOnlySpan<char> span, out float result) =>
+            float.TryParse(span.ToString(), out result);
+
+        private static bool TryParseDouble(ReadOnlySpan<char> span, out double result) =>
+            double.TryParse(span.ToString(), out result);
+
+        private static bool TryParseDecimal(ReadOnlySpan<char> span, out decimal result) =>
+            decimal.TryParse(span.ToString(), out result);
+        #endif
 
         private static bool TryParseChar(ReadOnlySpan<char> value, out char result)
         {
