@@ -21,7 +21,7 @@ namespace Qmmands
         public static readonly IReadOnlyList<string> DefaultNullableNouns;
 
         /// <summary>
-        ///     The friendly names used for primitive <see cref="Type"/>s by <see cref="ArgumentParseFailedResult.Reason"/>. 
+        ///     The friendly names used for primitive <see cref="Type"/>s by <see cref="ArgumentParseFailedResult.Reason"/>.
         /// </summary>
         public static readonly IReadOnlyDictionary<Type, string> FriendlyPrimitiveTypeNames;
 
@@ -354,7 +354,7 @@ namespace Qmmands
                 return false;
             }
 
-            output = new string(input.Slice(1).TrimStart());
+            output = input.Slice(1).TrimStart().ToString();
             return true;
         }
 
@@ -502,7 +502,7 @@ namespace Qmmands
                 return false;
             }
 
-            output = new string(input.Slice(prefix.Length).TrimStart());
+            output = input.Slice(prefix.Length).TrimStart().ToString();
             return true;
         }
 

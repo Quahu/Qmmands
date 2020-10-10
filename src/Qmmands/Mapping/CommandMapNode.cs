@@ -30,14 +30,14 @@ namespace Qmmands
             if (encounteredSeparator && remaining.IsEmpty)
                 return;
 
-            var stringSegment = new string(segment);
+            var stringSegment = segment.ToString();
             if (!encounteredSeparator && !(encounteredWhitespace && remaining.IsEmpty) && _commands.TryGetValue(stringSegment, out var commands))
             {
                 path.Add(stringSegment);
 
                 var stringRemaining = remaining.IsEmpty
                     ? string.Empty
-                    : new string(remaining);
+                    : remaining.ToString();
 
                 if (matches == null)
                     matches = new List<CommandMatch>(commands.Count);
