@@ -982,7 +982,7 @@ namespace Qmmands
                     argumentParser = DefaultArgumentParser;
                 }
 
-                argumentParserResult = await DefaultArgumentParser.ParseAsync(context).ConfigureAwait(false);
+                argumentParserResult = await argumentParser.ParseAsync(context).ConfigureAwait(false);
                 if (argumentParserResult == null)
                     throw new InvalidOperationException("The result from IArgumentParser.ParseAsync must not be null.");
 
