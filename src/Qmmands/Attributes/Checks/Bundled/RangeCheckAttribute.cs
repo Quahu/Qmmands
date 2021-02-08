@@ -65,16 +65,17 @@ namespace Qmmands
         public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context)
         {
             var value = (argument as string)?.Length ?? Convert.ToDouble(argument);
-            return (IsMinimumInclusive && !IsMaximumInclusive
+            if (!(IsMinimumInclusive && !IsMaximumInclusive
                 ? Minimum <= value && value < Maximum
                 : !IsMinimumInclusive && IsMaximumInclusive
                     ? Minimum < value && value <= Maximum
                     : IsMinimumInclusive && IsMaximumInclusive
                         ? Minimum <= value && value <= Maximum
-                        : Minimum < value && value < Maximum)
-                ? CheckResult.Successful
-                : CheckResult.Unsuccessful(
-                    $"The provided argument was outside of the range: {(IsMinimumInclusive ? '[' : '(')}{Minimum}, {Maximum}{(IsMaximumInclusive ? ']' : ')')}.");
+                        : Minimum < value && value < Maximum))
+                return Failure($"The provided argument was outside of the range: {(IsMinimumInclusive ? '[' : '(')}{Minimum}, {Maximum}{(IsMaximumInclusive ? ']' : ')')}.");
+
+
+            return Success();
         }
     }
 }

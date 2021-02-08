@@ -12,7 +12,10 @@ namespace Qmmands
         /// </summary>
         public CommandBuilder CommandBuilder { get; }
 
-        internal CommandBuildingException(CommandBuilder commandBuilder, string message) : base(message)
-            => CommandBuilder = commandBuilder;
+        internal CommandBuildingException(CommandBuilder commandBuilder, string message) 
+            : base(message)
+        {
+            CommandBuilder = commandBuilder;
+        }
     }
 }

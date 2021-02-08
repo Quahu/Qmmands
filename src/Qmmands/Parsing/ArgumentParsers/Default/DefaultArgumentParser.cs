@@ -13,7 +13,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the singleton instance of the <see cref="DefaultArgumentParser"/>.
         /// </summary>
-        public static readonly DefaultArgumentParser Instance = new DefaultArgumentParser();
+        public static readonly DefaultArgumentParser Instance = new();
 
         private DefaultArgumentParser()
         { }

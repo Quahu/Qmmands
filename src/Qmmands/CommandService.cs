@@ -14,7 +14,7 @@ namespace Qmmands
     /// <summary>
     ///     Provides a framework for handling text based commands.
     /// </summary>
-    public class CommandService : ICommandService
+    public class CommandService
     {
         /// <summary>
         ///     Gets the <see cref="System.StringComparison"/> used for finding <see cref="Command"/>s and <see cref="Module"/>s,
@@ -76,7 +76,7 @@ namespace Qmmands
             add => _commandExecuted.Hook(value);
             remove => _commandExecuted.Unhook(value);
         }
-        private readonly AsynchronousEvent<CommandExecutedEventArgs> _commandExecuted = new AsynchronousEvent<CommandExecutedEventArgs>();
+        private readonly AsynchronousEvent<CommandExecutedEventArgs> _commandExecuted = new();
 
         /// <summary>
         ///     Fires after a <see cref="Command"/> failed to execute.
@@ -87,17 +87,17 @@ namespace Qmmands
             add => _commandExecutionFailed.Hook(value);
             remove => _commandExecutionFailed.Unhook(value);
         }
-        private readonly AsynchronousEvent<CommandExecutionFailedEventArgs> _commandExecutionFailed = new AsynchronousEvent<CommandExecutionFailedEventArgs>();
+        private readonly AsynchronousEvent<CommandExecutionFailedEventArgs> _commandExecutionFailed = new();
 
         internal readonly StringComparer StringComparer;
 
-        private readonly ConcurrentDictionary<Type, Dictionary<Type, (bool ReplacingPrimitive, ITypeParser Instance)>> _typeParsers;
+        private readonly ConcurrentDictionary<Type, Dictionary<Type, (bool ReplacesPrimitive, ITypeParser Instance)>> _typeParsers;
         private readonly ConcurrentDictionary<Type, IPrimitiveTypeParser> _primitiveTypeParsers;
         private readonly HashSet<Module> _topLevelModules;
         private readonly CommandMap _map;
         private readonly ConcurrentDictionary<Type, IArgumentParser> _argumentParsers;
         private static readonly Type _stringType = typeof(string);
-        private readonly object _moduleLock = new object();
+        private readonly object _moduleLock = new();
 
         /// <summary>
         ///     Initialises a new <see cref="CommandService"/> with the specified <see cref="CommandServiceConfiguration"/>.
@@ -117,8 +117,8 @@ namespace Qmmands
             Separator = configuration.Separator;
             SeparatorRequirement = configuration.SeparatorRequirement;
             CooldownBucketKeyGenerator = configuration.CooldownBucketKeyGenerator;
-            QuotationMarkMap = configuration.QuoteMap != null
-                ? new ReadOnlyDictionary<char, char>(configuration.QuoteMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value))
+            QuotationMarkMap = configuration.QuotationMarkMap != null
+                ? new ReadOnlyDictionary<char, char>(configuration.QuotationMarkMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value))
                 : CommandUtilities.DefaultQuotationMarkMap;
             NullableNouns = configuration.NullableNouns != null
                 ? configuration.NullableNouns.ToImmutableArray()
@@ -521,7 +521,7 @@ namespace Qmmands
                     {
                         foreach (var parser in typeParsers.Values)
                         {
-                            if (parser.ReplacingPrimitive)
+                            if (parser.ReplacesPrimitive)
                                 return parser.Instance;
                         }
                     }
@@ -1203,7 +1203,7 @@ namespace Qmmands
                 }
                 else
                 {
-                    if (!(value is IEnumerable<object> argumentsEnumerable))
+                    if (value is not IEnumerable<object> argumentsEnumerable)
                         throw new InvalidOperationException("The multiple parameter requires an enumerable of objects as its argument.");
 
                     Array array;
@@ -1258,7 +1258,7 @@ namespace Qmmands
 
                 var typeParserResult = await customParser.ParseAsync(parameter, value, context).ConfigureAwait(false);
                 if (!typeParserResult.IsSuccessful)
-                    return (new TypeParseFailedResult(parameter, value, typeParserResult.Reason), default);
+                    return (new TypeParseFailedResult(parameter, value, typeParserResult.FailureReason), default);
 
                 return (null, typeParserResult.HasValue ? typeParserResult.Value : null);
             }
@@ -1271,7 +1271,7 @@ namespace Qmmands
             {
                 var typeParserResult = await parser.ParseAsync(parameter, value, context).ConfigureAwait(false);
                 if (!typeParserResult.IsSuccessful)
-                    return (new TypeParseFailedResult(parameter, value, typeParserResult.Reason), default);
+                    return (new TypeParseFailedResult(parameter, value, typeParserResult.FailureReason), default);
 
                 return (null, typeParserResult.HasValue ? typeParserResult.Value : null);
             }

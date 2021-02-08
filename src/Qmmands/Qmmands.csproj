@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <VersionPrefix>3.1.3</VersionPrefix>
-    <TargetFrameworks>netcoreapp2.1;netcoreapp2.2;netcoreapp3.0</TargetFrameworks>
-    <LangVersion>8.0</LangVersion>
+    <VersionPrefix>4.0</VersionPrefix>
+    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+    <LangVersion>preview</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>Quahu</Authors>
-    <Description>An asynchronous .NET Standard command framework.</Description>
+    <Description>An asynchronous .NET command framework.</Description>
     <PackageTags>commands chat-commands chat-bots irc irc-bots discord bots discord-bots chat csharp dotnet</PackageTags>
     <RepositoryUrl>https://github.com/Quahu/Qmmands</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Quahu/Qmmands</PackageProjectUrl>

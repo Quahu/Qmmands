@@ -37,5 +37,19 @@ namespace Qmmands
         ///     A <see cref="CheckResult"/> which determines whether this <see cref="CheckAttribute"/> succeeded or not.
         /// </returns>
         public abstract ValueTask<CheckResult> CheckAsync(CommandContext context);
+
+        /// <summary>
+        ///     Returns a successful <see cref="CheckResult"/>.
+        /// </summary>
+        /// <returns> A successful <see cref="CheckResult"/>. </returns>
+        protected static CheckResult Success()
+            => CheckResult.Successful;
+
+        /// <summary>
+        ///     Returns a failed <see cref="CheckResult"/> with the specified reason.
+        /// </summary>
+        /// <returns> A failed <see cref="CheckResult"/>. </returns>
+        protected static CheckResult Failure(string reason)
+            => CheckResult.Failed(reason);
     }
 }

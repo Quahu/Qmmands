@@ -40,9 +40,11 @@ namespace Qmmands
 
         /// <inheritdoc />
         public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context)
-            => (argument as string).StartsWith(Value, StringComparison)
-                ? CheckResult.Successful
-                : CheckResult.Unsuccessful(
-                    $"The provided argument must start with the {(StringComparison.IsCaseSensitive() ? "case-sensitive" : "case-insensitive")} value: {Value}.");
+        {
+            if ((argument as string).StartsWith(Value, StringComparison))
+                return Success();
+
+            return Failure($"The provided argument must start with the {(StringComparison.IsCaseSensitive() ? "case-sensitive" : "case-insensitive")} value: {Value}.");
+        }
     }
 }

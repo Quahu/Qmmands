@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Qommon.Collections;
 
@@ -17,10 +17,10 @@ namespace Qmmands
         /// <summary>
         ///     Gets the failure reason of this <see cref="ArgumentParserResult"/>.
         /// </summary>
-        public abstract string Reason { get; }
+        public abstract string FailureReason { get; }
 
         /// <summary>
-        ///     Gets the successfully parsed arguments.
+        ///     Gets the parsed arguments.
         /// </summary>
         public IReadOnlyDictionary<Parameter, object> Arguments { get; }
 

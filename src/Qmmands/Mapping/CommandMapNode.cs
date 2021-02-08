@@ -101,6 +101,7 @@ namespace Qmmands
                         encounteredSeparator = true;
                         if (!_isSeparatorSingleWhitespace)
                             encounteredWhitespace = false;
+
                         i += separator.Length - 1;
                         nextSegmentIndex += separator.Length;
                         continue;
@@ -125,7 +126,7 @@ namespace Qmmands
             return span.Slice(0, segmentIndex);
         }
 
-        private void ValidateCommand(Command command, string segment, List<Command> commands)
+        private static void ValidateCommand(Command command, string segment, List<Command> commands)
         {
             for (var i = 0; i < commands.Count; i++)
             {

@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace Qmmands
 {
@@ -10,12 +10,12 @@ namespace Qmmands
         /// <summary>
         ///     Gets whether the result was successful or not.
         /// </summary>
-        public virtual bool IsSuccessful => Reason == null;
+        public virtual bool IsSuccessful => FailureReason == null;
 
         /// <summary>
-        ///     Gets the error reason.
+        ///     Gets the failure reason.
         /// </summary>
-        public virtual string Reason { get; }
+        public virtual string FailureReason { get; }
 
         /// <summary>
         ///     Initialises a new successful <see cref="CheckResult"/>.
@@ -26,36 +26,36 @@ namespace Qmmands
         /// <summary>
         ///     Initialises a new failed <see cref="CheckResult"/> with the specified error reason.
         /// </summary>
-        /// <param name="reason"> The error reason. </param>
-        public CheckResult(string reason)
+        /// <param name="failureReason"> The failure reason. </param>
+        public CheckResult(string failureReason)
         {
-            Reason = reason;
+            FailureReason = failureReason;
         }
 
         /// <summary>
         ///     Gets a successful <see cref="CheckResult"/>.
         /// </summary>
         public static CheckResult Successful
-            => new CheckResult();
+            => new();
 
         /// <summary>
-        ///     Initialises a new unsuccessful <see cref="CheckResult"/>.
+        ///     Initialises a new failed <see cref="CheckResult"/>.
         /// </summary>
-        /// <param name="reason"> The error reason. </param>
+        /// <param name="reason"> The failure reason. </param>
         /// <returns>
-        ///     An unsuccessful <see cref="CheckResult"/>.
+        ///     A failed <see cref="CheckResult"/>.
         /// </returns>
-        public static CheckResult Unsuccessful(string reason)
-            => new CheckResult(reason);
+        public static CheckResult Failed(string reason)
+            => new(reason);
 
         /// <summary>
-        ///     Returns <see cref="Reason"/>.
+        ///     Returns <see cref="FailureReason"/>.
         /// </summary>
         /// <returns>
-        ///     The <see cref="Reason"/>.
+        ///     The <see cref="FailureReason"/>.
         /// </returns>
         public override string ToString()
-            => Reason;
+            => FailureReason;
 
         /// <summary>
         ///     Implicitly wraps the provided <see cref="CheckResult"/> in a <see cref="ValueTask{TResult}"/>.

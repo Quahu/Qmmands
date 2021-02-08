@@ -35,7 +35,7 @@ namespace Qmmands
         /// </exception>
         public CooldownAttribute(int amount, double per, CooldownMeasure cooldownMeasure, object bucketType)
         {
-            if (!(bucketType is Enum enumBucketType))
+            if (bucketType is not Enum enumBucketType)
                 throw new ArgumentException("Bucket type must be an enum.", nameof(bucketType));
 
             Amount = amount;

@@ -12,7 +12,10 @@ namespace Qmmands
         /// </summary>
         public ModuleBuilder ModuleBuilder { get; }
 
-        internal ModuleBuildingException(ModuleBuilder moduleBuilder, string message) : base(message)
-            => ModuleBuilder = moduleBuilder;
+        internal ModuleBuildingException(ModuleBuilder moduleBuilder, string message)
+            : base(message)
+        {
+            ModuleBuilder = moduleBuilder;
+        }
     }
 }

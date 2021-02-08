@@ -30,9 +30,11 @@ namespace Qmmands
             var value = isString
                 ? (argument as string).Length
                 : Convert.ToDouble(argument);
-            return value <= Maximum
-                ? CheckResult.Successful
-                : CheckResult.Unsuccessful($"The provided argument must have a maximum {(isString ? "length" : "value")} of {Maximum}.");
+
+            if (value > Maximum)
+                return Failure($"The provided argument must have a maximum {(isString ? "length" : "value")} of {Maximum}.");
+
+            return Success();
         }
     }
 }

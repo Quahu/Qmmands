@@ -30,9 +30,11 @@ namespace Qmmands
             var value = isString
                 ? (argument as string).Length
                 : Convert.ToDouble(argument);
-            return value >= Minimum
-                ? CheckResult.Successful
-                : CheckResult.Unsuccessful($"The provided argument must have a minimum {(isString ? "length" : "value")} of {Minimum}.");
+
+            if (value < Minimum)
+                return Failure($"The provided argument must have a minimum {(isString ? "length" : "value")} of {Minimum}.");
+
+            return Success();
         }
     }
 }

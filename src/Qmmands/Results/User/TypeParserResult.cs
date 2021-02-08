@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace Qmmands
 {
@@ -11,12 +11,12 @@ namespace Qmmands
         /// <summary>
         ///     Gets whether the result was successful or not.
         /// </summary>
-        public bool IsSuccessful => Reason == null;
+        public bool IsSuccessful => FailureReason == null;
 
         /// <summary>
-        ///     Gets the error reason. <see langword="null"/> if <see cref="IsSuccessful"/> is <see langword="true"/>.
+        ///     Gets the failure reason. <see langword="null"/> if <see cref="IsSuccessful"/> is <see langword="true"/>.
         /// </summary>
-        public string Reason { get; }
+        public string FailureReason { get; }
 
         /// <summary>
         ///     Gets whether this result has a parsed value or not.
@@ -39,12 +39,12 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Initialises a new <see cref="TypeParserResult{T}"/> with the specified error reason.
+        ///     Initialises a new <see cref="TypeParserResult{T}"/> with the specified failure reason.
         /// </summary>
-        /// <param name="reason"> The error reason. </param>
-        public TypeParserResult(string reason)
+        /// <param name="failureReason"> The error reason. </param>
+        public TypeParserResult(string failureReason)
         {
-            Reason = reason;
+            FailureReason = failureReason;
         }
 
         internal TypeParserResult(bool hasValue)
@@ -60,7 +60,7 @@ namespace Qmmands
         ///     A successful <see cref="TypeParserResult{T}"/>.
         /// </returns>
         public static TypeParserResult<T> Successful(T value)
-            => new TypeParserResult<T>(value);
+            => new(value);
 
         /// <summary>
         ///     Initialises a new unsuccessful <see cref="TypeParserResult{T}"/> with the specified error reason.
@@ -69,8 +69,8 @@ namespace Qmmands
         /// <returns>
         ///     An unsuccessful <see cref="TypeParserResult{T}"/>.
         /// </returns>
-        public static TypeParserResult<T> Unsuccessful(string reason)
-            => new TypeParserResult<T>(reason);
+        public static TypeParserResult<T> Failed(string reason)
+            => new(reason);
 
         /// <summary>
         ///     Implicitly wraps the provided <see cref="TypeParserResult{T}"/> in a <see cref="ValueTask{TResult}"/>.

@@ -262,21 +262,24 @@ namespace Qmmands
         {
             if (CooldownMap != null)
             {
-                CooldownMap.Update();
-                var buckets = Cooldowns.Select(x => CooldownMap.GetBucket(x, context)).ToArray();
-                var rateLimited = ImmutableArray.CreateBuilder<(Cooldown, TimeSpan)>(buckets.Length);
-                for (var i = 0; i < buckets.Length; i++)
+                lock (CooldownMap)
                 {
-                    var bucket = buckets[i];
-                    if (bucket != null && bucket.IsRateLimited(out var retryAfter))
-                        rateLimited.Add((bucket.Cooldown, retryAfter));
+                    CooldownMap.Update();
+                    var buckets = Cooldowns.Select(x => CooldownMap.GetBucket(x, context)).ToArray();
+                    var rateLimited = ImmutableArray.CreateBuilder<(Cooldown, TimeSpan)>(buckets.Length);
+                    for (var i = 0; i < buckets.Length; i++)
+                    {
+                        var bucket = buckets[i];
+                        if (bucket != null && bucket.IsRateLimited(out var retryAfter))
+                            rateLimited.Add((bucket.Cooldown, retryAfter));
+                    }
+
+                    if (rateLimited.Count > 0)
+                        return new CommandOnCooldownResult(this, rateLimited.TryMoveToImmutable());
+
+                    for (var i = 0; i < buckets.Length; i++)
+                        buckets[i]?.Decrement();
                 }
-
-                if (rateLimited.Count > 0)
-                    return new CommandOnCooldownResult(this, rateLimited.TryMoveToImmutable());
-
-                for (var i = 0; i < buckets.Length; i++)
-                    buckets[i]?.Decrement();
             }
 
             return new SuccessfulResult();

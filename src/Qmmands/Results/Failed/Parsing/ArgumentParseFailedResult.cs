@@ -8,7 +8,7 @@
         /// <summary>
         ///     Gets the reason of this failed result.
         /// </summary>
-        public override string Reason => ParserResult.Reason;
+        public override string FailureReason => ParserResult.FailureReason;
         /// <summary>
         ///     Gets the <see cref="Qmmands.Command"/> the parse failed for.
         /// </summary>

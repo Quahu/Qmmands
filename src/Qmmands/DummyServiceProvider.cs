@@ -13,7 +13,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the singleton instance of the <see cref="DummyServiceProvider"/>.
         /// </summary>
-        public static readonly DummyServiceProvider Instance = new DummyServiceProvider();
+        public static readonly DummyServiceProvider Instance = new();
 
         private DummyServiceProvider()
         { }

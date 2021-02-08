@@ -19,11 +19,16 @@ namespace Qmmands
         /// <summary>
         ///     Initialises a new <see cref="OverrideTypeParserAttribute"/> with the specified <see cref="Type"/> of a custom <see cref="TypeParser{T}"/>.
         /// </summary>
-        /// <param name="customTypeParserType"> The <see cref="Type"/> to override with. </param>
+        /// <param name="typeParserType"> The <see cref="Type"/> to override with. </param>
         /// <exception cref="ArgumentNullException">
         ///     Custom type parser type must not be null.
         /// </exception>
-        public OverrideTypeParserAttribute(Type customTypeParserType)
-            => Value = customTypeParserType ?? throw new ArgumentNullException(nameof(customTypeParserType), "Custom type parser type must not be null.");
+        public OverrideTypeParserAttribute(Type typeParserType)
+        {
+            if (typeParserType == null)
+                throw new ArgumentNullException(nameof(typeParserType), "Custom type parser type must not be null.");
+
+            Value = typeParserType;
+        }
     }
 }

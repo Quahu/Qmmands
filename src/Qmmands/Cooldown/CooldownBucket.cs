@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 
 namespace Qmmands
 {
@@ -7,8 +6,7 @@ namespace Qmmands
     {
         public Cooldown Cooldown { get; }
 
-        public int Remaining => Volatile.Read(ref _remaining);
-        private int _remaining;
+        public int Remaining { get; private set; }
 
         public DateTimeOffset Window { get; private set; }
 
@@ -17,7 +15,7 @@ namespace Qmmands
         public CooldownBucket(Cooldown cooldown)
         {
             Cooldown = cooldown;
-            _remaining = Cooldown.Amount;
+            Remaining = Cooldown.Amount;
         }
 
         public bool IsRateLimited(out TimeSpan retryAfter)
@@ -30,7 +28,7 @@ namespace Qmmands
 
             if (now > Window + Cooldown.Per)
             {
-                _remaining = Cooldown.Amount;
+                Remaining = Cooldown.Amount;
                 Window = now;
             }
 
@@ -47,7 +45,7 @@ namespace Qmmands
         public void Decrement()
         {
             var now = DateTimeOffset.UtcNow;
-            Interlocked.Decrement(ref _remaining);
+            Remaining--;
 
             if (Remaining == 0)
                 Window = now;
@@ -55,7 +53,7 @@ namespace Qmmands
 
         public void Reset()
         {
-            _remaining = Cooldown.Amount;
+            Remaining = Cooldown.Amount;
             LastCall = default;
             Window = default;
         }

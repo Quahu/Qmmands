@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Qmmands
@@ -35,8 +34,11 @@ namespace Qmmands
 
         /// <inheritdoc />
         public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context)
-            => Regex.IsMatch(argument as string)
-                ? CheckResult.Successful
-                : CheckResult.Unsuccessful($"The provided argument must match the regex pattern: {Regex}.");
+        {
+            if (!Regex.IsMatch(argument as string))
+                return Failure($"The provided argument must match the regex pattern: {Regex}.");
+
+            return Success();
+        }
     }
 }

@@ -27,16 +27,18 @@ namespace Qmmands
         protected virtual ValueTask AfterExecutedAsync()
             => default;
 
-        internal void Prepare(CommandContext context)
-            => Context = context as TContext ?? throw new InvalidOperationException($"Unable to set the context. Expected {typeof(TContext)}, got {context.GetType()}.");
-
         ValueTask IModuleBase.BeforeExecutedAsync()
             => BeforeExecutedAsync();
 
         ValueTask IModuleBase.AfterExecutedAsync()
             => AfterExecutedAsync();
 
-        void IModuleBase.Prepare(CommandContext context)
-            => Prepare(context);
+        void IModuleBase.Prepare(CommandContext _)
+        {
+            if (_ is not TContext context)
+                throw new InvalidOperationException($"Unable to set the command context. Expected {typeof(TContext)}, got {_.GetType()}.");
+
+            Context = context;
+        }
     }
 }

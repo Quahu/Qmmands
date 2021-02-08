@@ -102,7 +102,7 @@ namespace Qmmands
         ///     Gets or sets the quotation mark map.
         ///     If <see langword="null"/>, will default to <see cref="CommandUtilities.DefaultQuotationMarkMap"/>.
         /// </summary>
-        public IReadOnlyDictionary<char, char> QuoteMap { get; set; }
+        public IReadOnlyDictionary<char, char> QuotationMarkMap { get; set; }
 
         /// <summary>
         ///     Gets or sets the collection of nouns to use for <see cref="Nullable{T}"/> parsing.
@@ -120,6 +120,6 @@ namespace Qmmands
         ///     Gets the default <see cref="CommandServiceConfiguration"/>.
         ///     The equivalent of using <see langword="new"/> <see cref="CommandServiceConfiguration()"/>.
         /// </summary>
-        public static CommandServiceConfiguration Default => new CommandServiceConfiguration();
+        public static CommandServiceConfiguration Default => new();
     }
 }

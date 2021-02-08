@@ -102,8 +102,11 @@ namespace Qmmands
             Submodules = new List<ModuleBuilder>();
         }
 
-        internal ModuleBuilder(Type type, ModuleBuilder parent) : this(parent)
-            => Type = type;
+        internal ModuleBuilder(Type type, ModuleBuilder parent)
+            : this(parent)
+        {
+            Type = type;
+        }
 
         /// <summary>
         ///     Sets the <see cref="Name"/>.

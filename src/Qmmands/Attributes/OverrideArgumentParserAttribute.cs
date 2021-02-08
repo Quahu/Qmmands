@@ -16,11 +16,16 @@ namespace Qmmands
         /// <summary>
         ///     Initialises a new <see cref="OverrideArgumentParserAttribute"/> with the specified <see cref="Type"/> of a custom <see cref="IArgumentParser"/>.
         /// </summary>
-        /// <param name="customArgumentParserType"> The <see cref="Type"/> to override with. </param>
+        /// <param name="argumentParserType"> The <see cref="Type"/> to override with. </param>
         /// <exception cref="ArgumentNullException">
         ///     Custom argument parser type must not be null.
         /// </exception>
-        public OverrideArgumentParserAttribute(Type customArgumentParserType)
-            => Value = customArgumentParserType ?? throw new ArgumentNullException(nameof(customArgumentParserType), "Custom type parser type must not be null.");
+        public OverrideArgumentParserAttribute(Type argumentParserType)
+        {
+            if (argumentParserType == null)
+                throw new ArgumentNullException(nameof(argumentParserType), "Custom type parser type must not be null.");
+
+            Value = argumentParserType;
+        }
     }
 }

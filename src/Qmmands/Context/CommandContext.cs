@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Qommon.Collections;
 
 namespace Qmmands
 {
@@ -38,22 +37,14 @@ namespace Qmmands
         /// <summary>
         ///     Gets the parsed arguments.
         /// </summary>
-        public IReadOnlyList<object> Arguments
-        {
-            get
-            {
-                var arguments = _arguments;
-                return arguments ?? (_arguments = new ReadOnlyList<object>(InternalArguments ?? Array.Empty<object>()));
-            }
-        }
-        private ReadOnlyList<object> _arguments;
+        public IReadOnlyList<object> Arguments => InternalArguments;
 
         internal object[] InternalArguments;
 
         /// <summary>
         ///     Gets the <see cref="IServiceProvider"/> used for execution.
         /// </summary>
-        public IServiceProvider ServiceProvider { get; }
+        public IServiceProvider Services { get; }
 
         /// <summary>
         ///     Initialises a new instance of the <see cref="CommandContext"/>.
@@ -63,7 +54,7 @@ namespace Qmmands
         /// </param>
         protected CommandContext(IServiceProvider serviceProvider)
         {
-            ServiceProvider = serviceProvider ?? DummyServiceProvider.Instance;
+            Services = serviceProvider ?? DummyServiceProvider.Instance;
         }
     }
 }

@@ -25,7 +25,21 @@ namespace Qmmands
                 ? result.HasValue
                     ? new TypeParserResult<object>(result.Value)
                     : new TypeParserResult<object>(false)
-                : new TypeParserResult<object>(result.Reason);
+                : new TypeParserResult<object>(result.FailureReason);
         }
+
+        /// <summary>
+        ///     Returns a successful <see cref="TypeParserResult{T}"/> with the specified value.
+        /// </summary>
+        /// <returns> A successful <see cref="TypeParserResult{T}"/>. </returns>
+        protected static TypeParserResult<T> Success(T value)
+            => TypeParserResult<T>.Successful(value);
+
+        /// <summary>
+        ///     Returns a failed <see cref="TypeParserResult{T}"/> with the specified reason.
+        /// </summary>
+        /// <returns> A failed <see cref="TypeParserResult{T}"/>. </returns>
+        protected static TypeParserResult<T> Failure(string reason)
+            => TypeParserResult<T>.Failed(reason);
     }
 }

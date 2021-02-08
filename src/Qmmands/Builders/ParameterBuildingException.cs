@@ -12,7 +12,10 @@ namespace Qmmands
         /// </summary>
         public ParameterBuilder ParameterBuilder { get; }
 
-        internal ParameterBuildingException(ParameterBuilder parameterBuilder, string message) : base(message)
-            => ParameterBuilder = parameterBuilder;
+        internal ParameterBuildingException(ParameterBuilder parameterBuilder, string message)
+            : base(message)
+        {
+            ParameterBuilder = parameterBuilder;
+        }
     }
 }

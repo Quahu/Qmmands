@@ -11,7 +11,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the reason of this failed result.
         /// </summary>
-        public override string Reason => _lazyReason.Value;
+        public override string FailureReason => _lazyReason.Value;
         private readonly Lazy<string> _lazyReason;
 
         /// <summary>

@@ -1,5 +1,3 @@
-#pragma warning disable IDE0051 // Remove unused private members
-
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -257,7 +255,7 @@ namespace Qmmands
             return builder;
         }
 
-        public static Func<CommandService, IServiceProvider, T> CreateProviderConstructor<T>(CommandService commandService, Type type)
+        public static Func<IServiceProvider, T> CreateProviderConstructor<T>(CommandService commandService, Type type)
         {
             var constructors = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
             if (constructors.Length == 0)
@@ -271,15 +269,16 @@ namespace Qmmands
                 if (serviceType == typeof(IServiceProvider) || serviceType == provider.GetType())
                     return provider;
 
-                if (serviceType == typeof(CommandService) || serviceType == typeof(ICommandService) || serviceType == commandService.GetType())
+                if (serviceType == typeof(CommandService) || serviceType == commandService.GetType())
                     return commandService;
 
                 var service = provider.GetService(serviceType);
-                if (service != null)
-                    return service;
+                if (service == null)
+                    throw new InvalidOperationException($"Failed to instantiate {ctor.DeclaringType}, dependency of type {serviceType} was not found.");
 
-                throw new InvalidOperationException($"Failed to instantiate {ctor.DeclaringType}, dependency of type {serviceType} was not found.");
+                return service;
             }
+
             var constructor = constructors[0];
             var parameters = constructor.GetParameters();
             var arguments = new object[parameters.Length];
@@ -302,7 +301,7 @@ namespace Qmmands
             while (type != typeof(object));
             propertiesToInject = (propertiesToInject as List<PropertyInfo>).ToArray();
 
-            return (commandService, provider) =>
+            return (provider) =>
             {
                 for (var i = 0; i < parameters.Length; i++)
                     arguments[i] = GetDependency(commandService, constructor, provider, parameters[i].ParameterType);
@@ -400,7 +399,7 @@ namespace Qmmands
             var constructor = CreateProviderConstructor<IModuleBase>(service, type);
             return async context =>
             {
-                var instance = constructor(service, context.ServiceProvider);
+                var instance = constructor(context.Services);
                 instance.Prepare(context);
 
                 var executeAfter = true;
@@ -581,7 +580,7 @@ namespace Qmmands
 
         internal sealed class CommandOverloadComparer : IComparer<CommandMatch>
         {
-            public static readonly CommandOverloadComparer Instance = new CommandOverloadComparer();
+            public static readonly CommandOverloadComparer Instance = new();
 
             private CommandOverloadComparer()
             { }

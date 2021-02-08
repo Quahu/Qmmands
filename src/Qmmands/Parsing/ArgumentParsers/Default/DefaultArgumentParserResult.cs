@@ -17,7 +17,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the failure reason of this <see cref="DefaultArgumentParserResult"/>.
         /// </summary>
-        public override string Reason => _lazyReason.Value;
+        public override string FailureReason => _lazyReason.Value;
         private readonly Lazy<string> _lazyReason;
 
         /// <summary>

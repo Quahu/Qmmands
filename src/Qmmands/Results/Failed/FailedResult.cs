@@ -11,17 +11,17 @@
         public bool IsSuccessful => false;
 
         /// <summary>
-        ///     Gets the reason of this failed result.
+        ///     Gets the failure reason.
         /// </summary>
-        public abstract string Reason { get; }
+        public abstract string FailureReason { get; }
 
         /// <summary>
-        ///     Returns <see cref="Reason"/>.
+        ///     Returns <see cref="FailureReason"/>.
         /// </summary>
         /// <returns>
-        ///     The <see cref="Reason"/>.
+        ///     The <see cref="FailureReason"/>.
         /// </returns>
         public override string ToString()
-            => Reason;
+            => FailureReason;
     }
 }

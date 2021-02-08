@@ -6,12 +6,12 @@ using Qommon.Collections;
 namespace Qmmands
 {
     /// <summary>
-    ///     Provides some utility for handling commands.
+    ///     Provides various utility for commands.
     /// </summary>
     public static class CommandUtilities
     {
         /// <summary>
-        ///     Represents a map of various quotation marks.
+        ///     Represents a map of most common quotation marks.
         /// </summary>
         public static readonly IReadOnlyDictionary<char, char> DefaultQuotationMarkMap;
 
@@ -21,7 +21,7 @@ namespace Qmmands
         public static readonly IReadOnlyList<string> DefaultNullableNouns;
 
         /// <summary>
-        ///     The friendly names used for primitive <see cref="Type"/>s by <see cref="ArgumentParseFailedResult.Reason"/>. 
+        ///     Represents a map of friendly names used for primitive <see cref="Type"/>s by <see cref="ArgumentParseFailedResult.FailureReason"/>. 
         /// </summary>
         public static readonly IReadOnlyDictionary<Type, string> FriendlyPrimitiveTypeNames;
 
