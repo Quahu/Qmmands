@@ -422,29 +422,24 @@ namespace Qmmands
                             await taskCallback(instance, context.InternalArguments).ConfigureAwait(false);
                             break;
                         }
-
                         case CallbackFunc<Task<CommandResult>> taskResultCallback:
                         {
                             return await taskResultCallback(instance, context.InternalArguments).ConfigureAwait(false);
                         }
-
                         case CallbackFunc<ValueTask> valueTaskCallback:
                         {
                             await valueTaskCallback(instance, context.InternalArguments).ConfigureAwait(false);
                             break;
                         }
-
                         case CallbackFunc<ValueTask<CommandResult>> valueTaskResultCallback:
                         {
                             return await valueTaskResultCallback(instance, context.InternalArguments).ConfigureAwait(false);
                         }
-
                         case Action<object, object[]> voidCallback:
                         {
                             voidCallback(instance, context.InternalArguments);
                             break;
                         }
-
                         case CallbackFunc<CommandResult> resultCallback:
                         {
                             return resultCallback(instance, context.InternalArguments);
@@ -462,16 +457,6 @@ namespace Qmmands
                     }
                     finally
                     {
-                        if (instance is IDisposable disposable)
-                        {
-                            try
-                            {
-                                disposable.Dispose();
-                            }
-                            catch { }
-                        }
-
-#if NETCOREAPP3_0
                         if (instance is IAsyncDisposable asyncDisposable)
                         {
                             try
@@ -480,7 +465,14 @@ namespace Qmmands
                             }
                             catch { }
                         }
-#endif
+                        else if (instance is IDisposable disposable)
+                        {
+                            try
+                            {
+                                disposable.Dispose();
+                            }
+                            catch { }
+                        }
                     }
                 }
             };
