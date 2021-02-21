@@ -682,11 +682,6 @@ namespace Qmmands
             if (module == null)
                 throw new ArgumentNullException(nameof(module), "The module must not be null.");
 
-            return GetAllCommandsIterator(module);
-        }
-
-        private static IEnumerable<Command> GetAllCommandsIterator(Module module)
-        {
             static IEnumerable<Command> GetCommands(Module rModule)
             {
                 for (var i = 0; i < rModule.Commands.Count; i++)
@@ -699,8 +694,7 @@ namespace Qmmands
                 }
             }
 
-            foreach (var command in GetCommands(module))
-                yield return command;
+            return GetCommands(module);
         }
 
         /// <summary>
@@ -717,25 +711,19 @@ namespace Qmmands
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder), "The builder must not be null.");
 
-            return GetAllCommandsIterator(builder);
-        }
-
-        private static IEnumerable<CommandBuilder> GetAllCommandsIterator(ModuleBuilder builder)
-        {
-            static IEnumerable<CommandBuilder> GetCommands(ModuleBuilder rBuilder)
+            static IEnumerable<CommandBuilder> GetCommands(ModuleBuilder rModuleBuilder)
             {
-                for (var i = 0; i < rBuilder.Commands.Count; i++)
-                    yield return rBuilder.Commands[i];
+                for (var i = 0; i < rModuleBuilder.Commands.Count; i++)
+                    yield return rModuleBuilder.Commands[i];
 
-                for (var i = 0; i < rBuilder.Submodules.Count; i++)
+                for (var i = 0; i < rModuleBuilder.Submodules.Count; i++)
                 {
-                    foreach (var command in GetCommands(rBuilder.Submodules[i]))
+                    foreach (var command in GetCommands(rModuleBuilder.Submodules[i]))
                         yield return command;
                 }
             }
 
-            foreach (var command in GetCommands(builder))
-                yield return command;
+            return GetCommands(builder);
         }
 
         /// <summary>
@@ -752,11 +740,6 @@ namespace Qmmands
             if (module == null)
                 throw new ArgumentNullException(nameof(module), "The module must not be null.");
 
-            return GetAllSubmodulesIterator(module);
-        }
-
-        private static IEnumerable<Module> GetAllSubmodulesIterator(Module module)
-        {
             static IEnumerable<Module> GetModules(Module rModule)
             {
                 for (var i = 0; i < rModule.Submodules.Count; i++)
@@ -769,8 +752,7 @@ namespace Qmmands
                 }
             }
 
-            foreach (var submodule in GetModules(module))
-                yield return submodule;
+            return GetModules(module);
         }
 
         /// <summary>
@@ -787,25 +769,19 @@ namespace Qmmands
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder), "The builder must not be null.");
 
-            return GetAllSubmodulesIterator(builder);
-        }
-
-        private static IEnumerable<ModuleBuilder> GetAllSubmodulesIterator(ModuleBuilder builder)
-        {
-            static IEnumerable<ModuleBuilder> GetModules(ModuleBuilder rBuilder)
+            static IEnumerable<ModuleBuilder> GetSubmodules(ModuleBuilder rModuleBuilder)
             {
-                for (var i = 0; i < rBuilder.Submodules.Count; i++)
+                for (var i = 0; i < rModuleBuilder.Submodules.Count; i++)
                 {
-                    var submodule = rBuilder.Submodules[i];
+                    var submodule = rModuleBuilder.Submodules[i];
                     yield return submodule;
 
-                    foreach (var subsubmodule in GetModules(submodule))
+                    foreach (var subsubmodule in GetSubmodules(submodule))
                         yield return subsubmodule;
                 }
             }
 
-            foreach (var submodule in GetModules(builder))
-                yield return submodule;
+            return GetSubmodules(builder);
         }
 
         static CommandUtilities()
