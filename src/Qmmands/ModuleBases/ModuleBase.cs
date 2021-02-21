@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Qmmands
 {
@@ -33,12 +32,12 @@ namespace Qmmands
         ValueTask IModuleBase.AfterExecutedAsync()
             => AfterExecutedAsync();
 
-        void IModuleBase.Prepare(CommandContext _)
+        void IModuleBase.Prepare(CommandContext context)
         {
-            if (_ is not TContext context)
-                throw new InvalidOperationException($"Unable to set the command context. Expected {typeof(TContext)}, got {_.GetType()}.");
+            if (context is not TContext actualContext)
+                throw new ContextTypeMismatchException(typeof(TContext), context.GetType());
 
-            Context = context;
+            Context = actualContext;
         }
     }
 }
