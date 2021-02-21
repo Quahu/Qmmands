@@ -27,7 +27,7 @@ namespace Qmmands
         /// <remarks>
         ///     Grouped checks act as if they were put side by side with the logical OR operator (||) in between.
         /// </remarks>
-        public string Group { get; set; }
+        public object Group { get; set; }
 
         /// <summary>
         ///     A method which determines whether the <see cref="Module"/> or <see cref="Command"/> can execute in given circumstances.

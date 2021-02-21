@@ -20,13 +20,9 @@ namespace Qmmands
         /// </summary>
         public Parameter Parameter { get; internal set; }
 
-        /// <summary>
-        ///     Gets or sets the group for this check.
-        /// </summary>
-        /// <remarks>
-        ///     Grouped checks act as if they were put side by side with the logical OR operator (||) in between.
-        /// </remarks>
-        public string Group { get; set; }
+
+        /// <inheritdoc cref="CheckAttribute.Group"/>
+        public object Group { get; set; }
 
         /// <summary>
         ///     Initialises a new <see cref="ParameterCheckAttribute"/> with the predicate that determines what <see cref="Type"/>s are supported.
