@@ -6,7 +6,7 @@ namespace Qmmands
     /// <summary>
     ///     Represents a <see cref="Qmmands.Module"/> or <see cref="Qmmands.Command"/> check that has to succeed before it can be executed.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public abstract class CheckAttribute : Attribute
     {
         /// <summary>

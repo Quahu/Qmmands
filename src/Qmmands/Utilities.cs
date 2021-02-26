@@ -55,7 +55,7 @@ namespace Qmmands
                 throw new ArgumentException($"{typeInfo} must not be abstract, must not have generic parameters, and must inherit ModuleBase.", nameof(typeInfo));
 
             var builder = new ModuleBuilder(typeInfo, parent);
-            var attributes = typeInfo.GetCustomAttributes(false);
+            var attributes = typeInfo.GetCustomAttributes(true);
             for (var i = 0; i < attributes.Length; i++)
             {
                 switch (attributes[i])
