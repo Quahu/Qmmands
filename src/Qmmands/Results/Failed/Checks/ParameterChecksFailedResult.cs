@@ -11,8 +11,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the reason of this failed result.
         /// </summary>
-        public override string FailureReason => _lazyReason.Value;
-        private readonly Lazy<string> _lazyReason;
+        public override string FailureReason => $"{(FailedChecks.Count == 1 ? "One check" : "Multiple checks")} failed for the parameter {Parameter.Name} in the command {Parameter.Command}.";
 
         /// <summary>
         ///     Gets the <see cref="Qmmands.Parameter"/> the checks failed on.
@@ -34,8 +33,6 @@ namespace Qmmands
             Parameter = parameter;
             Argument = argument;
             FailedChecks = failedChecks;
-            _lazyReason = new Lazy<string>(
-                () => $"{(FailedChecks.Count == 1 ? "One check" : "Multiple checks")} failed for the parameter {Parameter.Name} in the command {Parameter.Command}.", true);
         }
     }
 }

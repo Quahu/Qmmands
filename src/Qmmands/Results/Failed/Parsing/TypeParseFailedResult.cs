@@ -10,8 +10,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the reason of this failed result.
         /// </summary>
-        public override string FailureReason => _lazyReason.Value;
-        private readonly Lazy<string> _lazyReason;
+        public override string FailureReason => _reason ?? GetDefaultReason();
 
         /// <summary>
         ///     Gets the <see cref="Qmmands.Parameter"/> the parse failed for.
@@ -23,29 +22,26 @@ namespace Qmmands
         /// </summary>
         public string Value { get; }
 
+        private readonly string _reason;
+
         internal TypeParseFailedResult(Parameter parameter, string value, string reason = null)
         {
             Parameter = parameter;
             Value = value;
+            _reason = reason;
+        }
 
-            if (reason != null)
-            {
-                _lazyReason = new Lazy<string>(reason);
-                return;
-            }
-
-            _lazyReason = new Lazy<string>(() =>
-            {
-                var type = Nullable.GetUnderlyingType(parameter.Type);
-                var friendlyName = type == null
-                    ? CommandUtilities.FriendlyPrimitiveTypeNames.TryGetValue(parameter.Type, out var name)
+        private string GetDefaultReason()
+        {
+            var type = Nullable.GetUnderlyingType(Parameter.Type);
+            var friendlyName = type == null
+                    ? CommandUtilities.FriendlyPrimitiveTypeNames.TryGetValue(Parameter.Type, out var name)
                         ? name
-                        : parameter.Type.Name
+                        : Parameter.Type.Name
                     : CommandUtilities.FriendlyPrimitiveTypeNames.TryGetValue(type, out name)
                         ? $"nullable {name}"
                         : $"nullable {type.Name}";
-                return $"Failed to parse {friendlyName}.";
-            }, true);
+            return $"Failed to parse {friendlyName}.";
         }
     }
 }

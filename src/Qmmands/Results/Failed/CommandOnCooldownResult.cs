@@ -12,8 +12,9 @@ namespace Qmmands
         /// <summary>
         ///     Gets the reason of this failed result.
         /// </summary>
-        public override string FailureReason => _lazyReason.Value;
-        private readonly Lazy<string> _lazyReason;
+        public override string FailureReason => Cooldowns.Count == 1
+            ? $"Command {Command} is on a '{Cooldowns[0].Cooldown.BucketType}' cooldown. Retry after {Cooldowns[0].RetryAfter}."
+            : $"Command {Command} is on multiple cooldowns: {string.Join(", ", Cooldowns.Select(x => $"'{x.Cooldown.BucketType}' - retry after {x.RetryAfter}"))}.";
 
         /// <summary>
         ///     Gets the <see cref="Qmmands.Command"/> that is on cooldown.
@@ -25,14 +26,10 @@ namespace Qmmands
         /// </summary>
         public IReadOnlyList<(Cooldown Cooldown, TimeSpan RetryAfter)> Cooldowns { get; }
 
-        internal CommandOnCooldownResult(Command command, IReadOnlyList<(Cooldown Cooldown, TimeSpan RetryAfter)> cooldowns)
+        internal CommandOnCooldownResult(Command command, IReadOnlyList<(Cooldown, TimeSpan)> cooldowns)
         {
             Command = command;
             Cooldowns = cooldowns;
-
-            _lazyReason = new Lazy<string>(() => cooldowns.Count == 1
-                ? $"Command {command} is on a '{cooldowns[0].Cooldown.BucketType}' cooldown. Retry after {cooldowns[0].RetryAfter}."
-                : $"Command {command} is on multiple cooldowns: {string.Join(", ", cooldowns.Select(x => $"'{x.Cooldown.BucketType}' - retry after {x.RetryAfter}"))}", true);
         }
     }
 }

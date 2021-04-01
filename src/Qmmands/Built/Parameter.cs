@@ -130,7 +130,7 @@ namespace Qmmands
                     return new ParameterChecksFailedResult(this, argument, failedGroups.SelectMany(x => x).Where(x => !x.Result.IsSuccessful).ToImmutableArray());
             }
 
-            return new SuccessfulResult();
+            return SuccessfulResult.Instance;
         }
 
         /// <summary>

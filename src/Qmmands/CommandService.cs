@@ -120,9 +120,7 @@ namespace Qmmands
             QuotationMarkMap = configuration.QuotationMarkMap != null
                 ? new ReadOnlyDictionary<char, char>(configuration.QuotationMarkMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value))
                 : CommandUtilities.DefaultQuotationMarkMap;
-            NullableNouns = configuration.NullableNouns != null
-                ? configuration.NullableNouns.ToImmutableArray()
-                : CommandUtilities.DefaultNullableNouns;
+            NullableNouns = configuration.NullableNouns?.ToImmutableArray() ?? CommandUtilities.DefaultNullableNouns;
 
             StringComparer = StringComparer.FromComparison(StringComparison);
 
@@ -131,7 +129,7 @@ namespace Qmmands
             _map = new CommandMap(this);
             _argumentParsers = new ConcurrentDictionary<Type, IArgumentParser>(Environment.ProcessorCount, 1);
             SetDefaultArgumentParser(configuration.DefaultArgumentParser ?? Qmmands.DefaultArgumentParser.Instance);
-            _typeParsers = new ConcurrentDictionary<Type, Dictionary<Type, (bool, ITypeParser)>>();
+            _typeParsers = new ConcurrentDictionary<Type, Dictionary<Type, (bool, ITypeParser)>>(Environment.ProcessorCount, 0);
             _primitiveTypeParsers = new ConcurrentDictionary<Type, IPrimitiveTypeParser>(Environment.ProcessorCount, CommandUtilities.PrimitiveTypeParserCount * 2);
             foreach (var type in Utilities.TryParseDelegates.Keys)
             {
@@ -144,7 +142,8 @@ namespace Qmmands
         /// <summary>
         ///     Initialises a new <see cref="CommandService"/> with the default <see cref="CommandServiceConfiguration"/>.
         /// </summary>
-        public CommandService() : this(CommandServiceConfiguration.Default)
+        public CommandService()
+            : this(CommandServiceConfiguration.Default)
         { }
 
         /// <summary>
@@ -358,8 +357,8 @@ namespace Qmmands
                 throw new ArgumentNullException(nameof(type), "The argument parser type to get must not be null.");
 
             return _argumentParsers.TryGetValue(type, out var parser)
-                  ? parser
-                  : null;
+                ? parser
+                : null;
         }
 
         /// <summary>
@@ -842,7 +841,7 @@ namespace Qmmands
                 }
                 catch (Exception ex)
                 {
-                    var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.Checks, ex);
+                    var executionFailedResult = new CommandExecutionFailedResult(match.Command, CommandExecutionStep.Checks, ex);
                     await InvokeCommandErroredAsync(executionFailedResult, context).ConfigureAwait(false);
                     return executionFailedResult;
                 }
@@ -877,7 +876,7 @@ namespace Qmmands
                 }
                 catch (Exception ex)
                 {
-                    var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.ArgumentParsing, ex);
+                    var executionFailedResult = new CommandExecutionFailedResult(match.Command, CommandExecutionStep.ArgumentParsing, ex);
                     await InvokeCommandErroredAsync(executionFailedResult, context).ConfigureAwait(false);
                     return executionFailedResult;
                 }
@@ -899,7 +898,7 @@ namespace Qmmands
                 }
                 catch (Exception ex)
                 {
-                    var executionFailedResult = new ExecutionFailedResult(match.Command, CommandExecutionStep.TypeParsing, ex);
+                    var executionFailedResult = new CommandExecutionFailedResult(match.Command, CommandExecutionStep.TypeParsing, ex);
                     await InvokeCommandErroredAsync(executionFailedResult, context).ConfigureAwait(false);
                     return executionFailedResult;
                 }
@@ -962,7 +961,7 @@ namespace Qmmands
             }
             catch (Exception ex)
             {
-                var executionFailedResult = new ExecutionFailedResult(command, CommandExecutionStep.Checks, ex);
+                var executionFailedResult = new CommandExecutionFailedResult(command, CommandExecutionStep.Checks, ex);
                 await InvokeCommandErroredAsync(executionFailedResult, context).ConfigureAwait(false);
                 return executionFailedResult;
             }
@@ -991,7 +990,7 @@ namespace Qmmands
             }
             catch (Exception ex)
             {
-                var executionFailedResult = new ExecutionFailedResult(command, CommandExecutionStep.ArgumentParsing, ex);
+                var executionFailedResult = new CommandExecutionFailedResult(command, CommandExecutionStep.ArgumentParsing, ex);
                 await InvokeCommandErroredAsync(executionFailedResult, context).ConfigureAwait(false);
                 return executionFailedResult;
             }
@@ -1007,7 +1006,7 @@ namespace Qmmands
             }
             catch (Exception ex)
             {
-                var executionFailedResult = new ExecutionFailedResult(command, CommandExecutionStep.TypeParsing, ex);
+                var executionFailedResult = new CommandExecutionFailedResult(command, CommandExecutionStep.TypeParsing, ex);
                 await InvokeCommandErroredAsync(executionFailedResult, context).ConfigureAwait(false);
                 return executionFailedResult;
             }
@@ -1058,7 +1057,7 @@ namespace Qmmands
             }
             catch (Exception ex)
             {
-                var executionFailedResult = new ExecutionFailedResult(command, CommandExecutionStep.Checks, ex);
+                var executionFailedResult = new CommandExecutionFailedResult(command, CommandExecutionStep.Checks, ex);
                 await InvokeCommandErroredAsync(executionFailedResult, context).ConfigureAwait(false);
                 return executionFailedResult;
             }
@@ -1076,7 +1075,7 @@ namespace Qmmands
                     case ModuleBaseCommandCallbackDelegate moduleBaseCallback:
                     {
                         result = await moduleBaseCallback(context).ConfigureAwait(false);
-                        if (result is ExecutionFailedResult executionFailedResult)
+                        if (result is CommandExecutionFailedResult executionFailedResult)
                         {
                             await InvokeCommandErroredAsync(executionFailedResult, context).ConfigureAwait(false);
                             return result;
@@ -1128,11 +1127,11 @@ namespace Qmmands
                     commandResult.Command = context.Command;
 
                 await InvokeCommandExecutedAsync(result as CommandResult, context).ConfigureAwait(false);
-                return result ?? new SuccessfulResult();
+                return result ?? SuccessfulResult.Instance;
             }
             catch (Exception ex)
             {
-                var result = new ExecutionFailedResult(context.Command, CommandExecutionStep.Command, ex);
+                var result = new CommandExecutionFailedResult(context.Command, CommandExecutionStep.Command, ex);
                 await InvokeCommandErroredAsync(result, context).ConfigureAwait(false);
                 return result;
             }
@@ -1148,7 +1147,7 @@ namespace Qmmands
             }
             catch (Exception ex)
             {
-                var result = new ExecutionFailedResult(context.Command, CommandExecutionStep.CooldownBucketKeyGenerating, ex);
+                var result = new CommandExecutionFailedResult(context.Command, CommandExecutionStep.CooldownBucketKeyGenerating, ex);
                 await InvokeCommandErroredAsync(result, context).ConfigureAwait(false);
                 return result;
             }
@@ -1160,7 +1159,7 @@ namespace Qmmands
 
                 case RunMode.Parallel:
                     _ = Task.Run(() => InternalExecuteCallbackAsync(context));
-                    return new SuccessfulResult();
+                    return SuccessfulResult.Instance;
 
                 default:
                     throw new InvalidOperationException("Invalid run mode.");
@@ -1288,7 +1287,7 @@ namespace Qmmands
         private Task InvokeCommandExecutedAsync(CommandResult result, CommandContext context)
             => _commandExecuted.InvokeAsync(new CommandExecutedEventArgs(result, context));
 
-        private Task InvokeCommandErroredAsync(ExecutionFailedResult result, CommandContext context)
+        private Task InvokeCommandErroredAsync(CommandExecutionFailedResult result, CommandContext context)
             => _commandExecutionFailed.InvokeAsync(new CommandExecutionFailedEventArgs(result, context));
     }
 }

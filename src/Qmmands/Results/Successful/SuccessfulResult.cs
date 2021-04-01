@@ -5,6 +5,8 @@
     /// </summary>
     public sealed class SuccessfulResult : IResult
     {
+        public static readonly SuccessfulResult Instance = new SuccessfulResult();
+        
         /// <summary>
         ///     Gets <see langword="true"/>.
         /// </summary>
@@ -13,7 +15,7 @@
         /// <summary>
         ///     Initialises a new <see cref="SuccessfulResult"/>.
         /// </summary>
-        public SuccessfulResult()
+        private SuccessfulResult()
         { }
     }
 }

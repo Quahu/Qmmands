@@ -412,7 +412,7 @@ namespace Qmmands
                     catch (Exception ex)
                     {
                         executeAfter = false;
-                        return new ExecutionFailedResult(context.Command, CommandExecutionStep.BeforeExecuted, ex);
+                        return new CommandExecutionFailedResult(context.Command, CommandExecutionStep.BeforeExecuted, ex);
                     }
 
                     switch (callbackDelegate)

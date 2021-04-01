@@ -18,7 +18,7 @@ namespace Qmmands
         {
             var nouns = (ImmutableArray<string>) parameter.Service.NullableNouns;
             return nouns.Any(x => value.Equals(x, parameter.Service.StringComparison))
-                ? new ValueTask<TypeParserResult<T>>(new TypeParserResult<T>(false))
+                ? new(new TypeParserResult<T>(false))
                 : _typeParser.ParseAsync(parameter, value, context);
         }
     }

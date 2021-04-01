@@ -220,7 +220,7 @@ namespace Qmmands
                     return new ChecksFailedResult(this, failedGroups.SelectMany(x => x).Where(x => !x.Result.IsSuccessful).ToImmutableArray());
             }
 
-            return new SuccessfulResult();
+            return SuccessfulResult.Instance;
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace Qmmands
                 }
             }
 
-            return new SuccessfulResult();
+            return SuccessfulResult.Instance;
         }
 
         /// <summary>

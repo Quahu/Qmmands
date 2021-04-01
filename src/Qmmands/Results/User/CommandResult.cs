@@ -13,7 +13,7 @@ namespace Qmmands
         public abstract bool IsSuccessful { get; }
 
         /// <summary>
-        ///     The <see cref="Qmmands.Command"/> this result was returned by.
+        ///     Gets the <see cref="Qmmands.Command"/> this result was returned by.
         /// </summary>
         public Command Command { get; internal set; }
 
@@ -22,6 +22,6 @@ namespace Qmmands
         /// </summary>
         /// <param name="result"> The result to wrap. </param>
         public static implicit operator ValueTask<CommandResult>(CommandResult result)
-            => new ValueTask<CommandResult>(result);
+            => new(result);
     }
 }

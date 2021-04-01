@@ -8,7 +8,7 @@
         /// <summary>
         ///     Gets the reason of this failed result.
         /// </summary>
-        public override string FailureReason { get; }
+        public override string FailureReason => $"Command {Command} is disabled.";
 
         /// <summary>
         ///     Gets the <see cref="Qmmands.Command"/> that is disabled.
@@ -18,7 +18,6 @@
         internal CommandDisabledResult(Command command)
         {
             Command = command;
-            FailureReason = $"Command {command} is disabled.";
         }
     }
 }

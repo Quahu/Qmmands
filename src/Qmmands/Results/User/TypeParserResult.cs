@@ -77,6 +77,6 @@ namespace Qmmands
         /// </summary>
         /// <param name="result"> The result to wrap. </param>
         public static implicit operator ValueTask<TypeParserResult<T>>(TypeParserResult<T> result)
-            => new ValueTask<TypeParserResult<T>>(result);
+            => new(result);
     }
 }

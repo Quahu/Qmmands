@@ -62,6 +62,6 @@ namespace Qmmands
         /// </summary>
         /// <param name="result"> The result to wrap. </param>
         public static implicit operator ValueTask<CheckResult>(CheckResult result)
-            => new ValueTask<CheckResult>(result);
+            => new(result);
     }
 }

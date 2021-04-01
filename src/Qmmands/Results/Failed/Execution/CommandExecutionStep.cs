@@ -1,7 +1,9 @@
-﻿namespace Qmmands
+﻿using System;
+
+namespace Qmmands
 {
     /// <summary>
-    ///     Represents the execution step at which the <see cref="ExecutionFailedResult"/> was returned.
+    ///     Represents the execution step at which the <see cref="CommandExecutionFailedResult"/> was returned.
     /// </summary>
     public enum CommandExecutionStep
     {

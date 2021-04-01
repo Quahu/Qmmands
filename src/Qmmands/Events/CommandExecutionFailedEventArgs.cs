@@ -8,9 +8,9 @@ namespace Qmmands
     public sealed class CommandExecutionFailedEventArgs : EventArgs
     {
         /// <summary>
-        ///     Gets the <see cref="ExecutionFailedResult"/> returned from execution.
+        ///     Gets the <see cref="CommandExecutionFailedResult"/> returned from execution.
         /// </summary>
-        public ExecutionFailedResult Result { get; }
+        public CommandExecutionFailedResult Result { get; }
 
         /// <summary>
         ///     Gets the <see cref="CommandContext"/> used for execution.
@@ -20,9 +20,9 @@ namespace Qmmands
         /// <summary>
         ///     Initialises a new <see cref="CommandExecutionFailedEventArgs"/>.
         /// </summary>
-        /// <param name="result"> The <see cref="ExecutionFailedResult"/> returned from execution. </param>
+        /// <param name="result"> The <see cref="CommandExecutionFailedResult"/> returned from execution. </param>
         /// <param name="context"> The <see cref="CommandContext"/> used for execution. </param>
-        public CommandExecutionFailedEventArgs(ExecutionFailedResult result, CommandContext context)
+        public CommandExecutionFailedEventArgs(CommandExecutionFailedResult result, CommandContext context)
         {
             Result = result;
             Context = context;

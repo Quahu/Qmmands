@@ -17,8 +17,34 @@ namespace Qmmands
         /// <summary>
         ///     Gets the failure reason of this <see cref="DefaultArgumentParserResult"/>.
         /// </summary>
-        public override string FailureReason => _lazyReason.Value;
-        private readonly Lazy<string> _lazyReason;
+        public override string FailureReason
+        {
+            get
+            {
+                switch (Failure)
+                {
+                    case DefaultArgumentParserFailure.UnclosedQuote:
+                        return "A quotation mark was left unclosed.";
+
+                    case DefaultArgumentParserFailure.UnexpectedQuote:
+                        return "Encountered an unexpected quotation mark.";
+
+                    case DefaultArgumentParserFailure.NoWhitespaceBetweenArguments:
+                        return "Whitespace is required between arguments.";
+
+                    case DefaultArgumentParserFailure.TooFewArguments:
+                        var missingParameters = EnumerateMissingParameters().Select(x => $"'{x}'").ToArray();
+                        return $"Required {(missingParameters.Length == 1 ? "parameter" : "parameters")} " +
+                                 $"{string.Join(", ", missingParameters)} {(missingParameters.Length == 1 ? "is" : "are")} missing.";
+
+                    case DefaultArgumentParserFailure.TooManyArguments:
+                        return "Too many arguments provided.";
+
+                    default:
+                        throw new InvalidOperationException("Invalid argument parser failure.");
+                }
+            }
+        }
 
         /// <summary>
         ///     Gets the <see cref="Qmmands.Command"/>.
@@ -68,31 +94,6 @@ namespace Qmmands
         public DefaultArgumentParserResult(Command command, IReadOnlyDictionary<Parameter, object> arguments) : base(arguments)
         {
             Command = command;
-            _lazyReason = new Lazy<string>(() =>
-            {
-                switch (Failure)
-                {
-                    case DefaultArgumentParserFailure.UnclosedQuote:
-                        return "A quotation mark was left unclosed.";
-
-                    case DefaultArgumentParserFailure.UnexpectedQuote:
-                        return "Encountered an unexpected quotation mark.";
-
-                    case DefaultArgumentParserFailure.NoWhitespaceBetweenArguments:
-                        return "Whitespace is required between arguments.";
-
-                    case DefaultArgumentParserFailure.TooFewArguments:
-                        var missingParameters = EnumerateMissingParameters().Select(x => $"'{x}'").ToArray();
-                        return $"Required {(missingParameters.Length == 1 ? "parameter" : "parameters")} " +
-                                 $"{string.Join(", ", missingParameters)} {(missingParameters.Length == 1 ? "is" : "are")} missing.";
-
-                    case DefaultArgumentParserFailure.TooManyArguments:
-                        return "Too many arguments provided.";
-
-                    default:
-                        throw new InvalidOperationException("Invalid argument parser failure.");
-                }
-            }, true);
         }
 
         /// <summary>
