@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ArgumentParserResult
    ">
-    <meta name="generator" content="docfx 2.52.0.0">
+    <meta name="generator" content="docfx 2.56.7.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -90,19 +90,19 @@
   <h6><strong>Assembly</strong>: Qmmands.dll</h6>
   <h5 id="Qmmands_ArgumentParserResult_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class ArgumentParserResult : IResult</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class ArgumentParserResult : object, IResult</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_ArgumentParserResult__ctor_System_Collections_Generic_IReadOnlyDictionary_Qmmands_Parameter_System_Object__.md&amp;value=---%0Auid%3A%20Qmmands.ArgumentParserResult.%23ctor(System.Collections.Generic.IReadOnlyDictionary%7BQmmands.Parameter%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_ArgumentParserResult__ctor_IReadOnlyDictionary_Qmmands_Parameter_System_Object__.md&amp;value=---%0Auid%3A%20Qmmands.ArgumentParserResult.%23ctor(IReadOnlyDictionary%7BQmmands.Parameter%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Results/User/ArgumentParserResult.cs/#L34">View Source</a>
   </span>
   <a id="Qmmands_ArgumentParserResult__ctor_" data-uid="Qmmands.ArgumentParserResult.#ctor*"></a>
-  <h4 id="Qmmands_ArgumentParserResult__ctor_System_Collections_Generic_IReadOnlyDictionary_Qmmands_Parameter_System_Object__" data-uid="Qmmands.ArgumentParserResult.#ctor(System.Collections.Generic.IReadOnlyDictionary{Qmmands.Parameter,System.Object})">ArgumentParserResult(IReadOnlyDictionary&lt;Parameter, Object&gt;)</h4>
+  <h4 id="Qmmands_ArgumentParserResult__ctor_IReadOnlyDictionary_Qmmands_Parameter_System_Object__" data-uid="Qmmands.ArgumentParserResult.#ctor(IReadOnlyDictionary{Qmmands.Parameter,System.Object})">ArgumentParserResult(IReadOnlyDictionary&lt;Parameter, Object&gt;)</h4>
   <div class="markdown level1 summary"><p>Initialises a new <a class="xref" href="Qmmands.ArgumentParserResult.html">ArgumentParserResult</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -121,7 +121,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2">IReadOnlyDictionary</a>&lt;<a class="xref" href="Qmmands.Parameter.html">Parameter</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="xref">IReadOnlyDictionary</span>&lt;<a class="xref" href="Qmmands.Parameter.html">Parameter</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
         <td><span class="parametername">arguments</span></td>
         <td><p>The successfully parsed arguments. </p>
 </td>
@@ -139,7 +139,7 @@
   </span>
   <a id="Qmmands_ArgumentParserResult_Arguments_" data-uid="Qmmands.ArgumentParserResult.Arguments*"></a>
   <h4 id="Qmmands_ArgumentParserResult_Arguments" data-uid="Qmmands.ArgumentParserResult.Arguments">Arguments</h4>
-  <div class="markdown level1 summary"><p>Gets the successfully parsed arguments.</p>
+  <div class="markdown level1 summary"><p>Gets the parsed arguments.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -156,7 +156,38 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2">IReadOnlyDictionary</a>&lt;<a class="xref" href="Qmmands.Parameter.html">Parameter</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="xref">IReadOnlyDictionary</span>&lt;<a class="xref" href="Qmmands.Parameter.html">Parameter</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_ArgumentParserResult_FailureReason.md&amp;value=---%0Auid%3A%20Qmmands.ArgumentParserResult.FailureReason%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Results/User/ArgumentParserResult.cs/#L20">View Source</a>
+  </span>
+  <a id="Qmmands_ArgumentParserResult_FailureReason_" data-uid="Qmmands.ArgumentParserResult.FailureReason*"></a>
+  <h4 id="Qmmands_ArgumentParserResult_FailureReason" data-uid="Qmmands.ArgumentParserResult.FailureReason">FailureReason</h4>
+  <div class="markdown level1 summary"><p>Gets the failure reason of this <a class="xref" href="Qmmands.ArgumentParserResult.html">ArgumentParserResult</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract string FailureReason { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -192,49 +223,18 @@
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_ArgumentParserResult_Reason.md&amp;value=---%0Auid%3A%20Qmmands.ArgumentParserResult.Reason%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Results/User/ArgumentParserResult.cs/#L20">View Source</a>
-  </span>
-  <a id="Qmmands_ArgumentParserResult_Reason_" data-uid="Qmmands.ArgumentParserResult.Reason*"></a>
-  <h4 id="Qmmands_ArgumentParserResult_Reason" data-uid="Qmmands.ArgumentParserResult.Reason">Reason</h4>
-  <div class="markdown level1 summary"><p>Gets the failure reason of this <a class="xref" href="Qmmands.ArgumentParserResult.html">ArgumentParserResult</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract string Reason { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="operators">Operators
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_ArgumentParserResult_op_Implicit_Qmmands_ArgumentParserResult__System_Threading_Tasks_ValueTask_Qmmands_ArgumentParserResult_.md&amp;value=---%0Auid%3A%20Qmmands.ArgumentParserResult.op_Implicit(Qmmands.ArgumentParserResult)~System.Threading.Tasks.ValueTask%7BQmmands.ArgumentParserResult%7D%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_ArgumentParserResult_op_Implicit_Qmmands_ArgumentParserResult__ValueTask_Qmmands_ArgumentParserResult_.md&amp;value=---%0Auid%3A%20Qmmands.ArgumentParserResult.op_Implicit(Qmmands.ArgumentParserResult)~ValueTask%7BQmmands.ArgumentParserResult%7D%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Results/User/ArgumentParserResult.cs/#L43">View Source</a>
   </span>
   <a id="Qmmands_ArgumentParserResult_op_Implicit_" data-uid="Qmmands.ArgumentParserResult.op_Implicit*"></a>
-  <h4 id="Qmmands_ArgumentParserResult_op_Implicit_Qmmands_ArgumentParserResult__System_Threading_Tasks_ValueTask_Qmmands_ArgumentParserResult_" data-uid="Qmmands.ArgumentParserResult.op_Implicit(Qmmands.ArgumentParserResult)~System.Threading.Tasks.ValueTask{Qmmands.ArgumentParserResult}">Implicit(ArgumentParserResult to ValueTask&lt;ArgumentParserResult&gt;)</h4>
-  <div class="markdown level1 summary"><p>Implicitly wraps the provided <a class="xref" href="Qmmands.ArgumentParserResult.html">ArgumentParserResult</a> in a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask&lt;TResult&gt;</a>.</p>
+  <h4 id="Qmmands_ArgumentParserResult_op_Implicit_Qmmands_ArgumentParserResult__ValueTask_Qmmands_ArgumentParserResult_" data-uid="Qmmands.ArgumentParserResult.op_Implicit(Qmmands.ArgumentParserResult)~ValueTask{Qmmands.ArgumentParserResult}">Implicit(ArgumentParserResult to ValueTask&lt;ArgumentParserResult&gt;)</h4>
+  <div class="markdown level1 summary"><p>Implicitly wraps the provided <a class="xref" href="Qmmands.ArgumentParserResult.html">ArgumentParserResult</a> in a <see cref="!:ValueTask&lt;TResult>"></see>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -269,7 +269,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask</a>&lt;<a class="xref" href="Qmmands.ArgumentParserResult.html">ArgumentParserResult</a>&gt;</td>
+        <td><span class="xref">ValueTask</span>&lt;<a class="xref" href="Qmmands.ArgumentParserResult.html">ArgumentParserResult</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -294,7 +294,8 @@
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class CommandContext
    ">
-    <meta name="generator" content="docfx 2.52.0.0">
+    <meta name="generator" content="docfx 2.56.7.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -85,7 +85,7 @@
   <h6><strong>Assembly</strong>: Qmmands.dll</h6>
   <h5 id="Qmmands_CommandContext_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class CommandContext</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class CommandContext : object</code></pre>
   </div>
   <h5 id="Qmmands_CommandContext_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>The properties this class exposes may not always be present, depending on how the <a class="xref" href="Qmmands.Command.html">Command</a> was executed.</p>
@@ -94,13 +94,13 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandContext__ctor_System_IServiceProvider_.md&amp;value=---%0Auid%3A%20Qmmands.CommandContext.%23ctor(System.IServiceProvider)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandContext__ctor_IServiceProvider_.md&amp;value=---%0Auid%3A%20Qmmands.CommandContext.%23ctor(IServiceProvider)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Context/CommandContext.cs/#L64">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Context/CommandContext.cs/#L55">View Source</a>
   </span>
   <a id="Qmmands_CommandContext__ctor_" data-uid="Qmmands.CommandContext.#ctor*"></a>
-  <h4 id="Qmmands_CommandContext__ctor_System_IServiceProvider_" data-uid="Qmmands.CommandContext.#ctor(System.IServiceProvider)">CommandContext(IServiceProvider)</h4>
+  <h4 id="Qmmands_CommandContext__ctor_IServiceProvider_" data-uid="Qmmands.CommandContext.#ctor(IServiceProvider)">CommandContext(IServiceProvider)</h4>
   <div class="markdown level1 summary"><p>Initialises a new instance of the <a class="xref" href="Qmmands.CommandContext.html">CommandContext</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -119,9 +119,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></td>
+        <td><span class="xref">IServiceProvider</span></td>
         <td><span class="parametername">serviceProvider</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> to use for execution. Passing <span class="xref">null</span> will make it default to a <span class="xref">Qmmands.DummyServiceProvider</span>.</p>
+        <td><p>The <see cref="!:IServiceProvider"></see> to use for execution. Passing <span class="xref">null</span> will make it default to a <a class="xref" href="Qmmands.DummyServiceProvider.html">DummyServiceProvider</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -133,7 +133,7 @@
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandContext_Alias.md&amp;value=---%0Auid%3A%20Qmmands.CommandContext.Alias%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Context/CommandContext.cs/#L24">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Context/CommandContext.cs/#L23">View Source</a>
   </span>
   <a id="Qmmands_CommandContext_Alias_" data-uid="Qmmands.CommandContext.Alias*"></a>
   <h4 id="Qmmands_CommandContext_Alias" data-uid="Qmmands.CommandContext.Alias">Alias</h4>
@@ -165,7 +165,7 @@
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandContext_Arguments.md&amp;value=---%0Auid%3A%20Qmmands.CommandContext.Arguments%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Context/CommandContext.cs/#L41">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Context/CommandContext.cs/#L40">View Source</a>
   </span>
   <a id="Qmmands_CommandContext_Arguments_" data-uid="Qmmands.CommandContext.Arguments*"></a>
   <h4 id="Qmmands_CommandContext_Arguments" data-uid="Qmmands.CommandContext.Arguments">Arguments</h4>
@@ -186,7 +186,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -196,7 +196,7 @@
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandContext_Command.md&amp;value=---%0Auid%3A%20Qmmands.CommandContext.Command%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Context/CommandContext.cs/#L18">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Context/CommandContext.cs/#L17">View Source</a>
   </span>
   <a id="Qmmands_CommandContext_Command_" data-uid="Qmmands.CommandContext.Command*"></a>
   <h4 id="Qmmands_CommandContext_Command" data-uid="Qmmands.CommandContext.Command">Command</h4>
@@ -227,7 +227,7 @@
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandContext_Path.md&amp;value=---%0Auid%3A%20Qmmands.CommandContext.Path%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Context/CommandContext.cs/#L30">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Context/CommandContext.cs/#L29">View Source</a>
   </span>
   <a id="Qmmands_CommandContext_Path_" data-uid="Qmmands.CommandContext.Path*"></a>
   <h4 id="Qmmands_CommandContext_Path" data-uid="Qmmands.CommandContext.Path">Path</h4>
@@ -249,7 +249,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -259,7 +259,7 @@
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandContext_RawArguments.md&amp;value=---%0Auid%3A%20Qmmands.CommandContext.RawArguments%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Context/CommandContext.cs/#L36">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Context/CommandContext.cs/#L35">View Source</a>
   </span>
   <a id="Qmmands_CommandContext_RawArguments_" data-uid="Qmmands.CommandContext.RawArguments*"></a>
   <h4 id="Qmmands_CommandContext_RawArguments" data-uid="Qmmands.CommandContext.RawArguments">RawArguments</h4>
@@ -288,19 +288,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandContext_ServiceProvider.md&amp;value=---%0Auid%3A%20Qmmands.CommandContext.ServiceProvider%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandContext_Services.md&amp;value=---%0Auid%3A%20Qmmands.CommandContext.Services%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Context/CommandContext.cs/#L56">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Context/CommandContext.cs/#L47">View Source</a>
   </span>
-  <a id="Qmmands_CommandContext_ServiceProvider_" data-uid="Qmmands.CommandContext.ServiceProvider*"></a>
-  <h4 id="Qmmands_CommandContext_ServiceProvider" data-uid="Qmmands.CommandContext.ServiceProvider">ServiceProvider</h4>
-  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> used for execution.</p>
+  <a id="Qmmands_CommandContext_Services_" data-uid="Qmmands.CommandContext.Services*"></a>
+  <h4 id="Qmmands_CommandContext_Services" data-uid="Qmmands.CommandContext.Services">Services</h4>
+  <div class="markdown level1 summary"><p>Gets the <see cref="!:IServiceProvider"></see> used for execution.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IServiceProvider ServiceProvider { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IServiceProvider Services { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -312,7 +312,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></td>
+        <td><span class="xref">IServiceProvider</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -328,12 +328,13 @@
                     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandContext.md&amp;value=---%0Auid%3A%20Qmmands.CommandContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Context/CommandContext.cs/#L13" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Context/CommandContext.cs/#L12" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class CommandServiceConfiguration
    ">
-    <meta name="generator" content="docfx 2.52.0.0">
+    <meta name="generator" content="docfx 2.56.7.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -85,7 +85,7 @@
   <h6><strong>Assembly</strong>: Qmmands.dll</h6>
   <h5 id="Qmmands_CommandServiceConfiguration_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class CommandServiceConfiguration</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class CommandServiceConfiguration : object</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -244,7 +244,7 @@ run sequentially or in parallel. Defaults to <a class="xref" href="Qmmands.RunMo
   </span>
   <a id="Qmmands_CommandServiceConfiguration_IgnoresExtraArguments_" data-uid="Qmmands.CommandServiceConfiguration.IgnoresExtraArguments*"></a>
   <h4 id="Qmmands_CommandServiceConfiguration_IgnoresExtraArguments" data-uid="Qmmands.CommandServiceConfiguration.IgnoresExtraArguments">IgnoresExtraArguments</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the extra arguments
+  <div class="markdown level1 summary"><p>Gets or sets the <see cref="!:System.Boolean"></see> which determines whether the extra arguments
 provided should be ignored. Defaults to <span class="xref">false</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -276,7 +276,7 @@ provided should be ignored. Defaults to <span class="xref">false</span>.</p>
   </span>
   <a id="Qmmands_CommandServiceConfiguration_NullableNouns_" data-uid="Qmmands.CommandServiceConfiguration.NullableNouns*"></a>
   <h4 id="Qmmands_CommandServiceConfiguration_NullableNouns" data-uid="Qmmands.CommandServiceConfiguration.NullableNouns">NullableNouns</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the collection of nouns to use for <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable&lt;T&gt;</a> parsing.
+  <div class="markdown level1 summary"><p>Gets or sets the collection of nouns to use for <see cref="!:Nullable&lt;T>"></see> parsing.
 If <span class="xref">null</span>, will default to <a class="xref" href="Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_DefaultNullableNouns">DefaultNullableNouns</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -294,27 +294,27 @@ If <span class="xref">null</span>, will default to <a class="xref" href="Qmmands
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandServiceConfiguration_QuoteMap.md&amp;value=---%0Auid%3A%20Qmmands.CommandServiceConfiguration.QuoteMap%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandServiceConfiguration_QuotationMarkMap.md&amp;value=---%0Auid%3A%20Qmmands.CommandServiceConfiguration.QuotationMarkMap%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandServiceConfiguration.cs/#L105">View Source</a>
   </span>
-  <a id="Qmmands_CommandServiceConfiguration_QuoteMap_" data-uid="Qmmands.CommandServiceConfiguration.QuoteMap*"></a>
-  <h4 id="Qmmands_CommandServiceConfiguration_QuoteMap" data-uid="Qmmands.CommandServiceConfiguration.QuoteMap">QuoteMap</h4>
+  <a id="Qmmands_CommandServiceConfiguration_QuotationMarkMap_" data-uid="Qmmands.CommandServiceConfiguration.QuotationMarkMap*"></a>
+  <h4 id="Qmmands_CommandServiceConfiguration_QuotationMarkMap" data-uid="Qmmands.CommandServiceConfiguration.QuotationMarkMap">QuotationMarkMap</h4>
   <div class="markdown level1 summary"><p>Gets or sets the quotation mark map.
 If <span class="xref">null</span>, will default to <a class="xref" href="Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_DefaultQuotationMarkMap">DefaultQuotationMarkMap</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IReadOnlyDictionary&lt;char, char&gt; QuoteMap { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IReadOnlyDictionary&lt;char, char&gt; QuotationMarkMap { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -326,7 +326,7 @@ If <span class="xref">null</span>, will default to <a class="xref" href="Qmmands
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2">IReadOnlyDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">IReadOnlyDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -340,7 +340,7 @@ If <span class="xref">null</span>, will default to <a class="xref" href="Qmmands
   </span>
   <a id="Qmmands_CommandServiceConfiguration_Separator_" data-uid="Qmmands.CommandServiceConfiguration.Separator*"></a>
   <h4 id="Qmmands_CommandServiceConfiguration_Separator" data-uid="Qmmands.CommandServiceConfiguration.Separator">Separator</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> separator to use between groups and commands.
+  <div class="markdown level1 summary"><p>Gets or sets the <see cref="!:System.String"></see> separator to use between groups and commands.
 Defaults to a single whitespace character.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -395,22 +395,6 @@ Defaults to <a class="xref" href="Qmmands.SeparatorRequirement.html#Qmmands_Sepa
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
-        <td><p><span class="xref">langword_csharp_value</span> must be a valid <a class="xref" href="Qmmands.SeparatorRequirement.html">SeparatorRequirement</a> value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandServiceConfiguration_StringComparison.md&amp;value=---%0Auid%3A%20Qmmands.CommandServiceConfiguration.StringComparison%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -420,8 +404,8 @@ Defaults to <a class="xref" href="Qmmands.SeparatorRequirement.html#Qmmands_Sepa
   </span>
   <a id="Qmmands_CommandServiceConfiguration_StringComparison_" data-uid="Qmmands.CommandServiceConfiguration.StringComparison*"></a>
   <h4 id="Qmmands_CommandServiceConfiguration_StringComparison" data-uid="Qmmands.CommandServiceConfiguration.StringComparison">StringComparison</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.stringcomparison">StringComparison</a> used for finding <a class="xref" href="Qmmands.Command.html">Command</a>s and <a class="xref" href="Qmmands.Module.html">Module</a>s,
-used by the default <span class="xref">langword_csharp_enum</span> parsers, and comparing <a class="xref" href="Qmmands.CommandServiceConfiguration.html#Qmmands_CommandServiceConfiguration_NullableNouns">NullableNouns</a>. Defaults to <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.stringcomparison#System_StringComparison_OrdinalIgnoreCase">OrdinalIgnoreCase</a>.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the <see cref="!:System.StringComparison"></see> used for finding <a class="xref" href="Qmmands.Command.html">Command</a>s and <a class="xref" href="Qmmands.Module.html">Module</a>s,
+used by the default <span class="xref">langword_csharp_enum</span> parsers, and comparing <a class="xref" href="Qmmands.CommandServiceConfiguration.html#Qmmands_CommandServiceConfiguration_NullableNouns">NullableNouns</a>. Defaults to <see cref="!:StringComparison.OrdinalIgnoreCase"></see>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -438,7 +422,7 @@ used by the default <span class="xref">langword_csharp_enum</span> parsers, and 
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.stringcomparison">StringComparison</a></td>
+        <td><span class="xref">StringComparison</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -459,7 +443,8 @@ used by the default <span class="xref">langword_csharp_enum</span> parsers, and 
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

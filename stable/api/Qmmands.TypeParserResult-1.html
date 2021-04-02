@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class TypeParserResult&lt;T&gt;
    ">
-    <meta name="generator" content="docfx 2.52.0.0">
+    <meta name="generator" content="docfx 2.56.7.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -89,7 +89,7 @@
   <h6><strong>Assembly</strong>: Qmmands.dll</h6>
   <h5 id="Qmmands_TypeParserResult_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TypeParserResult&lt;T&gt; : IResult</code></pre>
+    <pre><code class="lang-csharp hljs">public class TypeParserResult&lt;T&gt; : object, IResult</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -152,12 +152,12 @@
   </span>
   <a id="Qmmands_TypeParserResult_1__ctor_" data-uid="Qmmands.TypeParserResult`1.#ctor*"></a>
   <h4 id="Qmmands_TypeParserResult_1__ctor_System_String_" data-uid="Qmmands.TypeParserResult`1.#ctor(System.String)">TypeParserResult(String)</h4>
-  <div class="markdown level1 summary"><p>Initialises a new <a class="xref" href="Qmmands.TypeParserResult-1.html">TypeParserResult&lt;T&gt;</a> with the specified error reason.</p>
+  <div class="markdown level1 summary"><p>Initialises a new <a class="xref" href="Qmmands.TypeParserResult-1.html">TypeParserResult&lt;T&gt;</a> with the specified failure reason.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TypeParserResult(string reason)</code></pre>
+    <pre><code class="lang-csharp hljs">public TypeParserResult(string failureReason)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -171,7 +171,7 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">reason</span></td>
+        <td><span class="parametername">failureReason</span></td>
         <td><p>The error reason. </p>
 </td>
       </tr>
@@ -179,6 +179,37 @@
   </table>
   <h3 id="properties">Properties
   </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_TypeParserResult_1_FailureReason.md&amp;value=---%0Auid%3A%20Qmmands.TypeParserResult%601.FailureReason%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Results/User/TypeParserResult.cs/#L19">View Source</a>
+  </span>
+  <a id="Qmmands_TypeParserResult_1_FailureReason_" data-uid="Qmmands.TypeParserResult`1.FailureReason*"></a>
+  <h4 id="Qmmands_TypeParserResult_1_FailureReason" data-uid="Qmmands.TypeParserResult`1.FailureReason">FailureReason</h4>
+  <div class="markdown level1 summary"><p>Gets the failure reason. <span class="xref">null</span> if <a class="xref" href="Qmmands.TypeParserResult-1.html#Qmmands_TypeParserResult_1_IsSuccessful">IsSuccessful</a> is <span class="xref">true</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string FailureReason { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_TypeParserResult_1_HasValue.md&amp;value=---%0Auid%3A%20Qmmands.TypeParserResult%601.HasValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -243,37 +274,6 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_TypeParserResult_1_Reason.md&amp;value=---%0Auid%3A%20Qmmands.TypeParserResult%601.Reason%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Results/User/TypeParserResult.cs/#L19">View Source</a>
-  </span>
-  <a id="Qmmands_TypeParserResult_1_Reason_" data-uid="Qmmands.TypeParserResult`1.Reason*"></a>
-  <h4 id="Qmmands_TypeParserResult_1_Reason" data-uid="Qmmands.TypeParserResult`1.Reason">Reason</h4>
-  <div class="markdown level1 summary"><p>Gets the error reason. <span class="xref">null</span> if <a class="xref" href="Qmmands.TypeParserResult-1.html#Qmmands_TypeParserResult_1_IsSuccessful">IsSuccessful</a> is <span class="xref">true</span>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Reason { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_TypeParserResult_1_Value.md&amp;value=---%0Auid%3A%20Qmmands.TypeParserResult%601.Value%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -305,6 +305,56 @@
   </table>
   <h3 id="methods">Methods
   </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_TypeParserResult_1_Failed_System_String_.md&amp;value=---%0Auid%3A%20Qmmands.TypeParserResult%601.Failed(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Results/User/TypeParserResult.cs/#L72">View Source</a>
+  </span>
+  <a id="Qmmands_TypeParserResult_1_Failed_" data-uid="Qmmands.TypeParserResult`1.Failed*"></a>
+  <h4 id="Qmmands_TypeParserResult_1_Failed_System_String_" data-uid="Qmmands.TypeParserResult`1.Failed(System.String)">Failed(String)</h4>
+  <div class="markdown level1 summary"><p>Initialises a new unsuccessful <a class="xref" href="Qmmands.TypeParserResult-1.html">TypeParserResult&lt;T&gt;</a> with the specified error reason.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TypeParserResult&lt;T&gt; Failed(string reason)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">reason</span></td>
+        <td><p>The error reason. </p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Qmmands.TypeParserResult-1.html">TypeParserResult</a>&lt;T&gt;</td>
+        <td><p>An unsuccessful <a class="xref" href="Qmmands.TypeParserResult-1.html">TypeParserResult&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_TypeParserResult_1_Successful__0_.md&amp;value=---%0Auid%3A%20Qmmands.TypeParserResult%601.Successful(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -355,68 +405,18 @@
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_TypeParserResult_1_Unsuccessful_System_String_.md&amp;value=---%0Auid%3A%20Qmmands.TypeParserResult%601.Unsuccessful(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Results/User/TypeParserResult.cs/#L72">View Source</a>
-  </span>
-  <a id="Qmmands_TypeParserResult_1_Unsuccessful_" data-uid="Qmmands.TypeParserResult`1.Unsuccessful*"></a>
-  <h4 id="Qmmands_TypeParserResult_1_Unsuccessful_System_String_" data-uid="Qmmands.TypeParserResult`1.Unsuccessful(System.String)">Unsuccessful(String)</h4>
-  <div class="markdown level1 summary"><p>Initialises a new unsuccessful <a class="xref" href="Qmmands.TypeParserResult-1.html">TypeParserResult&lt;T&gt;</a> with the specified error reason.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TypeParserResult&lt;T&gt; Unsuccessful(string reason)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">reason</span></td>
-        <td><p>The error reason. </p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Qmmands.TypeParserResult-1.html">TypeParserResult</a>&lt;T&gt;</td>
-        <td><p>An unsuccessful <a class="xref" href="Qmmands.TypeParserResult-1.html">TypeParserResult&lt;T&gt;</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="operators">Operators
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_TypeParserResult_1_op_Implicit_Qmmands_TypeParserResult__0___System_Threading_Tasks_ValueTask_Qmmands_TypeParserResult__0__.md&amp;value=---%0Auid%3A%20Qmmands.TypeParserResult%601.op_Implicit(Qmmands.TypeParserResult%7B%600%7D)~System.Threading.Tasks.ValueTask%7BQmmands.TypeParserResult%7B%600%7D%7D%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_TypeParserResult_1_op_Implicit_Qmmands_TypeParserResult__0___ValueTask_Qmmands_TypeParserResult__0__.md&amp;value=---%0Auid%3A%20Qmmands.TypeParserResult%601.op_Implicit(Qmmands.TypeParserResult%7B%600%7D)~ValueTask%7BQmmands.TypeParserResult%7B%600%7D%7D%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Results/User/TypeParserResult.cs/#L79">View Source</a>
   </span>
   <a id="Qmmands_TypeParserResult_1_op_Implicit_" data-uid="Qmmands.TypeParserResult`1.op_Implicit*"></a>
-  <h4 id="Qmmands_TypeParserResult_1_op_Implicit_Qmmands_TypeParserResult__0___System_Threading_Tasks_ValueTask_Qmmands_TypeParserResult__0__" data-uid="Qmmands.TypeParserResult`1.op_Implicit(Qmmands.TypeParserResult{`0})~System.Threading.Tasks.ValueTask{Qmmands.TypeParserResult{`0}}">Implicit(TypeParserResult&lt;T&gt; to ValueTask&lt;TypeParserResult&lt;T&gt;&gt;)</h4>
-  <div class="markdown level1 summary"><p>Implicitly wraps the provided <a class="xref" href="Qmmands.TypeParserResult-1.html">TypeParserResult&lt;T&gt;</a> in a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask&lt;TResult&gt;</a>.</p>
+  <h4 id="Qmmands_TypeParserResult_1_op_Implicit_Qmmands_TypeParserResult__0___ValueTask_Qmmands_TypeParserResult__0__" data-uid="Qmmands.TypeParserResult`1.op_Implicit(Qmmands.TypeParserResult{`0})~ValueTask{Qmmands.TypeParserResult{`0}}">Implicit(TypeParserResult&lt;T&gt; to ValueTask&lt;TypeParserResult&lt;T&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Implicitly wraps the provided <a class="xref" href="Qmmands.TypeParserResult-1.html">TypeParserResult&lt;T&gt;</a> in a <see cref="!:ValueTask&lt;TResult>"></see>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -451,7 +451,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask</a>&lt;<a class="xref" href="Qmmands.TypeParserResult-1.html">TypeParserResult</a>&lt;T&gt;&gt;</td>
+        <td><span class="xref">ValueTask</span>&lt;<a class="xref" href="Qmmands.TypeParserResult-1.html">TypeParserResult</a>&lt;T&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -476,7 +476,8 @@
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

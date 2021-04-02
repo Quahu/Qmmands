@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class CommandBuilder
    ">
-    <meta name="generator" content="docfx 2.52.0.0">
+    <meta name="generator" content="docfx 2.56.7.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -85,7 +85,7 @@
   <h6><strong>Assembly</strong>: Qmmands.dll</h6>
   <h5 id="Qmmands_CommandBuilder_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class CommandBuilder</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class CommandBuilder : object</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -115,7 +115,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.hashset-1">HashSet</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="xref">HashSet</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -146,7 +146,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute">Attribute</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<span class="xref">Attribute</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -177,7 +177,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Qmmands.CheckAttribute.html">CheckAttribute</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Qmmands.CheckAttribute.html">CheckAttribute</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -208,7 +208,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Qmmands.Cooldown.html">Cooldown</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Qmmands.Cooldown.html">Cooldown</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -222,7 +222,7 @@
   </span>
   <a id="Qmmands_CommandBuilder_CustomArgumentParserType_" data-uid="Qmmands.CommandBuilder.CustomArgumentParserType*"></a>
   <h4 id="Qmmands_CommandBuilder_CustomArgumentParserType" data-uid="Qmmands.CommandBuilder.CustomArgumentParserType">CustomArgumentParserType</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a> of a custom <a class="xref" href="Qmmands.IArgumentParser.html">IArgumentParser</a>.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the <see cref="!:Type"></see> of a custom <a class="xref" href="Qmmands.IArgumentParser.html">IArgumentParser</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -239,7 +239,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="xref">Type</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -426,7 +426,7 @@ Defaults to <span class="xref">true</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Qmmands.ParameterBuilder.html">ParameterBuilder</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Qmmands.ParameterBuilder.html">ParameterBuilder</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -574,31 +574,15 @@ Defaults to <span class="xref">true</span>.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>This alias has already been added.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandBuilder_AddAttribute_System_Attribute_.md&amp;value=---%0Auid%3A%20Qmmands.CommandBuilder.AddAttribute(System.Attribute)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandBuilder_AddAttribute_Attribute_.md&amp;value=---%0Auid%3A%20Qmmands.CommandBuilder.AddAttribute(Attribute)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Builders/CommandBuilder.cs/#L223">View Source</a>
   </span>
   <a id="Qmmands_CommandBuilder_AddAttribute_" data-uid="Qmmands.CommandBuilder.AddAttribute*"></a>
-  <h4 id="Qmmands_CommandBuilder_AddAttribute_System_Attribute_" data-uid="Qmmands.CommandBuilder.AddAttribute(System.Attribute)">AddAttribute(Attribute)</h4>
+  <h4 id="Qmmands_CommandBuilder_AddAttribute_Attribute_" data-uid="Qmmands.CommandBuilder.AddAttribute(Attribute)">AddAttribute(Attribute)</h4>
   <div class="markdown level1 summary"><p>Adds an attribute to <a class="xref" href="Qmmands.CommandBuilder.html#Qmmands_CommandBuilder_Attributes">Attributes</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -617,7 +601,7 @@ Defaults to <span class="xref">true</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute">Attribute</a></td>
+        <td><span class="xref">Attribute</span></td>
         <td><span class="parametername">attribute</span></td>
         <td></td>
       </tr>
@@ -736,13 +720,13 @@ Defaults to <span class="xref">true</span>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandBuilder_AddParameter_System_Type_System_Action_Qmmands_ParameterBuilder__.md&amp;value=---%0Auid%3A%20Qmmands.CommandBuilder.AddParameter(System.Type%2CSystem.Action%7BQmmands.ParameterBuilder%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandBuilder_AddParameter_Type_Action_Qmmands_ParameterBuilder__.md&amp;value=---%0Auid%3A%20Qmmands.CommandBuilder.AddParameter(Type%2CAction%7BQmmands.ParameterBuilder%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Builders/CommandBuilder.cs/#L206">View Source</a>
   </span>
   <a id="Qmmands_CommandBuilder_AddParameter_" data-uid="Qmmands.CommandBuilder.AddParameter*"></a>
-  <h4 id="Qmmands_CommandBuilder_AddParameter_System_Type_System_Action_Qmmands_ParameterBuilder__" data-uid="Qmmands.CommandBuilder.AddParameter(System.Type,System.Action{Qmmands.ParameterBuilder})">AddParameter(Type, Action&lt;ParameterBuilder&gt;)</h4>
+  <h4 id="Qmmands_CommandBuilder_AddParameter_Type_Action_Qmmands_ParameterBuilder__" data-uid="Qmmands.CommandBuilder.AddParameter(Type,Action{Qmmands.ParameterBuilder})">AddParameter(Type, Action&lt;ParameterBuilder&gt;)</h4>
   <div class="markdown level1 summary"><p>Attempts to instantiate, modify, and add a <a class="xref" href="Qmmands.ParameterBuilder.html">ParameterBuilder</a> to <a class="xref" href="Qmmands.CommandBuilder.html#Qmmands_CommandBuilder_Parameters">Parameters</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -761,13 +745,13 @@ Defaults to <span class="xref">true</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="xref">Type</span></td>
         <td><span class="parametername">type</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a> of the <a class="xref" href="Qmmands.Parameter.html">Parameter</a>. </p>
+        <td><p>The <see cref="!:Type"></see> of the <a class="xref" href="Qmmands.Parameter.html">Parameter</a>. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="Qmmands.ParameterBuilder.html">ParameterBuilder</a>&gt;</td>
+        <td><span class="xref">Action</span>&lt;<a class="xref" href="Qmmands.ParameterBuilder.html">ParameterBuilder</a>&gt;</td>
         <td><span class="parametername">builderAction</span></td>
         <td><p>The action to perform on the builder. </p>
 </td>
@@ -791,13 +775,13 @@ Defaults to <span class="xref">true</span>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandBuilder_WithCustomArgumentParserType_System_Type_.md&amp;value=---%0Auid%3A%20Qmmands.CommandBuilder.WithCustomArgumentParserType(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandBuilder_WithCustomArgumentParserType_Type_.md&amp;value=---%0Auid%3A%20Qmmands.CommandBuilder.WithCustomArgumentParserType(Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Builders/CommandBuilder.cs/#L163">View Source</a>
   </span>
   <a id="Qmmands_CommandBuilder_WithCustomArgumentParserType_" data-uid="Qmmands.CommandBuilder.WithCustomArgumentParserType*"></a>
-  <h4 id="Qmmands_CommandBuilder_WithCustomArgumentParserType_System_Type_" data-uid="Qmmands.CommandBuilder.WithCustomArgumentParserType(System.Type)">WithCustomArgumentParserType(Type)</h4>
+  <h4 id="Qmmands_CommandBuilder_WithCustomArgumentParserType_Type_" data-uid="Qmmands.CommandBuilder.WithCustomArgumentParserType(Type)">WithCustomArgumentParserType(Type)</h4>
   <div class="markdown level1 summary"><p>Sets the <a class="xref" href="Qmmands.CommandBuilder.html#Qmmands_CommandBuilder_CustomArgumentParserType">CustomArgumentParserType</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -816,7 +800,7 @@ Defaults to <span class="xref">true</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="xref">Type</span></td>
         <td><span class="parametername">customArgumentParserType</span></td>
         <td></td>
       </tr>
@@ -1189,7 +1173,8 @@ Defaults to <span class="xref">true</span>.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

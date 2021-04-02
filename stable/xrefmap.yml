@@ -26,6 +26,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.ArgumentParseFailedResult.Command
   nameWithType: ArgumentParseFailedResult.Command
+- uid: Qmmands.ArgumentParseFailedResult.FailureReason
+  name: FailureReason
+  href: api/Qmmands.ArgumentParseFailedResult.html#Qmmands_ArgumentParseFailedResult_FailureReason
+  commentId: P:Qmmands.ArgumentParseFailedResult.FailureReason
+  fullName: Qmmands.ArgumentParseFailedResult.FailureReason
+  nameWithType: ArgumentParseFailedResult.FailureReason
+- uid: Qmmands.ArgumentParseFailedResult.FailureReason*
+  name: FailureReason
+  href: api/Qmmands.ArgumentParseFailedResult.html#Qmmands_ArgumentParseFailedResult_FailureReason_
+  commentId: Overload:Qmmands.ArgumentParseFailedResult.FailureReason
+  isSpec: "True"
+  fullName: Qmmands.ArgumentParseFailedResult.FailureReason
+  nameWithType: ArgumentParseFailedResult.FailureReason
 - uid: Qmmands.ArgumentParseFailedResult.ParserResult
   name: ParserResult
   href: api/Qmmands.ArgumentParseFailedResult.html#Qmmands_ArgumentParseFailedResult_ParserResult
@@ -52,32 +65,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.ArgumentParseFailedResult.RawArguments
   nameWithType: ArgumentParseFailedResult.RawArguments
-- uid: Qmmands.ArgumentParseFailedResult.Reason
-  name: Reason
-  href: api/Qmmands.ArgumentParseFailedResult.html#Qmmands_ArgumentParseFailedResult_Reason
-  commentId: P:Qmmands.ArgumentParseFailedResult.Reason
-  fullName: Qmmands.ArgumentParseFailedResult.Reason
-  nameWithType: ArgumentParseFailedResult.Reason
-- uid: Qmmands.ArgumentParseFailedResult.Reason*
-  name: Reason
-  href: api/Qmmands.ArgumentParseFailedResult.html#Qmmands_ArgumentParseFailedResult_Reason_
-  commentId: Overload:Qmmands.ArgumentParseFailedResult.Reason
-  isSpec: "True"
-  fullName: Qmmands.ArgumentParseFailedResult.Reason
-  nameWithType: ArgumentParseFailedResult.Reason
 - uid: Qmmands.ArgumentParserResult
   name: ArgumentParserResult
   href: api/Qmmands.ArgumentParserResult.html
   commentId: T:Qmmands.ArgumentParserResult
   fullName: Qmmands.ArgumentParserResult
   nameWithType: ArgumentParserResult
-- uid: Qmmands.ArgumentParserResult.#ctor(System.Collections.Generic.IReadOnlyDictionary{Qmmands.Parameter,System.Object})
+- uid: Qmmands.ArgumentParserResult.#ctor(IReadOnlyDictionary{Qmmands.Parameter,System.Object})
   name: ArgumentParserResult(IReadOnlyDictionary<Parameter, Object>)
-  href: api/Qmmands.ArgumentParserResult.html#Qmmands_ArgumentParserResult__ctor_System_Collections_Generic_IReadOnlyDictionary_Qmmands_Parameter_System_Object__
-  commentId: M:Qmmands.ArgumentParserResult.#ctor(System.Collections.Generic.IReadOnlyDictionary{Qmmands.Parameter,System.Object})
+  href: api/Qmmands.ArgumentParserResult.html#Qmmands_ArgumentParserResult__ctor_IReadOnlyDictionary_Qmmands_Parameter_System_Object__
+  commentId: M:Qmmands.ArgumentParserResult.#ctor(IReadOnlyDictionary{Qmmands.Parameter,System.Object})
   name.vb: ArgumentParserResult(IReadOnlyDictionary(Of Parameter, Object))
-  fullName: Qmmands.ArgumentParserResult.ArgumentParserResult(System.Collections.Generic.IReadOnlyDictionary<Qmmands.Parameter, System.Object>)
-  fullName.vb: Qmmands.ArgumentParserResult.ArgumentParserResult(System.Collections.Generic.IReadOnlyDictionary(Of Qmmands.Parameter, System.Object))
+  fullName: Qmmands.ArgumentParserResult.ArgumentParserResult(IReadOnlyDictionary<Qmmands.Parameter, System.Object>)
+  fullName.vb: Qmmands.ArgumentParserResult.ArgumentParserResult(IReadOnlyDictionary(Of Qmmands.Parameter, System.Object))
   nameWithType: ArgumentParserResult.ArgumentParserResult(IReadOnlyDictionary<Parameter, Object>)
   nameWithType.vb: ArgumentParserResult.ArgumentParserResult(IReadOnlyDictionary(Of Parameter, Object))
 - uid: Qmmands.ArgumentParserResult.#ctor*
@@ -100,6 +100,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.ArgumentParserResult.Arguments
   nameWithType: ArgumentParserResult.Arguments
+- uid: Qmmands.ArgumentParserResult.FailureReason
+  name: FailureReason
+  href: api/Qmmands.ArgumentParserResult.html#Qmmands_ArgumentParserResult_FailureReason
+  commentId: P:Qmmands.ArgumentParserResult.FailureReason
+  fullName: Qmmands.ArgumentParserResult.FailureReason
+  nameWithType: ArgumentParserResult.FailureReason
+- uid: Qmmands.ArgumentParserResult.FailureReason*
+  name: FailureReason
+  href: api/Qmmands.ArgumentParserResult.html#Qmmands_ArgumentParserResult_FailureReason_
+  commentId: Overload:Qmmands.ArgumentParserResult.FailureReason
+  isSpec: "True"
+  fullName: Qmmands.ArgumentParserResult.FailureReason
+  nameWithType: ArgumentParserResult.FailureReason
 - uid: Qmmands.ArgumentParserResult.IsSuccessful
   name: IsSuccessful
   href: api/Qmmands.ArgumentParserResult.html#Qmmands_ArgumentParserResult_IsSuccessful
@@ -113,13 +126,13 @@ references:
   isSpec: "True"
   fullName: Qmmands.ArgumentParserResult.IsSuccessful
   nameWithType: ArgumentParserResult.IsSuccessful
-- uid: Qmmands.ArgumentParserResult.op_Implicit(Qmmands.ArgumentParserResult)~System.Threading.Tasks.ValueTask{Qmmands.ArgumentParserResult}
+- uid: Qmmands.ArgumentParserResult.op_Implicit(Qmmands.ArgumentParserResult)~ValueTask{Qmmands.ArgumentParserResult}
   name: Implicit(ArgumentParserResult to ValueTask<ArgumentParserResult>)
-  href: api/Qmmands.ArgumentParserResult.html#Qmmands_ArgumentParserResult_op_Implicit_Qmmands_ArgumentParserResult__System_Threading_Tasks_ValueTask_Qmmands_ArgumentParserResult_
-  commentId: M:Qmmands.ArgumentParserResult.op_Implicit(Qmmands.ArgumentParserResult)~System.Threading.Tasks.ValueTask{Qmmands.ArgumentParserResult}
+  href: api/Qmmands.ArgumentParserResult.html#Qmmands_ArgumentParserResult_op_Implicit_Qmmands_ArgumentParserResult__ValueTask_Qmmands_ArgumentParserResult_
+  commentId: M:Qmmands.ArgumentParserResult.op_Implicit(Qmmands.ArgumentParserResult)~ValueTask{Qmmands.ArgumentParserResult}
   name.vb: Widening(ArgumentParserResult to ValueTask(Of ArgumentParserResult))
-  fullName: Qmmands.ArgumentParserResult.Implicit(Qmmands.ArgumentParserResult to System.Threading.Tasks.ValueTask<Qmmands.ArgumentParserResult>)
-  fullName.vb: Qmmands.ArgumentParserResult.Widening(Qmmands.ArgumentParserResult to System.Threading.Tasks.ValueTask(Of Qmmands.ArgumentParserResult))
+  fullName: Qmmands.ArgumentParserResult.Implicit(Qmmands.ArgumentParserResult to ValueTask<Qmmands.ArgumentParserResult>)
+  fullName.vb: Qmmands.ArgumentParserResult.Widening(Qmmands.ArgumentParserResult to ValueTask(Of Qmmands.ArgumentParserResult))
   nameWithType: ArgumentParserResult.Implicit(ArgumentParserResult to ValueTask<ArgumentParserResult>)
   nameWithType.vb: ArgumentParserResult.Widening(ArgumentParserResult to ValueTask(Of ArgumentParserResult))
 - uid: Qmmands.ArgumentParserResult.op_Implicit*
@@ -132,19 +145,6 @@ references:
   fullName.vb: Qmmands.ArgumentParserResult.Widening
   nameWithType: ArgumentParserResult.Implicit
   nameWithType.vb: ArgumentParserResult.Widening
-- uid: Qmmands.ArgumentParserResult.Reason
-  name: Reason
-  href: api/Qmmands.ArgumentParserResult.html#Qmmands_ArgumentParserResult_Reason
-  commentId: P:Qmmands.ArgumentParserResult.Reason
-  fullName: Qmmands.ArgumentParserResult.Reason
-  nameWithType: ArgumentParserResult.Reason
-- uid: Qmmands.ArgumentParserResult.Reason*
-  name: Reason
-  href: api/Qmmands.ArgumentParserResult.html#Qmmands_ArgumentParserResult_Reason_
-  commentId: Overload:Qmmands.ArgumentParserResult.Reason
-  isSpec: "True"
-  fullName: Qmmands.ArgumentParserResult.Reason
-  nameWithType: ArgumentParserResult.Reason
 - uid: Qmmands.CheckAttribute
   name: CheckAttribute
   href: api/Qmmands.CheckAttribute.html
@@ -177,6 +177,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.CheckAttribute.Command
   nameWithType: CheckAttribute.Command
+- uid: Qmmands.CheckAttribute.Failure(System.String)
+  name: Failure(String)
+  href: api/Qmmands.CheckAttribute.html#Qmmands_CheckAttribute_Failure_System_String_
+  commentId: M:Qmmands.CheckAttribute.Failure(System.String)
+  fullName: Qmmands.CheckAttribute.Failure(System.String)
+  nameWithType: CheckAttribute.Failure(String)
+- uid: Qmmands.CheckAttribute.Failure*
+  name: Failure
+  href: api/Qmmands.CheckAttribute.html#Qmmands_CheckAttribute_Failure_
+  commentId: Overload:Qmmands.CheckAttribute.Failure
+  isSpec: "True"
+  fullName: Qmmands.CheckAttribute.Failure
+  nameWithType: CheckAttribute.Failure
 - uid: Qmmands.CheckAttribute.Group
   name: Group
   href: api/Qmmands.CheckAttribute.html#Qmmands_CheckAttribute_Group
@@ -203,6 +216,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.CheckAttribute.Module
   nameWithType: CheckAttribute.Module
+- uid: Qmmands.CheckAttribute.Success
+  name: Success()
+  href: api/Qmmands.CheckAttribute.html#Qmmands_CheckAttribute_Success
+  commentId: M:Qmmands.CheckAttribute.Success
+  fullName: Qmmands.CheckAttribute.Success()
+  nameWithType: CheckAttribute.Success()
+- uid: Qmmands.CheckAttribute.Success*
+  name: Success
+  href: api/Qmmands.CheckAttribute.html#Qmmands_CheckAttribute_Success_
+  commentId: Overload:Qmmands.CheckAttribute.Success
+  isSpec: "True"
+  fullName: Qmmands.CheckAttribute.Success
+  nameWithType: CheckAttribute.Success
 - uid: Qmmands.CheckResult
   name: CheckResult
   href: api/Qmmands.CheckResult.html
@@ -228,6 +254,32 @@ references:
   isSpec: "True"
   fullName: Qmmands.CheckResult.CheckResult
   nameWithType: CheckResult.CheckResult
+- uid: Qmmands.CheckResult.Failed(System.String)
+  name: Failed(String)
+  href: api/Qmmands.CheckResult.html#Qmmands_CheckResult_Failed_System_String_
+  commentId: M:Qmmands.CheckResult.Failed(System.String)
+  fullName: Qmmands.CheckResult.Failed(System.String)
+  nameWithType: CheckResult.Failed(String)
+- uid: Qmmands.CheckResult.Failed*
+  name: Failed
+  href: api/Qmmands.CheckResult.html#Qmmands_CheckResult_Failed_
+  commentId: Overload:Qmmands.CheckResult.Failed
+  isSpec: "True"
+  fullName: Qmmands.CheckResult.Failed
+  nameWithType: CheckResult.Failed
+- uid: Qmmands.CheckResult.FailureReason
+  name: FailureReason
+  href: api/Qmmands.CheckResult.html#Qmmands_CheckResult_FailureReason
+  commentId: P:Qmmands.CheckResult.FailureReason
+  fullName: Qmmands.CheckResult.FailureReason
+  nameWithType: CheckResult.FailureReason
+- uid: Qmmands.CheckResult.FailureReason*
+  name: FailureReason
+  href: api/Qmmands.CheckResult.html#Qmmands_CheckResult_FailureReason_
+  commentId: Overload:Qmmands.CheckResult.FailureReason
+  isSpec: "True"
+  fullName: Qmmands.CheckResult.FailureReason
+  nameWithType: CheckResult.FailureReason
 - uid: Qmmands.CheckResult.IsSuccessful
   name: IsSuccessful
   href: api/Qmmands.CheckResult.html#Qmmands_CheckResult_IsSuccessful
@@ -241,13 +293,13 @@ references:
   isSpec: "True"
   fullName: Qmmands.CheckResult.IsSuccessful
   nameWithType: CheckResult.IsSuccessful
-- uid: Qmmands.CheckResult.op_Implicit(Qmmands.CheckResult)~System.Threading.Tasks.ValueTask{Qmmands.CheckResult}
+- uid: Qmmands.CheckResult.op_Implicit(Qmmands.CheckResult)~ValueTask{Qmmands.CheckResult}
   name: Implicit(CheckResult to ValueTask<CheckResult>)
-  href: api/Qmmands.CheckResult.html#Qmmands_CheckResult_op_Implicit_Qmmands_CheckResult__System_Threading_Tasks_ValueTask_Qmmands_CheckResult_
-  commentId: M:Qmmands.CheckResult.op_Implicit(Qmmands.CheckResult)~System.Threading.Tasks.ValueTask{Qmmands.CheckResult}
+  href: api/Qmmands.CheckResult.html#Qmmands_CheckResult_op_Implicit_Qmmands_CheckResult__ValueTask_Qmmands_CheckResult_
+  commentId: M:Qmmands.CheckResult.op_Implicit(Qmmands.CheckResult)~ValueTask{Qmmands.CheckResult}
   name.vb: Widening(CheckResult to ValueTask(Of CheckResult))
-  fullName: Qmmands.CheckResult.Implicit(Qmmands.CheckResult to System.Threading.Tasks.ValueTask<Qmmands.CheckResult>)
-  fullName.vb: Qmmands.CheckResult.Widening(Qmmands.CheckResult to System.Threading.Tasks.ValueTask(Of Qmmands.CheckResult))
+  fullName: Qmmands.CheckResult.Implicit(Qmmands.CheckResult to ValueTask<Qmmands.CheckResult>)
+  fullName.vb: Qmmands.CheckResult.Widening(Qmmands.CheckResult to ValueTask(Of Qmmands.CheckResult))
   nameWithType: CheckResult.Implicit(CheckResult to ValueTask<CheckResult>)
   nameWithType.vb: CheckResult.Widening(CheckResult to ValueTask(Of CheckResult))
 - uid: Qmmands.CheckResult.op_Implicit*
@@ -260,19 +312,6 @@ references:
   fullName.vb: Qmmands.CheckResult.Widening
   nameWithType: CheckResult.Implicit
   nameWithType.vb: CheckResult.Widening
-- uid: Qmmands.CheckResult.Reason
-  name: Reason
-  href: api/Qmmands.CheckResult.html#Qmmands_CheckResult_Reason
-  commentId: P:Qmmands.CheckResult.Reason
-  fullName: Qmmands.CheckResult.Reason
-  nameWithType: CheckResult.Reason
-- uid: Qmmands.CheckResult.Reason*
-  name: Reason
-  href: api/Qmmands.CheckResult.html#Qmmands_CheckResult_Reason_
-  commentId: Overload:Qmmands.CheckResult.Reason
-  isSpec: "True"
-  fullName: Qmmands.CheckResult.Reason
-  nameWithType: CheckResult.Reason
 - uid: Qmmands.CheckResult.Successful
   name: Successful
   href: api/Qmmands.CheckResult.html#Qmmands_CheckResult_Successful
@@ -299,19 +338,6 @@ references:
   isSpec: "True"
   fullName: Qmmands.CheckResult.ToString
   nameWithType: CheckResult.ToString
-- uid: Qmmands.CheckResult.Unsuccessful(System.String)
-  name: Unsuccessful(String)
-  href: api/Qmmands.CheckResult.html#Qmmands_CheckResult_Unsuccessful_System_String_
-  commentId: M:Qmmands.CheckResult.Unsuccessful(System.String)
-  fullName: Qmmands.CheckResult.Unsuccessful(System.String)
-  nameWithType: CheckResult.Unsuccessful(String)
-- uid: Qmmands.CheckResult.Unsuccessful*
-  name: Unsuccessful
-  href: api/Qmmands.CheckResult.html#Qmmands_CheckResult_Unsuccessful_
-  commentId: Overload:Qmmands.CheckResult.Unsuccessful
-  isSpec: "True"
-  fullName: Qmmands.CheckResult.Unsuccessful
-  nameWithType: CheckResult.Unsuccessful
 - uid: Qmmands.ChecksFailedResult
   name: ChecksFailedResult
   href: api/Qmmands.ChecksFailedResult.html
@@ -344,6 +370,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.ChecksFailedResult.FailedChecks
   nameWithType: ChecksFailedResult.FailedChecks
+- uid: Qmmands.ChecksFailedResult.FailureReason
+  name: FailureReason
+  href: api/Qmmands.ChecksFailedResult.html#Qmmands_ChecksFailedResult_FailureReason
+  commentId: P:Qmmands.ChecksFailedResult.FailureReason
+  fullName: Qmmands.ChecksFailedResult.FailureReason
+  nameWithType: ChecksFailedResult.FailureReason
+- uid: Qmmands.ChecksFailedResult.FailureReason*
+  name: FailureReason
+  href: api/Qmmands.ChecksFailedResult.html#Qmmands_ChecksFailedResult_FailureReason_
+  commentId: Overload:Qmmands.ChecksFailedResult.FailureReason
+  isSpec: "True"
+  fullName: Qmmands.ChecksFailedResult.FailureReason
+  nameWithType: ChecksFailedResult.FailureReason
 - uid: Qmmands.ChecksFailedResult.Module
   name: Module
   href: api/Qmmands.ChecksFailedResult.html#Qmmands_ChecksFailedResult_Module
@@ -357,19 +396,6 @@ references:
   isSpec: "True"
   fullName: Qmmands.ChecksFailedResult.Module
   nameWithType: ChecksFailedResult.Module
-- uid: Qmmands.ChecksFailedResult.Reason
-  name: Reason
-  href: api/Qmmands.ChecksFailedResult.html#Qmmands_ChecksFailedResult_Reason
-  commentId: P:Qmmands.ChecksFailedResult.Reason
-  fullName: Qmmands.ChecksFailedResult.Reason
-  nameWithType: ChecksFailedResult.Reason
-- uid: Qmmands.ChecksFailedResult.Reason*
-  name: Reason
-  href: api/Qmmands.ChecksFailedResult.html#Qmmands_ChecksFailedResult_Reason_
-  commentId: Overload:Qmmands.ChecksFailedResult.Reason
-  isSpec: "True"
-  fullName: Qmmands.ChecksFailedResult.Reason
-  nameWithType: ChecksFailedResult.Reason
 - uid: Qmmands.Command
   name: Command
   href: api/Qmmands.Command.html
@@ -480,13 +506,13 @@ references:
   isSpec: "True"
   fullName: Qmmands.Command.Enable
   nameWithType: Command.Enable
-- uid: Qmmands.Command.ExecuteAsync(System.Collections.Generic.IEnumerable{System.Object},Qmmands.CommandContext)
+- uid: Qmmands.Command.ExecuteAsync(IEnumerable{System.Object},Qmmands.CommandContext)
   name: ExecuteAsync(IEnumerable<Object>, CommandContext)
-  href: api/Qmmands.Command.html#Qmmands_Command_ExecuteAsync_System_Collections_Generic_IEnumerable_System_Object__Qmmands_CommandContext_
-  commentId: M:Qmmands.Command.ExecuteAsync(System.Collections.Generic.IEnumerable{System.Object},Qmmands.CommandContext)
+  href: api/Qmmands.Command.html#Qmmands_Command_ExecuteAsync_IEnumerable_System_Object__Qmmands_CommandContext_
+  commentId: M:Qmmands.Command.ExecuteAsync(IEnumerable{System.Object},Qmmands.CommandContext)
   name.vb: ExecuteAsync(IEnumerable(Of Object), CommandContext)
-  fullName: Qmmands.Command.ExecuteAsync(System.Collections.Generic.IEnumerable<System.Object>, Qmmands.CommandContext)
-  fullName.vb: Qmmands.Command.ExecuteAsync(System.Collections.Generic.IEnumerable(Of System.Object), Qmmands.CommandContext)
+  fullName: Qmmands.Command.ExecuteAsync(IEnumerable<System.Object>, Qmmands.CommandContext)
+  fullName.vb: Qmmands.Command.ExecuteAsync(IEnumerable(Of System.Object), Qmmands.CommandContext)
   nameWithType: Command.ExecuteAsync(IEnumerable<Object>, CommandContext)
   nameWithType.vb: Command.ExecuteAsync(IEnumerable(Of Object), CommandContext)
 - uid: Qmmands.Command.ExecuteAsync(System.String,Qmmands.CommandContext)
@@ -751,11 +777,11 @@ references:
   isSpec: "True"
   fullName: Qmmands.CommandBuilder.AddAlias
   nameWithType: CommandBuilder.AddAlias
-- uid: Qmmands.CommandBuilder.AddAttribute(System.Attribute)
+- uid: Qmmands.CommandBuilder.AddAttribute(Attribute)
   name: AddAttribute(Attribute)
-  href: api/Qmmands.CommandBuilder.html#Qmmands_CommandBuilder_AddAttribute_System_Attribute_
-  commentId: M:Qmmands.CommandBuilder.AddAttribute(System.Attribute)
-  fullName: Qmmands.CommandBuilder.AddAttribute(System.Attribute)
+  href: api/Qmmands.CommandBuilder.html#Qmmands_CommandBuilder_AddAttribute_Attribute_
+  commentId: M:Qmmands.CommandBuilder.AddAttribute(Attribute)
+  fullName: Qmmands.CommandBuilder.AddAttribute(Attribute)
   nameWithType: CommandBuilder.AddAttribute(Attribute)
 - uid: Qmmands.CommandBuilder.AddAttribute*
   name: AddAttribute
@@ -790,13 +816,13 @@ references:
   isSpec: "True"
   fullName: Qmmands.CommandBuilder.AddCooldown
   nameWithType: CommandBuilder.AddCooldown
-- uid: Qmmands.CommandBuilder.AddParameter(System.Type,System.Action{Qmmands.ParameterBuilder})
+- uid: Qmmands.CommandBuilder.AddParameter(Type,Action{Qmmands.ParameterBuilder})
   name: AddParameter(Type, Action<ParameterBuilder>)
-  href: api/Qmmands.CommandBuilder.html#Qmmands_CommandBuilder_AddParameter_System_Type_System_Action_Qmmands_ParameterBuilder__
-  commentId: M:Qmmands.CommandBuilder.AddParameter(System.Type,System.Action{Qmmands.ParameterBuilder})
+  href: api/Qmmands.CommandBuilder.html#Qmmands_CommandBuilder_AddParameter_Type_Action_Qmmands_ParameterBuilder__
+  commentId: M:Qmmands.CommandBuilder.AddParameter(Type,Action{Qmmands.ParameterBuilder})
   name.vb: AddParameter(Type, Action(Of ParameterBuilder))
-  fullName: Qmmands.CommandBuilder.AddParameter(System.Type, System.Action<Qmmands.ParameterBuilder>)
-  fullName.vb: Qmmands.CommandBuilder.AddParameter(System.Type, System.Action(Of Qmmands.ParameterBuilder))
+  fullName: Qmmands.CommandBuilder.AddParameter(Type, Action<Qmmands.ParameterBuilder>)
+  fullName.vb: Qmmands.CommandBuilder.AddParameter(Type, Action(Of Qmmands.ParameterBuilder))
   nameWithType: CommandBuilder.AddParameter(Type, Action<ParameterBuilder>)
   nameWithType.vb: CommandBuilder.AddParameter(Type, Action(Of ParameterBuilder))
 - uid: Qmmands.CommandBuilder.AddParameter*
@@ -988,11 +1014,11 @@ references:
   isSpec: "True"
   fullName: Qmmands.CommandBuilder.RunMode
   nameWithType: CommandBuilder.RunMode
-- uid: Qmmands.CommandBuilder.WithCustomArgumentParserType(System.Type)
+- uid: Qmmands.CommandBuilder.WithCustomArgumentParserType(Type)
   name: WithCustomArgumentParserType(Type)
-  href: api/Qmmands.CommandBuilder.html#Qmmands_CommandBuilder_WithCustomArgumentParserType_System_Type_
-  commentId: M:Qmmands.CommandBuilder.WithCustomArgumentParserType(System.Type)
-  fullName: Qmmands.CommandBuilder.WithCustomArgumentParserType(System.Type)
+  href: api/Qmmands.CommandBuilder.html#Qmmands_CommandBuilder_WithCustomArgumentParserType_Type_
+  commentId: M:Qmmands.CommandBuilder.WithCustomArgumentParserType(Type)
+  fullName: Qmmands.CommandBuilder.WithCustomArgumentParserType(Type)
   nameWithType: CommandBuilder.WithCustomArgumentParserType(Type)
 - uid: Qmmands.CommandBuilder.WithCustomArgumentParserType*
   name: WithCustomArgumentParserType
@@ -1123,11 +1149,11 @@ references:
   commentId: T:Qmmands.CommandContext
   fullName: Qmmands.CommandContext
   nameWithType: CommandContext
-- uid: Qmmands.CommandContext.#ctor(System.IServiceProvider)
+- uid: Qmmands.CommandContext.#ctor(IServiceProvider)
   name: CommandContext(IServiceProvider)
-  href: api/Qmmands.CommandContext.html#Qmmands_CommandContext__ctor_System_IServiceProvider_
-  commentId: M:Qmmands.CommandContext.#ctor(System.IServiceProvider)
-  fullName: Qmmands.CommandContext.CommandContext(System.IServiceProvider)
+  href: api/Qmmands.CommandContext.html#Qmmands_CommandContext__ctor_IServiceProvider_
+  commentId: M:Qmmands.CommandContext.#ctor(IServiceProvider)
+  fullName: Qmmands.CommandContext.CommandContext(IServiceProvider)
   nameWithType: CommandContext.CommandContext(IServiceProvider)
 - uid: Qmmands.CommandContext.#ctor*
   name: CommandContext
@@ -1201,19 +1227,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.CommandContext.RawArguments
   nameWithType: CommandContext.RawArguments
-- uid: Qmmands.CommandContext.ServiceProvider
-  name: ServiceProvider
-  href: api/Qmmands.CommandContext.html#Qmmands_CommandContext_ServiceProvider
-  commentId: P:Qmmands.CommandContext.ServiceProvider
-  fullName: Qmmands.CommandContext.ServiceProvider
-  nameWithType: CommandContext.ServiceProvider
-- uid: Qmmands.CommandContext.ServiceProvider*
-  name: ServiceProvider
-  href: api/Qmmands.CommandContext.html#Qmmands_CommandContext_ServiceProvider_
-  commentId: Overload:Qmmands.CommandContext.ServiceProvider
+- uid: Qmmands.CommandContext.Services
+  name: Services
+  href: api/Qmmands.CommandContext.html#Qmmands_CommandContext_Services
+  commentId: P:Qmmands.CommandContext.Services
+  fullName: Qmmands.CommandContext.Services
+  nameWithType: CommandContext.Services
+- uid: Qmmands.CommandContext.Services*
+  name: Services
+  href: api/Qmmands.CommandContext.html#Qmmands_CommandContext_Services_
+  commentId: Overload:Qmmands.CommandContext.Services
   isSpec: "True"
-  fullName: Qmmands.CommandContext.ServiceProvider
-  nameWithType: CommandContext.ServiceProvider
+  fullName: Qmmands.CommandContext.Services
+  nameWithType: CommandContext.Services
 - uid: Qmmands.CommandDisabledResult
   name: CommandDisabledResult
   href: api/Qmmands.CommandDisabledResult.html
@@ -1233,19 +1259,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.CommandDisabledResult.Command
   nameWithType: CommandDisabledResult.Command
-- uid: Qmmands.CommandDisabledResult.Reason
-  name: Reason
-  href: api/Qmmands.CommandDisabledResult.html#Qmmands_CommandDisabledResult_Reason
-  commentId: P:Qmmands.CommandDisabledResult.Reason
-  fullName: Qmmands.CommandDisabledResult.Reason
-  nameWithType: CommandDisabledResult.Reason
-- uid: Qmmands.CommandDisabledResult.Reason*
-  name: Reason
-  href: api/Qmmands.CommandDisabledResult.html#Qmmands_CommandDisabledResult_Reason_
-  commentId: Overload:Qmmands.CommandDisabledResult.Reason
+- uid: Qmmands.CommandDisabledResult.FailureReason
+  name: FailureReason
+  href: api/Qmmands.CommandDisabledResult.html#Qmmands_CommandDisabledResult_FailureReason
+  commentId: P:Qmmands.CommandDisabledResult.FailureReason
+  fullName: Qmmands.CommandDisabledResult.FailureReason
+  nameWithType: CommandDisabledResult.FailureReason
+- uid: Qmmands.CommandDisabledResult.FailureReason*
+  name: FailureReason
+  href: api/Qmmands.CommandDisabledResult.html#Qmmands_CommandDisabledResult_FailureReason_
+  commentId: Overload:Qmmands.CommandDisabledResult.FailureReason
   isSpec: "True"
-  fullName: Qmmands.CommandDisabledResult.Reason
-  nameWithType: CommandDisabledResult.Reason
+  fullName: Qmmands.CommandDisabledResult.FailureReason
+  nameWithType: CommandDisabledResult.FailureReason
 - uid: Qmmands.CommandExecutedEventArgs
   name: CommandExecutedEventArgs
   href: api/Qmmands.CommandExecutedEventArgs.html
@@ -1297,12 +1323,12 @@ references:
   commentId: T:Qmmands.CommandExecutionFailedEventArgs
   fullName: Qmmands.CommandExecutionFailedEventArgs
   nameWithType: CommandExecutionFailedEventArgs
-- uid: Qmmands.CommandExecutionFailedEventArgs.#ctor(Qmmands.ExecutionFailedResult,Qmmands.CommandContext)
-  name: CommandExecutionFailedEventArgs(ExecutionFailedResult, CommandContext)
-  href: api/Qmmands.CommandExecutionFailedEventArgs.html#Qmmands_CommandExecutionFailedEventArgs__ctor_Qmmands_ExecutionFailedResult_Qmmands_CommandContext_
-  commentId: M:Qmmands.CommandExecutionFailedEventArgs.#ctor(Qmmands.ExecutionFailedResult,Qmmands.CommandContext)
-  fullName: Qmmands.CommandExecutionFailedEventArgs.CommandExecutionFailedEventArgs(Qmmands.ExecutionFailedResult, Qmmands.CommandContext)
-  nameWithType: CommandExecutionFailedEventArgs.CommandExecutionFailedEventArgs(ExecutionFailedResult, CommandContext)
+- uid: Qmmands.CommandExecutionFailedEventArgs.#ctor(Qmmands.CommandExecutionFailedResult,Qmmands.CommandContext)
+  name: CommandExecutionFailedEventArgs(CommandExecutionFailedResult, CommandContext)
+  href: api/Qmmands.CommandExecutionFailedEventArgs.html#Qmmands_CommandExecutionFailedEventArgs__ctor_Qmmands_CommandExecutionFailedResult_Qmmands_CommandContext_
+  commentId: M:Qmmands.CommandExecutionFailedEventArgs.#ctor(Qmmands.CommandExecutionFailedResult,Qmmands.CommandContext)
+  fullName: Qmmands.CommandExecutionFailedEventArgs.CommandExecutionFailedEventArgs(Qmmands.CommandExecutionFailedResult, Qmmands.CommandContext)
+  nameWithType: CommandExecutionFailedEventArgs.CommandExecutionFailedEventArgs(CommandExecutionFailedResult, CommandContext)
 - uid: Qmmands.CommandExecutionFailedEventArgs.#ctor*
   name: CommandExecutionFailedEventArgs
   href: api/Qmmands.CommandExecutionFailedEventArgs.html#Qmmands_CommandExecutionFailedEventArgs__ctor_
@@ -1336,6 +1362,64 @@ references:
   isSpec: "True"
   fullName: Qmmands.CommandExecutionFailedEventArgs.Result
   nameWithType: CommandExecutionFailedEventArgs.Result
+- uid: Qmmands.CommandExecutionFailedResult
+  name: CommandExecutionFailedResult
+  href: api/Qmmands.CommandExecutionFailedResult.html
+  commentId: T:Qmmands.CommandExecutionFailedResult
+  fullName: Qmmands.CommandExecutionFailedResult
+  nameWithType: CommandExecutionFailedResult
+- uid: Qmmands.CommandExecutionFailedResult.Command
+  name: Command
+  href: api/Qmmands.CommandExecutionFailedResult.html#Qmmands_CommandExecutionFailedResult_Command
+  commentId: P:Qmmands.CommandExecutionFailedResult.Command
+  fullName: Qmmands.CommandExecutionFailedResult.Command
+  nameWithType: CommandExecutionFailedResult.Command
+- uid: Qmmands.CommandExecutionFailedResult.Command*
+  name: Command
+  href: api/Qmmands.CommandExecutionFailedResult.html#Qmmands_CommandExecutionFailedResult_Command_
+  commentId: Overload:Qmmands.CommandExecutionFailedResult.Command
+  isSpec: "True"
+  fullName: Qmmands.CommandExecutionFailedResult.Command
+  nameWithType: CommandExecutionFailedResult.Command
+- uid: Qmmands.CommandExecutionFailedResult.CommandExecutionStep
+  name: CommandExecutionStep
+  href: api/Qmmands.CommandExecutionFailedResult.html#Qmmands_CommandExecutionFailedResult_CommandExecutionStep
+  commentId: P:Qmmands.CommandExecutionFailedResult.CommandExecutionStep
+  fullName: Qmmands.CommandExecutionFailedResult.CommandExecutionStep
+  nameWithType: CommandExecutionFailedResult.CommandExecutionStep
+- uid: Qmmands.CommandExecutionFailedResult.CommandExecutionStep*
+  name: CommandExecutionStep
+  href: api/Qmmands.CommandExecutionFailedResult.html#Qmmands_CommandExecutionFailedResult_CommandExecutionStep_
+  commentId: Overload:Qmmands.CommandExecutionFailedResult.CommandExecutionStep
+  isSpec: "True"
+  fullName: Qmmands.CommandExecutionFailedResult.CommandExecutionStep
+  nameWithType: CommandExecutionFailedResult.CommandExecutionStep
+- uid: Qmmands.CommandExecutionFailedResult.Exception
+  name: Exception
+  href: api/Qmmands.CommandExecutionFailedResult.html#Qmmands_CommandExecutionFailedResult_Exception
+  commentId: P:Qmmands.CommandExecutionFailedResult.Exception
+  fullName: Qmmands.CommandExecutionFailedResult.Exception
+  nameWithType: CommandExecutionFailedResult.Exception
+- uid: Qmmands.CommandExecutionFailedResult.Exception*
+  name: Exception
+  href: api/Qmmands.CommandExecutionFailedResult.html#Qmmands_CommandExecutionFailedResult_Exception_
+  commentId: Overload:Qmmands.CommandExecutionFailedResult.Exception
+  isSpec: "True"
+  fullName: Qmmands.CommandExecutionFailedResult.Exception
+  nameWithType: CommandExecutionFailedResult.Exception
+- uid: Qmmands.CommandExecutionFailedResult.FailureReason
+  name: FailureReason
+  href: api/Qmmands.CommandExecutionFailedResult.html#Qmmands_CommandExecutionFailedResult_FailureReason
+  commentId: P:Qmmands.CommandExecutionFailedResult.FailureReason
+  fullName: Qmmands.CommandExecutionFailedResult.FailureReason
+  nameWithType: CommandExecutionFailedResult.FailureReason
+- uid: Qmmands.CommandExecutionFailedResult.FailureReason*
+  name: FailureReason
+  href: api/Qmmands.CommandExecutionFailedResult.html#Qmmands_CommandExecutionFailedResult_FailureReason_
+  commentId: Overload:Qmmands.CommandExecutionFailedResult.FailureReason
+  isSpec: "True"
+  fullName: Qmmands.CommandExecutionFailedResult.FailureReason
+  nameWithType: CommandExecutionFailedResult.FailureReason
 - uid: Qmmands.CommandExecutionStep
   name: CommandExecutionStep
   href: api/Qmmands.CommandExecutionStep.html
@@ -1474,19 +1558,19 @@ references:
   commentId: T:Qmmands.CommandNotFoundResult
   fullName: Qmmands.CommandNotFoundResult
   nameWithType: CommandNotFoundResult
-- uid: Qmmands.CommandNotFoundResult.Reason
-  name: Reason
-  href: api/Qmmands.CommandNotFoundResult.html#Qmmands_CommandNotFoundResult_Reason
-  commentId: P:Qmmands.CommandNotFoundResult.Reason
-  fullName: Qmmands.CommandNotFoundResult.Reason
-  nameWithType: CommandNotFoundResult.Reason
-- uid: Qmmands.CommandNotFoundResult.Reason*
-  name: Reason
-  href: api/Qmmands.CommandNotFoundResult.html#Qmmands_CommandNotFoundResult_Reason_
-  commentId: Overload:Qmmands.CommandNotFoundResult.Reason
+- uid: Qmmands.CommandNotFoundResult.FailureReason
+  name: FailureReason
+  href: api/Qmmands.CommandNotFoundResult.html#Qmmands_CommandNotFoundResult_FailureReason
+  commentId: P:Qmmands.CommandNotFoundResult.FailureReason
+  fullName: Qmmands.CommandNotFoundResult.FailureReason
+  nameWithType: CommandNotFoundResult.FailureReason
+- uid: Qmmands.CommandNotFoundResult.FailureReason*
+  name: FailureReason
+  href: api/Qmmands.CommandNotFoundResult.html#Qmmands_CommandNotFoundResult_FailureReason_
+  commentId: Overload:Qmmands.CommandNotFoundResult.FailureReason
   isSpec: "True"
-  fullName: Qmmands.CommandNotFoundResult.Reason
-  nameWithType: CommandNotFoundResult.Reason
+  fullName: Qmmands.CommandNotFoundResult.FailureReason
+  nameWithType: CommandNotFoundResult.FailureReason
 - uid: Qmmands.CommandOnCooldownResult
   name: CommandOnCooldownResult
   href: api/Qmmands.CommandOnCooldownResult.html
@@ -1519,19 +1603,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.CommandOnCooldownResult.Cooldowns
   nameWithType: CommandOnCooldownResult.Cooldowns
-- uid: Qmmands.CommandOnCooldownResult.Reason
-  name: Reason
-  href: api/Qmmands.CommandOnCooldownResult.html#Qmmands_CommandOnCooldownResult_Reason
-  commentId: P:Qmmands.CommandOnCooldownResult.Reason
-  fullName: Qmmands.CommandOnCooldownResult.Reason
-  nameWithType: CommandOnCooldownResult.Reason
-- uid: Qmmands.CommandOnCooldownResult.Reason*
-  name: Reason
-  href: api/Qmmands.CommandOnCooldownResult.html#Qmmands_CommandOnCooldownResult_Reason_
-  commentId: Overload:Qmmands.CommandOnCooldownResult.Reason
+- uid: Qmmands.CommandOnCooldownResult.FailureReason
+  name: FailureReason
+  href: api/Qmmands.CommandOnCooldownResult.html#Qmmands_CommandOnCooldownResult_FailureReason
+  commentId: P:Qmmands.CommandOnCooldownResult.FailureReason
+  fullName: Qmmands.CommandOnCooldownResult.FailureReason
+  nameWithType: CommandOnCooldownResult.FailureReason
+- uid: Qmmands.CommandOnCooldownResult.FailureReason*
+  name: FailureReason
+  href: api/Qmmands.CommandOnCooldownResult.html#Qmmands_CommandOnCooldownResult_FailureReason_
+  commentId: Overload:Qmmands.CommandOnCooldownResult.FailureReason
   isSpec: "True"
-  fullName: Qmmands.CommandOnCooldownResult.Reason
-  nameWithType: CommandOnCooldownResult.Reason
+  fullName: Qmmands.CommandOnCooldownResult.FailureReason
+  nameWithType: CommandOnCooldownResult.FailureReason
 - uid: Qmmands.CommandResult
   name: CommandResult
   href: api/Qmmands.CommandResult.html
@@ -1564,13 +1648,13 @@ references:
   isSpec: "True"
   fullName: Qmmands.CommandResult.IsSuccessful
   nameWithType: CommandResult.IsSuccessful
-- uid: Qmmands.CommandResult.op_Implicit(Qmmands.CommandResult)~System.Threading.Tasks.ValueTask{Qmmands.CommandResult}
+- uid: Qmmands.CommandResult.op_Implicit(Qmmands.CommandResult)~ValueTask{Qmmands.CommandResult}
   name: Implicit(CommandResult to ValueTask<CommandResult>)
-  href: api/Qmmands.CommandResult.html#Qmmands_CommandResult_op_Implicit_Qmmands_CommandResult__System_Threading_Tasks_ValueTask_Qmmands_CommandResult_
-  commentId: M:Qmmands.CommandResult.op_Implicit(Qmmands.CommandResult)~System.Threading.Tasks.ValueTask{Qmmands.CommandResult}
+  href: api/Qmmands.CommandResult.html#Qmmands_CommandResult_op_Implicit_Qmmands_CommandResult__ValueTask_Qmmands_CommandResult_
+  commentId: M:Qmmands.CommandResult.op_Implicit(Qmmands.CommandResult)~ValueTask{Qmmands.CommandResult}
   name.vb: Widening(CommandResult to ValueTask(Of CommandResult))
-  fullName: Qmmands.CommandResult.Implicit(Qmmands.CommandResult to System.Threading.Tasks.ValueTask<Qmmands.CommandResult>)
-  fullName.vb: Qmmands.CommandResult.Widening(Qmmands.CommandResult to System.Threading.Tasks.ValueTask(Of Qmmands.CommandResult))
+  fullName: Qmmands.CommandResult.Implicit(Qmmands.CommandResult to ValueTask<Qmmands.CommandResult>)
+  fullName.vb: Qmmands.CommandResult.Widening(Qmmands.CommandResult to ValueTask(Of Qmmands.CommandResult))
   nameWithType: CommandResult.Implicit(CommandResult to ValueTask<CommandResult>)
   nameWithType.vb: CommandResult.Widening(CommandResult to ValueTask(Of CommandResult))
 - uid: Qmmands.CommandResult.op_Implicit*
@@ -1621,28 +1705,28 @@ references:
   isSpec: "True"
   fullName: Qmmands.CommandService.AddArgumentParser
   nameWithType: CommandService.AddArgumentParser
+- uid: Qmmands.CommandService.AddModule(Action{Qmmands.ModuleBuilder})
+  name: AddModule(Action<ModuleBuilder>)
+  href: api/Qmmands.CommandService.html#Qmmands_CommandService_AddModule_Action_Qmmands_ModuleBuilder__
+  commentId: M:Qmmands.CommandService.AddModule(Action{Qmmands.ModuleBuilder})
+  name.vb: AddModule(Action(Of ModuleBuilder))
+  fullName: Qmmands.CommandService.AddModule(Action<Qmmands.ModuleBuilder>)
+  fullName.vb: Qmmands.CommandService.AddModule(Action(Of Qmmands.ModuleBuilder))
+  nameWithType: CommandService.AddModule(Action<ModuleBuilder>)
+  nameWithType.vb: CommandService.AddModule(Action(Of ModuleBuilder))
 - uid: Qmmands.CommandService.AddModule(Qmmands.Module)
   name: AddModule(Module)
   href: api/Qmmands.CommandService.html#Qmmands_CommandService_AddModule_Qmmands_Module_
   commentId: M:Qmmands.CommandService.AddModule(Qmmands.Module)
   fullName: Qmmands.CommandService.AddModule(Qmmands.Module)
   nameWithType: CommandService.AddModule(Module)
-- uid: Qmmands.CommandService.AddModule(System.Action{Qmmands.ModuleBuilder})
-  name: AddModule(Action<ModuleBuilder>)
-  href: api/Qmmands.CommandService.html#Qmmands_CommandService_AddModule_System_Action_Qmmands_ModuleBuilder__
-  commentId: M:Qmmands.CommandService.AddModule(System.Action{Qmmands.ModuleBuilder})
-  name.vb: AddModule(Action(Of ModuleBuilder))
-  fullName: Qmmands.CommandService.AddModule(System.Action<Qmmands.ModuleBuilder>)
-  fullName.vb: Qmmands.CommandService.AddModule(System.Action(Of Qmmands.ModuleBuilder))
-  nameWithType: CommandService.AddModule(Action<ModuleBuilder>)
-  nameWithType.vb: CommandService.AddModule(Action(Of ModuleBuilder))
-- uid: Qmmands.CommandService.AddModule(System.Type,System.Action{Qmmands.ModuleBuilder})
+- uid: Qmmands.CommandService.AddModule(Type,Action{Qmmands.ModuleBuilder})
   name: AddModule(Type, Action<ModuleBuilder>)
-  href: api/Qmmands.CommandService.html#Qmmands_CommandService_AddModule_System_Type_System_Action_Qmmands_ModuleBuilder__
-  commentId: M:Qmmands.CommandService.AddModule(System.Type,System.Action{Qmmands.ModuleBuilder})
+  href: api/Qmmands.CommandService.html#Qmmands_CommandService_AddModule_Type_Action_Qmmands_ModuleBuilder__
+  commentId: M:Qmmands.CommandService.AddModule(Type,Action{Qmmands.ModuleBuilder})
   name.vb: AddModule(Type, Action(Of ModuleBuilder))
-  fullName: Qmmands.CommandService.AddModule(System.Type, System.Action<Qmmands.ModuleBuilder>)
-  fullName.vb: Qmmands.CommandService.AddModule(System.Type, System.Action(Of Qmmands.ModuleBuilder))
+  fullName: Qmmands.CommandService.AddModule(Type, Action<Qmmands.ModuleBuilder>)
+  fullName.vb: Qmmands.CommandService.AddModule(Type, Action(Of Qmmands.ModuleBuilder))
   nameWithType: CommandService.AddModule(Type, Action<ModuleBuilder>)
   nameWithType.vb: CommandService.AddModule(Type, Action(Of ModuleBuilder))
 - uid: Qmmands.CommandService.AddModule*
@@ -1652,22 +1736,22 @@ references:
   isSpec: "True"
   fullName: Qmmands.CommandService.AddModule
   nameWithType: CommandService.AddModule
-- uid: Qmmands.CommandService.AddModule``1(System.Action{Qmmands.ModuleBuilder})
+- uid: Qmmands.CommandService.AddModule``1(Action{Qmmands.ModuleBuilder})
   name: AddModule<TModule>(Action<ModuleBuilder>)
-  href: api/Qmmands.CommandService.html#Qmmands_CommandService_AddModule__1_System_Action_Qmmands_ModuleBuilder__
-  commentId: M:Qmmands.CommandService.AddModule``1(System.Action{Qmmands.ModuleBuilder})
+  href: api/Qmmands.CommandService.html#Qmmands_CommandService_AddModule__1_Action_Qmmands_ModuleBuilder__
+  commentId: M:Qmmands.CommandService.AddModule``1(Action{Qmmands.ModuleBuilder})
   name.vb: AddModule(Of TModule)(Action(Of ModuleBuilder))
-  fullName: Qmmands.CommandService.AddModule<TModule>(System.Action<Qmmands.ModuleBuilder>)
-  fullName.vb: Qmmands.CommandService.AddModule(Of TModule)(System.Action(Of Qmmands.ModuleBuilder))
+  fullName: Qmmands.CommandService.AddModule<TModule>(Action<Qmmands.ModuleBuilder>)
+  fullName.vb: Qmmands.CommandService.AddModule(Of TModule)(Action(Of Qmmands.ModuleBuilder))
   nameWithType: CommandService.AddModule<TModule>(Action<ModuleBuilder>)
   nameWithType.vb: CommandService.AddModule(Of TModule)(Action(Of ModuleBuilder))
-- uid: Qmmands.CommandService.AddModules(System.Reflection.Assembly,System.Predicate{System.Reflection.TypeInfo},System.Action{Qmmands.ModuleBuilder})
+- uid: Qmmands.CommandService.AddModules(Assembly,Predicate{TypeInfo},Action{Qmmands.ModuleBuilder})
   name: AddModules(Assembly, Predicate<TypeInfo>, Action<ModuleBuilder>)
-  href: api/Qmmands.CommandService.html#Qmmands_CommandService_AddModules_System_Reflection_Assembly_System_Predicate_System_Reflection_TypeInfo__System_Action_Qmmands_ModuleBuilder__
-  commentId: M:Qmmands.CommandService.AddModules(System.Reflection.Assembly,System.Predicate{System.Reflection.TypeInfo},System.Action{Qmmands.ModuleBuilder})
+  href: api/Qmmands.CommandService.html#Qmmands_CommandService_AddModules_Assembly_Predicate_TypeInfo__Action_Qmmands_ModuleBuilder__
+  commentId: M:Qmmands.CommandService.AddModules(Assembly,Predicate{TypeInfo},Action{Qmmands.ModuleBuilder})
   name.vb: AddModules(Assembly, Predicate(Of TypeInfo), Action(Of ModuleBuilder))
-  fullName: Qmmands.CommandService.AddModules(System.Reflection.Assembly, System.Predicate<System.Reflection.TypeInfo>, System.Action<Qmmands.ModuleBuilder>)
-  fullName.vb: Qmmands.CommandService.AddModules(System.Reflection.Assembly, System.Predicate(Of System.Reflection.TypeInfo), System.Action(Of Qmmands.ModuleBuilder))
+  fullName: Qmmands.CommandService.AddModules(Assembly, Predicate<TypeInfo>, Action<Qmmands.ModuleBuilder>)
+  fullName.vb: Qmmands.CommandService.AddModules(Assembly, Predicate(Of TypeInfo), Action(Of Qmmands.ModuleBuilder))
   nameWithType: CommandService.AddModules(Assembly, Predicate<TypeInfo>, Action<ModuleBuilder>)
   nameWithType.vb: CommandService.AddModules(Assembly, Predicate(Of TypeInfo), Action(Of ModuleBuilder))
 - uid: Qmmands.CommandService.AddModules*
@@ -1744,13 +1828,13 @@ references:
   isSpec: "True"
   fullName: Qmmands.CommandService.DefaultRunMode
   nameWithType: CommandService.DefaultRunMode
-- uid: Qmmands.CommandService.ExecuteAsync(Qmmands.Command,System.Collections.Generic.IEnumerable{System.Object},Qmmands.CommandContext)
+- uid: Qmmands.CommandService.ExecuteAsync(Qmmands.Command,IEnumerable{System.Object},Qmmands.CommandContext)
   name: ExecuteAsync(Command, IEnumerable<Object>, CommandContext)
-  href: api/Qmmands.CommandService.html#Qmmands_CommandService_ExecuteAsync_Qmmands_Command_System_Collections_Generic_IEnumerable_System_Object__Qmmands_CommandContext_
-  commentId: M:Qmmands.CommandService.ExecuteAsync(Qmmands.Command,System.Collections.Generic.IEnumerable{System.Object},Qmmands.CommandContext)
+  href: api/Qmmands.CommandService.html#Qmmands_CommandService_ExecuteAsync_Qmmands_Command_IEnumerable_System_Object__Qmmands_CommandContext_
+  commentId: M:Qmmands.CommandService.ExecuteAsync(Qmmands.Command,IEnumerable{System.Object},Qmmands.CommandContext)
   name.vb: ExecuteAsync(Command, IEnumerable(Of Object), CommandContext)
-  fullName: Qmmands.CommandService.ExecuteAsync(Qmmands.Command, System.Collections.Generic.IEnumerable<System.Object>, Qmmands.CommandContext)
-  fullName.vb: Qmmands.CommandService.ExecuteAsync(Qmmands.Command, System.Collections.Generic.IEnumerable(Of System.Object), Qmmands.CommandContext)
+  fullName: Qmmands.CommandService.ExecuteAsync(Qmmands.Command, IEnumerable<System.Object>, Qmmands.CommandContext)
+  fullName.vb: Qmmands.CommandService.ExecuteAsync(Qmmands.Command, IEnumerable(Of System.Object), Qmmands.CommandContext)
   nameWithType: CommandService.ExecuteAsync(Command, IEnumerable<Object>, CommandContext)
   nameWithType.vb: CommandService.ExecuteAsync(Command, IEnumerable(Of Object), CommandContext)
 - uid: Qmmands.CommandService.ExecuteAsync(Qmmands.Command,System.String,Qmmands.CommandContext)
@@ -1811,11 +1895,11 @@ references:
   isSpec: "True"
   fullName: Qmmands.CommandService.GetAllModules
   nameWithType: CommandService.GetAllModules
-- uid: Qmmands.CommandService.GetArgumentParser(System.Type)
+- uid: Qmmands.CommandService.GetArgumentParser(Type)
   name: GetArgumentParser(Type)
-  href: api/Qmmands.CommandService.html#Qmmands_CommandService_GetArgumentParser_System_Type_
-  commentId: M:Qmmands.CommandService.GetArgumentParser(System.Type)
-  fullName: Qmmands.CommandService.GetArgumentParser(System.Type)
+  href: api/Qmmands.CommandService.html#Qmmands_CommandService_GetArgumentParser_Type_
+  commentId: M:Qmmands.CommandService.GetArgumentParser(Type)
+  fullName: Qmmands.CommandService.GetArgumentParser(Type)
   nameWithType: CommandService.GetArgumentParser(Type)
 - uid: Qmmands.CommandService.GetArgumentParser*
   name: GetArgumentParser
@@ -1930,11 +2014,11 @@ references:
   isSpec: "True"
   fullName: Qmmands.CommandService.RemoveAllTypeParsers
   nameWithType: CommandService.RemoveAllTypeParsers
-- uid: Qmmands.CommandService.RemoveArgumentParser(System.Type)
+- uid: Qmmands.CommandService.RemoveArgumentParser(Type)
   name: RemoveArgumentParser(Type)
-  href: api/Qmmands.CommandService.html#Qmmands_CommandService_RemoveArgumentParser_System_Type_
-  commentId: M:Qmmands.CommandService.RemoveArgumentParser(System.Type)
-  fullName: Qmmands.CommandService.RemoveArgumentParser(System.Type)
+  href: api/Qmmands.CommandService.html#Qmmands_CommandService_RemoveArgumentParser_Type_
+  commentId: M:Qmmands.CommandService.RemoveArgumentParser(Type)
+  fullName: Qmmands.CommandService.RemoveArgumentParser(Type)
   nameWithType: CommandService.RemoveArgumentParser(Type)
 - uid: Qmmands.CommandService.RemoveArgumentParser*
   name: RemoveArgumentParser
@@ -2013,11 +2097,11 @@ references:
   commentId: M:Qmmands.CommandService.SetDefaultArgumentParser(Qmmands.IArgumentParser)
   fullName: Qmmands.CommandService.SetDefaultArgumentParser(Qmmands.IArgumentParser)
   nameWithType: CommandService.SetDefaultArgumentParser(IArgumentParser)
-- uid: Qmmands.CommandService.SetDefaultArgumentParser(System.Type)
+- uid: Qmmands.CommandService.SetDefaultArgumentParser(Type)
   name: SetDefaultArgumentParser(Type)
-  href: api/Qmmands.CommandService.html#Qmmands_CommandService_SetDefaultArgumentParser_System_Type_
-  commentId: M:Qmmands.CommandService.SetDefaultArgumentParser(System.Type)
-  fullName: Qmmands.CommandService.SetDefaultArgumentParser(System.Type)
+  href: api/Qmmands.CommandService.html#Qmmands_CommandService_SetDefaultArgumentParser_Type_
+  commentId: M:Qmmands.CommandService.SetDefaultArgumentParser(Type)
+  fullName: Qmmands.CommandService.SetDefaultArgumentParser(Type)
   nameWithType: CommandService.SetDefaultArgumentParser(Type)
 - uid: Qmmands.CommandService.SetDefaultArgumentParser*
   name: SetDefaultArgumentParser
@@ -2158,19 +2242,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.CommandServiceConfiguration.NullableNouns
   nameWithType: CommandServiceConfiguration.NullableNouns
-- uid: Qmmands.CommandServiceConfiguration.QuoteMap
-  name: QuoteMap
-  href: api/Qmmands.CommandServiceConfiguration.html#Qmmands_CommandServiceConfiguration_QuoteMap
-  commentId: P:Qmmands.CommandServiceConfiguration.QuoteMap
-  fullName: Qmmands.CommandServiceConfiguration.QuoteMap
-  nameWithType: CommandServiceConfiguration.QuoteMap
-- uid: Qmmands.CommandServiceConfiguration.QuoteMap*
-  name: QuoteMap
-  href: api/Qmmands.CommandServiceConfiguration.html#Qmmands_CommandServiceConfiguration_QuoteMap_
-  commentId: Overload:Qmmands.CommandServiceConfiguration.QuoteMap
+- uid: Qmmands.CommandServiceConfiguration.QuotationMarkMap
+  name: QuotationMarkMap
+  href: api/Qmmands.CommandServiceConfiguration.html#Qmmands_CommandServiceConfiguration_QuotationMarkMap
+  commentId: P:Qmmands.CommandServiceConfiguration.QuotationMarkMap
+  fullName: Qmmands.CommandServiceConfiguration.QuotationMarkMap
+  nameWithType: CommandServiceConfiguration.QuotationMarkMap
+- uid: Qmmands.CommandServiceConfiguration.QuotationMarkMap*
+  name: QuotationMarkMap
+  href: api/Qmmands.CommandServiceConfiguration.html#Qmmands_CommandServiceConfiguration_QuotationMarkMap_
+  commentId: Overload:Qmmands.CommandServiceConfiguration.QuotationMarkMap
   isSpec: "True"
-  fullName: Qmmands.CommandServiceConfiguration.QuoteMap
-  nameWithType: CommandServiceConfiguration.QuoteMap
+  fullName: Qmmands.CommandServiceConfiguration.QuotationMarkMap
+  nameWithType: CommandServiceConfiguration.QuotationMarkMap
 - uid: Qmmands.CommandServiceConfiguration.Separator
   name: Separator
   href: api/Qmmands.CommandServiceConfiguration.html#Qmmands_CommandServiceConfiguration_Separator
@@ -2291,150 +2375,150 @@ references:
   commentId: F:Qmmands.CommandUtilities.FriendlyPrimitiveTypeNames
   fullName: Qmmands.CommandUtilities.FriendlyPrimitiveTypeNames
   nameWithType: CommandUtilities.FriendlyPrimitiveTypeNames
-- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IEnumerable{System.Char},System.Boolean,System.Char@,System.String@)
+- uid: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IEnumerable{System.Char},System.Boolean,System.Char@,System.String@)
   name: HasAnyPrefix(ReadOnlySpan<Char>, IEnumerable<Char>, Boolean, out Char, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IEnumerable_System_Char__System_Boolean_System_Char__System_String__
-  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IEnumerable{System.Char},System.Boolean,System.Char@,System.String@)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IEnumerable_System_Char__System_Boolean_System_Char__System_String__
+  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IEnumerable{System.Char},System.Boolean,System.Char@,System.String@)
   name.vb: HasAnyPrefix(ReadOnlySpan(Of Char), IEnumerable(Of Char), Boolean, ByRef Char, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan<System.Char>, System.Collections.Generic.IEnumerable<System.Char>, System.Boolean, out System.Char, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan(Of System.Char), System.Collections.Generic.IEnumerable(Of System.Char), System.Boolean, ByRef System.Char, ByRef System.String)
+  fullName: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan<System.Char>, IEnumerable<System.Char>, System.Boolean, out System.Char, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of System.Char), IEnumerable(Of System.Char), System.Boolean, ByRef System.Char, ByRef System.String)
   nameWithType: CommandUtilities.HasAnyPrefix(ReadOnlySpan<Char>, IEnumerable<Char>, Boolean, out Char, out String)
   nameWithType.vb: CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of Char), IEnumerable(Of Char), Boolean, ByRef Char, ByRef String)
-- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IEnumerable{System.Char},System.Char@,System.String@)
+- uid: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IEnumerable{System.Char},System.Char@,System.String@)
   name: HasAnyPrefix(ReadOnlySpan<Char>, IEnumerable<Char>, out Char, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IEnumerable_System_Char__System_Char__System_String__
-  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IEnumerable{System.Char},System.Char@,System.String@)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IEnumerable_System_Char__System_Char__System_String__
+  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IEnumerable{System.Char},System.Char@,System.String@)
   name.vb: HasAnyPrefix(ReadOnlySpan(Of Char), IEnumerable(Of Char), ByRef Char, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan<System.Char>, System.Collections.Generic.IEnumerable<System.Char>, out System.Char, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan(Of System.Char), System.Collections.Generic.IEnumerable(Of System.Char), ByRef System.Char, ByRef System.String)
+  fullName: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan<System.Char>, IEnumerable<System.Char>, out System.Char, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of System.Char), IEnumerable(Of System.Char), ByRef System.Char, ByRef System.String)
   nameWithType: CommandUtilities.HasAnyPrefix(ReadOnlySpan<Char>, IEnumerable<Char>, out Char, out String)
   nameWithType.vb: CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of Char), IEnumerable(Of Char), ByRef Char, ByRef String)
-- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IEnumerable{System.String},System.String@,System.String@)
-  name: HasAnyPrefix(ReadOnlySpan<Char>, IEnumerable<String>, out String, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IEnumerable_System_String__System_String__System_String__
-  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IEnumerable{System.String},System.String@,System.String@)
-  name.vb: HasAnyPrefix(ReadOnlySpan(Of Char), IEnumerable(Of String), ByRef String, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan<System.Char>, System.Collections.Generic.IEnumerable<System.String>, out System.String, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan(Of System.Char), System.Collections.Generic.IEnumerable(Of System.String), ByRef System.String, ByRef System.String)
-  nameWithType: CommandUtilities.HasAnyPrefix(ReadOnlySpan<Char>, IEnumerable<String>, out String, out String)
-  nameWithType.vb: CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of Char), IEnumerable(Of String), ByRef String, ByRef String)
-- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IEnumerable{System.String},System.StringComparison,System.String@,System.String@)
+- uid: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IEnumerable{System.String},StringComparison,System.String@,System.String@)
   name: HasAnyPrefix(ReadOnlySpan<Char>, IEnumerable<String>, StringComparison, out String, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IEnumerable_System_String__System_StringComparison_System_String__System_String__
-  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IEnumerable{System.String},System.StringComparison,System.String@,System.String@)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IEnumerable_System_String__StringComparison_System_String__System_String__
+  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IEnumerable{System.String},StringComparison,System.String@,System.String@)
   name.vb: HasAnyPrefix(ReadOnlySpan(Of Char), IEnumerable(Of String), StringComparison, ByRef String, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan<System.Char>, System.Collections.Generic.IEnumerable<System.String>, System.StringComparison, out System.String, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan(Of System.Char), System.Collections.Generic.IEnumerable(Of System.String), System.StringComparison, ByRef System.String, ByRef System.String)
+  fullName: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan<System.Char>, IEnumerable<System.String>, StringComparison, out System.String, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of System.Char), IEnumerable(Of System.String), StringComparison, ByRef System.String, ByRef System.String)
   nameWithType: CommandUtilities.HasAnyPrefix(ReadOnlySpan<Char>, IEnumerable<String>, StringComparison, out String, out String)
   nameWithType.vb: CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of Char), IEnumerable(Of String), StringComparison, ByRef String, ByRef String)
-- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IReadOnlyList{System.Char},System.Boolean,System.Char@,System.String@)
+- uid: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IEnumerable{System.String},System.String@,System.String@)
+  name: HasAnyPrefix(ReadOnlySpan<Char>, IEnumerable<String>, out String, out String)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IEnumerable_System_String__System_String__System_String__
+  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IEnumerable{System.String},System.String@,System.String@)
+  name.vb: HasAnyPrefix(ReadOnlySpan(Of Char), IEnumerable(Of String), ByRef String, ByRef String)
+  fullName: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan<System.Char>, IEnumerable<System.String>, out System.String, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of System.Char), IEnumerable(Of System.String), ByRef System.String, ByRef System.String)
+  nameWithType: CommandUtilities.HasAnyPrefix(ReadOnlySpan<Char>, IEnumerable<String>, out String, out String)
+  nameWithType.vb: CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of Char), IEnumerable(Of String), ByRef String, ByRef String)
+- uid: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IReadOnlyList{System.Char},System.Boolean,System.Char@,System.String@)
   name: HasAnyPrefix(ReadOnlySpan<Char>, IReadOnlyList<Char>, Boolean, out Char, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IReadOnlyList_System_Char__System_Boolean_System_Char__System_String__
-  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IReadOnlyList{System.Char},System.Boolean,System.Char@,System.String@)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IReadOnlyList_System_Char__System_Boolean_System_Char__System_String__
+  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IReadOnlyList{System.Char},System.Boolean,System.Char@,System.String@)
   name.vb: HasAnyPrefix(ReadOnlySpan(Of Char), IReadOnlyList(Of Char), Boolean, ByRef Char, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan<System.Char>, System.Collections.Generic.IReadOnlyList<System.Char>, System.Boolean, out System.Char, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan(Of System.Char), System.Collections.Generic.IReadOnlyList(Of System.Char), System.Boolean, ByRef System.Char, ByRef System.String)
+  fullName: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan<System.Char>, IReadOnlyList<System.Char>, System.Boolean, out System.Char, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of System.Char), IReadOnlyList(Of System.Char), System.Boolean, ByRef System.Char, ByRef System.String)
   nameWithType: CommandUtilities.HasAnyPrefix(ReadOnlySpan<Char>, IReadOnlyList<Char>, Boolean, out Char, out String)
   nameWithType.vb: CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of Char), IReadOnlyList(Of Char), Boolean, ByRef Char, ByRef String)
-- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IReadOnlyList{System.Char},System.Char@,System.String@)
+- uid: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IReadOnlyList{System.Char},System.Char@,System.String@)
   name: HasAnyPrefix(ReadOnlySpan<Char>, IReadOnlyList<Char>, out Char, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IReadOnlyList_System_Char__System_Char__System_String__
-  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IReadOnlyList{System.Char},System.Char@,System.String@)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IReadOnlyList_System_Char__System_Char__System_String__
+  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IReadOnlyList{System.Char},System.Char@,System.String@)
   name.vb: HasAnyPrefix(ReadOnlySpan(Of Char), IReadOnlyList(Of Char), ByRef Char, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan<System.Char>, System.Collections.Generic.IReadOnlyList<System.Char>, out System.Char, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan(Of System.Char), System.Collections.Generic.IReadOnlyList(Of System.Char), ByRef System.Char, ByRef System.String)
+  fullName: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan<System.Char>, IReadOnlyList<System.Char>, out System.Char, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of System.Char), IReadOnlyList(Of System.Char), ByRef System.Char, ByRef System.String)
   nameWithType: CommandUtilities.HasAnyPrefix(ReadOnlySpan<Char>, IReadOnlyList<Char>, out Char, out String)
   nameWithType.vb: CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of Char), IReadOnlyList(Of Char), ByRef Char, ByRef String)
-- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IReadOnlyList{System.String},System.String@,System.String@)
-  name: HasAnyPrefix(ReadOnlySpan<Char>, IReadOnlyList<String>, out String, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IReadOnlyList_System_String__System_String__System_String__
-  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IReadOnlyList{System.String},System.String@,System.String@)
-  name.vb: HasAnyPrefix(ReadOnlySpan(Of Char), IReadOnlyList(Of String), ByRef String, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan<System.Char>, System.Collections.Generic.IReadOnlyList<System.String>, out System.String, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan(Of System.Char), System.Collections.Generic.IReadOnlyList(Of System.String), ByRef System.String, ByRef System.String)
-  nameWithType: CommandUtilities.HasAnyPrefix(ReadOnlySpan<Char>, IReadOnlyList<String>, out String, out String)
-  nameWithType.vb: CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of Char), IReadOnlyList(Of String), ByRef String, ByRef String)
-- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IReadOnlyList{System.String},System.StringComparison,System.String@,System.String@)
+- uid: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IReadOnlyList{System.String},StringComparison,System.String@,System.String@)
   name: HasAnyPrefix(ReadOnlySpan<Char>, IReadOnlyList<String>, StringComparison, out String, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IReadOnlyList_System_String__System_StringComparison_System_String__System_String__
-  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IReadOnlyList{System.String},System.StringComparison,System.String@,System.String@)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IReadOnlyList_System_String__StringComparison_System_String__System_String__
+  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IReadOnlyList{System.String},StringComparison,System.String@,System.String@)
   name.vb: HasAnyPrefix(ReadOnlySpan(Of Char), IReadOnlyList(Of String), StringComparison, ByRef String, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan<System.Char>, System.Collections.Generic.IReadOnlyList<System.String>, System.StringComparison, out System.String, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan(Of System.Char), System.Collections.Generic.IReadOnlyList(Of System.String), System.StringComparison, ByRef System.String, ByRef System.String)
+  fullName: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan<System.Char>, IReadOnlyList<System.String>, StringComparison, out System.String, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of System.Char), IReadOnlyList(Of System.String), StringComparison, ByRef System.String, ByRef System.String)
   nameWithType: CommandUtilities.HasAnyPrefix(ReadOnlySpan<Char>, IReadOnlyList<String>, StringComparison, out String, out String)
   nameWithType.vb: CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of Char), IReadOnlyList(Of String), StringComparison, ByRef String, ByRef String)
-- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IEnumerable{System.Char},System.Boolean,System.Char@,System.String@)
+- uid: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IReadOnlyList{System.String},System.String@,System.String@)
+  name: HasAnyPrefix(ReadOnlySpan<Char>, IReadOnlyList<String>, out String, out String)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IReadOnlyList_System_String__System_String__System_String__
+  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IReadOnlyList{System.String},System.String@,System.String@)
+  name.vb: HasAnyPrefix(ReadOnlySpan(Of Char), IReadOnlyList(Of String), ByRef String, ByRef String)
+  fullName: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan<System.Char>, IReadOnlyList<System.String>, out System.String, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of System.Char), IReadOnlyList(Of System.String), ByRef System.String, ByRef System.String)
+  nameWithType: CommandUtilities.HasAnyPrefix(ReadOnlySpan<Char>, IReadOnlyList<String>, out String, out String)
+  nameWithType.vb: CommandUtilities.HasAnyPrefix(ReadOnlySpan(Of Char), IReadOnlyList(Of String), ByRef String, ByRef String)
+- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.String,IEnumerable{System.Char},System.Boolean,System.Char@,System.String@)
   name: HasAnyPrefix(String, IEnumerable<Char>, Boolean, out Char, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IEnumerable_System_Char__System_Boolean_System_Char__System_String__
-  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IEnumerable{System.Char},System.Boolean,System.Char@,System.String@)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_String_IEnumerable_System_Char__System_Boolean_System_Char__System_String__
+  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.String,IEnumerable{System.Char},System.Boolean,System.Char@,System.String@)
   name.vb: HasAnyPrefix(String, IEnumerable(Of Char), Boolean, ByRef Char, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.String, System.Collections.Generic.IEnumerable<System.Char>, System.Boolean, out System.Char, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.String, System.Collections.Generic.IEnumerable(Of System.Char), System.Boolean, ByRef System.Char, ByRef System.String)
+  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.String, IEnumerable<System.Char>, System.Boolean, out System.Char, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.String, IEnumerable(Of System.Char), System.Boolean, ByRef System.Char, ByRef System.String)
   nameWithType: CommandUtilities.HasAnyPrefix(String, IEnumerable<Char>, Boolean, out Char, out String)
   nameWithType.vb: CommandUtilities.HasAnyPrefix(String, IEnumerable(Of Char), Boolean, ByRef Char, ByRef String)
-- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IEnumerable{System.Char},System.Char@,System.String@)
+- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.String,IEnumerable{System.Char},System.Char@,System.String@)
   name: HasAnyPrefix(String, IEnumerable<Char>, out Char, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IEnumerable_System_Char__System_Char__System_String__
-  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IEnumerable{System.Char},System.Char@,System.String@)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_String_IEnumerable_System_Char__System_Char__System_String__
+  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.String,IEnumerable{System.Char},System.Char@,System.String@)
   name.vb: HasAnyPrefix(String, IEnumerable(Of Char), ByRef Char, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.String, System.Collections.Generic.IEnumerable<System.Char>, out System.Char, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.String, System.Collections.Generic.IEnumerable(Of System.Char), ByRef System.Char, ByRef System.String)
+  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.String, IEnumerable<System.Char>, out System.Char, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.String, IEnumerable(Of System.Char), ByRef System.Char, ByRef System.String)
   nameWithType: CommandUtilities.HasAnyPrefix(String, IEnumerable<Char>, out Char, out String)
   nameWithType.vb: CommandUtilities.HasAnyPrefix(String, IEnumerable(Of Char), ByRef Char, ByRef String)
-- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IEnumerable{System.String},System.String@,System.String@)
-  name: HasAnyPrefix(String, IEnumerable<String>, out String, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IEnumerable_System_String__System_String__System_String__
-  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IEnumerable{System.String},System.String@,System.String@)
-  name.vb: HasAnyPrefix(String, IEnumerable(Of String), ByRef String, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.String, System.Collections.Generic.IEnumerable<System.String>, out System.String, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.String, System.Collections.Generic.IEnumerable(Of System.String), ByRef System.String, ByRef System.String)
-  nameWithType: CommandUtilities.HasAnyPrefix(String, IEnumerable<String>, out String, out String)
-  nameWithType.vb: CommandUtilities.HasAnyPrefix(String, IEnumerable(Of String), ByRef String, ByRef String)
-- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IEnumerable{System.String},System.StringComparison,System.String@,System.String@)
+- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.String,IEnumerable{System.String},StringComparison,System.String@,System.String@)
   name: HasAnyPrefix(String, IEnumerable<String>, StringComparison, out String, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IEnumerable_System_String__System_StringComparison_System_String__System_String__
-  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IEnumerable{System.String},System.StringComparison,System.String@,System.String@)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_String_IEnumerable_System_String__StringComparison_System_String__System_String__
+  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.String,IEnumerable{System.String},StringComparison,System.String@,System.String@)
   name.vb: HasAnyPrefix(String, IEnumerable(Of String), StringComparison, ByRef String, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.String, System.Collections.Generic.IEnumerable<System.String>, System.StringComparison, out System.String, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.String, System.Collections.Generic.IEnumerable(Of System.String), System.StringComparison, ByRef System.String, ByRef System.String)
+  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.String, IEnumerable<System.String>, StringComparison, out System.String, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.String, IEnumerable(Of System.String), StringComparison, ByRef System.String, ByRef System.String)
   nameWithType: CommandUtilities.HasAnyPrefix(String, IEnumerable<String>, StringComparison, out String, out String)
   nameWithType.vb: CommandUtilities.HasAnyPrefix(String, IEnumerable(Of String), StringComparison, ByRef String, ByRef String)
-- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IReadOnlyList{System.Char},System.Boolean,System.Char@,System.String@)
+- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.String,IEnumerable{System.String},System.String@,System.String@)
+  name: HasAnyPrefix(String, IEnumerable<String>, out String, out String)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_String_IEnumerable_System_String__System_String__System_String__
+  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.String,IEnumerable{System.String},System.String@,System.String@)
+  name.vb: HasAnyPrefix(String, IEnumerable(Of String), ByRef String, ByRef String)
+  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.String, IEnumerable<System.String>, out System.String, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.String, IEnumerable(Of System.String), ByRef System.String, ByRef System.String)
+  nameWithType: CommandUtilities.HasAnyPrefix(String, IEnumerable<String>, out String, out String)
+  nameWithType.vb: CommandUtilities.HasAnyPrefix(String, IEnumerable(Of String), ByRef String, ByRef String)
+- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.String,IReadOnlyList{System.Char},System.Boolean,System.Char@,System.String@)
   name: HasAnyPrefix(String, IReadOnlyList<Char>, Boolean, out Char, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IReadOnlyList_System_Char__System_Boolean_System_Char__System_String__
-  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IReadOnlyList{System.Char},System.Boolean,System.Char@,System.String@)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_String_IReadOnlyList_System_Char__System_Boolean_System_Char__System_String__
+  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.String,IReadOnlyList{System.Char},System.Boolean,System.Char@,System.String@)
   name.vb: HasAnyPrefix(String, IReadOnlyList(Of Char), Boolean, ByRef Char, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.String, System.Collections.Generic.IReadOnlyList<System.Char>, System.Boolean, out System.Char, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.String, System.Collections.Generic.IReadOnlyList(Of System.Char), System.Boolean, ByRef System.Char, ByRef System.String)
+  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.String, IReadOnlyList<System.Char>, System.Boolean, out System.Char, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.String, IReadOnlyList(Of System.Char), System.Boolean, ByRef System.Char, ByRef System.String)
   nameWithType: CommandUtilities.HasAnyPrefix(String, IReadOnlyList<Char>, Boolean, out Char, out String)
   nameWithType.vb: CommandUtilities.HasAnyPrefix(String, IReadOnlyList(Of Char), Boolean, ByRef Char, ByRef String)
-- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IReadOnlyList{System.Char},System.Char@,System.String@)
+- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.String,IReadOnlyList{System.Char},System.Char@,System.String@)
   name: HasAnyPrefix(String, IReadOnlyList<Char>, out Char, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IReadOnlyList_System_Char__System_Char__System_String__
-  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IReadOnlyList{System.Char},System.Char@,System.String@)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_String_IReadOnlyList_System_Char__System_Char__System_String__
+  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.String,IReadOnlyList{System.Char},System.Char@,System.String@)
   name.vb: HasAnyPrefix(String, IReadOnlyList(Of Char), ByRef Char, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.String, System.Collections.Generic.IReadOnlyList<System.Char>, out System.Char, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.String, System.Collections.Generic.IReadOnlyList(Of System.Char), ByRef System.Char, ByRef System.String)
+  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.String, IReadOnlyList<System.Char>, out System.Char, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.String, IReadOnlyList(Of System.Char), ByRef System.Char, ByRef System.String)
   nameWithType: CommandUtilities.HasAnyPrefix(String, IReadOnlyList<Char>, out Char, out String)
   nameWithType.vb: CommandUtilities.HasAnyPrefix(String, IReadOnlyList(Of Char), ByRef Char, ByRef String)
-- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IReadOnlyList{System.String},System.String@,System.String@)
-  name: HasAnyPrefix(String, IReadOnlyList<String>, out String, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IReadOnlyList_System_String__System_String__System_String__
-  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IReadOnlyList{System.String},System.String@,System.String@)
-  name.vb: HasAnyPrefix(String, IReadOnlyList(Of String), ByRef String, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.String, System.Collections.Generic.IReadOnlyList<System.String>, out System.String, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.String, System.Collections.Generic.IReadOnlyList(Of System.String), ByRef System.String, ByRef System.String)
-  nameWithType: CommandUtilities.HasAnyPrefix(String, IReadOnlyList<String>, out String, out String)
-  nameWithType.vb: CommandUtilities.HasAnyPrefix(String, IReadOnlyList(Of String), ByRef String, ByRef String)
-- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IReadOnlyList{System.String},System.StringComparison,System.String@,System.String@)
+- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.String,IReadOnlyList{System.String},StringComparison,System.String@,System.String@)
   name: HasAnyPrefix(String, IReadOnlyList<String>, StringComparison, out String, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IReadOnlyList_System_String__System_StringComparison_System_String__System_String__
-  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IReadOnlyList{System.String},System.StringComparison,System.String@,System.String@)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_String_IReadOnlyList_System_String__StringComparison_System_String__System_String__
+  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.String,IReadOnlyList{System.String},StringComparison,System.String@,System.String@)
   name.vb: HasAnyPrefix(String, IReadOnlyList(Of String), StringComparison, ByRef String, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.String, System.Collections.Generic.IReadOnlyList<System.String>, System.StringComparison, out System.String, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.String, System.Collections.Generic.IReadOnlyList(Of System.String), System.StringComparison, ByRef System.String, ByRef System.String)
+  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.String, IReadOnlyList<System.String>, StringComparison, out System.String, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.String, IReadOnlyList(Of System.String), StringComparison, ByRef System.String, ByRef System.String)
   nameWithType: CommandUtilities.HasAnyPrefix(String, IReadOnlyList<String>, StringComparison, out String, out String)
   nameWithType.vb: CommandUtilities.HasAnyPrefix(String, IReadOnlyList(Of String), StringComparison, ByRef String, ByRef String)
+- uid: Qmmands.CommandUtilities.HasAnyPrefix(System.String,IReadOnlyList{System.String},System.String@,System.String@)
+  name: HasAnyPrefix(String, IReadOnlyList<String>, out String, out String)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_System_String_IReadOnlyList_System_String__System_String__System_String__
+  commentId: M:Qmmands.CommandUtilities.HasAnyPrefix(System.String,IReadOnlyList{System.String},System.String@,System.String@)
+  name.vb: HasAnyPrefix(String, IReadOnlyList(Of String), ByRef String, ByRef String)
+  fullName: Qmmands.CommandUtilities.HasAnyPrefix(System.String, IReadOnlyList<System.String>, out System.String, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasAnyPrefix(System.String, IReadOnlyList(Of System.String), ByRef System.String, ByRef System.String)
+  nameWithType: CommandUtilities.HasAnyPrefix(String, IReadOnlyList<String>, out String, out String)
+  nameWithType.vb: CommandUtilities.HasAnyPrefix(String, IReadOnlyList(Of String), ByRef String, ByRef String)
 - uid: Qmmands.CommandUtilities.HasAnyPrefix*
   name: HasAnyPrefix
   href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasAnyPrefix_
@@ -2442,42 +2526,42 @@ references:
   isSpec: "True"
   fullName: Qmmands.CommandUtilities.HasAnyPrefix
   nameWithType: CommandUtilities.HasAnyPrefix
-- uid: Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan{System.Char},System.Char,System.Boolean,System.String@)
+- uid: Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan{System.Char},System.Char,System.Boolean,System.String@)
   name: HasPrefix(ReadOnlySpan<Char>, Char, Boolean, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasPrefix_System_ReadOnlySpan_System_Char__System_Char_System_Boolean_System_String__
-  commentId: M:Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan{System.Char},System.Char,System.Boolean,System.String@)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasPrefix_ReadOnlySpan_System_Char__System_Char_System_Boolean_System_String__
+  commentId: M:Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan{System.Char},System.Char,System.Boolean,System.String@)
   name.vb: HasPrefix(ReadOnlySpan(Of Char), Char, Boolean, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan<System.Char>, System.Char, System.Boolean, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan(Of System.Char), System.Char, System.Boolean, ByRef System.String)
+  fullName: Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan<System.Char>, System.Char, System.Boolean, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan(Of System.Char), System.Char, System.Boolean, ByRef System.String)
   nameWithType: CommandUtilities.HasPrefix(ReadOnlySpan<Char>, Char, Boolean, out String)
   nameWithType.vb: CommandUtilities.HasPrefix(ReadOnlySpan(Of Char), Char, Boolean, ByRef String)
-- uid: Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan{System.Char},System.Char,System.String@)
+- uid: Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan{System.Char},System.Char,System.String@)
   name: HasPrefix(ReadOnlySpan<Char>, Char, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasPrefix_System_ReadOnlySpan_System_Char__System_Char_System_String__
-  commentId: M:Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan{System.Char},System.Char,System.String@)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasPrefix_ReadOnlySpan_System_Char__System_Char_System_String__
+  commentId: M:Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan{System.Char},System.Char,System.String@)
   name.vb: HasPrefix(ReadOnlySpan(Of Char), Char, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan<System.Char>, System.Char, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan(Of System.Char), System.Char, ByRef System.String)
+  fullName: Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan<System.Char>, System.Char, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan(Of System.Char), System.Char, ByRef System.String)
   nameWithType: CommandUtilities.HasPrefix(ReadOnlySpan<Char>, Char, out String)
   nameWithType.vb: CommandUtilities.HasPrefix(ReadOnlySpan(Of Char), Char, ByRef String)
-- uid: Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan{System.Char},System.String,System.String@)
-  name: HasPrefix(ReadOnlySpan<Char>, String, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasPrefix_System_ReadOnlySpan_System_Char__System_String_System_String__
-  commentId: M:Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan{System.Char},System.String,System.String@)
-  name.vb: HasPrefix(ReadOnlySpan(Of Char), String, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan<System.Char>, System.String, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan(Of System.Char), System.String, ByRef System.String)
-  nameWithType: CommandUtilities.HasPrefix(ReadOnlySpan<Char>, String, out String)
-  nameWithType.vb: CommandUtilities.HasPrefix(ReadOnlySpan(Of Char), String, ByRef String)
-- uid: Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan{System.Char},System.String,System.StringComparison,System.String@)
+- uid: Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan{System.Char},System.String,StringComparison,System.String@)
   name: HasPrefix(ReadOnlySpan<Char>, String, StringComparison, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasPrefix_System_ReadOnlySpan_System_Char__System_String_System_StringComparison_System_String__
-  commentId: M:Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan{System.Char},System.String,System.StringComparison,System.String@)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasPrefix_ReadOnlySpan_System_Char__System_String_StringComparison_System_String__
+  commentId: M:Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan{System.Char},System.String,StringComparison,System.String@)
   name.vb: HasPrefix(ReadOnlySpan(Of Char), String, StringComparison, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan<System.Char>, System.String, System.StringComparison, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan(Of System.Char), System.String, System.StringComparison, ByRef System.String)
+  fullName: Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan<System.Char>, System.String, StringComparison, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan(Of System.Char), System.String, StringComparison, ByRef System.String)
   nameWithType: CommandUtilities.HasPrefix(ReadOnlySpan<Char>, String, StringComparison, out String)
   nameWithType.vb: CommandUtilities.HasPrefix(ReadOnlySpan(Of Char), String, StringComparison, ByRef String)
+- uid: Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan{System.Char},System.String,System.String@)
+  name: HasPrefix(ReadOnlySpan<Char>, String, out String)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasPrefix_ReadOnlySpan_System_Char__System_String_System_String__
+  commentId: M:Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan{System.Char},System.String,System.String@)
+  name.vb: HasPrefix(ReadOnlySpan(Of Char), String, ByRef String)
+  fullName: Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan<System.Char>, System.String, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan(Of System.Char), System.String, ByRef System.String)
+  nameWithType: CommandUtilities.HasPrefix(ReadOnlySpan<Char>, String, out String)
+  nameWithType.vb: CommandUtilities.HasPrefix(ReadOnlySpan(Of Char), String, ByRef String)
 - uid: Qmmands.CommandUtilities.HasPrefix(System.String,System.Char,System.Boolean,System.String@)
   name: HasPrefix(String, Char, Boolean, out String)
   href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasPrefix_System_String_System_Char_System_Boolean_System_String__
@@ -2496,6 +2580,15 @@ references:
   fullName.vb: Qmmands.CommandUtilities.HasPrefix(System.String, System.Char, ByRef System.String)
   nameWithType: CommandUtilities.HasPrefix(String, Char, out String)
   nameWithType.vb: CommandUtilities.HasPrefix(String, Char, ByRef String)
+- uid: Qmmands.CommandUtilities.HasPrefix(System.String,System.String,StringComparison,System.String@)
+  name: HasPrefix(String, String, StringComparison, out String)
+  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasPrefix_System_String_System_String_StringComparison_System_String__
+  commentId: M:Qmmands.CommandUtilities.HasPrefix(System.String,System.String,StringComparison,System.String@)
+  name.vb: HasPrefix(String, String, StringComparison, ByRef String)
+  fullName: Qmmands.CommandUtilities.HasPrefix(System.String, System.String, StringComparison, out System.String)
+  fullName.vb: Qmmands.CommandUtilities.HasPrefix(System.String, System.String, StringComparison, ByRef System.String)
+  nameWithType: CommandUtilities.HasPrefix(String, String, StringComparison, out String)
+  nameWithType.vb: CommandUtilities.HasPrefix(String, String, StringComparison, ByRef String)
 - uid: Qmmands.CommandUtilities.HasPrefix(System.String,System.String,System.String@)
   name: HasPrefix(String, String, out String)
   href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasPrefix_System_String_System_String_System_String__
@@ -2505,15 +2598,6 @@ references:
   fullName.vb: Qmmands.CommandUtilities.HasPrefix(System.String, System.String, ByRef System.String)
   nameWithType: CommandUtilities.HasPrefix(String, String, out String)
   nameWithType.vb: CommandUtilities.HasPrefix(String, String, ByRef String)
-- uid: Qmmands.CommandUtilities.HasPrefix(System.String,System.String,System.StringComparison,System.String@)
-  name: HasPrefix(String, String, StringComparison, out String)
-  href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasPrefix_System_String_System_String_System_StringComparison_System_String__
-  commentId: M:Qmmands.CommandUtilities.HasPrefix(System.String,System.String,System.StringComparison,System.String@)
-  name.vb: HasPrefix(String, String, StringComparison, ByRef String)
-  fullName: Qmmands.CommandUtilities.HasPrefix(System.String, System.String, System.StringComparison, out System.String)
-  fullName.vb: Qmmands.CommandUtilities.HasPrefix(System.String, System.String, System.StringComparison, ByRef System.String)
-  nameWithType: CommandUtilities.HasPrefix(String, String, StringComparison, out String)
-  nameWithType.vb: CommandUtilities.HasPrefix(String, String, StringComparison, ByRef String)
 - uid: Qmmands.CommandUtilities.HasPrefix*
   name: HasPrefix
   href: api/Qmmands.CommandUtilities.html#Qmmands_CommandUtilities_HasPrefix_
@@ -2546,11 +2630,11 @@ references:
   commentId: M:Qmmands.ContainsAttribute.#ctor(System.String)
   fullName: Qmmands.ContainsAttribute.ContainsAttribute(System.String)
   nameWithType: ContainsAttribute.ContainsAttribute(String)
-- uid: Qmmands.ContainsAttribute.#ctor(System.String,System.StringComparison)
+- uid: Qmmands.ContainsAttribute.#ctor(System.String,StringComparison)
   name: ContainsAttribute(String, StringComparison)
-  href: api/Qmmands.ContainsAttribute.html#Qmmands_ContainsAttribute__ctor_System_String_System_StringComparison_
-  commentId: M:Qmmands.ContainsAttribute.#ctor(System.String,System.StringComparison)
-  fullName: Qmmands.ContainsAttribute.ContainsAttribute(System.String, System.StringComparison)
+  href: api/Qmmands.ContainsAttribute.html#Qmmands_ContainsAttribute__ctor_System_String_StringComparison_
+  commentId: M:Qmmands.ContainsAttribute.#ctor(System.String,StringComparison)
+  fullName: Qmmands.ContainsAttribute.ContainsAttribute(System.String, StringComparison)
   nameWithType: ContainsAttribute.ContainsAttribute(String, StringComparison)
 - uid: Qmmands.ContainsAttribute.#ctor*
   name: ContainsAttribute
@@ -2572,6 +2656,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.ContainsAttribute.CheckAsync
   nameWithType: ContainsAttribute.CheckAsync
+- uid: Qmmands.ContainsAttribute.CheckType(Type)
+  name: CheckType(Type)
+  href: api/Qmmands.ContainsAttribute.html#Qmmands_ContainsAttribute_CheckType_Type_
+  commentId: M:Qmmands.ContainsAttribute.CheckType(Type)
+  fullName: Qmmands.ContainsAttribute.CheckType(Type)
+  nameWithType: ContainsAttribute.CheckType(Type)
+- uid: Qmmands.ContainsAttribute.CheckType*
+  name: CheckType
+  href: api/Qmmands.ContainsAttribute.html#Qmmands_ContainsAttribute_CheckType_
+  commentId: Overload:Qmmands.ContainsAttribute.CheckType
+  isSpec: "True"
+  fullName: Qmmands.ContainsAttribute.CheckType
+  nameWithType: ContainsAttribute.CheckType
 - uid: Qmmands.ContainsAttribute.StringComparison
   name: StringComparison
   href: api/Qmmands.ContainsAttribute.html#Qmmands_ContainsAttribute_StringComparison
@@ -2598,17 +2695,49 @@ references:
   isSpec: "True"
   fullName: Qmmands.ContainsAttribute.Value
   nameWithType: ContainsAttribute.Value
+- uid: Qmmands.ContextTypeMismatchException
+  name: ContextTypeMismatchException
+  href: api/Qmmands.ContextTypeMismatchException.html
+  commentId: T:Qmmands.ContextTypeMismatchException
+  fullName: Qmmands.ContextTypeMismatchException
+  nameWithType: ContextTypeMismatchException
+- uid: Qmmands.ContextTypeMismatchException.ActualType
+  name: ActualType
+  href: api/Qmmands.ContextTypeMismatchException.html#Qmmands_ContextTypeMismatchException_ActualType
+  commentId: P:Qmmands.ContextTypeMismatchException.ActualType
+  fullName: Qmmands.ContextTypeMismatchException.ActualType
+  nameWithType: ContextTypeMismatchException.ActualType
+- uid: Qmmands.ContextTypeMismatchException.ActualType*
+  name: ActualType
+  href: api/Qmmands.ContextTypeMismatchException.html#Qmmands_ContextTypeMismatchException_ActualType_
+  commentId: Overload:Qmmands.ContextTypeMismatchException.ActualType
+  isSpec: "True"
+  fullName: Qmmands.ContextTypeMismatchException.ActualType
+  nameWithType: ContextTypeMismatchException.ActualType
+- uid: Qmmands.ContextTypeMismatchException.ExpectedType
+  name: ExpectedType
+  href: api/Qmmands.ContextTypeMismatchException.html#Qmmands_ContextTypeMismatchException_ExpectedType
+  commentId: P:Qmmands.ContextTypeMismatchException.ExpectedType
+  fullName: Qmmands.ContextTypeMismatchException.ExpectedType
+  nameWithType: ContextTypeMismatchException.ExpectedType
+- uid: Qmmands.ContextTypeMismatchException.ExpectedType*
+  name: ExpectedType
+  href: api/Qmmands.ContextTypeMismatchException.html#Qmmands_ContextTypeMismatchException_ExpectedType_
+  commentId: Overload:Qmmands.ContextTypeMismatchException.ExpectedType
+  isSpec: "True"
+  fullName: Qmmands.ContextTypeMismatchException.ExpectedType
+  nameWithType: ContextTypeMismatchException.ExpectedType
 - uid: Qmmands.Cooldown
   name: Cooldown
   href: api/Qmmands.Cooldown.html
   commentId: T:Qmmands.Cooldown
   fullName: Qmmands.Cooldown
   nameWithType: Cooldown
-- uid: Qmmands.Cooldown.#ctor(System.Int32,System.TimeSpan,System.Enum)
+- uid: Qmmands.Cooldown.#ctor(System.Int32,TimeSpan,Enum)
   name: Cooldown(Int32, TimeSpan, Enum)
-  href: api/Qmmands.Cooldown.html#Qmmands_Cooldown__ctor_System_Int32_System_TimeSpan_System_Enum_
-  commentId: M:Qmmands.Cooldown.#ctor(System.Int32,System.TimeSpan,System.Enum)
-  fullName: Qmmands.Cooldown.Cooldown(System.Int32, System.TimeSpan, System.Enum)
+  href: api/Qmmands.Cooldown.html#Qmmands_Cooldown__ctor_System_Int32_TimeSpan_Enum_
+  commentId: M:Qmmands.Cooldown.#ctor(System.Int32,TimeSpan,Enum)
+  fullName: Qmmands.Cooldown.Cooldown(System.Int32, TimeSpan, Enum)
   nameWithType: Cooldown.Cooldown(Int32, TimeSpan, Enum)
 - uid: Qmmands.Cooldown.#ctor*
   name: Cooldown
@@ -2817,24 +2946,24 @@ references:
   commentId: T:Qmmands.DefaultArgumentParserResult
   fullName: Qmmands.DefaultArgumentParserResult
   nameWithType: DefaultArgumentParserResult
-- uid: Qmmands.DefaultArgumentParserResult.#ctor(Qmmands.Command,Qmmands.Parameter,System.Collections.Generic.IReadOnlyDictionary{Qmmands.Parameter,System.Object},Qmmands.DefaultArgumentParserFailure,System.Nullable{System.Int32})
-  name: DefaultArgumentParserResult(Command, Parameter, IReadOnlyDictionary<Parameter, Object>, DefaultArgumentParserFailure, Nullable<Int32>)
-  href: api/Qmmands.DefaultArgumentParserResult.html#Qmmands_DefaultArgumentParserResult__ctor_Qmmands_Command_Qmmands_Parameter_System_Collections_Generic_IReadOnlyDictionary_Qmmands_Parameter_System_Object__Qmmands_DefaultArgumentParserFailure_System_Nullable_System_Int32__
-  commentId: M:Qmmands.DefaultArgumentParserResult.#ctor(Qmmands.Command,Qmmands.Parameter,System.Collections.Generic.IReadOnlyDictionary{Qmmands.Parameter,System.Object},Qmmands.DefaultArgumentParserFailure,System.Nullable{System.Int32})
-  name.vb: DefaultArgumentParserResult(Command, Parameter, IReadOnlyDictionary(Of Parameter, Object), DefaultArgumentParserFailure, Nullable(Of Int32))
-  fullName: Qmmands.DefaultArgumentParserResult.DefaultArgumentParserResult(Qmmands.Command, Qmmands.Parameter, System.Collections.Generic.IReadOnlyDictionary<Qmmands.Parameter, System.Object>, Qmmands.DefaultArgumentParserFailure, System.Nullable<System.Int32>)
-  fullName.vb: Qmmands.DefaultArgumentParserResult.DefaultArgumentParserResult(Qmmands.Command, Qmmands.Parameter, System.Collections.Generic.IReadOnlyDictionary(Of Qmmands.Parameter, System.Object), Qmmands.DefaultArgumentParserFailure, System.Nullable(Of System.Int32))
-  nameWithType: DefaultArgumentParserResult.DefaultArgumentParserResult(Command, Parameter, IReadOnlyDictionary<Parameter, Object>, DefaultArgumentParserFailure, Nullable<Int32>)
-  nameWithType.vb: DefaultArgumentParserResult.DefaultArgumentParserResult(Command, Parameter, IReadOnlyDictionary(Of Parameter, Object), DefaultArgumentParserFailure, Nullable(Of Int32))
-- uid: Qmmands.DefaultArgumentParserResult.#ctor(Qmmands.Command,System.Collections.Generic.IReadOnlyDictionary{Qmmands.Parameter,System.Object})
+- uid: Qmmands.DefaultArgumentParserResult.#ctor(Qmmands.Command,IReadOnlyDictionary{Qmmands.Parameter,System.Object})
   name: DefaultArgumentParserResult(Command, IReadOnlyDictionary<Parameter, Object>)
-  href: api/Qmmands.DefaultArgumentParserResult.html#Qmmands_DefaultArgumentParserResult__ctor_Qmmands_Command_System_Collections_Generic_IReadOnlyDictionary_Qmmands_Parameter_System_Object__
-  commentId: M:Qmmands.DefaultArgumentParserResult.#ctor(Qmmands.Command,System.Collections.Generic.IReadOnlyDictionary{Qmmands.Parameter,System.Object})
+  href: api/Qmmands.DefaultArgumentParserResult.html#Qmmands_DefaultArgumentParserResult__ctor_Qmmands_Command_IReadOnlyDictionary_Qmmands_Parameter_System_Object__
+  commentId: M:Qmmands.DefaultArgumentParserResult.#ctor(Qmmands.Command,IReadOnlyDictionary{Qmmands.Parameter,System.Object})
   name.vb: DefaultArgumentParserResult(Command, IReadOnlyDictionary(Of Parameter, Object))
-  fullName: Qmmands.DefaultArgumentParserResult.DefaultArgumentParserResult(Qmmands.Command, System.Collections.Generic.IReadOnlyDictionary<Qmmands.Parameter, System.Object>)
-  fullName.vb: Qmmands.DefaultArgumentParserResult.DefaultArgumentParserResult(Qmmands.Command, System.Collections.Generic.IReadOnlyDictionary(Of Qmmands.Parameter, System.Object))
+  fullName: Qmmands.DefaultArgumentParserResult.DefaultArgumentParserResult(Qmmands.Command, IReadOnlyDictionary<Qmmands.Parameter, System.Object>)
+  fullName.vb: Qmmands.DefaultArgumentParserResult.DefaultArgumentParserResult(Qmmands.Command, IReadOnlyDictionary(Of Qmmands.Parameter, System.Object))
   nameWithType: DefaultArgumentParserResult.DefaultArgumentParserResult(Command, IReadOnlyDictionary<Parameter, Object>)
   nameWithType.vb: DefaultArgumentParserResult.DefaultArgumentParserResult(Command, IReadOnlyDictionary(Of Parameter, Object))
+- uid: Qmmands.DefaultArgumentParserResult.#ctor(Qmmands.Command,Qmmands.Parameter,IReadOnlyDictionary{Qmmands.Parameter,System.Object},Qmmands.DefaultArgumentParserFailure,System.Nullable{System.Int32})
+  name: DefaultArgumentParserResult(Command, Parameter, IReadOnlyDictionary<Parameter, Object>, DefaultArgumentParserFailure, Nullable<Int32>)
+  href: api/Qmmands.DefaultArgumentParserResult.html#Qmmands_DefaultArgumentParserResult__ctor_Qmmands_Command_Qmmands_Parameter_IReadOnlyDictionary_Qmmands_Parameter_System_Object__Qmmands_DefaultArgumentParserFailure_System_Nullable_System_Int32__
+  commentId: M:Qmmands.DefaultArgumentParserResult.#ctor(Qmmands.Command,Qmmands.Parameter,IReadOnlyDictionary{Qmmands.Parameter,System.Object},Qmmands.DefaultArgumentParserFailure,System.Nullable{System.Int32})
+  name.vb: DefaultArgumentParserResult(Command, Parameter, IReadOnlyDictionary(Of Parameter, Object), DefaultArgumentParserFailure, Nullable(Of Int32))
+  fullName: Qmmands.DefaultArgumentParserResult.DefaultArgumentParserResult(Qmmands.Command, Qmmands.Parameter, IReadOnlyDictionary<Qmmands.Parameter, System.Object>, Qmmands.DefaultArgumentParserFailure, System.Nullable<System.Int32>)
+  fullName.vb: Qmmands.DefaultArgumentParserResult.DefaultArgumentParserResult(Qmmands.Command, Qmmands.Parameter, IReadOnlyDictionary(Of Qmmands.Parameter, System.Object), Qmmands.DefaultArgumentParserFailure, System.Nullable(Of System.Int32))
+  nameWithType: DefaultArgumentParserResult.DefaultArgumentParserResult(Command, Parameter, IReadOnlyDictionary<Parameter, Object>, DefaultArgumentParserFailure, Nullable<Int32>)
+  nameWithType.vb: DefaultArgumentParserResult.DefaultArgumentParserResult(Command, Parameter, IReadOnlyDictionary(Of Parameter, Object), DefaultArgumentParserFailure, Nullable(Of Int32))
 - uid: Qmmands.DefaultArgumentParserResult.#ctor*
   name: DefaultArgumentParserResult
   href: api/Qmmands.DefaultArgumentParserResult.html#Qmmands_DefaultArgumentParserResult__ctor_
@@ -2894,6 +3023,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.DefaultArgumentParserResult.FailurePosition
   nameWithType: DefaultArgumentParserResult.FailurePosition
+- uid: Qmmands.DefaultArgumentParserResult.FailureReason
+  name: FailureReason
+  href: api/Qmmands.DefaultArgumentParserResult.html#Qmmands_DefaultArgumentParserResult_FailureReason
+  commentId: P:Qmmands.DefaultArgumentParserResult.FailureReason
+  fullName: Qmmands.DefaultArgumentParserResult.FailureReason
+  nameWithType: DefaultArgumentParserResult.FailureReason
+- uid: Qmmands.DefaultArgumentParserResult.FailureReason*
+  name: FailureReason
+  href: api/Qmmands.DefaultArgumentParserResult.html#Qmmands_DefaultArgumentParserResult_FailureReason_
+  commentId: Overload:Qmmands.DefaultArgumentParserResult.FailureReason
+  isSpec: "True"
+  fullName: Qmmands.DefaultArgumentParserResult.FailureReason
+  nameWithType: DefaultArgumentParserResult.FailureReason
 - uid: Qmmands.DefaultArgumentParserResult.IsSuccessful
   name: IsSuccessful
   href: api/Qmmands.DefaultArgumentParserResult.html#Qmmands_DefaultArgumentParserResult_IsSuccessful
@@ -2920,19 +3062,6 @@ references:
   isSpec: "True"
   fullName: Qmmands.DefaultArgumentParserResult.Parameter
   nameWithType: DefaultArgumentParserResult.Parameter
-- uid: Qmmands.DefaultArgumentParserResult.Reason
-  name: Reason
-  href: api/Qmmands.DefaultArgumentParserResult.html#Qmmands_DefaultArgumentParserResult_Reason
-  commentId: P:Qmmands.DefaultArgumentParserResult.Reason
-  fullName: Qmmands.DefaultArgumentParserResult.Reason
-  nameWithType: DefaultArgumentParserResult.Reason
-- uid: Qmmands.DefaultArgumentParserResult.Reason*
-  name: Reason
-  href: api/Qmmands.DefaultArgumentParserResult.html#Qmmands_DefaultArgumentParserResult_Reason_
-  commentId: Overload:Qmmands.DefaultArgumentParserResult.Reason
-  isSpec: "True"
-  fullName: Qmmands.DefaultArgumentParserResult.Reason
-  nameWithType: DefaultArgumentParserResult.Reason
 - uid: Qmmands.Delegates
   name: Qmmands.Delegates
   href: api/Qmmands.Delegates.html
@@ -3063,6 +3192,31 @@ references:
   commentId: T:Qmmands.DoNotInjectAttribute
   fullName: Qmmands.DoNotInjectAttribute
   nameWithType: DoNotInjectAttribute
+- uid: Qmmands.DummyServiceProvider
+  name: DummyServiceProvider
+  href: api/Qmmands.DummyServiceProvider.html
+  commentId: T:Qmmands.DummyServiceProvider
+  fullName: Qmmands.DummyServiceProvider
+  nameWithType: DummyServiceProvider
+- uid: Qmmands.DummyServiceProvider.GetService(Type)
+  name: GetService(Type)
+  href: api/Qmmands.DummyServiceProvider.html#Qmmands_DummyServiceProvider_GetService_Type_
+  commentId: M:Qmmands.DummyServiceProvider.GetService(Type)
+  fullName: Qmmands.DummyServiceProvider.GetService(Type)
+  nameWithType: DummyServiceProvider.GetService(Type)
+- uid: Qmmands.DummyServiceProvider.GetService*
+  name: GetService
+  href: api/Qmmands.DummyServiceProvider.html#Qmmands_DummyServiceProvider_GetService_
+  commentId: Overload:Qmmands.DummyServiceProvider.GetService
+  isSpec: "True"
+  fullName: Qmmands.DummyServiceProvider.GetService
+  nameWithType: DummyServiceProvider.GetService
+- uid: Qmmands.DummyServiceProvider.Instance
+  name: Instance
+  href: api/Qmmands.DummyServiceProvider.html#Qmmands_DummyServiceProvider_Instance
+  commentId: F:Qmmands.DummyServiceProvider.Instance
+  fullName: Qmmands.DummyServiceProvider.Instance
+  nameWithType: DummyServiceProvider.Instance
 - uid: Qmmands.EndsWithAttribute
   name: EndsWithAttribute
   href: api/Qmmands.EndsWithAttribute.html
@@ -3075,11 +3229,11 @@ references:
   commentId: M:Qmmands.EndsWithAttribute.#ctor(System.String)
   fullName: Qmmands.EndsWithAttribute.EndsWithAttribute(System.String)
   nameWithType: EndsWithAttribute.EndsWithAttribute(String)
-- uid: Qmmands.EndsWithAttribute.#ctor(System.String,System.StringComparison)
+- uid: Qmmands.EndsWithAttribute.#ctor(System.String,StringComparison)
   name: EndsWithAttribute(String, StringComparison)
-  href: api/Qmmands.EndsWithAttribute.html#Qmmands_EndsWithAttribute__ctor_System_String_System_StringComparison_
-  commentId: M:Qmmands.EndsWithAttribute.#ctor(System.String,System.StringComparison)
-  fullName: Qmmands.EndsWithAttribute.EndsWithAttribute(System.String, System.StringComparison)
+  href: api/Qmmands.EndsWithAttribute.html#Qmmands_EndsWithAttribute__ctor_System_String_StringComparison_
+  commentId: M:Qmmands.EndsWithAttribute.#ctor(System.String,StringComparison)
+  fullName: Qmmands.EndsWithAttribute.EndsWithAttribute(System.String, StringComparison)
   nameWithType: EndsWithAttribute.EndsWithAttribute(String, StringComparison)
 - uid: Qmmands.EndsWithAttribute.#ctor*
   name: EndsWithAttribute
@@ -3101,6 +3255,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.EndsWithAttribute.CheckAsync
   nameWithType: EndsWithAttribute.CheckAsync
+- uid: Qmmands.EndsWithAttribute.CheckType(Type)
+  name: CheckType(Type)
+  href: api/Qmmands.EndsWithAttribute.html#Qmmands_EndsWithAttribute_CheckType_Type_
+  commentId: M:Qmmands.EndsWithAttribute.CheckType(Type)
+  fullName: Qmmands.EndsWithAttribute.CheckType(Type)
+  nameWithType: EndsWithAttribute.CheckType(Type)
+- uid: Qmmands.EndsWithAttribute.CheckType*
+  name: CheckType
+  href: api/Qmmands.EndsWithAttribute.html#Qmmands_EndsWithAttribute_CheckType_
+  commentId: Overload:Qmmands.EndsWithAttribute.CheckType
+  isSpec: "True"
+  fullName: Qmmands.EndsWithAttribute.CheckType
+  nameWithType: EndsWithAttribute.CheckType
 - uid: Qmmands.EndsWithAttribute.StringComparison
   name: StringComparison
   href: api/Qmmands.EndsWithAttribute.html#Qmmands_EndsWithAttribute_StringComparison
@@ -3127,70 +3294,25 @@ references:
   isSpec: "True"
   fullName: Qmmands.EndsWithAttribute.Value
   nameWithType: EndsWithAttribute.Value
-- uid: Qmmands.ExecutionFailedResult
-  name: ExecutionFailedResult
-  href: api/Qmmands.ExecutionFailedResult.html
-  commentId: T:Qmmands.ExecutionFailedResult
-  fullName: Qmmands.ExecutionFailedResult
-  nameWithType: ExecutionFailedResult
-- uid: Qmmands.ExecutionFailedResult.Command
-  name: Command
-  href: api/Qmmands.ExecutionFailedResult.html#Qmmands_ExecutionFailedResult_Command
-  commentId: P:Qmmands.ExecutionFailedResult.Command
-  fullName: Qmmands.ExecutionFailedResult.Command
-  nameWithType: ExecutionFailedResult.Command
-- uid: Qmmands.ExecutionFailedResult.Command*
-  name: Command
-  href: api/Qmmands.ExecutionFailedResult.html#Qmmands_ExecutionFailedResult_Command_
-  commentId: Overload:Qmmands.ExecutionFailedResult.Command
-  isSpec: "True"
-  fullName: Qmmands.ExecutionFailedResult.Command
-  nameWithType: ExecutionFailedResult.Command
-- uid: Qmmands.ExecutionFailedResult.CommandExecutionStep
-  name: CommandExecutionStep
-  href: api/Qmmands.ExecutionFailedResult.html#Qmmands_ExecutionFailedResult_CommandExecutionStep
-  commentId: P:Qmmands.ExecutionFailedResult.CommandExecutionStep
-  fullName: Qmmands.ExecutionFailedResult.CommandExecutionStep
-  nameWithType: ExecutionFailedResult.CommandExecutionStep
-- uid: Qmmands.ExecutionFailedResult.CommandExecutionStep*
-  name: CommandExecutionStep
-  href: api/Qmmands.ExecutionFailedResult.html#Qmmands_ExecutionFailedResult_CommandExecutionStep_
-  commentId: Overload:Qmmands.ExecutionFailedResult.CommandExecutionStep
-  isSpec: "True"
-  fullName: Qmmands.ExecutionFailedResult.CommandExecutionStep
-  nameWithType: ExecutionFailedResult.CommandExecutionStep
-- uid: Qmmands.ExecutionFailedResult.Exception
-  name: Exception
-  href: api/Qmmands.ExecutionFailedResult.html#Qmmands_ExecutionFailedResult_Exception
-  commentId: P:Qmmands.ExecutionFailedResult.Exception
-  fullName: Qmmands.ExecutionFailedResult.Exception
-  nameWithType: ExecutionFailedResult.Exception
-- uid: Qmmands.ExecutionFailedResult.Exception*
-  name: Exception
-  href: api/Qmmands.ExecutionFailedResult.html#Qmmands_ExecutionFailedResult_Exception_
-  commentId: Overload:Qmmands.ExecutionFailedResult.Exception
-  isSpec: "True"
-  fullName: Qmmands.ExecutionFailedResult.Exception
-  nameWithType: ExecutionFailedResult.Exception
-- uid: Qmmands.ExecutionFailedResult.Reason
-  name: Reason
-  href: api/Qmmands.ExecutionFailedResult.html#Qmmands_ExecutionFailedResult_Reason
-  commentId: P:Qmmands.ExecutionFailedResult.Reason
-  fullName: Qmmands.ExecutionFailedResult.Reason
-  nameWithType: ExecutionFailedResult.Reason
-- uid: Qmmands.ExecutionFailedResult.Reason*
-  name: Reason
-  href: api/Qmmands.ExecutionFailedResult.html#Qmmands_ExecutionFailedResult_Reason_
-  commentId: Overload:Qmmands.ExecutionFailedResult.Reason
-  isSpec: "True"
-  fullName: Qmmands.ExecutionFailedResult.Reason
-  nameWithType: ExecutionFailedResult.Reason
 - uid: Qmmands.FailedResult
   name: FailedResult
   href: api/Qmmands.FailedResult.html
   commentId: T:Qmmands.FailedResult
   fullName: Qmmands.FailedResult
   nameWithType: FailedResult
+- uid: Qmmands.FailedResult.FailureReason
+  name: FailureReason
+  href: api/Qmmands.FailedResult.html#Qmmands_FailedResult_FailureReason
+  commentId: P:Qmmands.FailedResult.FailureReason
+  fullName: Qmmands.FailedResult.FailureReason
+  nameWithType: FailedResult.FailureReason
+- uid: Qmmands.FailedResult.FailureReason*
+  name: FailureReason
+  href: api/Qmmands.FailedResult.html#Qmmands_FailedResult_FailureReason_
+  commentId: Overload:Qmmands.FailedResult.FailureReason
+  isSpec: "True"
+  fullName: Qmmands.FailedResult.FailureReason
+  nameWithType: FailedResult.FailureReason
 - uid: Qmmands.FailedResult.IsSuccessful
   name: IsSuccessful
   href: api/Qmmands.FailedResult.html#Qmmands_FailedResult_IsSuccessful
@@ -3204,19 +3326,6 @@ references:
   isSpec: "True"
   fullName: Qmmands.FailedResult.IsSuccessful
   nameWithType: FailedResult.IsSuccessful
-- uid: Qmmands.FailedResult.Reason
-  name: Reason
-  href: api/Qmmands.FailedResult.html#Qmmands_FailedResult_Reason
-  commentId: P:Qmmands.FailedResult.Reason
-  fullName: Qmmands.FailedResult.Reason
-  nameWithType: FailedResult.Reason
-- uid: Qmmands.FailedResult.Reason*
-  name: Reason
-  href: api/Qmmands.FailedResult.html#Qmmands_FailedResult_Reason_
-  commentId: Overload:Qmmands.FailedResult.Reason
-  isSpec: "True"
-  fullName: Qmmands.FailedResult.Reason
-  nameWithType: FailedResult.Reason
 - uid: Qmmands.FailedResult.ToString
   name: ToString()
   href: api/Qmmands.FailedResult.html#Qmmands_FailedResult_ToString
@@ -3284,456 +3393,6 @@ references:
   isSpec: "True"
   fullName: Qmmands.IArgumentParser.ParseAsync
   nameWithType: IArgumentParser.ParseAsync
-- uid: Qmmands.ICommandService
-  name: ICommandService
-  href: api/Qmmands.ICommandService.html
-  commentId: T:Qmmands.ICommandService
-  fullName: Qmmands.ICommandService
-  nameWithType: ICommandService
-- uid: Qmmands.ICommandService.AddArgumentParser(Qmmands.IArgumentParser)
-  name: AddArgumentParser(IArgumentParser)
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_AddArgumentParser_Qmmands_IArgumentParser_
-  commentId: M:Qmmands.ICommandService.AddArgumentParser(Qmmands.IArgumentParser)
-  fullName: Qmmands.ICommandService.AddArgumentParser(Qmmands.IArgumentParser)
-  nameWithType: ICommandService.AddArgumentParser(IArgumentParser)
-- uid: Qmmands.ICommandService.AddArgumentParser*
-  name: AddArgumentParser
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_AddArgumentParser_
-  commentId: Overload:Qmmands.ICommandService.AddArgumentParser
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.AddArgumentParser
-  nameWithType: ICommandService.AddArgumentParser
-- uid: Qmmands.ICommandService.AddModule(Qmmands.Module)
-  name: AddModule(Module)
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_AddModule_Qmmands_Module_
-  commentId: M:Qmmands.ICommandService.AddModule(Qmmands.Module)
-  fullName: Qmmands.ICommandService.AddModule(Qmmands.Module)
-  nameWithType: ICommandService.AddModule(Module)
-- uid: Qmmands.ICommandService.AddModule(System.Action{Qmmands.ModuleBuilder})
-  name: AddModule(Action<ModuleBuilder>)
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_AddModule_System_Action_Qmmands_ModuleBuilder__
-  commentId: M:Qmmands.ICommandService.AddModule(System.Action{Qmmands.ModuleBuilder})
-  name.vb: AddModule(Action(Of ModuleBuilder))
-  fullName: Qmmands.ICommandService.AddModule(System.Action<Qmmands.ModuleBuilder>)
-  fullName.vb: Qmmands.ICommandService.AddModule(System.Action(Of Qmmands.ModuleBuilder))
-  nameWithType: ICommandService.AddModule(Action<ModuleBuilder>)
-  nameWithType.vb: ICommandService.AddModule(Action(Of ModuleBuilder))
-- uid: Qmmands.ICommandService.AddModule(System.Type,System.Action{Qmmands.ModuleBuilder})
-  name: AddModule(Type, Action<ModuleBuilder>)
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_AddModule_System_Type_System_Action_Qmmands_ModuleBuilder__
-  commentId: M:Qmmands.ICommandService.AddModule(System.Type,System.Action{Qmmands.ModuleBuilder})
-  name.vb: AddModule(Type, Action(Of ModuleBuilder))
-  fullName: Qmmands.ICommandService.AddModule(System.Type, System.Action<Qmmands.ModuleBuilder>)
-  fullName.vb: Qmmands.ICommandService.AddModule(System.Type, System.Action(Of Qmmands.ModuleBuilder))
-  nameWithType: ICommandService.AddModule(Type, Action<ModuleBuilder>)
-  nameWithType.vb: ICommandService.AddModule(Type, Action(Of ModuleBuilder))
-- uid: Qmmands.ICommandService.AddModule*
-  name: AddModule
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_AddModule_
-  commentId: Overload:Qmmands.ICommandService.AddModule
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.AddModule
-  nameWithType: ICommandService.AddModule
-- uid: Qmmands.ICommandService.AddModule``1(System.Action{Qmmands.ModuleBuilder})
-  name: AddModule<TModule>(Action<ModuleBuilder>)
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_AddModule__1_System_Action_Qmmands_ModuleBuilder__
-  commentId: M:Qmmands.ICommandService.AddModule``1(System.Action{Qmmands.ModuleBuilder})
-  name.vb: AddModule(Of TModule)(Action(Of ModuleBuilder))
-  fullName: Qmmands.ICommandService.AddModule<TModule>(System.Action<Qmmands.ModuleBuilder>)
-  fullName.vb: Qmmands.ICommandService.AddModule(Of TModule)(System.Action(Of Qmmands.ModuleBuilder))
-  nameWithType: ICommandService.AddModule<TModule>(Action<ModuleBuilder>)
-  nameWithType.vb: ICommandService.AddModule(Of TModule)(Action(Of ModuleBuilder))
-- uid: Qmmands.ICommandService.AddModules(System.Reflection.Assembly,System.Predicate{System.Reflection.TypeInfo},System.Action{Qmmands.ModuleBuilder})
-  name: AddModules(Assembly, Predicate<TypeInfo>, Action<ModuleBuilder>)
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_AddModules_System_Reflection_Assembly_System_Predicate_System_Reflection_TypeInfo__System_Action_Qmmands_ModuleBuilder__
-  commentId: M:Qmmands.ICommandService.AddModules(System.Reflection.Assembly,System.Predicate{System.Reflection.TypeInfo},System.Action{Qmmands.ModuleBuilder})
-  name.vb: AddModules(Assembly, Predicate(Of TypeInfo), Action(Of ModuleBuilder))
-  fullName: Qmmands.ICommandService.AddModules(System.Reflection.Assembly, System.Predicate<System.Reflection.TypeInfo>, System.Action<Qmmands.ModuleBuilder>)
-  fullName.vb: Qmmands.ICommandService.AddModules(System.Reflection.Assembly, System.Predicate(Of System.Reflection.TypeInfo), System.Action(Of Qmmands.ModuleBuilder))
-  nameWithType: ICommandService.AddModules(Assembly, Predicate<TypeInfo>, Action<ModuleBuilder>)
-  nameWithType.vb: ICommandService.AddModules(Assembly, Predicate(Of TypeInfo), Action(Of ModuleBuilder))
-- uid: Qmmands.ICommandService.AddModules*
-  name: AddModules
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_AddModules_
-  commentId: Overload:Qmmands.ICommandService.AddModules
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.AddModules
-  nameWithType: ICommandService.AddModules
-- uid: Qmmands.ICommandService.AddTypeParser*
-  name: AddTypeParser
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_AddTypeParser_
-  commentId: Overload:Qmmands.ICommandService.AddTypeParser
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.AddTypeParser
-  nameWithType: ICommandService.AddTypeParser
-- uid: Qmmands.ICommandService.AddTypeParser``1(Qmmands.TypeParser{``0},System.Boolean)
-  name: AddTypeParser<T>(TypeParser<T>, Boolean)
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_AddTypeParser__1_Qmmands_TypeParser___0__System_Boolean_
-  commentId: M:Qmmands.ICommandService.AddTypeParser``1(Qmmands.TypeParser{``0},System.Boolean)
-  name.vb: AddTypeParser(Of T)(TypeParser(Of T), Boolean)
-  fullName: Qmmands.ICommandService.AddTypeParser<T>(Qmmands.TypeParser<T>, System.Boolean)
-  fullName.vb: Qmmands.ICommandService.AddTypeParser(Of T)(Qmmands.TypeParser(Of T), System.Boolean)
-  nameWithType: ICommandService.AddTypeParser<T>(TypeParser<T>, Boolean)
-  nameWithType.vb: ICommandService.AddTypeParser(Of T)(TypeParser(Of T), Boolean)
-- uid: Qmmands.ICommandService.CommandExecuted
-  name: CommandExecuted
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_CommandExecuted
-  commentId: E:Qmmands.ICommandService.CommandExecuted
-  fullName: Qmmands.ICommandService.CommandExecuted
-  nameWithType: ICommandService.CommandExecuted
-- uid: Qmmands.ICommandService.CommandExecutionFailed
-  name: CommandExecutionFailed
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_CommandExecutionFailed
-  commentId: E:Qmmands.ICommandService.CommandExecutionFailed
-  fullName: Qmmands.ICommandService.CommandExecutionFailed
-  nameWithType: ICommandService.CommandExecutionFailed
-- uid: Qmmands.ICommandService.CooldownBucketKeyGenerator
-  name: CooldownBucketKeyGenerator
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_CooldownBucketKeyGenerator
-  commentId: P:Qmmands.ICommandService.CooldownBucketKeyGenerator
-  fullName: Qmmands.ICommandService.CooldownBucketKeyGenerator
-  nameWithType: ICommandService.CooldownBucketKeyGenerator
-- uid: Qmmands.ICommandService.CooldownBucketKeyGenerator*
-  name: CooldownBucketKeyGenerator
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_CooldownBucketKeyGenerator_
-  commentId: Overload:Qmmands.ICommandService.CooldownBucketKeyGenerator
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.CooldownBucketKeyGenerator
-  nameWithType: ICommandService.CooldownBucketKeyGenerator
-- uid: Qmmands.ICommandService.DefaultArgumentParser
-  name: DefaultArgumentParser
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_DefaultArgumentParser
-  commentId: P:Qmmands.ICommandService.DefaultArgumentParser
-  fullName: Qmmands.ICommandService.DefaultArgumentParser
-  nameWithType: ICommandService.DefaultArgumentParser
-- uid: Qmmands.ICommandService.DefaultArgumentParser*
-  name: DefaultArgumentParser
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_DefaultArgumentParser_
-  commentId: Overload:Qmmands.ICommandService.DefaultArgumentParser
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.DefaultArgumentParser
-  nameWithType: ICommandService.DefaultArgumentParser
-- uid: Qmmands.ICommandService.DefaultRunMode
-  name: DefaultRunMode
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_DefaultRunMode
-  commentId: P:Qmmands.ICommandService.DefaultRunMode
-  fullName: Qmmands.ICommandService.DefaultRunMode
-  nameWithType: ICommandService.DefaultRunMode
-- uid: Qmmands.ICommandService.DefaultRunMode*
-  name: DefaultRunMode
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_DefaultRunMode_
-  commentId: Overload:Qmmands.ICommandService.DefaultRunMode
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.DefaultRunMode
-  nameWithType: ICommandService.DefaultRunMode
-- uid: Qmmands.ICommandService.ExecuteAsync(Qmmands.Command,System.String,Qmmands.CommandContext)
-  name: ExecuteAsync(Command, String, CommandContext)
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_ExecuteAsync_Qmmands_Command_System_String_Qmmands_CommandContext_
-  commentId: M:Qmmands.ICommandService.ExecuteAsync(Qmmands.Command,System.String,Qmmands.CommandContext)
-  fullName: Qmmands.ICommandService.ExecuteAsync(Qmmands.Command, System.String, Qmmands.CommandContext)
-  nameWithType: ICommandService.ExecuteAsync(Command, String, CommandContext)
-- uid: Qmmands.ICommandService.ExecuteAsync(System.String,Qmmands.CommandContext)
-  name: ExecuteAsync(String, CommandContext)
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_ExecuteAsync_System_String_Qmmands_CommandContext_
-  commentId: M:Qmmands.ICommandService.ExecuteAsync(System.String,Qmmands.CommandContext)
-  fullName: Qmmands.ICommandService.ExecuteAsync(System.String, Qmmands.CommandContext)
-  nameWithType: ICommandService.ExecuteAsync(String, CommandContext)
-- uid: Qmmands.ICommandService.ExecuteAsync*
-  name: ExecuteAsync
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_ExecuteAsync_
-  commentId: Overload:Qmmands.ICommandService.ExecuteAsync
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.ExecuteAsync
-  nameWithType: ICommandService.ExecuteAsync
-- uid: Qmmands.ICommandService.FindCommands(System.String)
-  name: FindCommands(String)
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_FindCommands_System_String_
-  commentId: M:Qmmands.ICommandService.FindCommands(System.String)
-  fullName: Qmmands.ICommandService.FindCommands(System.String)
-  nameWithType: ICommandService.FindCommands(String)
-- uid: Qmmands.ICommandService.FindCommands*
-  name: FindCommands
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_FindCommands_
-  commentId: Overload:Qmmands.ICommandService.FindCommands
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.FindCommands
-  nameWithType: ICommandService.FindCommands
-- uid: Qmmands.ICommandService.GetAllCommands
-  name: GetAllCommands()
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_GetAllCommands
-  commentId: M:Qmmands.ICommandService.GetAllCommands
-  fullName: Qmmands.ICommandService.GetAllCommands()
-  nameWithType: ICommandService.GetAllCommands()
-- uid: Qmmands.ICommandService.GetAllCommands*
-  name: GetAllCommands
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_GetAllCommands_
-  commentId: Overload:Qmmands.ICommandService.GetAllCommands
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.GetAllCommands
-  nameWithType: ICommandService.GetAllCommands
-- uid: Qmmands.ICommandService.GetAllModules
-  name: GetAllModules()
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_GetAllModules
-  commentId: M:Qmmands.ICommandService.GetAllModules
-  fullName: Qmmands.ICommandService.GetAllModules()
-  nameWithType: ICommandService.GetAllModules()
-- uid: Qmmands.ICommandService.GetAllModules*
-  name: GetAllModules
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_GetAllModules_
-  commentId: Overload:Qmmands.ICommandService.GetAllModules
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.GetAllModules
-  nameWithType: ICommandService.GetAllModules
-- uid: Qmmands.ICommandService.GetArgumentParser(System.Type)
-  name: GetArgumentParser(Type)
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_GetArgumentParser_System_Type_
-  commentId: M:Qmmands.ICommandService.GetArgumentParser(System.Type)
-  fullName: Qmmands.ICommandService.GetArgumentParser(System.Type)
-  nameWithType: ICommandService.GetArgumentParser(Type)
-- uid: Qmmands.ICommandService.GetArgumentParser*
-  name: GetArgumentParser
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_GetArgumentParser_
-  commentId: Overload:Qmmands.ICommandService.GetArgumentParser
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.GetArgumentParser
-  nameWithType: ICommandService.GetArgumentParser
-- uid: Qmmands.ICommandService.GetArgumentParser``1
-  name: GetArgumentParser<T>()
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_GetArgumentParser__1
-  commentId: M:Qmmands.ICommandService.GetArgumentParser``1
-  name.vb: GetArgumentParser(Of T)()
-  fullName: Qmmands.ICommandService.GetArgumentParser<T>()
-  fullName.vb: Qmmands.ICommandService.GetArgumentParser(Of T)()
-  nameWithType: ICommandService.GetArgumentParser<T>()
-  nameWithType.vb: ICommandService.GetArgumentParser(Of T)()
-- uid: Qmmands.ICommandService.GetSpecificTypeParser*
-  name: GetSpecificTypeParser
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_GetSpecificTypeParser_
-  commentId: Overload:Qmmands.ICommandService.GetSpecificTypeParser
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.GetSpecificTypeParser
-  nameWithType: ICommandService.GetSpecificTypeParser
-- uid: Qmmands.ICommandService.GetSpecificTypeParser``2
-  name: GetSpecificTypeParser<T, TParser>()
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_GetSpecificTypeParser__2
-  commentId: M:Qmmands.ICommandService.GetSpecificTypeParser``2
-  name.vb: GetSpecificTypeParser(Of T, TParser)()
-  fullName: Qmmands.ICommandService.GetSpecificTypeParser<T, TParser>()
-  fullName.vb: Qmmands.ICommandService.GetSpecificTypeParser(Of T, TParser)()
-  nameWithType: ICommandService.GetSpecificTypeParser<T, TParser>()
-  nameWithType.vb: ICommandService.GetSpecificTypeParser(Of T, TParser)()
-- uid: Qmmands.ICommandService.GetTypeParser*
-  name: GetTypeParser
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_GetTypeParser_
-  commentId: Overload:Qmmands.ICommandService.GetTypeParser
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.GetTypeParser
-  nameWithType: ICommandService.GetTypeParser
-- uid: Qmmands.ICommandService.GetTypeParser``1(System.Boolean)
-  name: GetTypeParser<T>(Boolean)
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_GetTypeParser__1_System_Boolean_
-  commentId: M:Qmmands.ICommandService.GetTypeParser``1(System.Boolean)
-  name.vb: GetTypeParser(Of T)(Boolean)
-  fullName: Qmmands.ICommandService.GetTypeParser<T>(System.Boolean)
-  fullName.vb: Qmmands.ICommandService.GetTypeParser(Of T)(System.Boolean)
-  nameWithType: ICommandService.GetTypeParser<T>(Boolean)
-  nameWithType.vb: ICommandService.GetTypeParser(Of T)(Boolean)
-- uid: Qmmands.ICommandService.IgnoresExtraArguments
-  name: IgnoresExtraArguments
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_IgnoresExtraArguments
-  commentId: P:Qmmands.ICommandService.IgnoresExtraArguments
-  fullName: Qmmands.ICommandService.IgnoresExtraArguments
-  nameWithType: ICommandService.IgnoresExtraArguments
-- uid: Qmmands.ICommandService.IgnoresExtraArguments*
-  name: IgnoresExtraArguments
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_IgnoresExtraArguments_
-  commentId: Overload:Qmmands.ICommandService.IgnoresExtraArguments
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.IgnoresExtraArguments
-  nameWithType: ICommandService.IgnoresExtraArguments
-- uid: Qmmands.ICommandService.NullableNouns
-  name: NullableNouns
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_NullableNouns
-  commentId: P:Qmmands.ICommandService.NullableNouns
-  fullName: Qmmands.ICommandService.NullableNouns
-  nameWithType: ICommandService.NullableNouns
-- uid: Qmmands.ICommandService.NullableNouns*
-  name: NullableNouns
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_NullableNouns_
-  commentId: Overload:Qmmands.ICommandService.NullableNouns
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.NullableNouns
-  nameWithType: ICommandService.NullableNouns
-- uid: Qmmands.ICommandService.QuotationMarkMap
-  name: QuotationMarkMap
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_QuotationMarkMap
-  commentId: P:Qmmands.ICommandService.QuotationMarkMap
-  fullName: Qmmands.ICommandService.QuotationMarkMap
-  nameWithType: ICommandService.QuotationMarkMap
-- uid: Qmmands.ICommandService.QuotationMarkMap*
-  name: QuotationMarkMap
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_QuotationMarkMap_
-  commentId: Overload:Qmmands.ICommandService.QuotationMarkMap
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.QuotationMarkMap
-  nameWithType: ICommandService.QuotationMarkMap
-- uid: Qmmands.ICommandService.RemoveAllModules
-  name: RemoveAllModules()
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_RemoveAllModules
-  commentId: M:Qmmands.ICommandService.RemoveAllModules
-  fullName: Qmmands.ICommandService.RemoveAllModules()
-  nameWithType: ICommandService.RemoveAllModules()
-- uid: Qmmands.ICommandService.RemoveAllModules*
-  name: RemoveAllModules
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_RemoveAllModules_
-  commentId: Overload:Qmmands.ICommandService.RemoveAllModules
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.RemoveAllModules
-  nameWithType: ICommandService.RemoveAllModules
-- uid: Qmmands.ICommandService.RemoveAllTypeParsers
-  name: RemoveAllTypeParsers()
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_RemoveAllTypeParsers
-  commentId: M:Qmmands.ICommandService.RemoveAllTypeParsers
-  fullName: Qmmands.ICommandService.RemoveAllTypeParsers()
-  nameWithType: ICommandService.RemoveAllTypeParsers()
-- uid: Qmmands.ICommandService.RemoveAllTypeParsers*
-  name: RemoveAllTypeParsers
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_RemoveAllTypeParsers_
-  commentId: Overload:Qmmands.ICommandService.RemoveAllTypeParsers
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.RemoveAllTypeParsers
-  nameWithType: ICommandService.RemoveAllTypeParsers
-- uid: Qmmands.ICommandService.RemoveArgumentParser(System.Type)
-  name: RemoveArgumentParser(Type)
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_RemoveArgumentParser_System_Type_
-  commentId: M:Qmmands.ICommandService.RemoveArgumentParser(System.Type)
-  fullName: Qmmands.ICommandService.RemoveArgumentParser(System.Type)
-  nameWithType: ICommandService.RemoveArgumentParser(Type)
-- uid: Qmmands.ICommandService.RemoveArgumentParser*
-  name: RemoveArgumentParser
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_RemoveArgumentParser_
-  commentId: Overload:Qmmands.ICommandService.RemoveArgumentParser
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.RemoveArgumentParser
-  nameWithType: ICommandService.RemoveArgumentParser
-- uid: Qmmands.ICommandService.RemoveArgumentParser``1
-  name: RemoveArgumentParser<T>()
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_RemoveArgumentParser__1
-  commentId: M:Qmmands.ICommandService.RemoveArgumentParser``1
-  name.vb: RemoveArgumentParser(Of T)()
-  fullName: Qmmands.ICommandService.RemoveArgumentParser<T>()
-  fullName.vb: Qmmands.ICommandService.RemoveArgumentParser(Of T)()
-  nameWithType: ICommandService.RemoveArgumentParser<T>()
-  nameWithType.vb: ICommandService.RemoveArgumentParser(Of T)()
-- uid: Qmmands.ICommandService.RemoveModule(Qmmands.Module)
-  name: RemoveModule(Module)
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_RemoveModule_Qmmands_Module_
-  commentId: M:Qmmands.ICommandService.RemoveModule(Qmmands.Module)
-  fullName: Qmmands.ICommandService.RemoveModule(Qmmands.Module)
-  nameWithType: ICommandService.RemoveModule(Module)
-- uid: Qmmands.ICommandService.RemoveModule*
-  name: RemoveModule
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_RemoveModule_
-  commentId: Overload:Qmmands.ICommandService.RemoveModule
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.RemoveModule
-  nameWithType: ICommandService.RemoveModule
-- uid: Qmmands.ICommandService.RemoveTypeParser*
-  name: RemoveTypeParser
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_RemoveTypeParser_
-  commentId: Overload:Qmmands.ICommandService.RemoveTypeParser
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.RemoveTypeParser
-  nameWithType: ICommandService.RemoveTypeParser
-- uid: Qmmands.ICommandService.RemoveTypeParser``1(Qmmands.TypeParser{``0})
-  name: RemoveTypeParser<T>(TypeParser<T>)
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_RemoveTypeParser__1_Qmmands_TypeParser___0__
-  commentId: M:Qmmands.ICommandService.RemoveTypeParser``1(Qmmands.TypeParser{``0})
-  name.vb: RemoveTypeParser(Of T)(TypeParser(Of T))
-  fullName: Qmmands.ICommandService.RemoveTypeParser<T>(Qmmands.TypeParser<T>)
-  fullName.vb: Qmmands.ICommandService.RemoveTypeParser(Of T)(Qmmands.TypeParser(Of T))
-  nameWithType: ICommandService.RemoveTypeParser<T>(TypeParser<T>)
-  nameWithType.vb: ICommandService.RemoveTypeParser(Of T)(TypeParser(Of T))
-- uid: Qmmands.ICommandService.Separator
-  name: Separator
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_Separator
-  commentId: P:Qmmands.ICommandService.Separator
-  fullName: Qmmands.ICommandService.Separator
-  nameWithType: ICommandService.Separator
-- uid: Qmmands.ICommandService.Separator*
-  name: Separator
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_Separator_
-  commentId: Overload:Qmmands.ICommandService.Separator
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.Separator
-  nameWithType: ICommandService.Separator
-- uid: Qmmands.ICommandService.SeparatorRequirement
-  name: SeparatorRequirement
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_SeparatorRequirement
-  commentId: P:Qmmands.ICommandService.SeparatorRequirement
-  fullName: Qmmands.ICommandService.SeparatorRequirement
-  nameWithType: ICommandService.SeparatorRequirement
-- uid: Qmmands.ICommandService.SeparatorRequirement*
-  name: SeparatorRequirement
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_SeparatorRequirement_
-  commentId: Overload:Qmmands.ICommandService.SeparatorRequirement
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.SeparatorRequirement
-  nameWithType: ICommandService.SeparatorRequirement
-- uid: Qmmands.ICommandService.SetDefaultArgumentParser(Qmmands.IArgumentParser)
-  name: SetDefaultArgumentParser(IArgumentParser)
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_SetDefaultArgumentParser_Qmmands_IArgumentParser_
-  commentId: M:Qmmands.ICommandService.SetDefaultArgumentParser(Qmmands.IArgumentParser)
-  fullName: Qmmands.ICommandService.SetDefaultArgumentParser(Qmmands.IArgumentParser)
-  nameWithType: ICommandService.SetDefaultArgumentParser(IArgumentParser)
-- uid: Qmmands.ICommandService.SetDefaultArgumentParser(System.Type)
-  name: SetDefaultArgumentParser(Type)
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_SetDefaultArgumentParser_System_Type_
-  commentId: M:Qmmands.ICommandService.SetDefaultArgumentParser(System.Type)
-  fullName: Qmmands.ICommandService.SetDefaultArgumentParser(System.Type)
-  nameWithType: ICommandService.SetDefaultArgumentParser(Type)
-- uid: Qmmands.ICommandService.SetDefaultArgumentParser*
-  name: SetDefaultArgumentParser
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_SetDefaultArgumentParser_
-  commentId: Overload:Qmmands.ICommandService.SetDefaultArgumentParser
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.SetDefaultArgumentParser
-  nameWithType: ICommandService.SetDefaultArgumentParser
-- uid: Qmmands.ICommandService.SetDefaultArgumentParser``1
-  name: SetDefaultArgumentParser<T>()
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_SetDefaultArgumentParser__1
-  commentId: M:Qmmands.ICommandService.SetDefaultArgumentParser``1
-  name.vb: SetDefaultArgumentParser(Of T)()
-  fullName: Qmmands.ICommandService.SetDefaultArgumentParser<T>()
-  fullName.vb: Qmmands.ICommandService.SetDefaultArgumentParser(Of T)()
-  nameWithType: ICommandService.SetDefaultArgumentParser<T>()
-  nameWithType.vb: ICommandService.SetDefaultArgumentParser(Of T)()
-- uid: Qmmands.ICommandService.StringComparison
-  name: StringComparison
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_StringComparison
-  commentId: P:Qmmands.ICommandService.StringComparison
-  fullName: Qmmands.ICommandService.StringComparison
-  nameWithType: ICommandService.StringComparison
-- uid: Qmmands.ICommandService.StringComparison*
-  name: StringComparison
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_StringComparison_
-  commentId: Overload:Qmmands.ICommandService.StringComparison
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.StringComparison
-  nameWithType: ICommandService.StringComparison
-- uid: Qmmands.ICommandService.TopLevelModules
-  name: TopLevelModules
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_TopLevelModules
-  commentId: P:Qmmands.ICommandService.TopLevelModules
-  fullName: Qmmands.ICommandService.TopLevelModules
-  nameWithType: ICommandService.TopLevelModules
-- uid: Qmmands.ICommandService.TopLevelModules*
-  name: TopLevelModules
-  href: api/Qmmands.ICommandService.html#Qmmands_ICommandService_TopLevelModules_
-  commentId: Overload:Qmmands.ICommandService.TopLevelModules
-  isSpec: "True"
-  fullName: Qmmands.ICommandService.TopLevelModules
-  nameWithType: ICommandService.TopLevelModules
 - uid: Qmmands.IgnoresExtraArgumentsAttribute
   name: IgnoresExtraArgumentsAttribute
   href: api/Qmmands.IgnoresExtraArgumentsAttribute.html
@@ -3823,6 +3482,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.MaximumAttribute.CheckAsync
   nameWithType: MaximumAttribute.CheckAsync
+- uid: Qmmands.MaximumAttribute.CheckType(Type)
+  name: CheckType(Type)
+  href: api/Qmmands.MaximumAttribute.html#Qmmands_MaximumAttribute_CheckType_Type_
+  commentId: M:Qmmands.MaximumAttribute.CheckType(Type)
+  fullName: Qmmands.MaximumAttribute.CheckType(Type)
+  nameWithType: MaximumAttribute.CheckType(Type)
+- uid: Qmmands.MaximumAttribute.CheckType*
+  name: CheckType
+  href: api/Qmmands.MaximumAttribute.html#Qmmands_MaximumAttribute_CheckType_
+  commentId: Overload:Qmmands.MaximumAttribute.CheckType
+  isSpec: "True"
+  fullName: Qmmands.MaximumAttribute.CheckType
+  nameWithType: MaximumAttribute.CheckType
 - uid: Qmmands.MaximumAttribute.Maximum
   name: Maximum
   href: api/Qmmands.MaximumAttribute.html#Qmmands_MaximumAttribute_Maximum
@@ -3868,6 +3540,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.MinimumAttribute.CheckAsync
   nameWithType: MinimumAttribute.CheckAsync
+- uid: Qmmands.MinimumAttribute.CheckType(Type)
+  name: CheckType(Type)
+  href: api/Qmmands.MinimumAttribute.html#Qmmands_MinimumAttribute_CheckType_Type_
+  commentId: M:Qmmands.MinimumAttribute.CheckType(Type)
+  fullName: Qmmands.MinimumAttribute.CheckType(Type)
+  nameWithType: MinimumAttribute.CheckType(Type)
+- uid: Qmmands.MinimumAttribute.CheckType*
+  name: CheckType
+  href: api/Qmmands.MinimumAttribute.html#Qmmands_MinimumAttribute_CheckType_
+  commentId: Overload:Qmmands.MinimumAttribute.CheckType
+  isSpec: "True"
+  fullName: Qmmands.MinimumAttribute.CheckType
+  nameWithType: MinimumAttribute.CheckType
 - uid: Qmmands.MinimumAttribute.Minimum
   name: Minimum
   href: api/Qmmands.MinimumAttribute.html#Qmmands_MinimumAttribute_Minimum
@@ -4226,11 +3911,11 @@ references:
   isSpec: "True"
   fullName: Qmmands.ModuleBuilder.AddAlias
   nameWithType: ModuleBuilder.AddAlias
-- uid: Qmmands.ModuleBuilder.AddAttribute(System.Attribute)
+- uid: Qmmands.ModuleBuilder.AddAttribute(Attribute)
   name: AddAttribute(Attribute)
-  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_AddAttribute_System_Attribute_
-  commentId: M:Qmmands.ModuleBuilder.AddAttribute(System.Attribute)
-  fullName: Qmmands.ModuleBuilder.AddAttribute(System.Attribute)
+  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_AddAttribute_Attribute_
+  commentId: M:Qmmands.ModuleBuilder.AddAttribute(Attribute)
+  fullName: Qmmands.ModuleBuilder.AddAttribute(Attribute)
   nameWithType: ModuleBuilder.AddAttribute(Attribute)
 - uid: Qmmands.ModuleBuilder.AddAttribute*
   name: AddAttribute
@@ -4252,58 +3937,58 @@ references:
   isSpec: "True"
   fullName: Qmmands.ModuleBuilder.AddCheck
   nameWithType: ModuleBuilder.AddCheck
-- uid: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ResultCommandCallbackDelegate,System.Action{Qmmands.CommandBuilder})
+- uid: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ResultCommandCallbackDelegate,Action{Qmmands.CommandBuilder})
   name: AddCommand(ResultCommandCallbackDelegate, Action<CommandBuilder>)
-  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_AddCommand_Qmmands_Delegates_ResultCommandCallbackDelegate_System_Action_Qmmands_CommandBuilder__
-  commentId: M:Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ResultCommandCallbackDelegate,System.Action{Qmmands.CommandBuilder})
+  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_AddCommand_Qmmands_Delegates_ResultCommandCallbackDelegate_Action_Qmmands_CommandBuilder__
+  commentId: M:Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ResultCommandCallbackDelegate,Action{Qmmands.CommandBuilder})
   name.vb: AddCommand(ResultCommandCallbackDelegate, Action(Of CommandBuilder))
-  fullName: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ResultCommandCallbackDelegate, System.Action<Qmmands.CommandBuilder>)
-  fullName.vb: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ResultCommandCallbackDelegate, System.Action(Of Qmmands.CommandBuilder))
+  fullName: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ResultCommandCallbackDelegate, Action<Qmmands.CommandBuilder>)
+  fullName.vb: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ResultCommandCallbackDelegate, Action(Of Qmmands.CommandBuilder))
   nameWithType: ModuleBuilder.AddCommand(ResultCommandCallbackDelegate, Action<CommandBuilder>)
   nameWithType.vb: ModuleBuilder.AddCommand(ResultCommandCallbackDelegate, Action(Of CommandBuilder))
-- uid: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.TaskCommandCallbackDelegate,System.Action{Qmmands.CommandBuilder})
+- uid: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.TaskCommandCallbackDelegate,Action{Qmmands.CommandBuilder})
   name: AddCommand(TaskCommandCallbackDelegate, Action<CommandBuilder>)
-  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_AddCommand_Qmmands_Delegates_TaskCommandCallbackDelegate_System_Action_Qmmands_CommandBuilder__
-  commentId: M:Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.TaskCommandCallbackDelegate,System.Action{Qmmands.CommandBuilder})
+  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_AddCommand_Qmmands_Delegates_TaskCommandCallbackDelegate_Action_Qmmands_CommandBuilder__
+  commentId: M:Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.TaskCommandCallbackDelegate,Action{Qmmands.CommandBuilder})
   name.vb: AddCommand(TaskCommandCallbackDelegate, Action(Of CommandBuilder))
-  fullName: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.TaskCommandCallbackDelegate, System.Action<Qmmands.CommandBuilder>)
-  fullName.vb: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.TaskCommandCallbackDelegate, System.Action(Of Qmmands.CommandBuilder))
+  fullName: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.TaskCommandCallbackDelegate, Action<Qmmands.CommandBuilder>)
+  fullName.vb: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.TaskCommandCallbackDelegate, Action(Of Qmmands.CommandBuilder))
   nameWithType: ModuleBuilder.AddCommand(TaskCommandCallbackDelegate, Action<CommandBuilder>)
   nameWithType.vb: ModuleBuilder.AddCommand(TaskCommandCallbackDelegate, Action(Of CommandBuilder))
-- uid: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.TaskResultCommandCallbackDelegate,System.Action{Qmmands.CommandBuilder})
+- uid: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.TaskResultCommandCallbackDelegate,Action{Qmmands.CommandBuilder})
   name: AddCommand(TaskResultCommandCallbackDelegate, Action<CommandBuilder>)
-  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_AddCommand_Qmmands_Delegates_TaskResultCommandCallbackDelegate_System_Action_Qmmands_CommandBuilder__
-  commentId: M:Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.TaskResultCommandCallbackDelegate,System.Action{Qmmands.CommandBuilder})
+  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_AddCommand_Qmmands_Delegates_TaskResultCommandCallbackDelegate_Action_Qmmands_CommandBuilder__
+  commentId: M:Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.TaskResultCommandCallbackDelegate,Action{Qmmands.CommandBuilder})
   name.vb: AddCommand(TaskResultCommandCallbackDelegate, Action(Of CommandBuilder))
-  fullName: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.TaskResultCommandCallbackDelegate, System.Action<Qmmands.CommandBuilder>)
-  fullName.vb: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.TaskResultCommandCallbackDelegate, System.Action(Of Qmmands.CommandBuilder))
+  fullName: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.TaskResultCommandCallbackDelegate, Action<Qmmands.CommandBuilder>)
+  fullName.vb: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.TaskResultCommandCallbackDelegate, Action(Of Qmmands.CommandBuilder))
   nameWithType: ModuleBuilder.AddCommand(TaskResultCommandCallbackDelegate, Action<CommandBuilder>)
   nameWithType.vb: ModuleBuilder.AddCommand(TaskResultCommandCallbackDelegate, Action(Of CommandBuilder))
-- uid: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ValueTaskCommandCallbackDelegate,System.Action{Qmmands.CommandBuilder})
+- uid: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ValueTaskCommandCallbackDelegate,Action{Qmmands.CommandBuilder})
   name: AddCommand(ValueTaskCommandCallbackDelegate, Action<CommandBuilder>)
-  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_AddCommand_Qmmands_Delegates_ValueTaskCommandCallbackDelegate_System_Action_Qmmands_CommandBuilder__
-  commentId: M:Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ValueTaskCommandCallbackDelegate,System.Action{Qmmands.CommandBuilder})
+  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_AddCommand_Qmmands_Delegates_ValueTaskCommandCallbackDelegate_Action_Qmmands_CommandBuilder__
+  commentId: M:Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ValueTaskCommandCallbackDelegate,Action{Qmmands.CommandBuilder})
   name.vb: AddCommand(ValueTaskCommandCallbackDelegate, Action(Of CommandBuilder))
-  fullName: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ValueTaskCommandCallbackDelegate, System.Action<Qmmands.CommandBuilder>)
-  fullName.vb: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ValueTaskCommandCallbackDelegate, System.Action(Of Qmmands.CommandBuilder))
+  fullName: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ValueTaskCommandCallbackDelegate, Action<Qmmands.CommandBuilder>)
+  fullName.vb: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ValueTaskCommandCallbackDelegate, Action(Of Qmmands.CommandBuilder))
   nameWithType: ModuleBuilder.AddCommand(ValueTaskCommandCallbackDelegate, Action<CommandBuilder>)
   nameWithType.vb: ModuleBuilder.AddCommand(ValueTaskCommandCallbackDelegate, Action(Of CommandBuilder))
-- uid: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ValueTaskResultCommandCallbackDelegate,System.Action{Qmmands.CommandBuilder})
+- uid: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ValueTaskResultCommandCallbackDelegate,Action{Qmmands.CommandBuilder})
   name: AddCommand(ValueTaskResultCommandCallbackDelegate, Action<CommandBuilder>)
-  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_AddCommand_Qmmands_Delegates_ValueTaskResultCommandCallbackDelegate_System_Action_Qmmands_CommandBuilder__
-  commentId: M:Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ValueTaskResultCommandCallbackDelegate,System.Action{Qmmands.CommandBuilder})
+  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_AddCommand_Qmmands_Delegates_ValueTaskResultCommandCallbackDelegate_Action_Qmmands_CommandBuilder__
+  commentId: M:Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ValueTaskResultCommandCallbackDelegate,Action{Qmmands.CommandBuilder})
   name.vb: AddCommand(ValueTaskResultCommandCallbackDelegate, Action(Of CommandBuilder))
-  fullName: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ValueTaskResultCommandCallbackDelegate, System.Action<Qmmands.CommandBuilder>)
-  fullName.vb: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ValueTaskResultCommandCallbackDelegate, System.Action(Of Qmmands.CommandBuilder))
+  fullName: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ValueTaskResultCommandCallbackDelegate, Action<Qmmands.CommandBuilder>)
+  fullName.vb: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.ValueTaskResultCommandCallbackDelegate, Action(Of Qmmands.CommandBuilder))
   nameWithType: ModuleBuilder.AddCommand(ValueTaskResultCommandCallbackDelegate, Action<CommandBuilder>)
   nameWithType.vb: ModuleBuilder.AddCommand(ValueTaskResultCommandCallbackDelegate, Action(Of CommandBuilder))
-- uid: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.VoidCommandCallbackDelegate,System.Action{Qmmands.CommandBuilder})
+- uid: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.VoidCommandCallbackDelegate,Action{Qmmands.CommandBuilder})
   name: AddCommand(VoidCommandCallbackDelegate, Action<CommandBuilder>)
-  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_AddCommand_Qmmands_Delegates_VoidCommandCallbackDelegate_System_Action_Qmmands_CommandBuilder__
-  commentId: M:Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.VoidCommandCallbackDelegate,System.Action{Qmmands.CommandBuilder})
+  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_AddCommand_Qmmands_Delegates_VoidCommandCallbackDelegate_Action_Qmmands_CommandBuilder__
+  commentId: M:Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.VoidCommandCallbackDelegate,Action{Qmmands.CommandBuilder})
   name.vb: AddCommand(VoidCommandCallbackDelegate, Action(Of CommandBuilder))
-  fullName: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.VoidCommandCallbackDelegate, System.Action<Qmmands.CommandBuilder>)
-  fullName.vb: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.VoidCommandCallbackDelegate, System.Action(Of Qmmands.CommandBuilder))
+  fullName: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.VoidCommandCallbackDelegate, Action<Qmmands.CommandBuilder>)
+  fullName.vb: Qmmands.ModuleBuilder.AddCommand(Qmmands.Delegates.VoidCommandCallbackDelegate, Action(Of Qmmands.CommandBuilder))
   nameWithType: ModuleBuilder.AddCommand(VoidCommandCallbackDelegate, Action<CommandBuilder>)
   nameWithType.vb: ModuleBuilder.AddCommand(VoidCommandCallbackDelegate, Action(Of CommandBuilder))
 - uid: Qmmands.ModuleBuilder.AddCommand*
@@ -4313,13 +3998,13 @@ references:
   isSpec: "True"
   fullName: Qmmands.ModuleBuilder.AddCommand
   nameWithType: ModuleBuilder.AddCommand
-- uid: Qmmands.ModuleBuilder.AddSubmodule(System.Action{Qmmands.ModuleBuilder})
+- uid: Qmmands.ModuleBuilder.AddSubmodule(Action{Qmmands.ModuleBuilder})
   name: AddSubmodule(Action<ModuleBuilder>)
-  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_AddSubmodule_System_Action_Qmmands_ModuleBuilder__
-  commentId: M:Qmmands.ModuleBuilder.AddSubmodule(System.Action{Qmmands.ModuleBuilder})
+  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_AddSubmodule_Action_Qmmands_ModuleBuilder__
+  commentId: M:Qmmands.ModuleBuilder.AddSubmodule(Action{Qmmands.ModuleBuilder})
   name.vb: AddSubmodule(Action(Of ModuleBuilder))
-  fullName: Qmmands.ModuleBuilder.AddSubmodule(System.Action<Qmmands.ModuleBuilder>)
-  fullName.vb: Qmmands.ModuleBuilder.AddSubmodule(System.Action(Of Qmmands.ModuleBuilder))
+  fullName: Qmmands.ModuleBuilder.AddSubmodule(Action<Qmmands.ModuleBuilder>)
+  fullName.vb: Qmmands.ModuleBuilder.AddSubmodule(Action(Of Qmmands.ModuleBuilder))
   nameWithType: ModuleBuilder.AddSubmodule(Action<ModuleBuilder>)
   nameWithType.vb: ModuleBuilder.AddSubmodule(Action(Of ModuleBuilder))
 - uid: Qmmands.ModuleBuilder.AddSubmodule*
@@ -4511,11 +4196,11 @@ references:
   isSpec: "True"
   fullName: Qmmands.ModuleBuilder.Type
   nameWithType: ModuleBuilder.Type
-- uid: Qmmands.ModuleBuilder.WithCustomArgumentParserType(System.Type)
+- uid: Qmmands.ModuleBuilder.WithCustomArgumentParserType(Type)
   name: WithCustomArgumentParserType(Type)
-  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_WithCustomArgumentParserType_System_Type_
-  commentId: M:Qmmands.ModuleBuilder.WithCustomArgumentParserType(System.Type)
-  fullName: Qmmands.ModuleBuilder.WithCustomArgumentParserType(System.Type)
+  href: api/Qmmands.ModuleBuilder.html#Qmmands_ModuleBuilder_WithCustomArgumentParserType_Type_
+  commentId: M:Qmmands.ModuleBuilder.WithCustomArgumentParserType(Type)
+  fullName: Qmmands.ModuleBuilder.WithCustomArgumentParserType(Type)
   nameWithType: ModuleBuilder.WithCustomArgumentParserType(Type)
 - uid: Qmmands.ModuleBuilder.WithCustomArgumentParserType*
   name: WithCustomArgumentParserType
@@ -4678,30 +4363,30 @@ references:
   isSpec: "True"
   fullName: Qmmands.OverloadsFailedResult.FailedOverloads
   nameWithType: OverloadsFailedResult.FailedOverloads
-- uid: Qmmands.OverloadsFailedResult.Reason
-  name: Reason
-  href: api/Qmmands.OverloadsFailedResult.html#Qmmands_OverloadsFailedResult_Reason
-  commentId: P:Qmmands.OverloadsFailedResult.Reason
-  fullName: Qmmands.OverloadsFailedResult.Reason
-  nameWithType: OverloadsFailedResult.Reason
-- uid: Qmmands.OverloadsFailedResult.Reason*
-  name: Reason
-  href: api/Qmmands.OverloadsFailedResult.html#Qmmands_OverloadsFailedResult_Reason_
-  commentId: Overload:Qmmands.OverloadsFailedResult.Reason
+- uid: Qmmands.OverloadsFailedResult.FailureReason
+  name: FailureReason
+  href: api/Qmmands.OverloadsFailedResult.html#Qmmands_OverloadsFailedResult_FailureReason
+  commentId: P:Qmmands.OverloadsFailedResult.FailureReason
+  fullName: Qmmands.OverloadsFailedResult.FailureReason
+  nameWithType: OverloadsFailedResult.FailureReason
+- uid: Qmmands.OverloadsFailedResult.FailureReason*
+  name: FailureReason
+  href: api/Qmmands.OverloadsFailedResult.html#Qmmands_OverloadsFailedResult_FailureReason_
+  commentId: Overload:Qmmands.OverloadsFailedResult.FailureReason
   isSpec: "True"
-  fullName: Qmmands.OverloadsFailedResult.Reason
-  nameWithType: OverloadsFailedResult.Reason
+  fullName: Qmmands.OverloadsFailedResult.FailureReason
+  nameWithType: OverloadsFailedResult.FailureReason
 - uid: Qmmands.OverrideArgumentParserAttribute
   name: OverrideArgumentParserAttribute
   href: api/Qmmands.OverrideArgumentParserAttribute.html
   commentId: T:Qmmands.OverrideArgumentParserAttribute
   fullName: Qmmands.OverrideArgumentParserAttribute
   nameWithType: OverrideArgumentParserAttribute
-- uid: Qmmands.OverrideArgumentParserAttribute.#ctor(System.Type)
+- uid: Qmmands.OverrideArgumentParserAttribute.#ctor(Type)
   name: OverrideArgumentParserAttribute(Type)
-  href: api/Qmmands.OverrideArgumentParserAttribute.html#Qmmands_OverrideArgumentParserAttribute__ctor_System_Type_
-  commentId: M:Qmmands.OverrideArgumentParserAttribute.#ctor(System.Type)
-  fullName: Qmmands.OverrideArgumentParserAttribute.OverrideArgumentParserAttribute(System.Type)
+  href: api/Qmmands.OverrideArgumentParserAttribute.html#Qmmands_OverrideArgumentParserAttribute__ctor_Type_
+  commentId: M:Qmmands.OverrideArgumentParserAttribute.#ctor(Type)
+  fullName: Qmmands.OverrideArgumentParserAttribute.OverrideArgumentParserAttribute(Type)
   nameWithType: OverrideArgumentParserAttribute.OverrideArgumentParserAttribute(Type)
 - uid: Qmmands.OverrideArgumentParserAttribute.#ctor*
   name: OverrideArgumentParserAttribute
@@ -4729,11 +4414,11 @@ references:
   commentId: T:Qmmands.OverrideTypeParserAttribute
   fullName: Qmmands.OverrideTypeParserAttribute
   nameWithType: OverrideTypeParserAttribute
-- uid: Qmmands.OverrideTypeParserAttribute.#ctor(System.Type)
+- uid: Qmmands.OverrideTypeParserAttribute.#ctor(Type)
   name: OverrideTypeParserAttribute(Type)
-  href: api/Qmmands.OverrideTypeParserAttribute.html#Qmmands_OverrideTypeParserAttribute__ctor_System_Type_
-  commentId: M:Qmmands.OverrideTypeParserAttribute.#ctor(System.Type)
-  fullName: Qmmands.OverrideTypeParserAttribute.OverrideTypeParserAttribute(System.Type)
+  href: api/Qmmands.OverrideTypeParserAttribute.html#Qmmands_OverrideTypeParserAttribute__ctor_Type_
+  commentId: M:Qmmands.OverrideTypeParserAttribute.#ctor(Type)
+  fullName: Qmmands.OverrideTypeParserAttribute.OverrideTypeParserAttribute(Type)
   nameWithType: OverrideTypeParserAttribute.OverrideTypeParserAttribute(Type)
 - uid: Qmmands.OverrideTypeParserAttribute.#ctor*
   name: OverrideTypeParserAttribute
@@ -4962,11 +4647,11 @@ references:
   commentId: T:Qmmands.ParameterBuilder
   fullName: Qmmands.ParameterBuilder
   nameWithType: ParameterBuilder
-- uid: Qmmands.ParameterBuilder.AddAttribute(System.Attribute)
+- uid: Qmmands.ParameterBuilder.AddAttribute(Attribute)
   name: AddAttribute(Attribute)
-  href: api/Qmmands.ParameterBuilder.html#Qmmands_ParameterBuilder_AddAttribute_System_Attribute_
-  commentId: M:Qmmands.ParameterBuilder.AddAttribute(System.Attribute)
-  fullName: Qmmands.ParameterBuilder.AddAttribute(System.Attribute)
+  href: api/Qmmands.ParameterBuilder.html#Qmmands_ParameterBuilder_AddAttribute_Attribute_
+  commentId: M:Qmmands.ParameterBuilder.AddAttribute(Attribute)
+  fullName: Qmmands.ParameterBuilder.AddAttribute(Attribute)
   nameWithType: ParameterBuilder.AddAttribute(Attribute)
 - uid: Qmmands.ParameterBuilder.AddAttribute*
   name: AddAttribute
@@ -4975,13 +4660,13 @@ references:
   isSpec: "True"
   fullName: Qmmands.ParameterBuilder.AddAttribute
   nameWithType: ParameterBuilder.AddAttribute
-- uid: Qmmands.ParameterBuilder.AddAttributes(System.Attribute[])
+- uid: Qmmands.ParameterBuilder.AddAttributes(Attribute[])
   name: AddAttributes(Attribute[])
-  href: api/Qmmands.ParameterBuilder.html#Qmmands_ParameterBuilder_AddAttributes_System_Attribute___
-  commentId: M:Qmmands.ParameterBuilder.AddAttributes(System.Attribute[])
+  href: api/Qmmands.ParameterBuilder.html#Qmmands_ParameterBuilder_AddAttributes_Attribute___
+  commentId: M:Qmmands.ParameterBuilder.AddAttributes(Attribute[])
   name.vb: AddAttributes(Attribute())
-  fullName: Qmmands.ParameterBuilder.AddAttributes(System.Attribute[])
-  fullName.vb: Qmmands.ParameterBuilder.AddAttributes(System.Attribute())
+  fullName: Qmmands.ParameterBuilder.AddAttributes(Attribute[])
+  fullName.vb: Qmmands.ParameterBuilder.AddAttributes(Attribute())
   nameWithType: ParameterBuilder.AddAttributes(Attribute[])
   nameWithType.vb: ParameterBuilder.AddAttributes(Attribute())
 - uid: Qmmands.ParameterBuilder.AddAttributes*
@@ -5176,11 +4861,11 @@ references:
   isSpec: "True"
   fullName: Qmmands.ParameterBuilder.Type
   nameWithType: ParameterBuilder.Type
-- uid: Qmmands.ParameterBuilder.WithCustomTypeParserType(System.Type)
+- uid: Qmmands.ParameterBuilder.WithCustomTypeParserType(Type)
   name: WithCustomTypeParserType(Type)
-  href: api/Qmmands.ParameterBuilder.html#Qmmands_ParameterBuilder_WithCustomTypeParserType_System_Type_
-  commentId: M:Qmmands.ParameterBuilder.WithCustomTypeParserType(System.Type)
-  fullName: Qmmands.ParameterBuilder.WithCustomTypeParserType(System.Type)
+  href: api/Qmmands.ParameterBuilder.html#Qmmands_ParameterBuilder_WithCustomTypeParserType_Type_
+  commentId: M:Qmmands.ParameterBuilder.WithCustomTypeParserType(Type)
+  fullName: Qmmands.ParameterBuilder.WithCustomTypeParserType(Type)
   nameWithType: ParameterBuilder.WithCustomTypeParserType(Type)
 - uid: Qmmands.ParameterBuilder.WithCustomTypeParserType*
   name: WithCustomTypeParserType
@@ -5305,22 +4990,6 @@ references:
   commentId: T:Qmmands.ParameterCheckAttribute
   fullName: Qmmands.ParameterCheckAttribute
   nameWithType: ParameterCheckAttribute
-- uid: Qmmands.ParameterCheckAttribute.#ctor(System.Predicate{System.Type})
-  name: ParameterCheckAttribute(Predicate<Type>)
-  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute__ctor_System_Predicate_System_Type__
-  commentId: M:Qmmands.ParameterCheckAttribute.#ctor(System.Predicate{System.Type})
-  name.vb: ParameterCheckAttribute(Predicate(Of Type))
-  fullName: Qmmands.ParameterCheckAttribute.ParameterCheckAttribute(System.Predicate<System.Type>)
-  fullName.vb: Qmmands.ParameterCheckAttribute.ParameterCheckAttribute(System.Predicate(Of System.Type))
-  nameWithType: ParameterCheckAttribute.ParameterCheckAttribute(Predicate<Type>)
-  nameWithType.vb: ParameterCheckAttribute.ParameterCheckAttribute(Predicate(Of Type))
-- uid: Qmmands.ParameterCheckAttribute.#ctor*
-  name: ParameterCheckAttribute
-  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute__ctor_
-  commentId: Overload:Qmmands.ParameterCheckAttribute.#ctor
-  isSpec: "True"
-  fullName: Qmmands.ParameterCheckAttribute.ParameterCheckAttribute
-  nameWithType: ParameterCheckAttribute.ParameterCheckAttribute
 - uid: Qmmands.ParameterCheckAttribute.CheckAsync(System.Object,Qmmands.CommandContext)
   name: CheckAsync(Object, CommandContext)
   href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_CheckAsync_System_Object_Qmmands_CommandContext_
@@ -5334,6 +5003,45 @@ references:
   isSpec: "True"
   fullName: Qmmands.ParameterCheckAttribute.CheckAsync
   nameWithType: ParameterCheckAttribute.CheckAsync
+- uid: Qmmands.ParameterCheckAttribute.ChecksArrayElements
+  name: ChecksArrayElements
+  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_ChecksArrayElements
+  commentId: P:Qmmands.ParameterCheckAttribute.ChecksArrayElements
+  fullName: Qmmands.ParameterCheckAttribute.ChecksArrayElements
+  nameWithType: ParameterCheckAttribute.ChecksArrayElements
+- uid: Qmmands.ParameterCheckAttribute.ChecksArrayElements*
+  name: ChecksArrayElements
+  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_ChecksArrayElements_
+  commentId: Overload:Qmmands.ParameterCheckAttribute.ChecksArrayElements
+  isSpec: "True"
+  fullName: Qmmands.ParameterCheckAttribute.ChecksArrayElements
+  nameWithType: ParameterCheckAttribute.ChecksArrayElements
+- uid: Qmmands.ParameterCheckAttribute.CheckType(Type)
+  name: CheckType(Type)
+  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_CheckType_Type_
+  commentId: M:Qmmands.ParameterCheckAttribute.CheckType(Type)
+  fullName: Qmmands.ParameterCheckAttribute.CheckType(Type)
+  nameWithType: ParameterCheckAttribute.CheckType(Type)
+- uid: Qmmands.ParameterCheckAttribute.CheckType*
+  name: CheckType
+  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_CheckType_
+  commentId: Overload:Qmmands.ParameterCheckAttribute.CheckType
+  isSpec: "True"
+  fullName: Qmmands.ParameterCheckAttribute.CheckType
+  nameWithType: ParameterCheckAttribute.CheckType
+- uid: Qmmands.ParameterCheckAttribute.Failure(System.String)
+  name: Failure(String)
+  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_Failure_System_String_
+  commentId: M:Qmmands.ParameterCheckAttribute.Failure(System.String)
+  fullName: Qmmands.ParameterCheckAttribute.Failure(System.String)
+  nameWithType: ParameterCheckAttribute.Failure(String)
+- uid: Qmmands.ParameterCheckAttribute.Failure*
+  name: Failure
+  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_Failure_
+  commentId: Overload:Qmmands.ParameterCheckAttribute.Failure
+  isSpec: "True"
+  fullName: Qmmands.ParameterCheckAttribute.Failure
+  nameWithType: ParameterCheckAttribute.Failure
 - uid: Qmmands.ParameterCheckAttribute.Group
   name: Group
   href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_Group
@@ -5360,19 +5068,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.ParameterCheckAttribute.Parameter
   nameWithType: ParameterCheckAttribute.Parameter
-- uid: Qmmands.ParameterCheckAttribute.Predicate
-  name: Predicate
-  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_Predicate
-  commentId: P:Qmmands.ParameterCheckAttribute.Predicate
-  fullName: Qmmands.ParameterCheckAttribute.Predicate
-  nameWithType: ParameterCheckAttribute.Predicate
-- uid: Qmmands.ParameterCheckAttribute.Predicate*
-  name: Predicate
-  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_Predicate_
-  commentId: Overload:Qmmands.ParameterCheckAttribute.Predicate
+- uid: Qmmands.ParameterCheckAttribute.Success
+  name: Success()
+  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_Success
+  commentId: M:Qmmands.ParameterCheckAttribute.Success
+  fullName: Qmmands.ParameterCheckAttribute.Success()
+  nameWithType: ParameterCheckAttribute.Success()
+- uid: Qmmands.ParameterCheckAttribute.Success*
+  name: Success
+  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_Success_
+  commentId: Overload:Qmmands.ParameterCheckAttribute.Success
   isSpec: "True"
-  fullName: Qmmands.ParameterCheckAttribute.Predicate
-  nameWithType: ParameterCheckAttribute.Predicate
+  fullName: Qmmands.ParameterCheckAttribute.Success
+  nameWithType: ParameterCheckAttribute.Success
 - uid: Qmmands.ParameterChecksFailedResult
   name: ParameterChecksFailedResult
   href: api/Qmmands.ParameterChecksFailedResult.html
@@ -5405,6 +5113,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.ParameterChecksFailedResult.FailedChecks
   nameWithType: ParameterChecksFailedResult.FailedChecks
+- uid: Qmmands.ParameterChecksFailedResult.FailureReason
+  name: FailureReason
+  href: api/Qmmands.ParameterChecksFailedResult.html#Qmmands_ParameterChecksFailedResult_FailureReason
+  commentId: P:Qmmands.ParameterChecksFailedResult.FailureReason
+  fullName: Qmmands.ParameterChecksFailedResult.FailureReason
+  nameWithType: ParameterChecksFailedResult.FailureReason
+- uid: Qmmands.ParameterChecksFailedResult.FailureReason*
+  name: FailureReason
+  href: api/Qmmands.ParameterChecksFailedResult.html#Qmmands_ParameterChecksFailedResult_FailureReason_
+  commentId: Overload:Qmmands.ParameterChecksFailedResult.FailureReason
+  isSpec: "True"
+  fullName: Qmmands.ParameterChecksFailedResult.FailureReason
+  nameWithType: ParameterChecksFailedResult.FailureReason
 - uid: Qmmands.ParameterChecksFailedResult.Parameter
   name: Parameter
   href: api/Qmmands.ParameterChecksFailedResult.html#Qmmands_ParameterChecksFailedResult_Parameter
@@ -5418,19 +5139,6 @@ references:
   isSpec: "True"
   fullName: Qmmands.ParameterChecksFailedResult.Parameter
   nameWithType: ParameterChecksFailedResult.Parameter
-- uid: Qmmands.ParameterChecksFailedResult.Reason
-  name: Reason
-  href: api/Qmmands.ParameterChecksFailedResult.html#Qmmands_ParameterChecksFailedResult_Reason
-  commentId: P:Qmmands.ParameterChecksFailedResult.Reason
-  fullName: Qmmands.ParameterChecksFailedResult.Reason
-  nameWithType: ParameterChecksFailedResult.Reason
-- uid: Qmmands.ParameterChecksFailedResult.Reason*
-  name: Reason
-  href: api/Qmmands.ParameterChecksFailedResult.html#Qmmands_ParameterChecksFailedResult_Reason_
-  commentId: Overload:Qmmands.ParameterChecksFailedResult.Reason
-  isSpec: "True"
-  fullName: Qmmands.ParameterChecksFailedResult.Reason
-  nameWithType: ParameterChecksFailedResult.Reason
 - uid: Qmmands.PriorityAttribute
   name: PriorityAttribute
   href: api/Qmmands.PriorityAttribute.html
@@ -5501,6 +5209,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.RangeAttribute.CheckAsync
   nameWithType: RangeAttribute.CheckAsync
+- uid: Qmmands.RangeAttribute.CheckType(Type)
+  name: CheckType(Type)
+  href: api/Qmmands.RangeAttribute.html#Qmmands_RangeAttribute_CheckType_Type_
+  commentId: M:Qmmands.RangeAttribute.CheckType(Type)
+  fullName: Qmmands.RangeAttribute.CheckType(Type)
+  nameWithType: RangeAttribute.CheckType(Type)
+- uid: Qmmands.RangeAttribute.CheckType*
+  name: CheckType
+  href: api/Qmmands.RangeAttribute.html#Qmmands_RangeAttribute_CheckType_
+  commentId: Overload:Qmmands.RangeAttribute.CheckType
+  isSpec: "True"
+  fullName: Qmmands.RangeAttribute.CheckType
+  nameWithType: RangeAttribute.CheckType
 - uid: Qmmands.RangeAttribute.IsMaximumInclusive
   name: IsMaximumInclusive
   href: api/Qmmands.RangeAttribute.html#Qmmands_RangeAttribute_IsMaximumInclusive
@@ -5565,11 +5286,11 @@ references:
   commentId: M:Qmmands.RegexAttribute.#ctor(System.String)
   fullName: Qmmands.RegexAttribute.RegexAttribute(System.String)
   nameWithType: RegexAttribute.RegexAttribute(String)
-- uid: Qmmands.RegexAttribute.#ctor(System.String,System.Text.RegularExpressions.RegexOptions)
+- uid: Qmmands.RegexAttribute.#ctor(System.String,RegexOptions)
   name: RegexAttribute(String, RegexOptions)
-  href: api/Qmmands.RegexAttribute.html#Qmmands_RegexAttribute__ctor_System_String_System_Text_RegularExpressions_RegexOptions_
-  commentId: M:Qmmands.RegexAttribute.#ctor(System.String,System.Text.RegularExpressions.RegexOptions)
-  fullName: Qmmands.RegexAttribute.RegexAttribute(System.String, System.Text.RegularExpressions.RegexOptions)
+  href: api/Qmmands.RegexAttribute.html#Qmmands_RegexAttribute__ctor_System_String_RegexOptions_
+  commentId: M:Qmmands.RegexAttribute.#ctor(System.String,RegexOptions)
+  fullName: Qmmands.RegexAttribute.RegexAttribute(System.String, RegexOptions)
   nameWithType: RegexAttribute.RegexAttribute(String, RegexOptions)
 - uid: Qmmands.RegexAttribute.#ctor*
   name: RegexAttribute
@@ -5591,6 +5312,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.RegexAttribute.CheckAsync
   nameWithType: RegexAttribute.CheckAsync
+- uid: Qmmands.RegexAttribute.CheckType(Type)
+  name: CheckType(Type)
+  href: api/Qmmands.RegexAttribute.html#Qmmands_RegexAttribute_CheckType_Type_
+  commentId: M:Qmmands.RegexAttribute.CheckType(Type)
+  fullName: Qmmands.RegexAttribute.CheckType(Type)
+  nameWithType: RegexAttribute.CheckType(Type)
+- uid: Qmmands.RegexAttribute.CheckType*
+  name: CheckType
+  href: api/Qmmands.RegexAttribute.html#Qmmands_RegexAttribute_CheckType_
+  commentId: Overload:Qmmands.RegexAttribute.CheckType
+  isSpec: "True"
+  fullName: Qmmands.RegexAttribute.CheckType
+  nameWithType: RegexAttribute.CheckType
 - uid: Qmmands.RegexAttribute.Regex
   name: Regex
   href: api/Qmmands.RegexAttribute.html#Qmmands_RegexAttribute_Regex
@@ -5722,11 +5456,11 @@ references:
   commentId: M:Qmmands.StartsWithAttribute.#ctor(System.String)
   fullName: Qmmands.StartsWithAttribute.StartsWithAttribute(System.String)
   nameWithType: StartsWithAttribute.StartsWithAttribute(String)
-- uid: Qmmands.StartsWithAttribute.#ctor(System.String,System.StringComparison)
+- uid: Qmmands.StartsWithAttribute.#ctor(System.String,StringComparison)
   name: StartsWithAttribute(String, StringComparison)
-  href: api/Qmmands.StartsWithAttribute.html#Qmmands_StartsWithAttribute__ctor_System_String_System_StringComparison_
-  commentId: M:Qmmands.StartsWithAttribute.#ctor(System.String,System.StringComparison)
-  fullName: Qmmands.StartsWithAttribute.StartsWithAttribute(System.String, System.StringComparison)
+  href: api/Qmmands.StartsWithAttribute.html#Qmmands_StartsWithAttribute__ctor_System_String_StringComparison_
+  commentId: M:Qmmands.StartsWithAttribute.#ctor(System.String,StringComparison)
+  fullName: Qmmands.StartsWithAttribute.StartsWithAttribute(System.String, StringComparison)
   nameWithType: StartsWithAttribute.StartsWithAttribute(String, StringComparison)
 - uid: Qmmands.StartsWithAttribute.#ctor*
   name: StartsWithAttribute
@@ -5748,6 +5482,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.StartsWithAttribute.CheckAsync
   nameWithType: StartsWithAttribute.CheckAsync
+- uid: Qmmands.StartsWithAttribute.CheckType(Type)
+  name: CheckType(Type)
+  href: api/Qmmands.StartsWithAttribute.html#Qmmands_StartsWithAttribute_CheckType_Type_
+  commentId: M:Qmmands.StartsWithAttribute.CheckType(Type)
+  fullName: Qmmands.StartsWithAttribute.CheckType(Type)
+  nameWithType: StartsWithAttribute.CheckType(Type)
+- uid: Qmmands.StartsWithAttribute.CheckType*
+  name: CheckType
+  href: api/Qmmands.StartsWithAttribute.html#Qmmands_StartsWithAttribute_CheckType_
+  commentId: Overload:Qmmands.StartsWithAttribute.CheckType
+  isSpec: "True"
+  fullName: Qmmands.StartsWithAttribute.CheckType
+  nameWithType: StartsWithAttribute.CheckType
 - uid: Qmmands.StartsWithAttribute.StringComparison
   name: StringComparison
   href: api/Qmmands.StartsWithAttribute.html#Qmmands_StartsWithAttribute_StringComparison
@@ -5780,19 +5527,12 @@ references:
   commentId: T:Qmmands.SuccessfulResult
   fullName: Qmmands.SuccessfulResult
   nameWithType: SuccessfulResult
-- uid: Qmmands.SuccessfulResult.#ctor
-  name: SuccessfulResult()
-  href: api/Qmmands.SuccessfulResult.html#Qmmands_SuccessfulResult__ctor
-  commentId: M:Qmmands.SuccessfulResult.#ctor
-  fullName: Qmmands.SuccessfulResult.SuccessfulResult()
-  nameWithType: SuccessfulResult.SuccessfulResult()
-- uid: Qmmands.SuccessfulResult.#ctor*
-  name: SuccessfulResult
-  href: api/Qmmands.SuccessfulResult.html#Qmmands_SuccessfulResult__ctor_
-  commentId: Overload:Qmmands.SuccessfulResult.#ctor
-  isSpec: "True"
-  fullName: Qmmands.SuccessfulResult.SuccessfulResult
-  nameWithType: SuccessfulResult.SuccessfulResult
+- uid: Qmmands.SuccessfulResult.Instance
+  name: Instance
+  href: api/Qmmands.SuccessfulResult.html#Qmmands_SuccessfulResult_Instance
+  commentId: F:Qmmands.SuccessfulResult.Instance
+  fullName: Qmmands.SuccessfulResult.Instance
+  nameWithType: SuccessfulResult.Instance
 - uid: Qmmands.SuccessfulResult.IsSuccessful
   name: IsSuccessful
   href: api/Qmmands.SuccessfulResult.html#Qmmands_SuccessfulResult_IsSuccessful
@@ -5812,6 +5552,19 @@ references:
   commentId: T:Qmmands.TypeParseFailedResult
   fullName: Qmmands.TypeParseFailedResult
   nameWithType: TypeParseFailedResult
+- uid: Qmmands.TypeParseFailedResult.FailureReason
+  name: FailureReason
+  href: api/Qmmands.TypeParseFailedResult.html#Qmmands_TypeParseFailedResult_FailureReason
+  commentId: P:Qmmands.TypeParseFailedResult.FailureReason
+  fullName: Qmmands.TypeParseFailedResult.FailureReason
+  nameWithType: TypeParseFailedResult.FailureReason
+- uid: Qmmands.TypeParseFailedResult.FailureReason*
+  name: FailureReason
+  href: api/Qmmands.TypeParseFailedResult.html#Qmmands_TypeParseFailedResult_FailureReason_
+  commentId: Overload:Qmmands.TypeParseFailedResult.FailureReason
+  isSpec: "True"
+  fullName: Qmmands.TypeParseFailedResult.FailureReason
+  nameWithType: TypeParseFailedResult.FailureReason
 - uid: Qmmands.TypeParseFailedResult.Parameter
   name: Parameter
   href: api/Qmmands.TypeParseFailedResult.html#Qmmands_TypeParseFailedResult_Parameter
@@ -5825,19 +5578,6 @@ references:
   isSpec: "True"
   fullName: Qmmands.TypeParseFailedResult.Parameter
   nameWithType: TypeParseFailedResult.Parameter
-- uid: Qmmands.TypeParseFailedResult.Reason
-  name: Reason
-  href: api/Qmmands.TypeParseFailedResult.html#Qmmands_TypeParseFailedResult_Reason
-  commentId: P:Qmmands.TypeParseFailedResult.Reason
-  fullName: Qmmands.TypeParseFailedResult.Reason
-  nameWithType: TypeParseFailedResult.Reason
-- uid: Qmmands.TypeParseFailedResult.Reason*
-  name: Reason
-  href: api/Qmmands.TypeParseFailedResult.html#Qmmands_TypeParseFailedResult_Reason_
-  commentId: Overload:Qmmands.TypeParseFailedResult.Reason
-  isSpec: "True"
-  fullName: Qmmands.TypeParseFailedResult.Reason
-  nameWithType: TypeParseFailedResult.Reason
 - uid: Qmmands.TypeParseFailedResult.Value
   name: Value
   href: api/Qmmands.TypeParseFailedResult.html#Qmmands_TypeParseFailedResult_Value
@@ -5860,6 +5600,23 @@ references:
   fullName.vb: Qmmands.TypeParser(Of T)
   nameWithType: TypeParser<T>
   nameWithType.vb: TypeParser(Of T)
+- uid: Qmmands.TypeParser`1.Failure(System.String)
+  name: Failure(String)
+  href: api/Qmmands.TypeParser-1.html#Qmmands_TypeParser_1_Failure_System_String_
+  commentId: M:Qmmands.TypeParser`1.Failure(System.String)
+  fullName: Qmmands.TypeParser<T>.Failure(System.String)
+  fullName.vb: Qmmands.TypeParser(Of T).Failure(System.String)
+  nameWithType: TypeParser<T>.Failure(String)
+  nameWithType.vb: TypeParser(Of T).Failure(String)
+- uid: Qmmands.TypeParser`1.Failure*
+  name: Failure
+  href: api/Qmmands.TypeParser-1.html#Qmmands_TypeParser_1_Failure_
+  commentId: Overload:Qmmands.TypeParser`1.Failure
+  isSpec: "True"
+  fullName: Qmmands.TypeParser<T>.Failure
+  fullName.vb: Qmmands.TypeParser(Of T).Failure
+  nameWithType: TypeParser<T>.Failure
+  nameWithType.vb: TypeParser(Of T).Failure
 - uid: Qmmands.TypeParser`1.ParseAsync(Qmmands.Parameter,System.String,Qmmands.CommandContext)
   name: ParseAsync(Parameter, String, CommandContext)
   href: api/Qmmands.TypeParser-1.html#Qmmands_TypeParser_1_ParseAsync_Qmmands_Parameter_System_String_Qmmands_CommandContext_
@@ -5877,6 +5634,23 @@ references:
   fullName.vb: Qmmands.TypeParser(Of T).ParseAsync
   nameWithType: TypeParser<T>.ParseAsync
   nameWithType.vb: TypeParser(Of T).ParseAsync
+- uid: Qmmands.TypeParser`1.Success(`0)
+  name: Success(T)
+  href: api/Qmmands.TypeParser-1.html#Qmmands_TypeParser_1_Success__0_
+  commentId: M:Qmmands.TypeParser`1.Success(`0)
+  fullName: Qmmands.TypeParser<T>.Success(T)
+  fullName.vb: Qmmands.TypeParser(Of T).Success(T)
+  nameWithType: TypeParser<T>.Success(T)
+  nameWithType.vb: TypeParser(Of T).Success(T)
+- uid: Qmmands.TypeParser`1.Success*
+  name: Success
+  href: api/Qmmands.TypeParser-1.html#Qmmands_TypeParser_1_Success_
+  commentId: Overload:Qmmands.TypeParser`1.Success
+  isSpec: "True"
+  fullName: Qmmands.TypeParser<T>.Success
+  fullName.vb: Qmmands.TypeParser(Of T).Success
+  nameWithType: TypeParser<T>.Success
+  nameWithType.vb: TypeParser(Of T).Success
 - uid: Qmmands.TypeParserResult`1
   name: TypeParserResult<T>
   href: api/Qmmands.TypeParserResult-1.html
@@ -5911,6 +5685,40 @@ references:
   fullName.vb: Qmmands.TypeParserResult(Of T).TypeParserResult
   nameWithType: TypeParserResult<T>.TypeParserResult
   nameWithType.vb: TypeParserResult(Of T).TypeParserResult
+- uid: Qmmands.TypeParserResult`1.Failed(System.String)
+  name: Failed(String)
+  href: api/Qmmands.TypeParserResult-1.html#Qmmands_TypeParserResult_1_Failed_System_String_
+  commentId: M:Qmmands.TypeParserResult`1.Failed(System.String)
+  fullName: Qmmands.TypeParserResult<T>.Failed(System.String)
+  fullName.vb: Qmmands.TypeParserResult(Of T).Failed(System.String)
+  nameWithType: TypeParserResult<T>.Failed(String)
+  nameWithType.vb: TypeParserResult(Of T).Failed(String)
+- uid: Qmmands.TypeParserResult`1.Failed*
+  name: Failed
+  href: api/Qmmands.TypeParserResult-1.html#Qmmands_TypeParserResult_1_Failed_
+  commentId: Overload:Qmmands.TypeParserResult`1.Failed
+  isSpec: "True"
+  fullName: Qmmands.TypeParserResult<T>.Failed
+  fullName.vb: Qmmands.TypeParserResult(Of T).Failed
+  nameWithType: TypeParserResult<T>.Failed
+  nameWithType.vb: TypeParserResult(Of T).Failed
+- uid: Qmmands.TypeParserResult`1.FailureReason
+  name: FailureReason
+  href: api/Qmmands.TypeParserResult-1.html#Qmmands_TypeParserResult_1_FailureReason
+  commentId: P:Qmmands.TypeParserResult`1.FailureReason
+  fullName: Qmmands.TypeParserResult<T>.FailureReason
+  fullName.vb: Qmmands.TypeParserResult(Of T).FailureReason
+  nameWithType: TypeParserResult<T>.FailureReason
+  nameWithType.vb: TypeParserResult(Of T).FailureReason
+- uid: Qmmands.TypeParserResult`1.FailureReason*
+  name: FailureReason
+  href: api/Qmmands.TypeParserResult-1.html#Qmmands_TypeParserResult_1_FailureReason_
+  commentId: Overload:Qmmands.TypeParserResult`1.FailureReason
+  isSpec: "True"
+  fullName: Qmmands.TypeParserResult<T>.FailureReason
+  fullName.vb: Qmmands.TypeParserResult(Of T).FailureReason
+  nameWithType: TypeParserResult<T>.FailureReason
+  nameWithType.vb: TypeParserResult(Of T).FailureReason
 - uid: Qmmands.TypeParserResult`1.HasValue
   name: HasValue
   href: api/Qmmands.TypeParserResult-1.html#Qmmands_TypeParserResult_1_HasValue
@@ -5945,13 +5753,13 @@ references:
   fullName.vb: Qmmands.TypeParserResult(Of T).IsSuccessful
   nameWithType: TypeParserResult<T>.IsSuccessful
   nameWithType.vb: TypeParserResult(Of T).IsSuccessful
-- uid: Qmmands.TypeParserResult`1.op_Implicit(Qmmands.TypeParserResult{`0})~System.Threading.Tasks.ValueTask{Qmmands.TypeParserResult{`0}}
+- uid: Qmmands.TypeParserResult`1.op_Implicit(Qmmands.TypeParserResult{`0})~ValueTask{Qmmands.TypeParserResult{`0}}
   name: Implicit(TypeParserResult<T> to ValueTask<TypeParserResult<T>>)
-  href: api/Qmmands.TypeParserResult-1.html#Qmmands_TypeParserResult_1_op_Implicit_Qmmands_TypeParserResult__0___System_Threading_Tasks_ValueTask_Qmmands_TypeParserResult__0__
-  commentId: M:Qmmands.TypeParserResult`1.op_Implicit(Qmmands.TypeParserResult{`0})~System.Threading.Tasks.ValueTask{Qmmands.TypeParserResult{`0}}
+  href: api/Qmmands.TypeParserResult-1.html#Qmmands_TypeParserResult_1_op_Implicit_Qmmands_TypeParserResult__0___ValueTask_Qmmands_TypeParserResult__0__
+  commentId: M:Qmmands.TypeParserResult`1.op_Implicit(Qmmands.TypeParserResult{`0})~ValueTask{Qmmands.TypeParserResult{`0}}
   name.vb: Widening(TypeParserResult(Of T) to ValueTask(Of TypeParserResult(Of T)))
-  fullName: Qmmands.TypeParserResult<T>.Implicit(Qmmands.TypeParserResult<T> to System.Threading.Tasks.ValueTask<Qmmands.TypeParserResult<T>>)
-  fullName.vb: Qmmands.TypeParserResult(Of T).Widening(Qmmands.TypeParserResult(Of T) to System.Threading.Tasks.ValueTask(Of Qmmands.TypeParserResult(Of T)))
+  fullName: Qmmands.TypeParserResult<T>.Implicit(Qmmands.TypeParserResult<T> to ValueTask<Qmmands.TypeParserResult<T>>)
+  fullName.vb: Qmmands.TypeParserResult(Of T).Widening(Qmmands.TypeParserResult(Of T) to ValueTask(Of Qmmands.TypeParserResult(Of T)))
   nameWithType: TypeParserResult<T>.Implicit(TypeParserResult<T> to ValueTask<TypeParserResult<T>>)
   nameWithType.vb: TypeParserResult(Of T).Widening(TypeParserResult(Of T) to ValueTask(Of TypeParserResult(Of T)))
 - uid: Qmmands.TypeParserResult`1.op_Implicit*
@@ -5964,23 +5772,6 @@ references:
   fullName.vb: Qmmands.TypeParserResult(Of T).Widening
   nameWithType: TypeParserResult<T>.Implicit
   nameWithType.vb: TypeParserResult(Of T).Widening
-- uid: Qmmands.TypeParserResult`1.Reason
-  name: Reason
-  href: api/Qmmands.TypeParserResult-1.html#Qmmands_TypeParserResult_1_Reason
-  commentId: P:Qmmands.TypeParserResult`1.Reason
-  fullName: Qmmands.TypeParserResult<T>.Reason
-  fullName.vb: Qmmands.TypeParserResult(Of T).Reason
-  nameWithType: TypeParserResult<T>.Reason
-  nameWithType.vb: TypeParserResult(Of T).Reason
-- uid: Qmmands.TypeParserResult`1.Reason*
-  name: Reason
-  href: api/Qmmands.TypeParserResult-1.html#Qmmands_TypeParserResult_1_Reason_
-  commentId: Overload:Qmmands.TypeParserResult`1.Reason
-  isSpec: "True"
-  fullName: Qmmands.TypeParserResult<T>.Reason
-  fullName.vb: Qmmands.TypeParserResult(Of T).Reason
-  nameWithType: TypeParserResult<T>.Reason
-  nameWithType.vb: TypeParserResult(Of T).Reason
 - uid: Qmmands.TypeParserResult`1.Successful(`0)
   name: Successful(T)
   href: api/Qmmands.TypeParserResult-1.html#Qmmands_TypeParserResult_1_Successful__0_
@@ -5998,23 +5789,6 @@ references:
   fullName.vb: Qmmands.TypeParserResult(Of T).Successful
   nameWithType: TypeParserResult<T>.Successful
   nameWithType.vb: TypeParserResult(Of T).Successful
-- uid: Qmmands.TypeParserResult`1.Unsuccessful(System.String)
-  name: Unsuccessful(String)
-  href: api/Qmmands.TypeParserResult-1.html#Qmmands_TypeParserResult_1_Unsuccessful_System_String_
-  commentId: M:Qmmands.TypeParserResult`1.Unsuccessful(System.String)
-  fullName: Qmmands.TypeParserResult<T>.Unsuccessful(System.String)
-  fullName.vb: Qmmands.TypeParserResult(Of T).Unsuccessful(System.String)
-  nameWithType: TypeParserResult<T>.Unsuccessful(String)
-  nameWithType.vb: TypeParserResult(Of T).Unsuccessful(String)
-- uid: Qmmands.TypeParserResult`1.Unsuccessful*
-  name: Unsuccessful
-  href: api/Qmmands.TypeParserResult-1.html#Qmmands_TypeParserResult_1_Unsuccessful_
-  commentId: Overload:Qmmands.TypeParserResult`1.Unsuccessful
-  isSpec: "True"
-  fullName: Qmmands.TypeParserResult<T>.Unsuccessful
-  fullName.vb: Qmmands.TypeParserResult(Of T).Unsuccessful
-  nameWithType: TypeParserResult<T>.Unsuccessful
-  nameWithType.vb: TypeParserResult(Of T).Unsuccessful
 - uid: Qmmands.TypeParserResult`1.Value
   name: Value
   href: api/Qmmands.TypeParserResult-1.html#Qmmands_TypeParserResult_1_Value

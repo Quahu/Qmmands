@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Enum SeparatorRequirement
    ">
-    <meta name="generator" content="docfx 2.52.0.0">
+    <meta name="generator" content="docfx 2.56.7.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -73,14 +73,14 @@
   
   <h1 id="Qmmands_SeparatorRequirement" data-uid="Qmmands.SeparatorRequirement" class="text-break">Enum SeparatorRequirement
   </h1>
-  <div class="markdown level0 summary"><p>Defines whether groups and commands need a separator for pathing.</p>
+  <div class="markdown level0 summary"><p>Defines the separator requirement for pathing of groups and commands.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Qmmands.html">Qmmands</a></h6>
   <h6><strong>Assembly</strong>: Qmmands.dll</h6>
   <h5 id="Qmmands_SeparatorRequirement_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public enum SeparatorRequirement</code></pre>
+    <pre><code class="lang-csharp hljs">public enum SeparatorRequirement : int</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -94,12 +94,12 @@
     <tbody>
       <tr>
         <td id="Qmmands_SeparatorRequirement_Separator">Separator</td>
-        <td><p>Groups and commands must be separated by the specified separator.</p>
+        <td><p>Groups and commands must be separated by <a class="xref" href="Qmmands.CommandService.html#Qmmands_CommandService_Separator">Separator</a>.</p>
 </td>
       </tr>
       <tr>
         <td id="Qmmands_SeparatorRequirement_SeparatorOrWhitespace">SeparatorOrWhitespace</td>
-        <td><p>Groups and commands must be separated either by the specified separator or whitespace characters.</p>
+        <td><p>Groups and commands must be separated either by <a class="xref" href="Qmmands.CommandService.html#Qmmands_CommandService_Separator">Separator</a> or whitespace characters.</p>
 </td>
       </tr>
     </tbody>
@@ -120,7 +120,8 @@
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

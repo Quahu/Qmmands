@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class FailedResult
    ">
-    <meta name="generator" content="docfx 2.52.0.0">
+    <meta name="generator" content="docfx 2.56.7.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -83,9 +83,9 @@
       <div class="level2"><a class="xref" href="Qmmands.ArgumentParseFailedResult.html">ArgumentParseFailedResult</a></div>
       <div class="level2"><a class="xref" href="Qmmands.ChecksFailedResult.html">ChecksFailedResult</a></div>
       <div class="level2"><a class="xref" href="Qmmands.CommandDisabledResult.html">CommandDisabledResult</a></div>
+      <div class="level2"><a class="xref" href="Qmmands.CommandExecutionFailedResult.html">CommandExecutionFailedResult</a></div>
       <div class="level2"><a class="xref" href="Qmmands.CommandNotFoundResult.html">CommandNotFoundResult</a></div>
       <div class="level2"><a class="xref" href="Qmmands.CommandOnCooldownResult.html">CommandOnCooldownResult</a></div>
-      <div class="level2"><a class="xref" href="Qmmands.ExecutionFailedResult.html">ExecutionFailedResult</a></div>
       <div class="level2"><a class="xref" href="Qmmands.OverloadsFailedResult.html">OverloadsFailedResult</a></div>
       <div class="level2"><a class="xref" href="Qmmands.ParameterChecksFailedResult.html">ParameterChecksFailedResult</a></div>
       <div class="level2"><a class="xref" href="Qmmands.TypeParseFailedResult.html">TypeParseFailedResult</a></div>
@@ -98,10 +98,41 @@
   <h6><strong>Assembly</strong>: Qmmands.dll</h6>
   <h5 id="Qmmands_FailedResult_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class FailedResult : IResult</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class FailedResult : object, IResult</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_FailedResult_FailureReason.md&amp;value=---%0Auid%3A%20Qmmands.FailedResult.FailureReason%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Results/Failed/FailedResult.cs/#L16">View Source</a>
+  </span>
+  <a id="Qmmands_FailedResult_FailureReason_" data-uid="Qmmands.FailedResult.FailureReason*"></a>
+  <h4 id="Qmmands_FailedResult_FailureReason" data-uid="Qmmands.FailedResult.FailureReason">FailureReason</h4>
+  <div class="markdown level1 summary"><p>Gets the failure reason.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract string FailureReason { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_FailedResult_IsSuccessful.md&amp;value=---%0Auid%3A%20Qmmands.FailedResult.IsSuccessful%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -133,37 +164,6 @@
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_FailedResult_Reason.md&amp;value=---%0Auid%3A%20Qmmands.FailedResult.Reason%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Results/Failed/FailedResult.cs/#L16">View Source</a>
-  </span>
-  <a id="Qmmands_FailedResult_Reason_" data-uid="Qmmands.FailedResult.Reason*"></a>
-  <h4 id="Qmmands_FailedResult_Reason" data-uid="Qmmands.FailedResult.Reason">Reason</h4>
-  <div class="markdown level1 summary"><p>Gets the reason of this failed result.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract string Reason { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -175,7 +175,7 @@
   </span>
   <a id="Qmmands_FailedResult_ToString_" data-uid="Qmmands.FailedResult.ToString*"></a>
   <h4 id="Qmmands_FailedResult_ToString" data-uid="Qmmands.FailedResult.ToString">ToString()</h4>
-  <div class="markdown level1 summary"><p>Returns <a class="xref" href="Qmmands.FailedResult.html#Qmmands_FailedResult_Reason">Reason</a>.</p>
+  <div class="markdown level1 summary"><p>Returns <a class="xref" href="Qmmands.FailedResult.html#Qmmands_FailedResult_FailureReason">FailureReason</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -193,13 +193,11 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><p>The <a class="xref" href="Qmmands.FailedResult.html#Qmmands_FailedResult_Reason">Reason</a>.</p>
+        <td><p>The <a class="xref" href="Qmmands.FailedResult.html#Qmmands_FailedResult_FailureReason">FailureReason</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Qmmands.IResult.html">IResult</a>
@@ -220,7 +218,8 @@
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

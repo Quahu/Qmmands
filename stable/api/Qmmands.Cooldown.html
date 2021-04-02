@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Cooldown
    ">
-    <meta name="generator" content="docfx 2.52.0.0">
+    <meta name="generator" content="docfx 2.56.7.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -85,19 +85,19 @@
   <h6><strong>Assembly</strong>: Qmmands.dll</h6>
   <h5 id="Qmmands_Cooldown_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class Cooldown</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class Cooldown : object</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_Cooldown__ctor_System_Int32_System_TimeSpan_System_Enum_.md&amp;value=---%0Auid%3A%20Qmmands.Cooldown.%23ctor(System.Int32%2CSystem.TimeSpan%2CSystem.Enum)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_Cooldown__ctor_System_Int32_TimeSpan_Enum_.md&amp;value=---%0Auid%3A%20Qmmands.Cooldown.%23ctor(System.Int32%2CTimeSpan%2CEnum)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Cooldown/Cooldown.cs/#L40">View Source</a>
   </span>
   <a id="Qmmands_Cooldown__ctor_" data-uid="Qmmands.Cooldown.#ctor*"></a>
-  <h4 id="Qmmands_Cooldown__ctor_System_Int32_System_TimeSpan_System_Enum_" data-uid="Qmmands.Cooldown.#ctor(System.Int32,System.TimeSpan,System.Enum)">Cooldown(Int32, TimeSpan, Enum)</h4>
+  <h4 id="Qmmands_Cooldown__ctor_System_Int32_TimeSpan_Enum_" data-uid="Qmmands.Cooldown.#ctor(System.Int32,TimeSpan,Enum)">Cooldown(Int32, TimeSpan, Enum)</h4>
   <div class="markdown level1 summary"><p>Initialises a new <a class="xref" href="Qmmands.Cooldown.html">Cooldown</a> with the specified properties.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -122,41 +122,15 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td><span class="parametername">per</span></td>
         <td><p>The bucket time window. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.enum">Enum</a></td>
+        <td><span class="xref">Enum</span></td>
         <td><span class="parametername">bucketType</span></td>
         <td><p>The <span class="xref">langword_csharp_enum</span> bucket type. </p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
-        <td><p>Amount and per must be positive values.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>Bucket type must not be <span class="xref">null</span>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Bucket type must be an <span class="xref">langword_csharp_enum</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -220,7 +194,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.enum">Enum</a></td>
+        <td><span class="xref">Enum</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -251,7 +225,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -272,7 +246,8 @@
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

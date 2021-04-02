@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class CommandUtilities
    ">
-    <meta name="generator" content="docfx 2.52.0.0">
+    <meta name="generator" content="docfx 2.56.7.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -73,7 +73,7 @@
   
   <h1 id="Qmmands_CommandUtilities" data-uid="Qmmands.CommandUtilities" class="text-break">Class CommandUtilities
   </h1>
-  <div class="markdown level0 summary"><p>Provides some utility for handling commands.</p>
+  <div class="markdown level0 summary"><p>Provides various utility for commands.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -85,7 +85,7 @@
   <h6><strong>Assembly</strong>: Qmmands.dll</h6>
   <h5 id="Qmmands_CommandUtilities_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class CommandUtilities</code></pre>
+    <pre><code class="lang-csharp hljs">public static class CommandUtilities : object</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -114,7 +114,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -127,7 +127,7 @@
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L16">View Source</a>
   </span>
   <h4 id="Qmmands_CommandUtilities_DefaultQuotationMarkMap" data-uid="Qmmands.CommandUtilities.DefaultQuotationMarkMap">DefaultQuotationMarkMap</h4>
-  <div class="markdown level1 summary"><p>Represents a map of various quotation marks.</p>
+  <div class="markdown level1 summary"><p>Represents a map of most common quotation marks.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -144,7 +144,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2">IReadOnlyDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">IReadOnlyDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -157,7 +157,7 @@
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L26">View Source</a>
   </span>
   <h4 id="Qmmands_CommandUtilities_FriendlyPrimitiveTypeNames" data-uid="Qmmands.CommandUtilities.FriendlyPrimitiveTypeNames">FriendlyPrimitiveTypeNames</h4>
-  <div class="markdown level1 summary"><p>The friendly names used for primitive <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>s by <a class="xref" href="Qmmands.ArgumentParseFailedResult.html#Qmmands_ArgumentParseFailedResult_Reason">Reason</a>. </p>
+  <div class="markdown level1 summary"><p>Represents a map of friendly names used for primitive <see cref="!:Type"></see>s by <a class="xref" href="Qmmands.ArgumentParseFailedResult.html#Qmmands_ArgumentParseFailedResult_FailureReason">FailureReason</a>. </p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -174,7 +174,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2">IReadOnlyDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="xref">IReadOnlyDictionary</span>&lt;<span class="xref">Type</span>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -259,24 +259,8 @@ will require to pass before it can be executed.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Qmmands.CheckAttribute.html">CheckAttribute</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Qmmands.CheckAttribute.html">CheckAttribute</a>&gt;</td>
         <td><p>An enumerator of all <a class="xref" href="Qmmands.CheckAttribute.html">CheckAttribute</a>s.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The command must not be null.</p>
 </td>
       </tr>
     </tbody>
@@ -326,24 +310,8 @@ will require to pass before one of its <a class="xref" href="Qmmands.Command.htm
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Qmmands.CheckAttribute.html">CheckAttribute</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Qmmands.CheckAttribute.html">CheckAttribute</a>&gt;</td>
         <td><p>An enumerator of all <a class="xref" href="Qmmands.CheckAttribute.html">CheckAttribute</a>s.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The module must not be null.</p>
 </td>
       </tr>
     </tbody>
@@ -391,24 +359,8 @@ will require to pass before one of its <a class="xref" href="Qmmands.Command.htm
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Qmmands.Command.html">Command</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Qmmands.Command.html">Command</a>&gt;</td>
         <td><p>An enumerator of all <a class="xref" href="Qmmands.Command.html">Command</a>s.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The module must not be null.</p>
 </td>
       </tr>
     </tbody>
@@ -418,7 +370,7 @@ will require to pass before one of its <a class="xref" href="Qmmands.Command.htm
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_EnumerateAllCommands_Qmmands_ModuleBuilder_.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.EnumerateAllCommands(Qmmands.ModuleBuilder)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L715">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L709">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_EnumerateAllCommands_" data-uid="Qmmands.CommandUtilities.EnumerateAllCommands*"></a>
   <h4 id="Qmmands_CommandUtilities_EnumerateAllCommands_Qmmands_ModuleBuilder_" data-uid="Qmmands.CommandUtilities.EnumerateAllCommands(Qmmands.ModuleBuilder)">EnumerateAllCommands(ModuleBuilder)</h4>
@@ -456,24 +408,8 @@ will require to pass before one of its <a class="xref" href="Qmmands.Command.htm
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Qmmands.CommandBuilder.html">CommandBuilder</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Qmmands.CommandBuilder.html">CommandBuilder</a>&gt;</td>
         <td><p>An enumerator of all <a class="xref" href="Qmmands.CommandBuilder.html">CommandBuilder</a>s.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The builder must not be null.</p>
 </td>
       </tr>
     </tbody>
@@ -483,7 +419,7 @@ will require to pass before one of its <a class="xref" href="Qmmands.Command.htm
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_EnumerateAllSubmodules_Qmmands_Module_.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.EnumerateAllSubmodules(Qmmands.Module)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L750">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L738">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_EnumerateAllSubmodules_" data-uid="Qmmands.CommandUtilities.EnumerateAllSubmodules*"></a>
   <h4 id="Qmmands_CommandUtilities_EnumerateAllSubmodules_Qmmands_Module_" data-uid="Qmmands.CommandUtilities.EnumerateAllSubmodules(Qmmands.Module)">EnumerateAllSubmodules(Module)</h4>
@@ -521,24 +457,8 @@ will require to pass before one of its <a class="xref" href="Qmmands.Command.htm
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Qmmands.Module.html">Module</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Qmmands.Module.html">Module</a>&gt;</td>
         <td><p>An enumerator of all <a class="xref" href="Qmmands.Module.html">Module</a>s.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The module must not be null.</p>
 </td>
       </tr>
     </tbody>
@@ -548,7 +468,7 @@ will require to pass before one of its <a class="xref" href="Qmmands.Command.htm
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_EnumerateAllSubmodules_Qmmands_ModuleBuilder_.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.EnumerateAllSubmodules(Qmmands.ModuleBuilder)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L785">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L767">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_EnumerateAllSubmodules_" data-uid="Qmmands.CommandUtilities.EnumerateAllSubmodules*"></a>
   <h4 id="Qmmands_CommandUtilities_EnumerateAllSubmodules_Qmmands_ModuleBuilder_" data-uid="Qmmands.CommandUtilities.EnumerateAllSubmodules(Qmmands.ModuleBuilder)">EnumerateAllSubmodules(ModuleBuilder)</h4>
@@ -586,38 +506,22 @@ will require to pass before one of its <a class="xref" href="Qmmands.Command.htm
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Qmmands.ModuleBuilder.html">ModuleBuilder</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Qmmands.ModuleBuilder.html">ModuleBuilder</a>&gt;</td>
         <td><p>An enumerator of all <a class="xref" href="Qmmands.ModuleBuilder.html">ModuleBuilder</a>s.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The builder must not be null.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IEnumerable_System_Char__System_Boolean_System_Char__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan%7BSystem.Char%7D%2CSystem.Collections.Generic.IEnumerable%7BSystem.Char%7D%2CSystem.Boolean%2CSystem.Char%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IEnumerable_System_Char__System_Boolean_System_Char__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan%7BSystem.Char%7D%2CIEnumerable%7BSystem.Char%7D%2CSystem.Boolean%2CSystem.Char%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L445">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IEnumerable_System_Char__System_Boolean_System_Char__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IEnumerable{System.Char},System.Boolean,System.Char@,System.String@)">HasAnyPrefix(ReadOnlySpan&lt;Char&gt;, IEnumerable&lt;Char&gt;, Boolean, out Char, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> starts with any of the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefixes.
+  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IEnumerable_System_Char__System_Boolean_System_Char__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IEnumerable{System.Char},System.Boolean,System.Char@,System.String@)">HasAnyPrefix(ReadOnlySpan&lt;Char&gt;, IEnumerable&lt;Char&gt;, Boolean, out Char, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:ReadOnlySpan&lt;T>"></see> starts with any of the provided <see cref="!:System.Char"></see> prefixes.
 If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -636,15 +540,15 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> to check. </p>
+        <td><p>The input <see cref="!:ReadOnlySpan&lt;T>"></see> to check. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td><span class="parametername">prefixes</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefixes to check for. </p>
+        <td><p>The <see cref="!:System.Char"></see> prefixes to check for. </p>
 </td>
       </tr>
       <tr>
@@ -656,7 +560,7 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a></td>
         <td><span class="parametername">prefix</span></td>
-        <td><p>The found prefix. Default <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> if the prefix was not found. </p>
+        <td><p>The found prefix. Default <see cref="!:System.Char"></see> if the prefix was not found. </p>
 </td>
       </tr>
       <tr>
@@ -678,37 +582,21 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefixes must not be null.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IEnumerable_System_Char__System_Char__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan%7BSystem.Char%7D%2CSystem.Collections.Generic.IEnumerable%7BSystem.Char%7D%2CSystem.Char%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IEnumerable_System_Char__System_Char__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan%7BSystem.Char%7D%2CIEnumerable%7BSystem.Char%7D%2CSystem.Char%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L427">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IEnumerable_System_Char__System_Char__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IEnumerable{System.Char},System.Char@,System.String@)">HasAnyPrefix(ReadOnlySpan&lt;Char&gt;, IEnumerable&lt;Char&gt;, out Char, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> starts with any of the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefixes.
+  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IEnumerable_System_Char__System_Char__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IEnumerable{System.Char},System.Char@,System.String@)">HasAnyPrefix(ReadOnlySpan&lt;Char&gt;, IEnumerable&lt;Char&gt;, out Char, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:ReadOnlySpan&lt;T>"></see> starts with any of the provided <see cref="!:System.Char"></see> prefixes.
 If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -727,21 +615,21 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> to check. </p>
+        <td><p>The input <see cref="!:ReadOnlySpan&lt;T>"></see> to check. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td><span class="parametername">prefixes</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefixes to check for. </p>
+        <td><p>The <see cref="!:System.Char"></see> prefixes to check for. </p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a></td>
         <td><span class="parametername">prefix</span></td>
-        <td><p>The found prefix. Default <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> if the prefix was not found. </p>
+        <td><p>The found prefix. Default <see cref="!:System.Char"></see> if the prefix was not found. </p>
 </td>
       </tr>
       <tr>
@@ -763,122 +651,21 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefixes must not be null.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IEnumerable_System_String__System_String__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan%7BSystem.Char%7D%2CSystem.Collections.Generic.IEnumerable%7BSystem.String%7D%2CSystem.String%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L575">View Source</a>
-  </span>
-  <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IEnumerable_System_String__System_String__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IEnumerable{System.String},System.String@,System.String@)">HasAnyPrefix(ReadOnlySpan&lt;Char&gt;, IEnumerable&lt;String&gt;, out String, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> starts with any of the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefixes.
-If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool HasAnyPrefix(ReadOnlySpan&lt;char&gt; input, IEnumerable&lt;string&gt; prefixes, out string prefix, out string output)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
-        <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> to check. </p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
-        <td><span class="parametername">prefixes</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefixes to check for. </p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">prefix</span></td>
-        <td><p>The found prefix. <span class="xref">null</span> if the prefix is not found. </p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">output</span></td>
-        <td><p>The trimmed output. <span class="xref">null</span> if the prefix is not found. </p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefixes must not be null.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IEnumerable_System_String__System_StringComparison_System_String__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan%7BSystem.Char%7D%2CSystem.Collections.Generic.IEnumerable%7BSystem.String%7D%2CSystem.StringComparison%2CSystem.String%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IEnumerable_System_String__StringComparison_System_String__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan%7BSystem.Char%7D%2CIEnumerable%7BSystem.String%7D%2CStringComparison%2CSystem.String%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L593">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IEnumerable_System_String__System_StringComparison_System_String__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IEnumerable{System.String},System.StringComparison,System.String@,System.String@)">HasAnyPrefix(ReadOnlySpan&lt;Char&gt;, IEnumerable&lt;String&gt;, StringComparison, out String, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> starts with any of the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefixes.
+  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IEnumerable_System_String__StringComparison_System_String__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IEnumerable{System.String},StringComparison,System.String@,System.String@)">HasAnyPrefix(ReadOnlySpan&lt;Char&gt;, IEnumerable&lt;String&gt;, StringComparison, out String, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:ReadOnlySpan&lt;T>"></see> starts with any of the provided <see cref="!:System.String"></see> prefixes.
 If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -897,21 +684,21 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> to check. </p>
+        <td><p>The input <see cref="!:ReadOnlySpan&lt;T>"></see> to check. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">prefixes</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefixes to check for. </p>
+        <td><p>The <see cref="!:System.String"></see> prefixes to check for. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.stringcomparison">StringComparison</a></td>
+        <td><span class="xref">StringComparison</span></td>
         <td><span class="parametername">comparison</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.stringcomparison">StringComparison</a> to use when checking for the prefix. </p>
+        <td><p>The <see cref="!:StringComparison"></see> to use when checking for the prefix. </p>
 </td>
       </tr>
       <tr>
@@ -939,37 +726,90 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefixes must not be null.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IReadOnlyList_System_Char__System_Boolean_System_Char__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan%7BSystem.Char%7D%2CSystem.Collections.Generic.IReadOnlyList%7BSystem.Char%7D%2CSystem.Boolean%2CSystem.Char%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IEnumerable_System_String__System_String__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan%7BSystem.Char%7D%2CIEnumerable%7BSystem.String%7D%2CSystem.String%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L575">View Source</a>
+  </span>
+  <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
+  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IEnumerable_System_String__System_String__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IEnumerable{System.String},System.String@,System.String@)">HasAnyPrefix(ReadOnlySpan&lt;Char&gt;, IEnumerable&lt;String&gt;, out String, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:ReadOnlySpan&lt;T>"></see> starts with any of the provided <see cref="!:System.String"></see> prefixes.
+If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool HasAnyPrefix(ReadOnlySpan&lt;char&gt; input, IEnumerable&lt;string&gt; prefixes, out string prefix, out string output)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="parametername">input</span></td>
+        <td><p>The input <see cref="!:ReadOnlySpan&lt;T>"></see> to check. </p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">prefixes</span></td>
+        <td><p>The <see cref="!:System.String"></see> prefixes to check for. </p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">prefix</span></td>
+        <td><p>The found prefix. <span class="xref">null</span> if the prefix is not found. </p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">output</span></td>
+        <td><p>The trimmed output. <span class="xref">null</span> if the prefix is not found. </p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IReadOnlyList_System_Char__System_Boolean_System_Char__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan%7BSystem.Char%7D%2CIReadOnlyList%7BSystem.Char%7D%2CSystem.Boolean%2CSystem.Char%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L393">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IReadOnlyList_System_Char__System_Boolean_System_Char__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IReadOnlyList{System.Char},System.Boolean,System.Char@,System.String@)">HasAnyPrefix(ReadOnlySpan&lt;Char&gt;, IReadOnlyList&lt;Char&gt;, Boolean, out Char, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> starts with any of the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefixes.
+  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IReadOnlyList_System_Char__System_Boolean_System_Char__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IReadOnlyList{System.Char},System.Boolean,System.Char@,System.String@)">HasAnyPrefix(ReadOnlySpan&lt;Char&gt;, IReadOnlyList&lt;Char&gt;, Boolean, out Char, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:ReadOnlySpan&lt;T>"></see> starts with any of the provided <see cref="!:System.Char"></see> prefixes.
 If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -988,15 +828,15 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> to check. </p>
+        <td><p>The input <see cref="!:ReadOnlySpan&lt;T>"></see> to check. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td><span class="parametername">prefixes</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefixes to check for. </p>
+        <td><p>The <see cref="!:System.Char"></see> prefixes to check for. </p>
 </td>
       </tr>
       <tr>
@@ -1008,7 +848,7 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a></td>
         <td><span class="parametername">prefix</span></td>
-        <td><p>The found prefix. Default <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> if the prefix was not found. </p>
+        <td><p>The found prefix. Default <see cref="!:System.Char"></see> if the prefix was not found. </p>
 </td>
       </tr>
       <tr>
@@ -1030,37 +870,21 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefixes must not be null.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IReadOnlyList_System_Char__System_Char__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan%7BSystem.Char%7D%2CSystem.Collections.Generic.IReadOnlyList%7BSystem.Char%7D%2CSystem.Char%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IReadOnlyList_System_Char__System_Char__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan%7BSystem.Char%7D%2CIReadOnlyList%7BSystem.Char%7D%2CSystem.Char%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L375">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IReadOnlyList_System_Char__System_Char__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IReadOnlyList{System.Char},System.Char@,System.String@)">HasAnyPrefix(ReadOnlySpan&lt;Char&gt;, IReadOnlyList&lt;Char&gt;, out Char, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> starts with any of the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefixes.
+  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IReadOnlyList_System_Char__System_Char__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IReadOnlyList{System.Char},System.Char@,System.String@)">HasAnyPrefix(ReadOnlySpan&lt;Char&gt;, IReadOnlyList&lt;Char&gt;, out Char, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:ReadOnlySpan&lt;T>"></see> starts with any of the provided <see cref="!:System.Char"></see> prefixes.
 If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1079,21 +903,21 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> to check. </p>
+        <td><p>The input <see cref="!:ReadOnlySpan&lt;T>"></see> to check. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td><span class="parametername">prefixes</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefixes to check for. </p>
+        <td><p>The <see cref="!:System.Char"></see> prefixes to check for. </p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a></td>
         <td><span class="parametername">prefix</span></td>
-        <td><p>The found prefix. Default <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> if the prefix was not found. </p>
+        <td><p>The found prefix. Default <see cref="!:System.Char"></see> if the prefix was not found. </p>
 </td>
       </tr>
       <tr>
@@ -1115,122 +939,21 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefixes must not be null.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IReadOnlyList_System_String__System_String__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan%7BSystem.Char%7D%2CSystem.Collections.Generic.IReadOnlyList%7BSystem.String%7D%2CSystem.String%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L523">View Source</a>
-  </span>
-  <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IReadOnlyList_System_String__System_String__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IReadOnlyList{System.String},System.String@,System.String@)">HasAnyPrefix(ReadOnlySpan&lt;Char&gt;, IReadOnlyList&lt;String&gt;, out String, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> starts with any of the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefixes.
-If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool HasAnyPrefix(ReadOnlySpan&lt;char&gt; input, IReadOnlyList&lt;string&gt; prefixes, out string prefix, out string output)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
-        <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> to check. </p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
-        <td><span class="parametername">prefixes</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefixes to check for. </p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">prefix</span></td>
-        <td><p>The found prefix. <span class="xref">null</span> if the prefix is not found. </p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">output</span></td>
-        <td><p>The trimmed output. <span class="xref">null</span> if the prefix is not found. </p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefixes must not be null.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IReadOnlyList_System_String__System_StringComparison_System_String__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan%7BSystem.Char%7D%2CSystem.Collections.Generic.IReadOnlyList%7BSystem.String%7D%2CSystem.StringComparison%2CSystem.String%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IReadOnlyList_System_String__StringComparison_System_String__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan%7BSystem.Char%7D%2CIReadOnlyList%7BSystem.String%7D%2CStringComparison%2CSystem.String%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L541">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_ReadOnlySpan_System_Char__System_Collections_Generic_IReadOnlyList_System_String__System_StringComparison_System_String__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.ReadOnlySpan{System.Char},System.Collections.Generic.IReadOnlyList{System.String},System.StringComparison,System.String@,System.String@)">HasAnyPrefix(ReadOnlySpan&lt;Char&gt;, IReadOnlyList&lt;String&gt;, StringComparison, out String, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> starts with any of the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefixes.
+  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IReadOnlyList_System_String__StringComparison_System_String__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IReadOnlyList{System.String},StringComparison,System.String@,System.String@)">HasAnyPrefix(ReadOnlySpan&lt;Char&gt;, IReadOnlyList&lt;String&gt;, StringComparison, out String, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:ReadOnlySpan&lt;T>"></see> starts with any of the provided <see cref="!:System.String"></see> prefixes.
 If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1249,21 +972,21 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> to check. </p>
+        <td><p>The input <see cref="!:ReadOnlySpan&lt;T>"></see> to check. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">prefixes</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefixes to check for. </p>
+        <td><p>The <see cref="!:System.String"></see> prefixes to check for. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.stringcomparison">StringComparison</a></td>
+        <td><span class="xref">StringComparison</span></td>
         <td><span class="parametername">comparison</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.stringcomparison">StringComparison</a> to use when checking for the prefix. </p>
+        <td><p>The <see cref="!:StringComparison"></see> to use when checking for the prefix. </p>
 </td>
       </tr>
       <tr>
@@ -1291,37 +1014,90 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefixes must not be null.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IEnumerable_System_Char__System_Boolean_System_Char__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.String%2CSystem.Collections.Generic.IEnumerable%7BSystem.Char%7D%2CSystem.Boolean%2CSystem.Char%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IReadOnlyList_System_String__System_String__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan%7BSystem.Char%7D%2CIReadOnlyList%7BSystem.String%7D%2CSystem.String%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L523">View Source</a>
+  </span>
+  <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
+  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_ReadOnlySpan_System_Char__IReadOnlyList_System_String__System_String__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(ReadOnlySpan{System.Char},IReadOnlyList{System.String},System.String@,System.String@)">HasAnyPrefix(ReadOnlySpan&lt;Char&gt;, IReadOnlyList&lt;String&gt;, out String, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:ReadOnlySpan&lt;T>"></see> starts with any of the provided <see cref="!:System.String"></see> prefixes.
+If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool HasAnyPrefix(ReadOnlySpan&lt;char&gt; input, IReadOnlyList&lt;string&gt; prefixes, out string prefix, out string output)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="parametername">input</span></td>
+        <td><p>The input <see cref="!:ReadOnlySpan&lt;T>"></see> to check. </p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">prefixes</span></td>
+        <td><p>The <see cref="!:System.String"></see> prefixes to check for. </p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">prefix</span></td>
+        <td><p>The found prefix. <span class="xref">null</span> if the prefix is not found. </p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">output</span></td>
+        <td><p>The trimmed output. <span class="xref">null</span> if the prefix is not found. </p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_String_IEnumerable_System_Char__System_Boolean_System_Char__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.String%2CIEnumerable%7BSystem.Char%7D%2CSystem.Boolean%2CSystem.Char%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L165">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IEnumerable_System_Char__System_Boolean_System_Char__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IEnumerable{System.Char},System.Boolean,System.Char@,System.String@)">HasAnyPrefix(String, IEnumerable&lt;Char&gt;, Boolean, out Char, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> starts with any of the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefixes.
+  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_String_IEnumerable_System_Char__System_Boolean_System_Char__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.String,IEnumerable{System.Char},System.Boolean,System.Char@,System.String@)">HasAnyPrefix(String, IEnumerable&lt;Char&gt;, Boolean, out Char, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:System.String"></see> starts with any of the provided <see cref="!:System.Char"></see> prefixes.
 If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1342,13 +1118,13 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> to check. </p>
+        <td><p>The input <see cref="!:System.String"></see> to check. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td><span class="parametername">prefixes</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefixes to check for. </p>
+        <td><p>The <see cref="!:System.Char"></see> prefixes to check for. </p>
 </td>
       </tr>
       <tr>
@@ -1360,7 +1136,7 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a></td>
         <td><span class="parametername">prefix</span></td>
-        <td><p>The found prefix. Default <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> if the prefix was not found. </p>
+        <td><p>The found prefix. Default <see cref="!:System.Char"></see> if the prefix was not found. </p>
 </td>
       </tr>
       <tr>
@@ -1382,42 +1158,21 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The input must not be null.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefixes must not be null.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IEnumerable_System_Char__System_Char__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.String%2CSystem.Collections.Generic.IEnumerable%7BSystem.Char%7D%2CSystem.Char%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_String_IEnumerable_System_Char__System_Char__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.String%2CIEnumerable%7BSystem.Char%7D%2CSystem.Char%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L139">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IEnumerable_System_Char__System_Char__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IEnumerable{System.Char},System.Char@,System.String@)">HasAnyPrefix(String, IEnumerable&lt;Char&gt;, out Char, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> starts with any of the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefixes.
+  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_String_IEnumerable_System_Char__System_Char__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.String,IEnumerable{System.Char},System.Char@,System.String@)">HasAnyPrefix(String, IEnumerable&lt;Char&gt;, out Char, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:System.String"></see> starts with any of the provided <see cref="!:System.Char"></see> prefixes.
 If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1438,19 +1193,19 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> to check. </p>
+        <td><p>The input <see cref="!:System.String"></see> to check. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td><span class="parametername">prefixes</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefixes to check for. </p>
+        <td><p>The <see cref="!:System.Char"></see> prefixes to check for. </p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a></td>
         <td><span class="parametername">prefix</span></td>
-        <td><p>The found prefix. Default <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> if the prefix was not found. </p>
+        <td><p>The found prefix. Default <see cref="!:System.Char"></see> if the prefix was not found. </p>
 </td>
       </tr>
       <tr>
@@ -1472,132 +1227,21 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The input must not be null.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefixes must not be null.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IEnumerable_System_String__System_String__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.String%2CSystem.Collections.Generic.IEnumerable%7BSystem.String%7D%2CSystem.String%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L290">View Source</a>
-  </span>
-  <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IEnumerable_System_String__System_String__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IEnumerable{System.String},System.String@,System.String@)">HasAnyPrefix(String, IEnumerable&lt;String&gt;, out String, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> starts with any of the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefixes.
-If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool HasAnyPrefix(string input, IEnumerable&lt;string&gt; prefixes, out string prefix, out string output)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> to check. </p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
-        <td><span class="parametername">prefixes</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefixes to check for. </p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">prefix</span></td>
-        <td><p>The found prefix. <span class="xref">null</span> if the prefix is not found. </p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">output</span></td>
-        <td><p>The trimmed output. <span class="xref">null</span> if the prefix is not found. </p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The input must not be null.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefixes must not be null.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IEnumerable_System_String__System_StringComparison_System_String__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.String%2CSystem.Collections.Generic.IEnumerable%7BSystem.String%7D%2CSystem.StringComparison%2CSystem.String%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_String_IEnumerable_System_String__StringComparison_System_String__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.String%2CIEnumerable%7BSystem.String%7D%2CStringComparison%2CSystem.String%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L311">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IEnumerable_System_String__System_StringComparison_System_String__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IEnumerable{System.String},System.StringComparison,System.String@,System.String@)">HasAnyPrefix(String, IEnumerable&lt;String&gt;, StringComparison, out String, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> starts with any of the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefixes.
+  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_String_IEnumerable_System_String__StringComparison_System_String__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.String,IEnumerable{System.String},StringComparison,System.String@,System.String@)">HasAnyPrefix(String, IEnumerable&lt;String&gt;, StringComparison, out String, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:System.String"></see> starts with any of the provided <see cref="!:System.String"></see> prefixes.
 If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1618,19 +1262,19 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> to check. </p>
+        <td><p>The input <see cref="!:System.String"></see> to check. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">prefixes</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefixes to check for. </p>
+        <td><p>The <see cref="!:System.String"></see> prefixes to check for. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.stringcomparison">StringComparison</a></td>
+        <td><span class="xref">StringComparison</span></td>
         <td><span class="parametername">comparison</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.stringcomparison">StringComparison</a> to use when checking for the prefix. </p>
+        <td><p>The <see cref="!:StringComparison"></see> to use when checking for the prefix. </p>
 </td>
       </tr>
       <tr>
@@ -1658,42 +1302,90 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The input must not be null.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefixes must not be null.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IReadOnlyList_System_Char__System_Boolean_System_Char__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.String%2CSystem.Collections.Generic.IReadOnlyList%7BSystem.Char%7D%2CSystem.Boolean%2CSystem.Char%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_String_IEnumerable_System_String__System_String__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.String%2CIEnumerable%7BSystem.String%7D%2CSystem.String%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L290">View Source</a>
+  </span>
+  <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
+  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_String_IEnumerable_System_String__System_String__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.String,IEnumerable{System.String},System.String@,System.String@)">HasAnyPrefix(String, IEnumerable&lt;String&gt;, out String, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:System.String"></see> starts with any of the provided <see cref="!:System.String"></see> prefixes.
+If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool HasAnyPrefix(string input, IEnumerable&lt;string&gt; prefixes, out string prefix, out string output)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">input</span></td>
+        <td><p>The input <see cref="!:System.String"></see> to check. </p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">prefixes</span></td>
+        <td><p>The <see cref="!:System.String"></see> prefixes to check for. </p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">prefix</span></td>
+        <td><p>The found prefix. <span class="xref">null</span> if the prefix is not found. </p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">output</span></td>
+        <td><p>The trimmed output. <span class="xref">null</span> if the prefix is not found. </p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_String_IReadOnlyList_System_Char__System_Boolean_System_Char__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.String%2CIReadOnlyList%7BSystem.Char%7D%2CSystem.Boolean%2CSystem.Char%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L114">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IReadOnlyList_System_Char__System_Boolean_System_Char__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IReadOnlyList{System.Char},System.Boolean,System.Char@,System.String@)">HasAnyPrefix(String, IReadOnlyList&lt;Char&gt;, Boolean, out Char, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> starts with any of the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefixes.
+  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_String_IReadOnlyList_System_Char__System_Boolean_System_Char__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.String,IReadOnlyList{System.Char},System.Boolean,System.Char@,System.String@)">HasAnyPrefix(String, IReadOnlyList&lt;Char&gt;, Boolean, out Char, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:System.String"></see> starts with any of the provided <see cref="!:System.Char"></see> prefixes.
 If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1714,13 +1406,13 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> to check. </p>
+        <td><p>The input <see cref="!:System.String"></see> to check. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td><span class="parametername">prefixes</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefixes to check for. </p>
+        <td><p>The <see cref="!:System.Char"></see> prefixes to check for. </p>
 </td>
       </tr>
       <tr>
@@ -1732,7 +1424,7 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a></td>
         <td><span class="parametername">prefix</span></td>
-        <td><p>The found prefix. Default <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> if the prefix was not found. </p>
+        <td><p>The found prefix. Default <see cref="!:System.Char"></see> if the prefix was not found. </p>
 </td>
       </tr>
       <tr>
@@ -1754,42 +1446,21 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The input must not be null.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefixes must not be null.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IReadOnlyList_System_Char__System_Char__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.String%2CSystem.Collections.Generic.IReadOnlyList%7BSystem.Char%7D%2CSystem.Char%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_String_IReadOnlyList_System_Char__System_Char__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.String%2CIReadOnlyList%7BSystem.Char%7D%2CSystem.Char%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L88">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IReadOnlyList_System_Char__System_Char__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IReadOnlyList{System.Char},System.Char@,System.String@)">HasAnyPrefix(String, IReadOnlyList&lt;Char&gt;, out Char, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> starts with any of the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefixes.
+  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_String_IReadOnlyList_System_Char__System_Char__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.String,IReadOnlyList{System.Char},System.Char@,System.String@)">HasAnyPrefix(String, IReadOnlyList&lt;Char&gt;, out Char, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:System.String"></see> starts with any of the provided <see cref="!:System.Char"></see> prefixes.
 If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1810,19 +1481,19 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> to check. </p>
+        <td><p>The input <see cref="!:System.String"></see> to check. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td><span class="parametername">prefixes</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefixes to check for. </p>
+        <td><p>The <see cref="!:System.Char"></see> prefixes to check for. </p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a></td>
         <td><span class="parametername">prefix</span></td>
-        <td><p>The found prefix. Default <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> if the prefix was not found. </p>
+        <td><p>The found prefix. Default <see cref="!:System.Char"></see> if the prefix was not found. </p>
 </td>
       </tr>
       <tr>
@@ -1844,132 +1515,21 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The input must not be null.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefixes must not be null.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IReadOnlyList_System_String__System_String__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.String%2CSystem.Collections.Generic.IReadOnlyList%7BSystem.String%7D%2CSystem.String%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L239">View Source</a>
-  </span>
-  <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IReadOnlyList_System_String__System_String__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IReadOnlyList{System.String},System.String@,System.String@)">HasAnyPrefix(String, IReadOnlyList&lt;String&gt;, out String, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> starts with any of the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefixes.
-If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool HasAnyPrefix(string input, IReadOnlyList&lt;string&gt; prefixes, out string prefix, out string output)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> to check. </p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
-        <td><span class="parametername">prefixes</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefixes to check for. </p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">prefix</span></td>
-        <td><p>The found prefix. <span class="xref">null</span> if the prefix is not found. </p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">output</span></td>
-        <td><p>The trimmed output. <span class="xref">null</span> if the prefix is not found. </p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The input must not be null.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefixes must not be null.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IReadOnlyList_System_String__System_StringComparison_System_String__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.String%2CSystem.Collections.Generic.IReadOnlyList%7BSystem.String%7D%2CSystem.StringComparison%2CSystem.String%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_String_IReadOnlyList_System_String__StringComparison_System_String__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.String%2CIReadOnlyList%7BSystem.String%7D%2CStringComparison%2CSystem.String%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L265">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_String_System_Collections_Generic_IReadOnlyList_System_String__System_StringComparison_System_String__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.String,System.Collections.Generic.IReadOnlyList{System.String},System.StringComparison,System.String@,System.String@)">HasAnyPrefix(String, IReadOnlyList&lt;String&gt;, StringComparison, out String, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> starts with any of the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefixes.
+  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_String_IReadOnlyList_System_String__StringComparison_System_String__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.String,IReadOnlyList{System.String},StringComparison,System.String@,System.String@)">HasAnyPrefix(String, IReadOnlyList&lt;String&gt;, StringComparison, out String, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:System.String"></see> starts with any of the provided <see cref="!:System.String"></see> prefixes.
 If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1990,19 +1550,19 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> to check. </p>
+        <td><p>The input <see cref="!:System.String"></see> to check. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">prefixes</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefixes to check for. </p>
+        <td><p>The <see cref="!:System.String"></see> prefixes to check for. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.stringcomparison">StringComparison</a></td>
+        <td><span class="xref">StringComparison</span></td>
         <td><span class="parametername">comparison</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.stringcomparison">StringComparison</a> to use when checking for the prefix. </p>
+        <td><p>The <see cref="!:StringComparison"></see> to use when checking for the prefix. </p>
 </td>
       </tr>
       <tr>
@@ -2030,42 +1590,90 @@ If it does, returns <span class="xref">true</span>, the found <code data-dev-com
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The input must not be null.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefixes must not be null.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasPrefix_System_ReadOnlySpan_System_Char__System_Char_System_Boolean_System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan%7BSystem.Char%7D%2CSystem.Char%2CSystem.Boolean%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasAnyPrefix_System_String_IReadOnlyList_System_String__System_String__System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasAnyPrefix(System.String%2CIReadOnlyList%7BSystem.String%7D%2CSystem.String%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L239">View Source</a>
+  </span>
+  <a id="Qmmands_CommandUtilities_HasAnyPrefix_" data-uid="Qmmands.CommandUtilities.HasAnyPrefix*"></a>
+  <h4 id="Qmmands_CommandUtilities_HasAnyPrefix_System_String_IReadOnlyList_System_String__System_String__System_String__" data-uid="Qmmands.CommandUtilities.HasAnyPrefix(System.String,IReadOnlyList{System.String},System.String@,System.String@)">HasAnyPrefix(String, IReadOnlyList&lt;String&gt;, out String, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:System.String"></see> starts with any of the provided <see cref="!:System.String"></see> prefixes.
+If it does, returns <span class="xref">true</span>, the found <code data-dev-comment-type="paramref" class="paramref">prefix</code>, and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool HasAnyPrefix(string input, IReadOnlyList&lt;string&gt; prefixes, out string prefix, out string output)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">input</span></td>
+        <td><p>The input <see cref="!:System.String"></see> to check. </p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">prefixes</span></td>
+        <td><p>The <see cref="!:System.String"></see> prefixes to check for. </p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">prefix</span></td>
+        <td><p>The found prefix. <span class="xref">null</span> if the prefix is not found. </p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">output</span></td>
+        <td><p>The trimmed output. <span class="xref">null</span> if the prefix is not found. </p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasPrefix_ReadOnlySpan_System_Char__System_Char_System_Boolean_System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan%7BSystem.Char%7D%2CSystem.Char%2CSystem.Boolean%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L349">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_HasPrefix_" data-uid="Qmmands.CommandUtilities.HasPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasPrefix_System_ReadOnlySpan_System_Char__System_Char_System_Boolean_System_String__" data-uid="Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan{System.Char},System.Char,System.Boolean,System.String@)">HasPrefix(ReadOnlySpan&lt;Char&gt;, Char, Boolean, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> starts with the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefix.
+  <h4 id="Qmmands_CommandUtilities_HasPrefix_ReadOnlySpan_System_Char__System_Char_System_Boolean_System_String__" data-uid="Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan{System.Char},System.Char,System.Boolean,System.String@)">HasPrefix(ReadOnlySpan&lt;Char&gt;, Char, Boolean, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:ReadOnlySpan&lt;T>"></see> starts with the provided <see cref="!:System.Char"></see> prefix.
 If it does, returns <span class="xref">true</span> and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2084,15 +1692,15 @@ If it does, returns <span class="xref">true</span> and the trimmed <code data-de
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> to check. </p>
+        <td><p>The input <see cref="!:ReadOnlySpan&lt;T>"></see> to check. </p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a></td>
         <td><span class="parametername">prefix</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefix to check for. </p>
+        <td><p>The <see cref="!:System.Char"></see> prefix to check for. </p>
 </td>
       </tr>
       <tr>
@@ -2120,37 +1728,21 @@ If it does, returns <span class="xref">true</span> and the trimmed <code data-de
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The input must not be null.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasPrefix_System_ReadOnlySpan_System_Char__System_Char_System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan%7BSystem.Char%7D%2CSystem.Char%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasPrefix_ReadOnlySpan_System_Char__System_Char_System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan%7BSystem.Char%7D%2CSystem.Char%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L332">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_HasPrefix_" data-uid="Qmmands.CommandUtilities.HasPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasPrefix_System_ReadOnlySpan_System_Char__System_Char_System_String__" data-uid="Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan{System.Char},System.Char,System.String@)">HasPrefix(ReadOnlySpan&lt;Char&gt;, Char, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> starts with the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefix.
+  <h4 id="Qmmands_CommandUtilities_HasPrefix_ReadOnlySpan_System_Char__System_Char_System_String__" data-uid="Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan{System.Char},System.Char,System.String@)">HasPrefix(ReadOnlySpan&lt;Char&gt;, Char, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:ReadOnlySpan&lt;T>"></see> starts with the provided <see cref="!:System.Char"></see> prefix.
 If it does, returns <span class="xref">true</span> and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2169,15 +1761,15 @@ If it does, returns <span class="xref">true</span> and the trimmed <code data-de
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> to check. </p>
+        <td><p>The input <see cref="!:ReadOnlySpan&lt;T>"></see> to check. </p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a></td>
         <td><span class="parametername">prefix</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefix to check for. </p>
+        <td><p>The <see cref="!:System.Char"></see> prefix to check for. </p>
 </td>
       </tr>
       <tr>
@@ -2199,116 +1791,21 @@ If it does, returns <span class="xref">true</span> and the trimmed <code data-de
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The input must not be null.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasPrefix_System_ReadOnlySpan_System_Char__System_String_System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan%7BSystem.Char%7D%2CSystem.String%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L477">View Source</a>
-  </span>
-  <a id="Qmmands_CommandUtilities_HasPrefix_" data-uid="Qmmands.CommandUtilities.HasPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasPrefix_System_ReadOnlySpan_System_Char__System_String_System_String__" data-uid="Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan{System.Char},System.String,System.String@)">HasPrefix(ReadOnlySpan&lt;Char&gt;, String, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> starts with the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefix.
-If it does, returns <span class="xref">true</span> and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool HasPrefix(ReadOnlySpan&lt;char&gt; input, string prefix, out string output)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
-        <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> to check. </p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">prefix</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefix to check for. </p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">output</span></td>
-        <td><p>The trimmed output. <span class="xref">null</span> if the prefix is not found. </p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefix must not be null.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasPrefix_System_ReadOnlySpan_System_Char__System_String_System_StringComparison_System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan%7BSystem.Char%7D%2CSystem.String%2CSystem.StringComparison%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasPrefix_ReadOnlySpan_System_Char__System_String_StringComparison_System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan%7BSystem.Char%7D%2CSystem.String%2CStringComparison%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L494">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_HasPrefix_" data-uid="Qmmands.CommandUtilities.HasPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasPrefix_System_ReadOnlySpan_System_Char__System_String_System_StringComparison_System_String__" data-uid="Qmmands.CommandUtilities.HasPrefix(System.ReadOnlySpan{System.Char},System.String,System.StringComparison,System.String@)">HasPrefix(ReadOnlySpan&lt;Char&gt;, String, StringComparison, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> starts with the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefix.
+  <h4 id="Qmmands_CommandUtilities_HasPrefix_ReadOnlySpan_System_Char__System_String_StringComparison_System_String__" data-uid="Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan{System.Char},System.String,StringComparison,System.String@)">HasPrefix(ReadOnlySpan&lt;Char&gt;, String, StringComparison, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:ReadOnlySpan&lt;T>"></see> starts with the provided <see cref="!:System.String"></see> prefix.
 If it does, returns <span class="xref">true</span> and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2327,21 +1824,21 @@ If it does, returns <span class="xref">true</span> and the trimmed <code data-de
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> to check. </p>
+        <td><p>The input <see cref="!:ReadOnlySpan&lt;T>"></see> to check. </p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">prefix</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefix to check for. </p>
+        <td><p>The <see cref="!:System.String"></see> prefix to check for. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.stringcomparison">StringComparison</a></td>
+        <td><span class="xref">StringComparison</span></td>
         <td><span class="parametername">comparison</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.stringcomparison">StringComparison</a> to use when checking for the prefix. </p>
+        <td><p>The <see cref="!:StringComparison"></see> to use when checking for the prefix. </p>
 </td>
       </tr>
       <tr>
@@ -2363,23 +1860,70 @@ If it does, returns <span class="xref">true</span> and the trimmed <code data-de
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasPrefix_ReadOnlySpan_System_Char__System_String_System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan%7BSystem.Char%7D%2CSystem.String%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L477">View Source</a>
+  </span>
+  <a id="Qmmands_CommandUtilities_HasPrefix_" data-uid="Qmmands.CommandUtilities.HasPrefix*"></a>
+  <h4 id="Qmmands_CommandUtilities_HasPrefix_ReadOnlySpan_System_Char__System_String_System_String__" data-uid="Qmmands.CommandUtilities.HasPrefix(ReadOnlySpan{System.Char},System.String,System.String@)">HasPrefix(ReadOnlySpan&lt;Char&gt;, String, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:ReadOnlySpan&lt;T>"></see> starts with the provided <see cref="!:System.String"></see> prefix.
+If it does, returns <span class="xref">true</span> and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool HasPrefix(ReadOnlySpan&lt;char&gt; input, string prefix, out string output)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Condition</th>
+        <th>Name</th>
+        <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefix must not be null.</p>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a>&gt;</td>
+        <td><span class="parametername">input</span></td>
+        <td><p>The input <see cref="!:ReadOnlySpan&lt;T>"></see> to check. </p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">prefix</span></td>
+        <td><p>The <see cref="!:System.String"></see> prefix to check for. </p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">output</span></td>
+        <td><p>The trimmed output. <span class="xref">null</span> if the prefix is not found. </p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
@@ -2393,7 +1937,7 @@ If it does, returns <span class="xref">true</span> and the trimmed <code data-de
   </span>
   <a id="Qmmands_CommandUtilities_HasPrefix_" data-uid="Qmmands.CommandUtilities.HasPrefix*"></a>
   <h4 id="Qmmands_CommandUtilities_HasPrefix_System_String_System_Char_System_Boolean_System_String__" data-uid="Qmmands.CommandUtilities.HasPrefix(System.String,System.Char,System.Boolean,System.String@)">HasPrefix(String, Char, Boolean, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> starts with the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefix.
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:System.String"></see> starts with the provided <see cref="!:System.Char"></see> prefix.
 If it does, returns <span class="xref">true</span> and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2414,13 +1958,13 @@ If it does, returns <span class="xref">true</span> and the trimmed <code data-de
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> to check. </p>
+        <td><p>The input <see cref="!:System.String"></see> to check. </p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a></td>
         <td><span class="parametername">prefix</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefix to check for. </p>
+        <td><p>The <see cref="!:System.Char"></see> prefix to check for. </p>
 </td>
       </tr>
       <tr>
@@ -2448,23 +1992,7 @@ If it does, returns <span class="xref">true</span> and the trimmed <code data-de
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The input must not be null.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
@@ -2478,7 +2006,7 @@ If it does, returns <span class="xref">true</span> and the trimmed <code data-de
   </span>
   <a id="Qmmands_CommandUtilities_HasPrefix_" data-uid="Qmmands.CommandUtilities.HasPrefix*"></a>
   <h4 id="Qmmands_CommandUtilities_HasPrefix_System_String_System_Char_System_String__" data-uid="Qmmands.CommandUtilities.HasPrefix(System.String,System.Char,System.String@)">HasPrefix(String, Char, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> starts with the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefix.
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:System.String"></see> starts with the provided <see cref="!:System.Char"></see> prefix.
 If it does, returns <span class="xref">true</span> and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2499,13 +2027,13 @@ If it does, returns <span class="xref">true</span> and the trimmed <code data-de
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> to check. </p>
+        <td><p>The input <see cref="!:System.String"></see> to check. </p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a></td>
         <td><span class="parametername">prefix</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.char">Char</a> prefix to check for. </p>
+        <td><p>The <see cref="!:System.Char"></see> prefix to check for. </p>
 </td>
       </tr>
       <tr>
@@ -2527,121 +2055,21 @@ If it does, returns <span class="xref">true</span> and the trimmed <code data-de
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The input must not be null.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasPrefix_System_String_System_String_System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasPrefix(System.String%2CSystem.String%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L189">View Source</a>
-  </span>
-  <a id="Qmmands_CommandUtilities_HasPrefix_" data-uid="Qmmands.CommandUtilities.HasPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasPrefix_System_String_System_String_System_String__" data-uid="Qmmands.CommandUtilities.HasPrefix(System.String,System.String,System.String@)">HasPrefix(String, String, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> starts with the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefix.
-If it does, returns <span class="xref">true</span> and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool HasPrefix(string input, string prefix, out string output)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> to check. </p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">prefix</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefix to check for. </p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">output</span></td>
-        <td><p>The trimmed output. <span class="xref">null</span> if the prefix is not found. </p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The input must not be null.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefix must not be null.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasPrefix_System_String_System_String_System_StringComparison_System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasPrefix(System.String%2CSystem.String%2CSystem.StringComparison%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasPrefix_System_String_System_String_StringComparison_System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasPrefix(System.String%2CSystem.String%2CStringComparison%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L214">View Source</a>
   </span>
   <a id="Qmmands_CommandUtilities_HasPrefix_" data-uid="Qmmands.CommandUtilities.HasPrefix*"></a>
-  <h4 id="Qmmands_CommandUtilities_HasPrefix_System_String_System_String_System_StringComparison_System_String__" data-uid="Qmmands.CommandUtilities.HasPrefix(System.String,System.String,System.StringComparison,System.String@)">HasPrefix(String, String, StringComparison, out String)</h4>
-  <div class="markdown level1 summary"><p>Checks if the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> starts with the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefix.
+  <h4 id="Qmmands_CommandUtilities_HasPrefix_System_String_System_String_StringComparison_System_String__" data-uid="Qmmands.CommandUtilities.HasPrefix(System.String,System.String,StringComparison,System.String@)">HasPrefix(String, String, StringComparison, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:System.String"></see> starts with the provided <see cref="!:System.String"></see> prefix.
 If it does, returns <span class="xref">true</span> and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2662,19 +2090,19 @@ If it does, returns <span class="xref">true</span> and the trimmed <code data-de
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> to check. </p>
+        <td><p>The input <see cref="!:System.String"></see> to check. </p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">prefix</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> prefix to check for. </p>
+        <td><p>The <see cref="!:System.String"></see> prefix to check for. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.stringcomparison">StringComparison</a></td>
+        <td><span class="xref">StringComparison</span></td>
         <td><span class="parametername">comparison</span></td>
-        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.stringcomparison">StringComparison</a> to use when checking for the prefix. </p>
+        <td><p>The <see cref="!:StringComparison"></see> to use when checking for the prefix. </p>
 </td>
       </tr>
       <tr>
@@ -2696,28 +2124,70 @@ If it does, returns <span class="xref">true</span> and the trimmed <code data-de
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a> which determines whether the prefix was found or not.</p>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_CommandUtilities_HasPrefix_System_String_System_String_System_String__.md&amp;value=---%0Auid%3A%20Qmmands.CommandUtilities.HasPrefix(System.String%2CSystem.String%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/CommandUtilities.cs/#L189">View Source</a>
+  </span>
+  <a id="Qmmands_CommandUtilities_HasPrefix_" data-uid="Qmmands.CommandUtilities.HasPrefix*"></a>
+  <h4 id="Qmmands_CommandUtilities_HasPrefix_System_String_System_String_System_String__" data-uid="Qmmands.CommandUtilities.HasPrefix(System.String,System.String,System.String@)">HasPrefix(String, String, out String)</h4>
+  <div class="markdown level1 summary"><p>Checks if the provided <see cref="!:System.String"></see> starts with the provided <see cref="!:System.String"></see> prefix.
+If it does, returns <span class="xref">true</span> and the trimmed <code data-dev-comment-type="paramref" class="paramref">output</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool HasPrefix(string input, string prefix, out string output)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Condition</th>
+        <th>Name</th>
+        <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The input must not be null.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">input</span></td>
+        <td><p>The input <see cref="!:System.String"></see> to check. </p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The prefix must not be null.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">prefix</span></td>
+        <td><p>The <see cref="!:System.String"></see> prefix to check for. </p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">output</span></td>
+        <td><p>The trimmed output. <span class="xref">null</span> if the prefix is not found. </p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>A <see cref="!:System.Boolean"></see> which determines whether the prefix was found or not.</p>
 </td>
       </tr>
     </tbody>
@@ -2738,7 +2208,8 @@ If it does, returns <span class="xref">true</span> and the trimmed <code data-de
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

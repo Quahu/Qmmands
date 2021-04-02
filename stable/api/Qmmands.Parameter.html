@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Parameter
    ">
-    <meta name="generator" content="docfx 2.52.0.0">
+    <meta name="generator" content="docfx 2.56.7.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -85,7 +85,7 @@
   <h6><strong>Assembly</strong>: Qmmands.dll</h6>
   <h5 id="Qmmands_Parameter_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class Parameter</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class Parameter : object</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -115,7 +115,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.attribute">Attribute</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<span class="xref">Attribute</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -146,7 +146,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Qmmands.ParameterCheckAttribute.html">ParameterCheckAttribute</a>&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Qmmands.ParameterCheckAttribute.html">ParameterCheckAttribute</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -191,7 +191,7 @@
   </span>
   <a id="Qmmands_Parameter_CustomTypeParserType_" data-uid="Qmmands.Parameter.CustomTypeParserType*"></a>
   <h4 id="Qmmands_Parameter_CustomTypeParserType" data-uid="Qmmands.Parameter.CustomTypeParserType">CustomTypeParserType</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a> of a custom <a class="xref" href="Qmmands.TypeParser-1.html">TypeParser&lt;T&gt;</a>.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the <see cref="!:System.Type"></see> of a custom <a class="xref" href="Qmmands.TypeParser-1.html">TypeParser&lt;T&gt;</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -208,7 +208,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="xref">Type</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -470,7 +470,7 @@
   </span>
   <a id="Qmmands_Parameter_Type_" data-uid="Qmmands.Parameter.Type*"></a>
   <h4 id="Qmmands_Parameter_Type" data-uid="Qmmands.Parameter.Type">Type</h4>
-  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a> of this <a class="xref" href="Qmmands.Parameter.html">Parameter</a>.</p>
+  <div class="markdown level1 summary"><p>Gets the <see cref="!:System.Type"></see> of this <a class="xref" href="Qmmands.Parameter.html">Parameter</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -487,7 +487,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="xref">Type</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -544,7 +544,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Qmmands.IResult.html">IResult</a>&gt;</td>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="Qmmands.IResult.html">IResult</a>&gt;</td>
         <td><p>A <a class="xref" href="Qmmands.SuccessfulResult.html">SuccessfulResult</a> if all of the checks pass, otherwise a <a class="xref" href="Qmmands.ChecksFailedResult.html">ChecksFailedResult</a>.</p>
 </td>
       </tr>
@@ -555,11 +555,11 @@
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_Parameter_ToString.md&amp;value=---%0Auid%3A%20Qmmands.Parameter.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Built/Parameter.cs/#L142">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Built/Parameter.cs/#L159">View Source</a>
   </span>
   <a id="Qmmands_Parameter_ToString_" data-uid="Qmmands.Parameter.ToString*"></a>
   <h4 id="Qmmands_Parameter_ToString" data-uid="Qmmands.Parameter.ToString">ToString()</h4>
-  <div class="markdown level1 summary"><p>Returns <a class="xref" href="Qmmands.Parameter.html#Qmmands_Parameter_Name">Name</a> or calls <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">ToString()</a> if it is <span class="xref">null</span>.</p>
+  <div class="markdown level1 summary"><p>Returns <a class="xref" href="Qmmands.Parameter.html#Qmmands_Parameter_Name">Name</a> or calls <see cref="!:object.ToString"></see> if it is <span class="xref">null</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -577,13 +577,11 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> representing this <a class="xref" href="Qmmands.Parameter.html">Parameter</a>.</p>
+        <td><p>A <see cref="!:System.String"></see> representing this <a class="xref" href="Qmmands.Parameter.html">Parameter</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
 </article>
           </div>
           
@@ -600,7 +598,8 @@
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>
