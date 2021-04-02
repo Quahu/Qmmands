@@ -549,14 +549,14 @@ namespace Qmmands
             return IsNumeric(type);
         }
 
-        public static bool IsStringType(Type type)
+        public static bool IsString(Type type)
             => type == typeof(string);
 
         public static bool IsNumericOrString(Type type)
-            => IsNumeric(type) || IsStringType(type);
+            => IsNumeric(type) || IsString(type);
 
         public static bool IsNullableNumericOrString(Type type)
-            => IsNullableNumeric(type) || IsStringType(type);
+            => IsNullableNumeric(type) || IsString(type);
 
         public static bool IsConvertible(Type type)
             => typeof(IConvertible).IsAssignableFrom(type);
@@ -568,6 +568,44 @@ namespace Qmmands
                 type = nullableType;
 
             return IsConvertible(type);
+        }
+
+        public static bool IsArrayNullableConvertible(Type type)
+        {
+            if (type.IsArray)
+                type = type.GetElementType();
+
+            var nullableType = Nullable.GetUnderlyingType(type);
+            if (nullableType != null)
+                type = nullableType;
+
+            return IsConvertible(type);
+        }
+        
+        public static bool IsArrayString(Type type)
+        {
+            if (type.IsArray)
+                type = type.GetElementType();
+
+            return IsString(type);
+        }
+
+        public static double ToCheckDouble(object argument, out bool isString, out bool isArray)
+        {
+            if (argument is IConvertible convertible)
+            {
+                isString = convertible.GetTypeCode() == TypeCode.String;
+                isArray = false;
+                return isString
+                    ? (argument as string).Length
+                    : Convert.ToDouble(argument);
+            }
+            else
+            {
+                isString = false;
+                isArray = true;
+                return (argument as Array).Length;
+            }
         }
 
         public static bool IsCaseSensitive(this StringComparison comparison)

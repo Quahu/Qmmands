@@ -18,23 +18,22 @@ namespace Qmmands
         /// </summary>
         /// <param name="minimum"> The minimum value. </param>
         public MinimumAttribute(double minimum)
-            : base(Utilities.IsNullableConvertible)
         {
             Minimum = minimum;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
+        public override bool CheckType(Type type)
+            => Utilities.IsArrayNullableConvertible(type);
+
+        /// <inheritdoc/>
         public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context)
         {
-            if (argument is IConvertible convertible)
+            if (argument != null)
             {
-                var isString = convertible.GetTypeCode() == TypeCode.String;
-                var value = isString
-                    ? (argument as string).Length
-                    : Convert.ToDouble(argument);
-
+                var value = Utilities.ToCheckDouble(argument, out var isString, out var isArray);
                 if (value < Minimum)
-                    return Failure($"The provided argument must have a minimum {(isString ? "length" : "value")} of {Minimum}.");
+                    return Failure($"The provided argument{(isArray ? " amount" : isString ? "'s length" : "'s value")} must be a minimum of {Minimum}.");
             }
 
             return Success();

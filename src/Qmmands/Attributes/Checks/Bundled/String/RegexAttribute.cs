@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Qmmands
@@ -27,16 +28,21 @@ namespace Qmmands
         /// <param name="pattern"> The <see cref="System.Text.RegularExpressions.Regex"/> pattern. </param>
         /// <param name="options"> The <see cref="RegexOptions"/>. </param>
         public RegexAttribute(string pattern, RegexOptions options)
-            : base(Utilities.IsStringType)
         {
             Regex = new Regex(pattern, options);
+
+            ChecksArrayElements = true;
         }
+
+        /// <inheritdoc/>
+        public override bool CheckType(Type type)
+            => Utilities.IsArrayString(type);
 
         /// <inheritdoc />
         public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context)
         {
             if (!Regex.IsMatch(argument as string))
-                return Failure($"The provided argument must match the regex pattern: {Regex}.");
+                return Failure($"The provided {(Parameter.IsMultiple ? "arguments" : "argument")} must match the regex pattern: '{Regex}'.");
 
             return Success();
         }

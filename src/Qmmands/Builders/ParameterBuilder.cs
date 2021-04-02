@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Qmmands
@@ -198,7 +198,7 @@ namespace Qmmands
                 }
                 else if (DefaultValue.GetType() != (IsMultiple ? Type.MakeArrayType() : Type))
                 {
-                    throw new ParameterBuildingException(this, $"Parameter type and default value mismatch. Expected {Type}, got {DefaultValue.GetType()}.");
+                    throw new ParameterBuildingException(this, $"Parameter type and default value mismatch. Expected {(IsMultiple ? Type.MakeArrayType() : Type)}, got {DefaultValue.GetType()}.");
                 }
             }
 

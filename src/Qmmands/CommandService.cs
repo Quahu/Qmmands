@@ -1182,14 +1182,14 @@ namespace Qmmands
                 if (!hasValue && !parameter.IsOptional)
                     throw new InvalidOperationException($"No value for the required parameter {parameter.Name} ({parameter.Type}) was returned by the argument parser ({context.Command.CustomArgumentParserType ?? DefaultArgumentParser.GetType()}).");
 
-                if (!hasValue)
-                {
-                    parsedArguments[i] = parameter.DefaultValue;
-                    continue;
-                }
-
                 if (!parameter.IsMultiple)
                 {
+                    if (!hasValue)
+                    {
+                        parsedArguments[i] = parameter.DefaultValue;
+                        continue;
+                    }
+
                     var (result, parsedArgument) = await ParseArgumentAsync(parameter, value, context).ConfigureAwait(false);
                     if (result != null)
                         return (result, default);
@@ -1202,6 +1202,9 @@ namespace Qmmands
                 }
                 else
                 {
+                    if (!hasValue)
+                        value = parameter.DefaultValue;
+
                     if (value is not IEnumerable<object> argumentsEnumerable)
                         throw new InvalidOperationException("The multiple parameter requires an enumerable of objects as its argument.");
 

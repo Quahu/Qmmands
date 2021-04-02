@@ -10,12 +10,6 @@ namespace Qmmands
     public abstract class ParameterCheckAttribute : Attribute
     {
         /// <summary>
-        ///     Gets the <see cref="Predicate{T}"/> that determines which types are supported by this <see cref="ParameterCheckAttribute"/>.
-        ///     If <see langword="null"/>, any <see cref="Type"/> of parameters are accepted. 
-        /// </summary>
-        public Predicate<Type> Predicate { get; }
-
-        /// <summary>
         ///     Gets the <see cref="Qmmands.Parameter"/> this <see cref="ParameterCheckAttribute"/> is for.
         /// </summary>
         public Parameter Parameter { get; internal set; }
@@ -23,15 +17,18 @@ namespace Qmmands
 
         /// <inheritdoc cref="CheckAttribute.Group"/>
         public object Group { get; set; }
+        
+        /// <summary>
+        ///     Gets or sets whether this check should apply to arrays as a whole or its individual elements.
+        ///     This only applies to parameters with <see cref="Qmmands.Parameter.IsMultiple"/> set to <see langword="true"/>.
+        /// </summary>
+        public bool ChecksArrayElements { get; set; }
 
         /// <summary>
-        ///     Initialises a new <see cref="ParameterCheckAttribute"/> with the predicate that determines what <see cref="Type"/>s are supported.
+        ///     Determines which types are supported by this <see cref="ParameterCheckAttribute"/>.
         /// </summary>
-        /// <param name="predicate"> The optional <see cref="Predicate{T}"/> that determines what types are supported. </param>
-        protected ParameterCheckAttribute(Predicate<Type> predicate = null)
-        {
-            Predicate = predicate;
-        }
+        public virtual bool CheckType(Type type)
+            => true;
 
         /// <summary>
         ///     Determines whether the <paramref name="argument"/> is valid for the <see cref="Qmmands.Parameter"/> in given circumstances.

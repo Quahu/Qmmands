@@ -18,23 +18,22 @@ namespace Qmmands
         /// </summary>
         /// <param name="maximum"> The maximum value. </param>
         public MaximumAttribute(double maximum)
-            : base(Utilities.IsNullableConvertible)
         {
             Maximum = maximum;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
+        public override bool CheckType(Type type)
+            => Utilities.IsArrayNullableConvertible(type);
+
+        /// <inheritdoc/>
         public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context)
         {
-            if (argument is IConvertible convertible)
+            if (argument != null)
             {
-                var isString = convertible.GetTypeCode() == TypeCode.String;
-                var value = isString
-                    ? (argument as string).Length
-                    : Convert.ToDouble(argument);
-
+                var value = Utilities.ToCheckDouble(argument, out var isString, out var isArray);
                 if (value > Maximum)
-                    return Failure($"The provided argument must have a maximum {(isString ? "length" : "value")} of {Maximum}.");
+                    return Failure($"The provided argument{(isArray ? " amount" : isString ? "'s length" : "'s value")} must be a maximum of {Maximum}.");
             }
 
             return Success();

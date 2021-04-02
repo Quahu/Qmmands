@@ -96,8 +96,8 @@ namespace Qmmands
             for (var i = 0; i < builder.Checks.Count; i++)
             {
                 var check = builder.Checks[i];
-                if (check.Predicate != null && !check.Predicate(Type))
-                    throw new ParameterBuildingException(builder, $"{check} is not a valid parameter check for a parameter of type {Type}.");
+                if (!check.CheckType(IsMultiple && !check.ChecksArrayElements ? Type.MakeArrayType() : Type))
+                    throw new ParameterBuildingException(builder, $"{check} is not a valid parameter check for a parameter of type {(IsMultiple ? Type.MakeArrayType() : Type)}.");
 
                 check.Parameter = this;
             }
@@ -117,13 +117,30 @@ namespace Qmmands
         {
             if (Checks.Count > 0)
             {
-                async Task<(ParameterCheckAttribute Check, CheckResult Result)> RunCheckAsync(ParameterCheckAttribute check)
+                static async Task<(ParameterCheckAttribute Check, CheckResult Result)> RunCheckAsync(ParameterCheckAttribute check, object argument, CommandContext context)
                 {
                     var checkResult = await check.CheckAsync(argument, context).ConfigureAwait(false);
                     return (check, checkResult);
                 }
 
-                var checkResults = await Task.WhenAll(Checks.Select(RunCheckAsync)).ConfigureAwait(false);
+                IEnumerable<ParameterCheckAttribute> checks = Checks;
+                if (argument is Array array)
+                {
+                    var elementChecks = checks.Where(x => x.ChecksArrayElements).ToArray();
+                    for (var i = 0; i < array.Length; i++)
+                    {
+                        var element = array.GetValue(i);
+                        var elementCheckResults = await Task.WhenAll(elementChecks.Select(x => RunCheckAsync(x, element, context))).ConfigureAwait(false);
+                        var elementFailedGroups = elementCheckResults.GroupBy(x => x.Check.Group)
+                            .Where(x => x.Key == null ? x.Any(y => !y.Result.IsSuccessful) : x.All(y => !y.Result.IsSuccessful)).ToImmutableArray();
+                        if (elementFailedGroups.Length > 0)
+                            return new ParameterChecksFailedResult(this, element, elementFailedGroups.SelectMany(x => x).Where(x => !x.Result.IsSuccessful).ToImmutableArray());
+                    }
+
+                    checks = checks.Except(elementChecks);
+                }
+
+                var checkResults = await Task.WhenAll(checks.Select(x => RunCheckAsync(x, argument, context))).ConfigureAwait(false);
                 var failedGroups = checkResults.GroupBy(x => x.Check.Group)
                     .Where(x => x.Key == null ? x.Any(y => !y.Result.IsSuccessful) : x.All(y => !y.Result.IsSuccessful)).ToImmutableArray();
                 if (failedGroups.Length > 0)
