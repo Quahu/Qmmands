@@ -1323,12 +1323,12 @@ references:
   commentId: T:Qmmands.CommandExecutionFailedEventArgs
   fullName: Qmmands.CommandExecutionFailedEventArgs
   nameWithType: CommandExecutionFailedEventArgs
-- uid: Qmmands.CommandExecutionFailedEventArgs.#ctor(Qmmands.ExecutionFailedResult,Qmmands.CommandContext)
-  name: CommandExecutionFailedEventArgs(ExecutionFailedResult, CommandContext)
-  href: api/Qmmands.CommandExecutionFailedEventArgs.html#Qmmands_CommandExecutionFailedEventArgs__ctor_Qmmands_ExecutionFailedResult_Qmmands_CommandContext_
-  commentId: M:Qmmands.CommandExecutionFailedEventArgs.#ctor(Qmmands.ExecutionFailedResult,Qmmands.CommandContext)
-  fullName: Qmmands.CommandExecutionFailedEventArgs.CommandExecutionFailedEventArgs(Qmmands.ExecutionFailedResult, Qmmands.CommandContext)
-  nameWithType: CommandExecutionFailedEventArgs.CommandExecutionFailedEventArgs(ExecutionFailedResult, CommandContext)
+- uid: Qmmands.CommandExecutionFailedEventArgs.#ctor(Qmmands.CommandExecutionFailedResult,Qmmands.CommandContext)
+  name: CommandExecutionFailedEventArgs(CommandExecutionFailedResult, CommandContext)
+  href: api/Qmmands.CommandExecutionFailedEventArgs.html#Qmmands_CommandExecutionFailedEventArgs__ctor_Qmmands_CommandExecutionFailedResult_Qmmands_CommandContext_
+  commentId: M:Qmmands.CommandExecutionFailedEventArgs.#ctor(Qmmands.CommandExecutionFailedResult,Qmmands.CommandContext)
+  fullName: Qmmands.CommandExecutionFailedEventArgs.CommandExecutionFailedEventArgs(Qmmands.CommandExecutionFailedResult, Qmmands.CommandContext)
+  nameWithType: CommandExecutionFailedEventArgs.CommandExecutionFailedEventArgs(CommandExecutionFailedResult, CommandContext)
 - uid: Qmmands.CommandExecutionFailedEventArgs.#ctor*
   name: CommandExecutionFailedEventArgs
   href: api/Qmmands.CommandExecutionFailedEventArgs.html#Qmmands_CommandExecutionFailedEventArgs__ctor_
@@ -1362,6 +1362,64 @@ references:
   isSpec: "True"
   fullName: Qmmands.CommandExecutionFailedEventArgs.Result
   nameWithType: CommandExecutionFailedEventArgs.Result
+- uid: Qmmands.CommandExecutionFailedResult
+  name: CommandExecutionFailedResult
+  href: api/Qmmands.CommandExecutionFailedResult.html
+  commentId: T:Qmmands.CommandExecutionFailedResult
+  fullName: Qmmands.CommandExecutionFailedResult
+  nameWithType: CommandExecutionFailedResult
+- uid: Qmmands.CommandExecutionFailedResult.Command
+  name: Command
+  href: api/Qmmands.CommandExecutionFailedResult.html#Qmmands_CommandExecutionFailedResult_Command
+  commentId: P:Qmmands.CommandExecutionFailedResult.Command
+  fullName: Qmmands.CommandExecutionFailedResult.Command
+  nameWithType: CommandExecutionFailedResult.Command
+- uid: Qmmands.CommandExecutionFailedResult.Command*
+  name: Command
+  href: api/Qmmands.CommandExecutionFailedResult.html#Qmmands_CommandExecutionFailedResult_Command_
+  commentId: Overload:Qmmands.CommandExecutionFailedResult.Command
+  isSpec: "True"
+  fullName: Qmmands.CommandExecutionFailedResult.Command
+  nameWithType: CommandExecutionFailedResult.Command
+- uid: Qmmands.CommandExecutionFailedResult.CommandExecutionStep
+  name: CommandExecutionStep
+  href: api/Qmmands.CommandExecutionFailedResult.html#Qmmands_CommandExecutionFailedResult_CommandExecutionStep
+  commentId: P:Qmmands.CommandExecutionFailedResult.CommandExecutionStep
+  fullName: Qmmands.CommandExecutionFailedResult.CommandExecutionStep
+  nameWithType: CommandExecutionFailedResult.CommandExecutionStep
+- uid: Qmmands.CommandExecutionFailedResult.CommandExecutionStep*
+  name: CommandExecutionStep
+  href: api/Qmmands.CommandExecutionFailedResult.html#Qmmands_CommandExecutionFailedResult_CommandExecutionStep_
+  commentId: Overload:Qmmands.CommandExecutionFailedResult.CommandExecutionStep
+  isSpec: "True"
+  fullName: Qmmands.CommandExecutionFailedResult.CommandExecutionStep
+  nameWithType: CommandExecutionFailedResult.CommandExecutionStep
+- uid: Qmmands.CommandExecutionFailedResult.Exception
+  name: Exception
+  href: api/Qmmands.CommandExecutionFailedResult.html#Qmmands_CommandExecutionFailedResult_Exception
+  commentId: P:Qmmands.CommandExecutionFailedResult.Exception
+  fullName: Qmmands.CommandExecutionFailedResult.Exception
+  nameWithType: CommandExecutionFailedResult.Exception
+- uid: Qmmands.CommandExecutionFailedResult.Exception*
+  name: Exception
+  href: api/Qmmands.CommandExecutionFailedResult.html#Qmmands_CommandExecutionFailedResult_Exception_
+  commentId: Overload:Qmmands.CommandExecutionFailedResult.Exception
+  isSpec: "True"
+  fullName: Qmmands.CommandExecutionFailedResult.Exception
+  nameWithType: CommandExecutionFailedResult.Exception
+- uid: Qmmands.CommandExecutionFailedResult.FailureReason
+  name: FailureReason
+  href: api/Qmmands.CommandExecutionFailedResult.html#Qmmands_CommandExecutionFailedResult_FailureReason
+  commentId: P:Qmmands.CommandExecutionFailedResult.FailureReason
+  fullName: Qmmands.CommandExecutionFailedResult.FailureReason
+  nameWithType: CommandExecutionFailedResult.FailureReason
+- uid: Qmmands.CommandExecutionFailedResult.FailureReason*
+  name: FailureReason
+  href: api/Qmmands.CommandExecutionFailedResult.html#Qmmands_CommandExecutionFailedResult_FailureReason_
+  commentId: Overload:Qmmands.CommandExecutionFailedResult.FailureReason
+  isSpec: "True"
+  fullName: Qmmands.CommandExecutionFailedResult.FailureReason
+  nameWithType: CommandExecutionFailedResult.FailureReason
 - uid: Qmmands.CommandExecutionStep
   name: CommandExecutionStep
   href: api/Qmmands.CommandExecutionStep.html
@@ -2598,6 +2656,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.ContainsAttribute.CheckAsync
   nameWithType: ContainsAttribute.CheckAsync
+- uid: Qmmands.ContainsAttribute.CheckType(Type)
+  name: CheckType(Type)
+  href: api/Qmmands.ContainsAttribute.html#Qmmands_ContainsAttribute_CheckType_Type_
+  commentId: M:Qmmands.ContainsAttribute.CheckType(Type)
+  fullName: Qmmands.ContainsAttribute.CheckType(Type)
+  nameWithType: ContainsAttribute.CheckType(Type)
+- uid: Qmmands.ContainsAttribute.CheckType*
+  name: CheckType
+  href: api/Qmmands.ContainsAttribute.html#Qmmands_ContainsAttribute_CheckType_
+  commentId: Overload:Qmmands.ContainsAttribute.CheckType
+  isSpec: "True"
+  fullName: Qmmands.ContainsAttribute.CheckType
+  nameWithType: ContainsAttribute.CheckType
 - uid: Qmmands.ContainsAttribute.StringComparison
   name: StringComparison
   href: api/Qmmands.ContainsAttribute.html#Qmmands_ContainsAttribute_StringComparison
@@ -3184,6 +3255,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.EndsWithAttribute.CheckAsync
   nameWithType: EndsWithAttribute.CheckAsync
+- uid: Qmmands.EndsWithAttribute.CheckType(Type)
+  name: CheckType(Type)
+  href: api/Qmmands.EndsWithAttribute.html#Qmmands_EndsWithAttribute_CheckType_Type_
+  commentId: M:Qmmands.EndsWithAttribute.CheckType(Type)
+  fullName: Qmmands.EndsWithAttribute.CheckType(Type)
+  nameWithType: EndsWithAttribute.CheckType(Type)
+- uid: Qmmands.EndsWithAttribute.CheckType*
+  name: CheckType
+  href: api/Qmmands.EndsWithAttribute.html#Qmmands_EndsWithAttribute_CheckType_
+  commentId: Overload:Qmmands.EndsWithAttribute.CheckType
+  isSpec: "True"
+  fullName: Qmmands.EndsWithAttribute.CheckType
+  nameWithType: EndsWithAttribute.CheckType
 - uid: Qmmands.EndsWithAttribute.StringComparison
   name: StringComparison
   href: api/Qmmands.EndsWithAttribute.html#Qmmands_EndsWithAttribute_StringComparison
@@ -3210,64 +3294,6 @@ references:
   isSpec: "True"
   fullName: Qmmands.EndsWithAttribute.Value
   nameWithType: EndsWithAttribute.Value
-- uid: Qmmands.ExecutionFailedResult
-  name: ExecutionFailedResult
-  href: api/Qmmands.ExecutionFailedResult.html
-  commentId: T:Qmmands.ExecutionFailedResult
-  fullName: Qmmands.ExecutionFailedResult
-  nameWithType: ExecutionFailedResult
-- uid: Qmmands.ExecutionFailedResult.Command
-  name: Command
-  href: api/Qmmands.ExecutionFailedResult.html#Qmmands_ExecutionFailedResult_Command
-  commentId: P:Qmmands.ExecutionFailedResult.Command
-  fullName: Qmmands.ExecutionFailedResult.Command
-  nameWithType: ExecutionFailedResult.Command
-- uid: Qmmands.ExecutionFailedResult.Command*
-  name: Command
-  href: api/Qmmands.ExecutionFailedResult.html#Qmmands_ExecutionFailedResult_Command_
-  commentId: Overload:Qmmands.ExecutionFailedResult.Command
-  isSpec: "True"
-  fullName: Qmmands.ExecutionFailedResult.Command
-  nameWithType: ExecutionFailedResult.Command
-- uid: Qmmands.ExecutionFailedResult.CommandExecutionStep
-  name: CommandExecutionStep
-  href: api/Qmmands.ExecutionFailedResult.html#Qmmands_ExecutionFailedResult_CommandExecutionStep
-  commentId: P:Qmmands.ExecutionFailedResult.CommandExecutionStep
-  fullName: Qmmands.ExecutionFailedResult.CommandExecutionStep
-  nameWithType: ExecutionFailedResult.CommandExecutionStep
-- uid: Qmmands.ExecutionFailedResult.CommandExecutionStep*
-  name: CommandExecutionStep
-  href: api/Qmmands.ExecutionFailedResult.html#Qmmands_ExecutionFailedResult_CommandExecutionStep_
-  commentId: Overload:Qmmands.ExecutionFailedResult.CommandExecutionStep
-  isSpec: "True"
-  fullName: Qmmands.ExecutionFailedResult.CommandExecutionStep
-  nameWithType: ExecutionFailedResult.CommandExecutionStep
-- uid: Qmmands.ExecutionFailedResult.Exception
-  name: Exception
-  href: api/Qmmands.ExecutionFailedResult.html#Qmmands_ExecutionFailedResult_Exception
-  commentId: P:Qmmands.ExecutionFailedResult.Exception
-  fullName: Qmmands.ExecutionFailedResult.Exception
-  nameWithType: ExecutionFailedResult.Exception
-- uid: Qmmands.ExecutionFailedResult.Exception*
-  name: Exception
-  href: api/Qmmands.ExecutionFailedResult.html#Qmmands_ExecutionFailedResult_Exception_
-  commentId: Overload:Qmmands.ExecutionFailedResult.Exception
-  isSpec: "True"
-  fullName: Qmmands.ExecutionFailedResult.Exception
-  nameWithType: ExecutionFailedResult.Exception
-- uid: Qmmands.ExecutionFailedResult.FailureReason
-  name: FailureReason
-  href: api/Qmmands.ExecutionFailedResult.html#Qmmands_ExecutionFailedResult_FailureReason
-  commentId: P:Qmmands.ExecutionFailedResult.FailureReason
-  fullName: Qmmands.ExecutionFailedResult.FailureReason
-  nameWithType: ExecutionFailedResult.FailureReason
-- uid: Qmmands.ExecutionFailedResult.FailureReason*
-  name: FailureReason
-  href: api/Qmmands.ExecutionFailedResult.html#Qmmands_ExecutionFailedResult_FailureReason_
-  commentId: Overload:Qmmands.ExecutionFailedResult.FailureReason
-  isSpec: "True"
-  fullName: Qmmands.ExecutionFailedResult.FailureReason
-  nameWithType: ExecutionFailedResult.FailureReason
 - uid: Qmmands.FailedResult
   name: FailedResult
   href: api/Qmmands.FailedResult.html
@@ -3456,6 +3482,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.MaximumAttribute.CheckAsync
   nameWithType: MaximumAttribute.CheckAsync
+- uid: Qmmands.MaximumAttribute.CheckType(Type)
+  name: CheckType(Type)
+  href: api/Qmmands.MaximumAttribute.html#Qmmands_MaximumAttribute_CheckType_Type_
+  commentId: M:Qmmands.MaximumAttribute.CheckType(Type)
+  fullName: Qmmands.MaximumAttribute.CheckType(Type)
+  nameWithType: MaximumAttribute.CheckType(Type)
+- uid: Qmmands.MaximumAttribute.CheckType*
+  name: CheckType
+  href: api/Qmmands.MaximumAttribute.html#Qmmands_MaximumAttribute_CheckType_
+  commentId: Overload:Qmmands.MaximumAttribute.CheckType
+  isSpec: "True"
+  fullName: Qmmands.MaximumAttribute.CheckType
+  nameWithType: MaximumAttribute.CheckType
 - uid: Qmmands.MaximumAttribute.Maximum
   name: Maximum
   href: api/Qmmands.MaximumAttribute.html#Qmmands_MaximumAttribute_Maximum
@@ -3501,6 +3540,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.MinimumAttribute.CheckAsync
   nameWithType: MinimumAttribute.CheckAsync
+- uid: Qmmands.MinimumAttribute.CheckType(Type)
+  name: CheckType(Type)
+  href: api/Qmmands.MinimumAttribute.html#Qmmands_MinimumAttribute_CheckType_Type_
+  commentId: M:Qmmands.MinimumAttribute.CheckType(Type)
+  fullName: Qmmands.MinimumAttribute.CheckType(Type)
+  nameWithType: MinimumAttribute.CheckType(Type)
+- uid: Qmmands.MinimumAttribute.CheckType*
+  name: CheckType
+  href: api/Qmmands.MinimumAttribute.html#Qmmands_MinimumAttribute_CheckType_
+  commentId: Overload:Qmmands.MinimumAttribute.CheckType
+  isSpec: "True"
+  fullName: Qmmands.MinimumAttribute.CheckType
+  nameWithType: MinimumAttribute.CheckType
 - uid: Qmmands.MinimumAttribute.Minimum
   name: Minimum
   href: api/Qmmands.MinimumAttribute.html#Qmmands_MinimumAttribute_Minimum
@@ -4938,22 +4990,6 @@ references:
   commentId: T:Qmmands.ParameterCheckAttribute
   fullName: Qmmands.ParameterCheckAttribute
   nameWithType: ParameterCheckAttribute
-- uid: Qmmands.ParameterCheckAttribute.#ctor(Predicate{Type})
-  name: ParameterCheckAttribute(Predicate<Type>)
-  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute__ctor_Predicate_Type__
-  commentId: M:Qmmands.ParameterCheckAttribute.#ctor(Predicate{Type})
-  name.vb: ParameterCheckAttribute(Predicate(Of Type))
-  fullName: Qmmands.ParameterCheckAttribute.ParameterCheckAttribute(Predicate<Type>)
-  fullName.vb: Qmmands.ParameterCheckAttribute.ParameterCheckAttribute(Predicate(Of Type))
-  nameWithType: ParameterCheckAttribute.ParameterCheckAttribute(Predicate<Type>)
-  nameWithType.vb: ParameterCheckAttribute.ParameterCheckAttribute(Predicate(Of Type))
-- uid: Qmmands.ParameterCheckAttribute.#ctor*
-  name: ParameterCheckAttribute
-  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute__ctor_
-  commentId: Overload:Qmmands.ParameterCheckAttribute.#ctor
-  isSpec: "True"
-  fullName: Qmmands.ParameterCheckAttribute.ParameterCheckAttribute
-  nameWithType: ParameterCheckAttribute.ParameterCheckAttribute
 - uid: Qmmands.ParameterCheckAttribute.CheckAsync(System.Object,Qmmands.CommandContext)
   name: CheckAsync(Object, CommandContext)
   href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_CheckAsync_System_Object_Qmmands_CommandContext_
@@ -4967,6 +5003,32 @@ references:
   isSpec: "True"
   fullName: Qmmands.ParameterCheckAttribute.CheckAsync
   nameWithType: ParameterCheckAttribute.CheckAsync
+- uid: Qmmands.ParameterCheckAttribute.ChecksArrayElements
+  name: ChecksArrayElements
+  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_ChecksArrayElements
+  commentId: P:Qmmands.ParameterCheckAttribute.ChecksArrayElements
+  fullName: Qmmands.ParameterCheckAttribute.ChecksArrayElements
+  nameWithType: ParameterCheckAttribute.ChecksArrayElements
+- uid: Qmmands.ParameterCheckAttribute.ChecksArrayElements*
+  name: ChecksArrayElements
+  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_ChecksArrayElements_
+  commentId: Overload:Qmmands.ParameterCheckAttribute.ChecksArrayElements
+  isSpec: "True"
+  fullName: Qmmands.ParameterCheckAttribute.ChecksArrayElements
+  nameWithType: ParameterCheckAttribute.ChecksArrayElements
+- uid: Qmmands.ParameterCheckAttribute.CheckType(Type)
+  name: CheckType(Type)
+  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_CheckType_Type_
+  commentId: M:Qmmands.ParameterCheckAttribute.CheckType(Type)
+  fullName: Qmmands.ParameterCheckAttribute.CheckType(Type)
+  nameWithType: ParameterCheckAttribute.CheckType(Type)
+- uid: Qmmands.ParameterCheckAttribute.CheckType*
+  name: CheckType
+  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_CheckType_
+  commentId: Overload:Qmmands.ParameterCheckAttribute.CheckType
+  isSpec: "True"
+  fullName: Qmmands.ParameterCheckAttribute.CheckType
+  nameWithType: ParameterCheckAttribute.CheckType
 - uid: Qmmands.ParameterCheckAttribute.Failure(System.String)
   name: Failure(String)
   href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_Failure_System_String_
@@ -5006,19 +5068,6 @@ references:
   isSpec: "True"
   fullName: Qmmands.ParameterCheckAttribute.Parameter
   nameWithType: ParameterCheckAttribute.Parameter
-- uid: Qmmands.ParameterCheckAttribute.Predicate
-  name: Predicate
-  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_Predicate
-  commentId: P:Qmmands.ParameterCheckAttribute.Predicate
-  fullName: Qmmands.ParameterCheckAttribute.Predicate
-  nameWithType: ParameterCheckAttribute.Predicate
-- uid: Qmmands.ParameterCheckAttribute.Predicate*
-  name: Predicate
-  href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_Predicate_
-  commentId: Overload:Qmmands.ParameterCheckAttribute.Predicate
-  isSpec: "True"
-  fullName: Qmmands.ParameterCheckAttribute.Predicate
-  nameWithType: ParameterCheckAttribute.Predicate
 - uid: Qmmands.ParameterCheckAttribute.Success
   name: Success()
   href: api/Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_Success
@@ -5160,6 +5209,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.RangeAttribute.CheckAsync
   nameWithType: RangeAttribute.CheckAsync
+- uid: Qmmands.RangeAttribute.CheckType(Type)
+  name: CheckType(Type)
+  href: api/Qmmands.RangeAttribute.html#Qmmands_RangeAttribute_CheckType_Type_
+  commentId: M:Qmmands.RangeAttribute.CheckType(Type)
+  fullName: Qmmands.RangeAttribute.CheckType(Type)
+  nameWithType: RangeAttribute.CheckType(Type)
+- uid: Qmmands.RangeAttribute.CheckType*
+  name: CheckType
+  href: api/Qmmands.RangeAttribute.html#Qmmands_RangeAttribute_CheckType_
+  commentId: Overload:Qmmands.RangeAttribute.CheckType
+  isSpec: "True"
+  fullName: Qmmands.RangeAttribute.CheckType
+  nameWithType: RangeAttribute.CheckType
 - uid: Qmmands.RangeAttribute.IsMaximumInclusive
   name: IsMaximumInclusive
   href: api/Qmmands.RangeAttribute.html#Qmmands_RangeAttribute_IsMaximumInclusive
@@ -5250,6 +5312,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.RegexAttribute.CheckAsync
   nameWithType: RegexAttribute.CheckAsync
+- uid: Qmmands.RegexAttribute.CheckType(Type)
+  name: CheckType(Type)
+  href: api/Qmmands.RegexAttribute.html#Qmmands_RegexAttribute_CheckType_Type_
+  commentId: M:Qmmands.RegexAttribute.CheckType(Type)
+  fullName: Qmmands.RegexAttribute.CheckType(Type)
+  nameWithType: RegexAttribute.CheckType(Type)
+- uid: Qmmands.RegexAttribute.CheckType*
+  name: CheckType
+  href: api/Qmmands.RegexAttribute.html#Qmmands_RegexAttribute_CheckType_
+  commentId: Overload:Qmmands.RegexAttribute.CheckType
+  isSpec: "True"
+  fullName: Qmmands.RegexAttribute.CheckType
+  nameWithType: RegexAttribute.CheckType
 - uid: Qmmands.RegexAttribute.Regex
   name: Regex
   href: api/Qmmands.RegexAttribute.html#Qmmands_RegexAttribute_Regex
@@ -5407,6 +5482,19 @@ references:
   isSpec: "True"
   fullName: Qmmands.StartsWithAttribute.CheckAsync
   nameWithType: StartsWithAttribute.CheckAsync
+- uid: Qmmands.StartsWithAttribute.CheckType(Type)
+  name: CheckType(Type)
+  href: api/Qmmands.StartsWithAttribute.html#Qmmands_StartsWithAttribute_CheckType_Type_
+  commentId: M:Qmmands.StartsWithAttribute.CheckType(Type)
+  fullName: Qmmands.StartsWithAttribute.CheckType(Type)
+  nameWithType: StartsWithAttribute.CheckType(Type)
+- uid: Qmmands.StartsWithAttribute.CheckType*
+  name: CheckType
+  href: api/Qmmands.StartsWithAttribute.html#Qmmands_StartsWithAttribute_CheckType_
+  commentId: Overload:Qmmands.StartsWithAttribute.CheckType
+  isSpec: "True"
+  fullName: Qmmands.StartsWithAttribute.CheckType
+  nameWithType: StartsWithAttribute.CheckType
 - uid: Qmmands.StartsWithAttribute.StringComparison
   name: StringComparison
   href: api/Qmmands.StartsWithAttribute.html#Qmmands_StartsWithAttribute_StringComparison
@@ -5439,19 +5527,12 @@ references:
   commentId: T:Qmmands.SuccessfulResult
   fullName: Qmmands.SuccessfulResult
   nameWithType: SuccessfulResult
-- uid: Qmmands.SuccessfulResult.#ctor
-  name: SuccessfulResult()
-  href: api/Qmmands.SuccessfulResult.html#Qmmands_SuccessfulResult__ctor
-  commentId: M:Qmmands.SuccessfulResult.#ctor
-  fullName: Qmmands.SuccessfulResult.SuccessfulResult()
-  nameWithType: SuccessfulResult.SuccessfulResult()
-- uid: Qmmands.SuccessfulResult.#ctor*
-  name: SuccessfulResult
-  href: api/Qmmands.SuccessfulResult.html#Qmmands_SuccessfulResult__ctor_
-  commentId: Overload:Qmmands.SuccessfulResult.#ctor
-  isSpec: "True"
-  fullName: Qmmands.SuccessfulResult.SuccessfulResult
-  nameWithType: SuccessfulResult.SuccessfulResult
+- uid: Qmmands.SuccessfulResult.Instance
+  name: Instance
+  href: api/Qmmands.SuccessfulResult.html#Qmmands_SuccessfulResult_Instance
+  commentId: F:Qmmands.SuccessfulResult.Instance
+  fullName: Qmmands.SuccessfulResult.Instance
+  nameWithType: SuccessfulResult.Instance
 - uid: Qmmands.SuccessfulResult.IsSuccessful
   name: IsSuccessful
   href: api/Qmmands.SuccessfulResult.html#Qmmands_SuccessfulResult_IsSuccessful

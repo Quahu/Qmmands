@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ParameterCheckAttribute
    ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.56.7.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -94,50 +94,46 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public abstract class ParameterCheckAttribute : Attribute</code></pre>
   </div>
-  <h3 id="constructors">Constructors
+  <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_ParameterCheckAttribute__ctor_Predicate_Type__.md&amp;value=---%0Auid%3A%20Qmmands.ParameterCheckAttribute.%23ctor(Predicate%7BType%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_ParameterCheckAttribute_ChecksArrayElements.md&amp;value=---%0Auid%3A%20Qmmands.ParameterCheckAttribute.ChecksArrayElements%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Attributes/Checks/ParameterCheckAttribute.cs/#L31">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Attributes/Checks/ParameterCheckAttribute.cs/#L25">View Source</a>
   </span>
-  <a id="Qmmands_ParameterCheckAttribute__ctor_" data-uid="Qmmands.ParameterCheckAttribute.#ctor*"></a>
-  <h4 id="Qmmands_ParameterCheckAttribute__ctor_Predicate_Type__" data-uid="Qmmands.ParameterCheckAttribute.#ctor(Predicate{Type})">ParameterCheckAttribute(Predicate&lt;Type&gt;)</h4>
-  <div class="markdown level1 summary"><p>Initialises a new <a class="xref" href="Qmmands.ParameterCheckAttribute.html">ParameterCheckAttribute</a> with the predicate that determines what <see cref="!:Type"></see>s are supported.</p>
+  <a id="Qmmands_ParameterCheckAttribute_ChecksArrayElements_" data-uid="Qmmands.ParameterCheckAttribute.ChecksArrayElements*"></a>
+  <h4 id="Qmmands_ParameterCheckAttribute_ChecksArrayElements" data-uid="Qmmands.ParameterCheckAttribute.ChecksArrayElements">ChecksArrayElements</h4>
+  <div class="markdown level1 summary"><p>Gets or sets whether this check should apply to arrays as a whole or its individual elements.
+This only applies to parameters with <a class="xref" href="Qmmands.Parameter.html#Qmmands_Parameter_IsMultiple">IsMultiple</a> set to <span class="xref">true</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected ParameterCheckAttribute(Predicate&lt;Type&gt; predicate = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool ChecksArrayElements { get; set; }</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Predicate</span>&lt;<span class="xref">Type</span>&gt;</td>
-        <td><span class="parametername">predicate</span></td>
-        <td><p>The optional <see cref="!:Predicate&lt;T>"></see> that determines what types are supported. </p>
-</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
-  <h3 id="properties">Properties
-  </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_ParameterCheckAttribute_Group.md&amp;value=---%0Auid%3A%20Qmmands.ParameterCheckAttribute.Group%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Attributes/Checks/ParameterCheckAttribute.cs/#L25">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Attributes/Checks/ParameterCheckAttribute.cs/#L19">View Source</a>
   </span>
   <a id="Qmmands_ParameterCheckAttribute_Group_" data-uid="Qmmands.ParameterCheckAttribute.Group*"></a>
   <h4 id="Qmmands_ParameterCheckAttribute_Group" data-uid="Qmmands.ParameterCheckAttribute.Group">Group</h4>
@@ -171,7 +167,7 @@
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_ParameterCheckAttribute_Parameter.md&amp;value=---%0Auid%3A%20Qmmands.ParameterCheckAttribute.Parameter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Attributes/Checks/ParameterCheckAttribute.cs/#L21">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Attributes/Checks/ParameterCheckAttribute.cs/#L15">View Source</a>
   </span>
   <a id="Qmmands_ParameterCheckAttribute_Parameter_" data-uid="Qmmands.ParameterCheckAttribute.Parameter*"></a>
   <h4 id="Qmmands_ParameterCheckAttribute_Parameter" data-uid="Qmmands.ParameterCheckAttribute.Parameter">Parameter</h4>
@@ -197,38 +193,6 @@
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_ParameterCheckAttribute_Predicate.md&amp;value=---%0Auid%3A%20Qmmands.ParameterCheckAttribute.Predicate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Attributes/Checks/ParameterCheckAttribute.cs/#L16">View Source</a>
-  </span>
-  <a id="Qmmands_ParameterCheckAttribute_Predicate_" data-uid="Qmmands.ParameterCheckAttribute.Predicate*"></a>
-  <h4 id="Qmmands_ParameterCheckAttribute_Predicate" data-uid="Qmmands.ParameterCheckAttribute.Predicate">Predicate</h4>
-  <div class="markdown level1 summary"><p>Gets the <see cref="!:Predicate&lt;T>"></see> that determines which types are supported by this <a class="xref" href="Qmmands.ParameterCheckAttribute.html">ParameterCheckAttribute</a>.
-If <span class="xref">null</span>, any <see cref="!:Type"></see> of parameters are accepted. </p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Predicate&lt;Type&gt; Predicate { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Predicate</span>&lt;<span class="xref">Type</span>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -236,7 +200,7 @@ If <span class="xref">null</span>, any <see cref="!:Type"></see> of parameters a
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_ParameterCheckAttribute_CheckAsync_System_Object_Qmmands_CommandContext_.md&amp;value=---%0Auid%3A%20Qmmands.ParameterCheckAttribute.CheckAsync(System.Object%2CQmmands.CommandContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Attributes/Checks/ParameterCheckAttribute.cs/#L44">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Attributes/Checks/ParameterCheckAttribute.cs/#L41">View Source</a>
   </span>
   <a id="Qmmands_ParameterCheckAttribute_CheckAsync_" data-uid="Qmmands.ParameterCheckAttribute.CheckAsync*"></a>
   <h4 id="Qmmands_ParameterCheckAttribute_CheckAsync_System_Object_Qmmands_CommandContext_" data-uid="Qmmands.ParameterCheckAttribute.CheckAsync(System.Object,Qmmands.CommandContext)">CheckAsync(Object, CommandContext)</h4>
@@ -289,10 +253,58 @@ If <span class="xref">null</span>, any <see cref="!:Type"></see> of parameters a
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_ParameterCheckAttribute_CheckType_Type_.md&amp;value=---%0Auid%3A%20Qmmands.ParameterCheckAttribute.CheckType(Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Attributes/Checks/ParameterCheckAttribute.cs/#L30">View Source</a>
+  </span>
+  <a id="Qmmands_ParameterCheckAttribute_CheckType_" data-uid="Qmmands.ParameterCheckAttribute.CheckType*"></a>
+  <h4 id="Qmmands_ParameterCheckAttribute_CheckType_Type_" data-uid="Qmmands.ParameterCheckAttribute.CheckType(Type)">CheckType(Type)</h4>
+  <div class="markdown level1 summary"><p>Determines which types are supported by this <a class="xref" href="Qmmands.ParameterCheckAttribute.html">ParameterCheckAttribute</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool CheckType(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_ParameterCheckAttribute_Failure_System_String_.md&amp;value=---%0Auid%3A%20Qmmands.ParameterCheckAttribute.Failure(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Attributes/Checks/ParameterCheckAttribute.cs/#L57">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Attributes/Checks/ParameterCheckAttribute.cs/#L54">View Source</a>
   </span>
   <a id="Qmmands_ParameterCheckAttribute_Failure_" data-uid="Qmmands.ParameterCheckAttribute.Failure*"></a>
   <h4 id="Qmmands_ParameterCheckAttribute_Failure_System_String_" data-uid="Qmmands.ParameterCheckAttribute.Failure(System.String)">Failure(String)</h4>
@@ -341,7 +353,7 @@ If <span class="xref">null</span>, any <see cref="!:Type"></see> of parameters a
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_ParameterCheckAttribute_Success.md&amp;value=---%0Auid%3A%20Qmmands.ParameterCheckAttribute.Success%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Attributes/Checks/ParameterCheckAttribute.cs/#L50">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Attributes/Checks/ParameterCheckAttribute.cs/#L47">View Source</a>
   </span>
   <a id="Qmmands_ParameterCheckAttribute_Success_" data-uid="Qmmands.ParameterCheckAttribute.Success*"></a>
   <h4 id="Qmmands_ParameterCheckAttribute_Success" data-uid="Qmmands.ParameterCheckAttribute.Success">Success()</h4>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class EndsWithAttribute
    ">
-    <meta name="generator" content="docfx 2.56.6.0">
+    <meta name="generator" content="docfx 2.56.7.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -85,13 +85,13 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_Predicate">ParameterCheckAttribute.Predicate</a>
-    </div>
-    <div>
       <a class="xref" href="Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_Parameter">ParameterCheckAttribute.Parameter</a>
     </div>
     <div>
       <a class="xref" href="Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_Group">ParameterCheckAttribute.Group</a>
+    </div>
+    <div>
+      <a class="xref" href="Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_ChecksArrayElements">ParameterCheckAttribute.ChecksArrayElements</a>
     </div>
     <div>
       <a class="xref" href="Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_Success">ParameterCheckAttribute.Success()</a>
@@ -117,7 +117,7 @@
   </span>
   <a id="Qmmands_EndsWithAttribute__ctor_" data-uid="Qmmands.EndsWithAttribute.#ctor*"></a>
   <h4 id="Qmmands_EndsWithAttribute__ctor_System_String_" data-uid="Qmmands.EndsWithAttribute.#ctor(System.String)">EndsWithAttribute(String)</h4>
-  <div class="markdown level1 summary"><p>Initialises a new <a class="xref" href="Qmmands.EndsWithAttribute.html">EndsWithAttribute</a> with the specified string value and <see cref="!:StringComparison.OrdinalIgnoreCase"></see>.</p>
+  <div class="markdown level1 summary"><p>Initialises a new <a class="xref" href="Qmmands.EndsWithAttribute.html">EndsWithAttribute</a> with the specified string value and <see cref="!:System.StringComparison.OrdinalIgnoreCase"></see>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -253,7 +253,7 @@
     <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_EndsWithAttribute_CheckAsync_System_Object_Qmmands_CommandContext_.md&amp;value=---%0Auid%3A%20Qmmands.EndsWithAttribute.CheckAsync(System.Object%2CQmmands.CommandContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Attributes/Checks/Bundled/String/EndsWithAttribute.cs/#L42">View Source</a>
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Attributes/Checks/Bundled/String/EndsWithAttribute.cs/#L45">View Source</a>
   </span>
   <a id="Qmmands_EndsWithAttribute_CheckAsync_" data-uid="Qmmands.EndsWithAttribute.CheckAsync*"></a>
   <h4 id="Qmmands_EndsWithAttribute_CheckAsync_System_Object_Qmmands_CommandContext_" data-uid="Qmmands.EndsWithAttribute.CheckAsync(System.Object,Qmmands.CommandContext)">CheckAsync(Object, CommandContext)</h4>
@@ -306,6 +306,56 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_CheckAsync_System_Object_Qmmands_CommandContext_">ParameterCheckAttribute.CheckAsync(Object, CommandContext)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Quahu/Qmmands/new/master/apiSpec/new?filename=Qmmands_EndsWithAttribute_CheckType_Type_.md&amp;value=---%0Auid%3A%20Qmmands.EndsWithAttribute.CheckType(Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Quahu/Qmmands/blob/master/src/Qmmands/Attributes/Checks/Bundled/String/EndsWithAttribute.cs/#L41">View Source</a>
+  </span>
+  <a id="Qmmands_EndsWithAttribute_CheckType_" data-uid="Qmmands.EndsWithAttribute.CheckType*"></a>
+  <h4 id="Qmmands_EndsWithAttribute_CheckType_Type_" data-uid="Qmmands.EndsWithAttribute.CheckType(Type)">CheckType(Type)</h4>
+  <div class="markdown level1 summary"><p>Determines which types are supported by this <a class="xref" href="Qmmands.ParameterCheckAttribute.html">ParameterCheckAttribute</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool CheckType(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Qmmands.ParameterCheckAttribute.html#Qmmands_ParameterCheckAttribute_CheckType_Type_">ParameterCheckAttribute.CheckType(Type)</a></div>
 </article>
           </div>
           
