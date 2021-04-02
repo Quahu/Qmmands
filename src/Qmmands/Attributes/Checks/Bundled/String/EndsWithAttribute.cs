@@ -19,7 +19,7 @@ namespace Qmmands
         public StringComparison StringComparison { get; }
 
         /// <summary>
-        ///     Initialises a new <see cref="EndsWithAttribute"/> with the specified string value and <see cref="StringComparison.OrdinalIgnoreCase"/>.
+        ///     Initialises a new <see cref="EndsWithAttribute"/> with the specified string value and <see cref="System.StringComparison.OrdinalIgnoreCase"/>.
         /// </summary>
         /// <param name="value"> The string value. </param>
         public EndsWithAttribute(string value)
