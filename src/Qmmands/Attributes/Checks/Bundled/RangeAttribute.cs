@@ -47,7 +47,7 @@ namespace Qmmands
         /// <param name="isMinimumInclusive"> Whether the minimal value is inclusive or not. </param>
         /// <param name="isMaximumInclusive"> Whether the maximum value is inclusive or not. </param>
         public RangeAttribute(double minimum, double maximum, bool isMinimumInclusive, bool isMaximumInclusive)
-            : base(Utilities.IsNumericOrStringType)
+            : base(Utilities.IsNullableConvertible)
         {
             if (maximum < minimum)
                 throw new ArgumentOutOfRangeException(nameof(maximum), maximum, "Maximum must not be smaller than minimum.");
@@ -64,16 +64,21 @@ namespace Qmmands
         /// <inheritdoc />
         public override ValueTask<CheckResult> CheckAsync(object argument, CommandContext context)
         {
-            var value = (argument as string)?.Length ?? Convert.ToDouble(argument);
-            if (!(IsMinimumInclusive && !IsMaximumInclusive
-                ? Minimum <= value && value < Maximum
-                : !IsMinimumInclusive && IsMaximumInclusive
-                    ? Minimum < value && value <= Maximum
-                    : IsMinimumInclusive && IsMaximumInclusive
-                        ? Minimum <= value && value <= Maximum
-                        : Minimum < value && value < Maximum))
-                return Failure($"The provided argument was outside of the range: {(IsMinimumInclusive ? '[' : '(')}{Minimum}, {Maximum}{(IsMaximumInclusive ? ']' : ')')}.");
-
+            if (argument is IConvertible convertible)
+            {
+                var isString = convertible.GetTypeCode() == TypeCode.String;
+                var value = isString
+                    ? (argument as string).Length
+                    : Convert.ToDouble(argument);
+                if (!(IsMinimumInclusive && !IsMaximumInclusive
+                    ? Minimum <= value && value < Maximum
+                    : !IsMinimumInclusive && IsMaximumInclusive
+                        ? Minimum < value && value <= Maximum
+                        : IsMinimumInclusive && IsMaximumInclusive
+                            ? Minimum <= value && value <= Maximum
+                            : Minimum < value && value < Maximum))
+                    return Failure($"The provided argument was outside of the {(isString ? "length" : "value")} range: {(IsMinimumInclusive ? '[' : '(')}{Minimum}, {Maximum}{(IsMaximumInclusive ? ']' : ')')}.");
+            }
 
             return Success();
         }

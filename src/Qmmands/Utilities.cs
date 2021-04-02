@@ -527,7 +527,7 @@ namespace Qmmands
             return false;
         }
 
-        public static bool IsNumericType(Type type)
+        public static bool IsNumeric(Type type)
             => type == typeof(byte)
                 || type == typeof(sbyte)
                 || type == typeof(short)
@@ -540,11 +540,35 @@ namespace Qmmands
                 || type == typeof(double)
                 || type == typeof(decimal);
 
+        public static bool IsNullableNumeric(Type type)
+        {
+            var nullableType = Nullable.GetUnderlyingType(type);
+            if (nullableType != null)
+                type = nullableType;
+
+            return IsNumeric(type);
+        }
+
         public static bool IsStringType(Type type)
             => type == typeof(string);
 
-        public static bool IsNumericOrStringType(Type type)
-            => IsNumericType(type) || IsStringType(type);
+        public static bool IsNumericOrString(Type type)
+            => IsNumeric(type) || IsStringType(type);
+
+        public static bool IsNullableNumericOrString(Type type)
+            => IsNullableNumeric(type) || IsStringType(type);
+
+        public static bool IsConvertible(Type type)
+            => typeof(IConvertible).IsAssignableFrom(type);
+
+        public static bool IsNullableConvertible(Type type)
+        {
+            var nullableType = Nullable.GetUnderlyingType(type);
+            if (nullableType != null)
+                type = nullableType;
+
+            return IsConvertible(type);
+        }
 
         public static bool IsCaseSensitive(this StringComparison comparison)
         {
