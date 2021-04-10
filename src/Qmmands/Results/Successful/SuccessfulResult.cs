@@ -5,8 +5,11 @@
     /// </summary>
     public sealed class SuccessfulResult : IResult
     {
-        public static readonly SuccessfulResult Instance = new SuccessfulResult();
-        
+        /// <summary>
+        ///     The singleton instance of <see cref="SuccessfulResult"/>.
+        /// </summary>
+        public static readonly SuccessfulResult Instance = new();
+
         /// <summary>
         ///     Gets <see langword="true"/>.
         /// </summary>
