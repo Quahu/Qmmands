@@ -6,7 +6,7 @@ namespace Qmmands
     ///     Marks the method as a <see cref="Command"/> with the given aliases.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    public sealed class CommandAttribute : Attribute
+    public class CommandAttribute : Attribute
     {
         /// <summary>
         ///     Gets the aliases.

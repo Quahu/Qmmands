@@ -6,7 +6,7 @@ namespace Qmmands
     ///     Sets a description for the <see cref="Module"/>, <see cref="Command"/>, or <see cref="Parameter"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Parameter)]
-    public sealed class DescriptionAttribute : Attribute
+    public class DescriptionAttribute : Attribute
     {
         /// <summary>
         ///     Gets the description.

@@ -6,7 +6,7 @@ namespace Qmmands
     ///     Sets whether to ignore extra arguments for the <see cref="Module"/> or <see cref="Command"/>. 
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public sealed class IgnoresExtraArgumentsAttribute : Attribute
+    public class IgnoresExtraArgumentsAttribute : Attribute
     {
         /// <summary>
         ///     Gets whether to ignore extra arguments.

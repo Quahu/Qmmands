@@ -6,7 +6,7 @@ namespace Qmmands
     ///     Sets remarks for the <see cref="Module"/>, <see cref="Command"/>, or <see cref="Parameter"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Parameter)]
-    public sealed class RemarksAttribute : Attribute
+    public class RemarksAttribute : Attribute
     {
         /// <summary>
         ///     Gets the remarks.

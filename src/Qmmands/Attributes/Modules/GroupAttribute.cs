@@ -6,7 +6,7 @@ namespace Qmmands
     ///     Marks the class as a group <see cref="Module"/> with the given aliases.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public sealed class GroupAttribute : Attribute
+    public class GroupAttribute : Attribute
     {
         /// <summary>
         ///     Gets the aliases.

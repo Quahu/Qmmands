@@ -6,7 +6,7 @@ namespace Qmmands
     ///     Sets a name for the <see cref="Module"/>, <see cref="Command"/>, or <see cref="Parameter"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Parameter)]
-    public sealed class NameAttribute : Attribute
+    public class NameAttribute : Attribute
     {
         /// <summary>
         ///     Gets the name.

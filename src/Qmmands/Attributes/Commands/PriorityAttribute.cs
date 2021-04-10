@@ -6,7 +6,7 @@ namespace Qmmands
     ///     Sets a priority for the <see cref="Command"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    public sealed class PriorityAttribute : Attribute
+    public class PriorityAttribute : Attribute
     {
         /// <summary>
         ///     Gets the priority.

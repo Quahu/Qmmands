@@ -6,7 +6,7 @@ namespace Qmmands
     ///     Sets whether the <see cref="Module"/> or <see cref="Command"/> is disabled.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public sealed class DisabledAttribute : Attribute
+    public class DisabledAttribute : Attribute
     {
         /// <summary>
         ///     Gets whether to disable the <see cref="Module"/> or <see cref="Command"/>.

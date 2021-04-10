@@ -11,6 +11,6 @@ namespace Qmmands
     ///     of multiple words without the need of using quotation marks."/>.
     /// </remarks>
     [AttributeUsage(AttributeTargets.Parameter)]
-    public sealed class RemainderAttribute : Attribute
+    public class RemainderAttribute : Attribute
     { }
 }
