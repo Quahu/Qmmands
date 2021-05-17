@@ -907,15 +907,16 @@ namespace Qmmands
                 return await InternalExecuteAsync(context).ConfigureAwait(false);
             }
 
-            return new OverloadsFailedResult(failedOverloads);
+            return failedOverloads.Count == 1 
+                ? failedOverloads.Values.First() 
+                : new OverloadsFailedResult(failedOverloads);
+
         }
 
         private static void AddFailedOverload(ref Dictionary<Command, FailedResult> failedOverloads,
             Command command, FailedResult result)
         {
-            if (failedOverloads == null)
-                failedOverloads = new Dictionary<Command, FailedResult>(4);
-
+            failedOverloads ??= new Dictionary<Command, FailedResult>(4);
             failedOverloads[command] = result;
         }
 
