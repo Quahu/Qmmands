@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <VersionPrefix>5.0.0</VersionPrefix>
+    <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <Authors>Quahu</Authors>
+    <Description>An asynchronous command framework for .NET used in Disqord.</Description>
+    <RepositoryUrl>https://github.com/Quahu/Qmmands</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Quahu/Qmmands</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/Quahu/Qmmands/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>Git</RepositoryType>
+
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+</Project>

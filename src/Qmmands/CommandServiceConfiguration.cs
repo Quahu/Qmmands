@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Qmmands.Delegates;
+using Qommon;
 
 namespace Qmmands
 {
@@ -58,8 +59,7 @@ namespace Qmmands
             get => _separator;
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException(nameof(value), "The separator must not be null.");
+                Guard.IsNotNull(value);
 
                 _separator = value;
             }

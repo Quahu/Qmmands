@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Qmmands.Delegates;
+using Qommon.Disposal;
 
 namespace Qmmands
 {
@@ -85,11 +86,13 @@ namespace Qmmands
 
                         if (overrideArgumentParserAttribute.GetType() != typeof(OverrideArgumentParserAttribute))
                             builder.AddAttribute(overrideArgumentParserAttribute);
+
                         break;
 
                     case GroupAttribute groupAttribute:
                         for (var j = 0; j < groupAttribute.Aliases.Length; j++)
                             builder.AddAlias(groupAttribute.Aliases[j]);
+
                         break;
 
                     case CheckAttribute checkAttribute:
@@ -161,11 +164,13 @@ namespace Qmmands
 
                         if (overrideArgumentParserAttribute.GetType() != typeof(OverrideArgumentParserAttribute))
                             builder.AddAttribute(overrideArgumentParserAttribute);
+
                         break;
 
                     case CommandAttribute commandAttribute:
                         for (var j = 0; j < commandAttribute.Aliases.Length; j++)
                             builder.AddAlias(commandAttribute.Aliases[j]);
+
                         break;
 
                     case CheckAttribute checkAttribute:
@@ -229,6 +234,7 @@ namespace Qmmands
 
                         if (overrideTypeParserAttribute.GetType() != typeof(OverrideTypeParserAttribute))
                             builder.AddAttribute(overrideTypeParserAttribute);
+
                         break;
 
                     case ParameterCheckAttribute parameterCheckAttribute:
@@ -299,6 +305,7 @@ namespace Qmmands
                 type = type.BaseType.GetTypeInfo();
             }
             while (type != typeof(object));
+
             propertiesToInject = (propertiesToInject as List<PropertyInfo>).ToArray();
 
             return (provider) =>
@@ -329,13 +336,15 @@ namespace Qmmands
         private static readonly MethodInfo _getGenericTaskResultMethodInfo = typeof(Utilities)
             .GetMethod(nameof(GetGenericTaskResult), BindingFlags.Static | BindingFlags.NonPublic);
 
-        private static async Task<CommandResult> GetGenericTaskResult<T>(Task<T> task) where T : CommandResult
+        private static async Task<CommandResult> GetGenericTaskResult<T>(Task<T> task)
+            where T : CommandResult
             => task != null ? await task.ConfigureAwait(false) as CommandResult : null;
 
         private static readonly MethodInfo _getGenericValueTaskResultMethodInfo = typeof(Utilities)
             .GetMethod(nameof(GetGenericValueTaskResult), BindingFlags.Static | BindingFlags.NonPublic);
 
-        private static async ValueTask<CommandResult> GetGenericValueTaskResult<T>(ValueTask<T> task) where T : CommandResult
+        private static async ValueTask<CommandResult> GetGenericValueTaskResult<T>(ValueTask<T> task)
+            where T : CommandResult
             => await task.ConfigureAwait(false);
 
         private delegate T CallbackFunc<T>(object instance, object[] arguments);
@@ -457,22 +466,11 @@ namespace Qmmands
                     }
                     finally
                     {
-                        if (instance is IAsyncDisposable asyncDisposable)
+                        try
                         {
-                            try
-                            {
-                                await asyncDisposable.DisposeAsync().ConfigureAwait(false);
-                            }
-                            catch { }
+                            await RuntimeDisposal.DisposeAsync(instance);
                         }
-                        else if (instance is IDisposable disposable)
-                        {
-                            try
-                            {
-                                disposable.Dispose();
-                            }
-                            catch { }
-                        }
+                        catch { }
                     }
                 }
             };
@@ -581,7 +579,7 @@ namespace Qmmands
 
             return IsConvertible(type);
         }
-        
+
         public static bool IsArrayString(Type type)
         {
             if (type.IsArray)

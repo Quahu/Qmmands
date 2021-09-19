@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
+using Qommon;
 using Qommon.Collections;
 
 namespace Qmmands
@@ -21,7 +21,7 @@ namespace Qmmands
         public static readonly IReadOnlyList<string> DefaultNullableNouns;
 
         /// <summary>
-        ///     Represents a map of friendly names used for primitive <see cref="Type"/>s by <see cref="ArgumentParseFailedResult.FailureReason"/>. 
+        ///     Represents a map of friendly names used for primitive <see cref="Type"/>s by <see cref="ArgumentParseFailedResult.FailureReason"/>.
         /// </summary>
         public static readonly IReadOnlyDictionary<Type, string> FriendlyPrimitiveTypeNames;
 
@@ -62,8 +62,7 @@ namespace Qmmands
         /// </exception>
         public static bool HasPrefix(string input, char prefix, bool isCaseSensitive, out string output)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+            Guard.IsNotNull(input);
 
             return HasPrefix(input.AsSpan(), prefix, isCaseSensitive, out output);
         }
@@ -87,8 +86,7 @@ namespace Qmmands
         /// </exception>
         public static bool HasAnyPrefix(string input, IReadOnlyList<char> prefixes, out char prefix, out string output)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+            Guard.IsNotNull(input);
 
             return HasAnyPrefix(input.AsSpan(), prefixes, false, out prefix, out output);
         }
@@ -113,8 +111,7 @@ namespace Qmmands
         /// </exception>
         public static bool HasAnyPrefix(string input, IReadOnlyList<char> prefixes, bool isCaseSensitive, out char prefix, out string output)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+            Guard.IsNotNull(input);
 
             return HasAnyPrefix(input.AsSpan(), prefixes, isCaseSensitive, out prefix, out output);
         }
@@ -138,8 +135,7 @@ namespace Qmmands
         /// </exception>
         public static bool HasAnyPrefix(string input, IEnumerable<char> prefixes, out char prefix, out string output)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+            Guard.IsNotNull(input);
 
             return HasAnyPrefix(input.AsSpan(), prefixes, false, out prefix, out output);
         }
@@ -164,8 +160,7 @@ namespace Qmmands
         /// </exception>
         public static bool HasAnyPrefix(string input, IEnumerable<char> prefixes, bool isCaseSensitive, out char prefix, out string output)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+            Guard.IsNotNull(input);
 
             return HasAnyPrefix(input.AsSpan(), prefixes, isCaseSensitive, out prefix, out output);
         }
@@ -188,8 +183,7 @@ namespace Qmmands
         /// </exception>
         public static bool HasPrefix(string input, string prefix, out string output)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+            Guard.IsNotNull(input);
 
             return HasPrefix(input.AsSpan(), prefix, StringComparison.Ordinal, out output);
         }
@@ -213,8 +207,7 @@ namespace Qmmands
         /// </exception>
         public static bool HasPrefix(string input, string prefix, StringComparison comparison, out string output)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+            Guard.IsNotNull(input);
 
             return HasPrefix(input.AsSpan(), prefix, comparison, out output);
         }
@@ -238,8 +231,7 @@ namespace Qmmands
         /// </exception>
         public static bool HasAnyPrefix(string input, IReadOnlyList<string> prefixes, out string prefix, out string output)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+            Guard.IsNotNull(input);
 
             return HasAnyPrefix(input.AsSpan(), prefixes, StringComparison.Ordinal, out prefix, out output);
         }
@@ -264,8 +256,7 @@ namespace Qmmands
         /// </exception>
         public static bool HasAnyPrefix(string input, IReadOnlyList<string> prefixes, StringComparison comparison, out string prefix, out string output)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+            Guard.IsNotNull(input);
 
             return HasAnyPrefix(input.AsSpan(), prefixes, comparison, out prefix, out output);
         }
@@ -310,8 +301,7 @@ namespace Qmmands
         /// </exception>
         public static bool HasAnyPrefix(string input, IEnumerable<string> prefixes, StringComparison comparison, out string prefix, out string output)
         {
-            if (input == null)
-                throw new ArgumentNullException(nameof(input), "The input must not be null.");
+            Guard.IsNotNull(input);
 
             return HasAnyPrefix(input.AsSpan(), prefixes, comparison, out prefix, out output);
         }
@@ -392,8 +382,7 @@ namespace Qmmands
         /// </exception>
         public static bool HasAnyPrefix(ReadOnlySpan<char> input, IReadOnlyList<char> prefixes, bool isCaseSensitive, out char prefix, out string output)
         {
-            if (prefixes == null)
-                throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
+            Guard.IsNotNull(prefixes);
 
             for (var i = 0; i < prefixes.Count; i++)
             {
@@ -444,8 +433,7 @@ namespace Qmmands
         /// </exception>
         public static bool HasAnyPrefix(ReadOnlySpan<char> input, IEnumerable<char> prefixes, bool isCaseSensitive, out char prefix, out string output)
         {
-            if (prefixes == null)
-                throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
+            Guard.IsNotNull(prefixes);
 
             foreach (var currentPrefix in prefixes)
             {
@@ -493,8 +481,7 @@ namespace Qmmands
         /// </exception>
         public static bool HasPrefix(ReadOnlySpan<char> input, string prefix, StringComparison comparison, out string output)
         {
-            if (prefix == null)
-                throw new ArgumentNullException(nameof(prefix), "The prefix must not be null.");
+            Guard.IsNotNull(prefix);
 
             if (!input.StartsWith(prefix, comparison))
             {
@@ -540,8 +527,7 @@ namespace Qmmands
         /// </exception>
         public static bool HasAnyPrefix(ReadOnlySpan<char> input, IReadOnlyList<string> prefixes, StringComparison comparison, out string prefix, out string output)
         {
-            if (prefixes == null)
-                throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
+            Guard.IsNotNull(prefixes);
 
             for (var i = 0; i < prefixes.Count; i++)
             {
@@ -592,8 +578,7 @@ namespace Qmmands
         /// </exception>
         public static bool HasAnyPrefix(ReadOnlySpan<char> input, IEnumerable<string> prefixes, StringComparison comparison, out string prefix, out string output)
         {
-            if (prefixes == null)
-                throw new ArgumentNullException(nameof(prefixes), "The prefixes must not be null.");
+            Guard.IsNotNull(prefixes);
 
             foreach (var currentPrefix in prefixes)
             {
@@ -622,8 +607,7 @@ namespace Qmmands
         /// </exception>
         public static IEnumerable<CheckAttribute> EnumerateAllChecks(Module module)
         {
-            if (module == null)
-                throw new ArgumentNullException(nameof(module), "The module must not be null.");
+            Guard.IsNotNull(module);
 
             return GetAllChecksIterator(module);
         }
@@ -653,8 +637,7 @@ namespace Qmmands
         /// </exception>
         public static IEnumerable<CheckAttribute> EnumerateAllChecks(Command command)
         {
-            if (command == null)
-                throw new ArgumentNullException(nameof(command), "The command must not be null.");
+            Guard.IsNotNull(command);
 
             return GetAllChecksIterator(command);
         }
@@ -679,8 +662,7 @@ namespace Qmmands
         /// </exception>
         public static IEnumerable<Command> EnumerateAllCommands(Module module)
         {
-            if (module == null)
-                throw new ArgumentNullException(nameof(module), "The module must not be null.");
+            Guard.IsNotNull(module);
 
             static IEnumerable<Command> GetCommands(Module rModule)
             {
@@ -706,10 +688,9 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The builder must not be null.
         /// </exception>
-        public static IEnumerable<CommandBuilder> EnumerateAllCommands(ModuleBuilder builder)
+        public static IEnumerable<CommandBuilder> EnumerateAllCommands(ModuleBuilder moduleBuilder)
         {
-            if (builder == null)
-                throw new ArgumentNullException(nameof(builder), "The builder must not be null.");
+            Guard.IsNotNull(moduleBuilder);
 
             static IEnumerable<CommandBuilder> GetCommands(ModuleBuilder rModuleBuilder)
             {
@@ -723,7 +704,7 @@ namespace Qmmands
                 }
             }
 
-            return GetCommands(builder);
+            return GetCommands(moduleBuilder);
         }
 
         /// <summary>
@@ -764,10 +745,9 @@ namespace Qmmands
         /// <exception cref="ArgumentNullException">
         ///     The builder must not be null.
         /// </exception>
-        public static IEnumerable<ModuleBuilder> EnumerateAllSubmodules(ModuleBuilder builder)
+        public static IEnumerable<ModuleBuilder> EnumerateAllSubmodules(ModuleBuilder moduleBuilder)
         {
-            if (builder == null)
-                throw new ArgumentNullException(nameof(builder), "The builder must not be null.");
+            Guard.IsNotNull(moduleBuilder);
 
             static IEnumerable<ModuleBuilder> GetSubmodules(ModuleBuilder rModuleBuilder)
             {
@@ -781,19 +761,20 @@ namespace Qmmands
                 }
             }
 
-            return GetSubmodules(builder);
+            return GetSubmodules(moduleBuilder);
         }
 
         static CommandUtilities()
         {
-            DefaultQuotationMarkMap = new ReadOnlyDictionary<char, char>(new Dictionary<char, char>(3)
+            DefaultQuotationMarkMap = new Dictionary<char, char>(3)
             {
                 ['"'] = '"',
                 ['“'] = '”',
                 ['„'] = '‟'
-            });
-            DefaultNullableNouns = ImmutableArray.Create("null");
-            FriendlyPrimitiveTypeNames = new ReadOnlyDictionary<Type, string>(new Dictionary<Type, string>(PrimitiveTypeParserCount)
+            }.ReadOnly();
+
+            DefaultNullableNouns = new[] { "null" }.ReadOnly();
+            FriendlyPrimitiveTypeNames = new Dictionary<Type, string>(PrimitiveTypeParserCount)
             {
                 [typeof(char)] = "char",
                 [typeof(bool)] = "bool",
@@ -808,7 +789,7 @@ namespace Qmmands
                 [typeof(float)] = "float",
                 [typeof(double)] = "double",
                 [typeof(decimal)] = "decimal"
-            });
+            }.ReadOnly();
         }
     }
 }

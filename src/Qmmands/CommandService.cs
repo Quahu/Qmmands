@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Qmmands.Delegates;
+using Qommon;
 using Qommon.Collections;
 using Qommon.Events;
 
@@ -108,8 +109,7 @@ namespace Qmmands
         /// </exception>
         public CommandService(CommandServiceConfiguration configuration)
         {
-            if (configuration == null)
-                throw new ArgumentNullException(nameof(configuration), "The configuration must not be null.");
+            Guard.IsNotNull(configuration);
 
             StringComparison = configuration.StringComparison;
             DefaultRunMode = configuration.DefaultRunMode;
@@ -120,6 +120,7 @@ namespace Qmmands
             QuotationMarkMap = configuration.QuotationMarkMap != null
                 ? new ReadOnlyDictionary<char, char>(configuration.QuotationMarkMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value))
                 : CommandUtilities.DefaultQuotationMarkMap;
+
             NullableNouns = configuration.NullableNouns?.ToImmutableArray() ?? CommandUtilities.DefaultNullableNouns;
 
             StringComparer = StringComparer.FromComparison(StringComparison);
@@ -242,7 +243,8 @@ namespace Qmmands
         /// <exception cref="ArgumentException">
         ///     An argument parser of this type has not been added.
         /// </exception>
-        public void SetDefaultArgumentParser<T>() where T : IArgumentParser
+        public void SetDefaultArgumentParser<T>()
+            where T : IArgumentParser
             => SetDefaultArgumentParser(typeof(T));
 
         /// <summary>
@@ -303,7 +305,8 @@ namespace Qmmands
         ///     Removes an <see cref="IArgumentParser"/> of the specified <typeparamref name="T"/> <see cref="Type"/>.
         /// </summary>
         /// <typeparam name="T"> The <see cref="Type"/> of the <see cref="IArgumentParser"/>. </typeparam>
-        public void RemoveArgumentParser<T>() where T : IArgumentParser
+        public void RemoveArgumentParser<T>()
+            where T : IArgumentParser
             => RemoveArgumentParser(typeof(T));
 
         /// <summary>
@@ -338,7 +341,8 @@ namespace Qmmands
         /// <returns>
         ///     The <see cref="IArgumentParser"/> or <see langword="null"/>.
         /// </returns>
-        public IArgumentParser GetArgumentParser<T>() where T : IArgumentParser
+        public IArgumentParser GetArgumentParser<T>()
+            where T : IArgumentParser
             => GetArgumentParser(typeof(T));
 
         /// <summary>
@@ -494,7 +498,8 @@ namespace Qmmands
         /// <returns>
         ///     The <see cref="TypeParser{T}"/> of the specified <typeparamref name="TParser"/> <see cref="Type"/> or <see langword="null"/> if not found.
         /// </returns>
-        public TParser GetSpecificTypeParser<T, TParser>() where TParser : TypeParser<T>
+        public TParser GetSpecificTypeParser<T, TParser>()
+            where TParser : TypeParser<T>
             => GetSpecificTypeParser(typeof(T), typeof(TParser)) as TParser;
 
         internal ITypeParser GetSpecificTypeParser(Type type, Type parserType)
@@ -612,7 +617,7 @@ namespace Qmmands
         /// <returns>
         ///     A <see cref="Module"/>.
         /// </returns>
-        /// <exception cref="ArgumentNullException"> 
+        /// <exception cref="ArgumentNullException">
         ///     The module builder action must not be null.
         /// </exception>
         /// <exception cref="CommandMappingException">
@@ -673,7 +678,7 @@ namespace Qmmands
         }
 
         /// <summary>
-        ///     Attempts to add the specified <typeparamref name="TModule"/> <see cref="Type"/> as a <see cref="Module"/>. 
+        ///     Attempts to add the specified <typeparamref name="TModule"/> <see cref="Type"/> as a <see cref="Module"/>.
         /// </summary>
         /// <typeparam name="TModule"> The <see cref="Type"/> to add. </typeparam>
         /// <param name="action"> The optional <see cref="Action{T}"/> delegate that allows for mutation of the <see cref="ModuleBuilder"/> before it is built. </param>
@@ -696,7 +701,7 @@ namespace Qmmands
             => AddModule(typeof(TModule), action);
 
         /// <summary>
-        ///     Attempts to add the specified <see cref="Type"/> as a <see cref="Module"/>. 
+        ///     Attempts to add the specified <see cref="Type"/> as a <see cref="Module"/>.
         /// </summary>
         /// <param name="type"> The <see cref="Type"/> to add. </param>
         /// <param name="action"> The optional <see cref="Action{T}"/> delegate that allows for mutation of the <see cref="ModuleBuilder"/> before it is built. </param>
@@ -907,10 +912,9 @@ namespace Qmmands
                 return await InternalExecuteAsync(context).ConfigureAwait(false);
             }
 
-            return failedOverloads.Count == 1 
-                ? failedOverloads.Values.First() 
+            return failedOverloads.Count == 1
+                ? failedOverloads.Values.First()
                 : new OverloadsFailedResult(failedOverloads);
-
         }
 
         private static void AddFailedOverload(ref Dictionary<Command, FailedResult> failedOverloads,
@@ -1081,6 +1085,7 @@ namespace Qmmands
                             await InvokeCommandErroredAsync(executionFailedResult, context).ConfigureAwait(false);
                             return result;
                         }
+
                         break;
                     }
 
@@ -1288,10 +1293,10 @@ namespace Qmmands
             return (new TypeParseFailedResult(parameter, value), default);
         }
 
-        private Task InvokeCommandExecutedAsync(CommandResult result, CommandContext context)
-            => _commandExecuted.InvokeAsync(new CommandExecutedEventArgs(result, context));
+        private ValueTask InvokeCommandExecutedAsync(CommandResult result, CommandContext context)
+            => _commandExecuted.InvokeAsync(this, new CommandExecutedEventArgs(result, context));
 
-        private Task InvokeCommandErroredAsync(CommandExecutionFailedResult result, CommandContext context)
-            => _commandExecutionFailed.InvokeAsync(new CommandExecutionFailedEventArgs(result, context));
+        private ValueTask InvokeCommandErroredAsync(CommandExecutionFailedResult result, CommandContext context)
+            => _commandExecutionFailed.InvokeAsync(this, new CommandExecutionFailedEventArgs(result, context));
     }
 }
