@@ -16,8 +16,7 @@ namespace Qmmands
 
         public override ValueTask<TypeParserResult<T>> ParseAsync(Parameter parameter, string value, CommandContext context)
         {
-            var nouns = (ImmutableArray<string>) parameter.Service.NullableNouns;
-            return nouns.Any(x => value.Equals(x, parameter.Service.StringComparison))
+            return parameter.Service.NullableNouns.Any(noun => value.Equals(noun, parameter.Service.StringComparison))
                 ? new(new TypeParserResult<T>(false))
                 : _typeParser.ParseAsync(parameter, value, context);
         }
