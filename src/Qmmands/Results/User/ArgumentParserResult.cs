@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Qommon.Collections;
+using Qommon.Collections.ReadOnly;
 
 namespace Qmmands
 {
@@ -24,16 +24,13 @@ namespace Qmmands
         /// </summary>
         public IReadOnlyDictionary<Parameter, object> Arguments { get; }
 
-        private static readonly IReadOnlyDictionary<Parameter, object> _emptyParameterDictionary =
-            new ReadOnlyDictionary<Parameter, object>(new Dictionary<Parameter, object>(0));
-
         /// <summary>
         ///     Initialises a new <see cref="ArgumentParserResult"/>.
         /// </summary>
         /// <param name="arguments"> The successfully parsed arguments. </param>
         protected ArgumentParserResult(IReadOnlyDictionary<Parameter, object> arguments)
         {
-            Arguments = arguments ?? _emptyParameterDictionary;
+            Arguments = arguments ?? ReadOnlyDictionary<Parameter, object>.Empty;
         }
 
         /// <summary>

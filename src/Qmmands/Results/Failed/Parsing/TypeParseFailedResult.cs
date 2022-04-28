@@ -35,12 +35,13 @@ namespace Qmmands
         {
             var type = Nullable.GetUnderlyingType(Parameter.Type);
             var friendlyName = type == null
-                    ? CommandUtilities.FriendlyPrimitiveTypeNames.TryGetValue(Parameter.Type, out var name)
-                        ? name
-                        : Parameter.Type.Name
-                    : CommandUtilities.FriendlyPrimitiveTypeNames.TryGetValue(type, out name)
-                        ? $"nullable {name}"
-                        : $"nullable {type.Name}";
+                ? CommandUtilities.FriendlyPrimitiveTypeNames.TryGetValue(Parameter.Type, out var name)
+                    ? name
+                    : Parameter.Type.Name
+                : CommandUtilities.FriendlyPrimitiveTypeNames.TryGetValue(type, out name)
+                    ? $"nullable {name}"
+                    : $"nullable {type.Name}";
+
             return $"Failed to parse {friendlyName}.";
         }
     }

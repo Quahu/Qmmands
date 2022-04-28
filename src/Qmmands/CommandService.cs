@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Qmmands.Delegates;
 using Qommon;
-using Qommon.Collections;
+using Qommon.Collections.ReadOnly;
 using Qommon.Events;
 
 namespace Qmmands
@@ -66,7 +66,7 @@ namespace Qmmands
         /// <summary>
         ///     Gets the top-level modules.
         /// </summary>
-        public ReadOnlySet<Module> TopLevelModules { get; }
+        public IReadOnlySet<Module> TopLevelModules { get; }
 
         /// <summary>
         ///     Fires after a <see cref="Command"/> was successfully executed.
@@ -117,9 +117,7 @@ namespace Qmmands
             Separator = configuration.Separator;
             SeparatorRequirement = configuration.SeparatorRequirement;
             CooldownBucketKeyGenerator = configuration.CooldownBucketKeyGenerator;
-            QuotationMarkMap = configuration.QuotationMarkMap != null
-                ? new ReadOnlyDictionary<char, char>(configuration.QuotationMarkMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value))
-                : CommandUtilities.DefaultQuotationMarkMap;
+            QuotationMarkMap = configuration.QuotationMarkMap?.ToReadOnlyDictionary() ?? CommandUtilities.DefaultQuotationMarkMap;
 
             NullableNouns = configuration.NullableNouns?.ToImmutableArray() ?? CommandUtilities.DefaultNullableNouns;
 
