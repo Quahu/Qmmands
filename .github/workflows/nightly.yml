@@ -18,4 +18,4 @@ jobs:
     - name: MyGet
       env:
         MYGET_API_KEY: ${{ secrets.MYGET_API_KEY }}
-      run: dotnet nuget push "./artifacts/*.nupkg" -k $Env:MYGET_API_KEY -s https://www.myget.org/F/quahu/api/v3/
+      run: dotnet nuget push "./artifacts/*.nupkg" -k $Env:MYGET_API_KEY -s https://www.myget.org/F/quahu/api/v3/index.json
