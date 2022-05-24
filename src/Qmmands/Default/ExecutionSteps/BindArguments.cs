@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using Qommon;
 
 namespace Qmmands.Default;
 
 public static partial class DefaultExecutionSteps
 {
+    /// <summary>
+    ///     Binds <see cref="ICommandContext.Arguments"/> accordingly with <see cref="ICommand.Parameters"/>.
+    /// </summary>
     public class BindArguments : CommandExecutionStep
     {
+        /// <inheritdoc/>
         protected override async ValueTask<IResult> OnExecuted(ICommandContext context)
         {
             var binder = context.Services.GetRequiredService<IArgumentBinder>();

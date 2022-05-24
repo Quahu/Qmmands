@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Qommon;
@@ -9,17 +8,21 @@ namespace Qmmands.Text.Default;
 
 public static partial class DefaultTextExecutionSteps
 {
+    /// <summary>
+    ///     Parses <see cref="ITextCommandContext.RawArgumentString"/> to <see cref="ICommandContext.RawArguments"/>.
+    /// </summary>
     public class ArgumentParse : CommandExecutionStep
     {
+        /// <inheritdoc/>
         protected override bool CanBeSkipped(ICommandContext context)
         {
             return context.RawArguments != null;
         }
 
+        /// <inheritdoc/>
         protected override async ValueTask<IResult> OnExecuted(ICommandContext context)
         {
             var textContext = Guard.IsAssignableToType<ITextCommandContext>(context);
-            Guard.IsNotNull(textContext.InputString);
 
             Guard.IsNotNull(textContext.Command);
             var command = textContext.Command;

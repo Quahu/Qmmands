@@ -1,12 +1,16 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Qommon;
 
 namespace Qmmands.Default;
 
 public static partial class DefaultExecutionSteps
 {
+    /// <summary>
+    ///     Runs command checks.
+    /// </summary>
     public class RunChecks : CommandExecutionStep
     {
+        /// <inheritdoc/>
         protected override async ValueTask<IResult> OnExecuted(ICommandContext context)
         {
             Guard.IsNotNull(context.Command);

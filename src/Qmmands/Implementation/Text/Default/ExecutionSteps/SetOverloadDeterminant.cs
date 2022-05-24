@@ -7,6 +7,7 @@ public static partial class DefaultTextExecutionSteps
 {
     public class SetOverloadDeterminant : CommandExecutionStep
     {
+        /// <inheritdoc/>
         protected override ValueTask<IResult> OnExecuted(ICommandContext context)
         {
             var textContext = Guard.IsAssignableToType<ITextCommandContext>(context);

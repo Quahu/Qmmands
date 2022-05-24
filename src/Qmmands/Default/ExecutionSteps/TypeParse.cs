@@ -9,13 +9,18 @@ namespace Qmmands.Default;
 
 public static partial class DefaultExecutionSteps
 {
+    /// <summary>
+    ///     Type parses <see cref="ICommandContext.RawArguments"/> into <see cref="ICommandContext.Arguments"/>.
+    /// </summary>
     public class TypeParse : CommandExecutionStep
     {
+        /// <inheritdoc/>
         protected override bool CanBeSkipped(ICommandContext context)
         {
             return context.Command?.Parameters.Count == 0 || context.RawArguments == null || context.RawArguments.Count == 0;
         }
 
+        /// <inheritdoc/>
         protected override async ValueTask<IResult> OnExecuted(ICommandContext context)
         {
             Guard.IsNotNull(context.Command);

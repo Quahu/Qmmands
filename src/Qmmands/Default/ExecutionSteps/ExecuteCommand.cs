@@ -10,8 +10,12 @@ namespace Qmmands.Default;
 
 public static partial class DefaultExecutionSteps
 {
+    /// <summary>
+    ///     Executes the command.
+    /// </summary>
     public class ExecuteCommand : CommandExecutionStep
     {
+        /// <inheritdoc/>
         protected override async ValueTask<IResult> OnExecuted(ICommandContext context)
         {
             Guard.IsNotNull(context.Command);

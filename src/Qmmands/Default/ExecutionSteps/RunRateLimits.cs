@@ -5,8 +5,12 @@ namespace Qmmands.Default;
 
 public static partial class DefaultExecutionSteps
 {
+    /// <summary>
+    ///     Runs rate-limits.
+    /// </summary>
     public class RunRateLimits : CommandExecutionStep
     {
+        /// <inheritdoc/>
         protected override async ValueTask<IResult> OnExecuted(ICommandContext context)
         {
             var rateLimitService = context.Services.GetService<ICommandRateLimiter>();

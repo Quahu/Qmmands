@@ -6,13 +6,18 @@ namespace Qmmands.Default;
 
 public static partial class DefaultExecutionSteps
 {
+    /// <summary>
+    ///     Runs parameter checks.
+    /// </summary>
     public class RunParameterChecks : CommandExecutionStep
     {
+        /// <inheritdoc/>
         protected override bool CanBeSkipped(ICommandContext context)
         {
             return context.Arguments == null || context.Arguments.Count == 0;
         }
 
+        /// <inheritdoc/>
         protected override async ValueTask<IResult> OnExecuted(ICommandContext context)
         {
             Guard.IsNotNull(context.Command);

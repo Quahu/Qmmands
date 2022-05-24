@@ -9,13 +9,18 @@ namespace Qmmands.Text.Default;
 
 public static partial class DefaultTextExecutionSteps
 {
+    /// <summary>
+    ///     Finds <see cref="ICommandContext.Command"/> and extracts <see cref="ITextCommandContext.RawArgumentString"/> from <see cref="ITextCommandContext.InputString"/>.
+    /// </summary>
     public class MapLookup : CommandExecutionStep
     {
+        /// <inheritdoc/>
         protected override bool CanBeSkipped(ICommandContext context)
         {
             return context.Command != null;
         }
 
+        /// <inheritdoc/>
         protected override async ValueTask<IResult> OnExecuted(ICommandContext context)
         {
             var textContext = Guard.IsAssignableToType<ITextCommandContext>(context);
