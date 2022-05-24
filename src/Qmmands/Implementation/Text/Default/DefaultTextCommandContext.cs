@@ -33,10 +33,11 @@ public class DefaultTextCommandContext : ITextCommandContext
 
     public bool IsOverloadDeterminant { get; set; }
 
-    public DefaultTextCommandContext(IServiceProvider services)
+    public DefaultTextCommandContext(IServiceProvider services, CultureInfo locale, CancellationToken cancellationToken)
     {
         Services = services;
-        Locale = CultureInfo.InvariantCulture;
+        Locale = locale;
+        CancellationToken = cancellationToken;
     }
 
     public virtual ValueTask ResetAsync()
