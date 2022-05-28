@@ -57,6 +57,7 @@ public class ClassicArgumentParser : IArgumentParser
         var command = context.Command;
         var rawArguments = context.RawArgumentString.Span;
         IPositionalParameter? currentParameter = null;
+        IPositionalParameter? enumerableParameter = null;
         var argumentBuilder = new StringBuilder();
         Dictionary<ITextParameter, MultiString>? arguments = null;
         var currentQuote = '\0';
@@ -89,7 +90,7 @@ public class ClassicArgumentParser : IArgumentParser
 
                 currentParameter = (IPositionalParameter?) (command.Parameters.Count > 0 && (arguments == null || arguments.Count < command.Parameters.Count)
                     ? command.Parameters[arguments?.Count ?? 0]
-                    : command.Parameters.LastOrDefault());
+                    : enumerableParameter);
 
                 if (currentParameter == null)
                 {
@@ -97,6 +98,11 @@ public class ClassicArgumentParser : IArgumentParser
                         break;
 
                     return new ClassicArgumentParserResult(arguments, null, ClassicArgumentParserFailure.TooManyArguments, currentPosition);
+                }
+
+                if (enumerableParameter == null && currentParameter.GetTypeInformation().IsEnumerable)
+                {
+                    enumerableParameter = currentParameter;
                 }
             }
 

@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
+using Qmmands.Text;
+using Qmmands.Text.Default;
 using Serilog;
 using Serilog.Core;
 using Serilog.Extensions.Logging;
@@ -20,6 +22,7 @@ namespace Qmmands.Tests
         protected static readonly ILoggerFactory LoggerFactory;
         protected static readonly IServiceProvider StaticServices;
 
+        protected ICommandService CommandService = null!;
         protected IServiceProvider Services = null!;
         private static readonly Logger _serilogLogger;
 
@@ -44,10 +47,14 @@ namespace Qmmands.Tests
 
             var services = new ServiceCollection()
                 .AddOptions()
-                .AddLogging(x => x.AddSerilog(_serilogLogger));
+                .AddLogging(x => x.AddSerilog(_serilogLogger))
+                .AddTextCommandService();
 
             ServiceSetup(services);
             Services = services.BuildServiceProvider();
+            CommandService = Services.GetRequiredService<ICommandService>();
+
+            DefaultTextSetup.Initialize(CommandService);
         }
 
         protected virtual void ServiceSetup(IServiceCollection services)
