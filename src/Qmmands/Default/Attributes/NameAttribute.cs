@@ -26,19 +26,19 @@ public class NameAttribute : Attribute,
     }
 
     /// <inheritdoc/>
-    public void Apply(IModuleBuilder builder)
+    public virtual void Apply(IModuleBuilder builder)
     {
         builder.Name = Name;
     }
 
     /// <inheritdoc/>
-    public void Apply(ICommandBuilder builder)
+    public virtual void Apply(ICommandBuilder builder)
     {
         builder.Name = Name;
     }
 
     /// <inheritdoc/>
-    public void Apply(IParameterBuilder builder)
+    public virtual void Apply(IParameterBuilder builder)
     {
         builder.Name = Name;
     }

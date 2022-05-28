@@ -27,7 +27,7 @@ public abstract class ParameterCheckAttribute : Attribute, IParameterCheck,
     public abstract ValueTask<IResult> CheckAsync(ICommandContext context, IParameter parameter, object? value);
 
     /// <inheritdoc/>
-    public void Apply(IParameterBuilder builder)
+    public virtual void Apply(IParameterBuilder builder)
     {
         builder.Checks.Add(this);
     }

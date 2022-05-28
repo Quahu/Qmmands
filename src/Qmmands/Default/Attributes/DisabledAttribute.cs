@@ -14,12 +14,14 @@ public class DisabledAttribute : Attribute,
     /// </summary>
     public string? Reason { get; set; }
 
-    public void Apply(IModuleBuilder builder)
+    /// <inheritdoc/>
+    public virtual void Apply(IModuleBuilder builder)
     {
         builder.CustomAttributes.Add(this);
     }
 
-    public void Apply(ICommandBuilder builder)
+    /// <inheritdoc/>
+    public virtual void Apply(ICommandBuilder builder)
     {
         builder.CustomAttributes.Add(this);
     }

@@ -24,7 +24,7 @@ public abstract class CheckAttribute : Attribute, ICheck,
     }
 
     /// <inheritdoc/>
-    public void Apply(ICommandBuilder builder)
+    public virtual void Apply(ICommandBuilder builder)
     {
         builder.Checks.Add(this);
     }

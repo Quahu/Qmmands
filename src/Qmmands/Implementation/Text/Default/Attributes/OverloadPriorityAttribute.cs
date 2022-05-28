@@ -27,7 +27,7 @@ public class OverloadPriorityAttribute : Attribute,
     }
 
     /// <inheritdoc/>
-    public void Apply(ITextCommandBuilder builder)
+    public virtual void Apply(ITextCommandBuilder builder)
     {
         builder.OverloadPriority = OverloadOverloadPriority;
     }

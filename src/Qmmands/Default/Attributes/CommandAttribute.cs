@@ -6,5 +6,6 @@ namespace Qmmands;
 public abstract class CommandAttribute : Attribute,
     ICommandBuilderAttribute<ICommandBuilder>
 {
+    /// <inheritdoc/>
     public abstract void Apply(ICommandBuilder builder);
 }

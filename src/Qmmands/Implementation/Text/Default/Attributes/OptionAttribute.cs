@@ -82,7 +82,7 @@ public class OptionAttribute : Attribute,
     }
 
     /// <inheritdoc/>
-    public void Apply(IOptionParameterBuilder builder)
+    public virtual void Apply(IOptionParameterBuilder builder)
     {
         if (ShortNames != null && LongNames != null)
         {

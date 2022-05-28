@@ -26,19 +26,19 @@ public class DescriptionAttribute : Attribute,
     }
 
     /// <inheritdoc/>
-    public void Apply(IModuleBuilder builder)
+    public virtual void Apply(IModuleBuilder builder)
     {
         builder.Description = Description;
     }
 
     /// <inheritdoc/>
-    public void Apply(ICommandBuilder builder)
+    public virtual void Apply(ICommandBuilder builder)
     {
         builder.Description = Description;
     }
 
     /// <inheritdoc/>
-    public void Apply(IParameterBuilder builder)
+    public virtual void Apply(IParameterBuilder builder)
     {
         builder.Description = Description;
     }
