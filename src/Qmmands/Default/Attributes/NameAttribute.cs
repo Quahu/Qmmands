@@ -3,7 +3,7 @@
 namespace Qmmands;
 
 /// <summary>
-///     Specifies the name of the decorated member.
+///     Specifies the name of the decorated module, command or parameter.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Parameter, AllowMultiple = true)]
 public class NameAttribute : Attribute,

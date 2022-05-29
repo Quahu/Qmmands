@@ -3,26 +3,13 @@
 namespace Qmmands;
 
 /// <summary>
-///     Disables the decorated module/command.
+///     Marks the decorated module or command as disabled with an optional reason.
 /// </summary>
-public class DisabledAttribute : Attribute,
-    IModuleBuilderAttribute<IModuleBuilder>,
-    ICommandBuilderAttribute<ICommandBuilder>
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+public class DisabledAttribute : Attribute
 {
     /// <summary>
-    ///     Gets or sets the reason for the module/command being disabled.
+    ///     Gets or sets the reason for the module or command being disabled.
     /// </summary>
     public string? Reason { get; set; }
-
-    /// <inheritdoc/>
-    public virtual void Apply(IModuleBuilder builder)
-    {
-        builder.CustomAttributes.Add(this);
-    }
-
-    /// <inheritdoc/>
-    public virtual void Apply(ICommandBuilder builder)
-    {
-        builder.CustomAttributes.Add(this);
-    }
 }

@@ -3,7 +3,7 @@
 namespace Qmmands;
 
 /// <summary>
-///     Specifies the description of the decorated member.
+///     Specifies the description of the decorated module, command or parameter.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Parameter)]
 public class DescriptionAttribute : Attribute,

@@ -3,7 +3,7 @@
 namespace Qmmands.Text;
 
 /// <summary>
-///     Specifies the overload priority for the decorated command.
+///     Specifies the overload priority for the decorated text command.
 /// </summary>
 [AttributeUsage(AttributeTargets.Method)]
 public class OverloadPriorityAttribute : Attribute,
