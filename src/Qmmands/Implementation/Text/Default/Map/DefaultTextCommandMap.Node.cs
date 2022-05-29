@@ -192,14 +192,12 @@ public partial class DefaultTextCommandMap
                     path = path.Pop();
                 }
             }
-            else
+
+            if (Nodes.TryGetValue(segment, out var node))
             {
-                if (Nodes.TryGetValue(segment, out var node))
-                {
-                    path = path.Push(segment);
-                    node.FindCommands(ref matches, ref path, remainingText);
-                    path = path.Pop();
-                }
+                path = path.Push(segment);
+                node.FindCommands(ref matches, ref path, remainingText);
+                path = path.Pop();
             }
         }
 

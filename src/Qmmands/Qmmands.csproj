@@ -38,6 +38,7 @@
         <PackageReference Include="Qommon" Version="3.0.3" />
     </ItemGroup>
     <ItemGroup>
+      <Folder Include="Constructs\Module\Extensions" />
       <Folder Include="Default\Attributes\Checks" />
     </ItemGroup>
 </Project>
