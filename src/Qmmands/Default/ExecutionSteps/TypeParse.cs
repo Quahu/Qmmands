@@ -57,9 +57,6 @@ public static partial class DefaultExecutionSteps
                 var typeParser = typeParsers.GetParser(parameter);
                 if (typeParser == null)
                 {
-                    if (parameter.CustomTypeParserType != null)
-                        throw new InvalidOperationException($"No custom type parser found for parameter {parameter.Name} ({parameter.CustomTypeParserType}).");
-
                     if (typeInformation.IsStringLike)
                     {
                         if (!typeInformation.IsEnumerable)

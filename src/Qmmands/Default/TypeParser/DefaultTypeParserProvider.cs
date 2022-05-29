@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Qommon;
 using Qommon.Collections.Synchronized;
 
 namespace Qmmands.Default;
@@ -66,13 +68,19 @@ public class DefaultTypeParserProvider : ITypeParserProvider
     /// <inheritdoc/>
     public ITypeParser? GetParser(IParameter parameter)
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static void ThrowCustomTypeParserNotFound(IParameter parameter)
+        {
+            Throw.InvalidOperationException($"No custom type parser found for parameter {parameter.Name} ({parameter.CustomTypeParserType}).");
+        }
+
         var parsedType = parameter.GetTypeInformation().ActualType;
 
         // If the parser list exists for the parsed type, try to return a parser from it.
         if (TypeParsers.TryGetValue(parsedType, out var parsers))
         {
-            var specificParserType = parameter.CustomTypeParserType;
-            if (specificParserType != null)
+            var customParserType = parameter.CustomTypeParserType;
+            if (customParserType != null)
             {
                 var count = parsers.Count;
                 lock (parsers)
@@ -80,11 +88,12 @@ public class DefaultTypeParserProvider : ITypeParserProvider
                     for (var i = 0; i < count; i++)
                     {
                         var parser = parsers[i];
-                        if (parser.GetType() == specificParserType)
+                        if (parser.GetType() == customParserType)
                             return parser;
                     }
                 }
 
+                ThrowCustomTypeParserNotFound(parameter);
                 return null;
             }
 
@@ -95,6 +104,18 @@ public class DefaultTypeParserProvider : ITypeParserProvider
                     return parsers[0];
                 }
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static ITypeParser CheckCustomParser(IParameter parameter, ITypeParser parser)
+        {
+            var customParserType = parameter.CustomTypeParserType;
+            if (customParserType != null && customParserType != parser.GetType())
+            {
+                ThrowCustomTypeParserNotFound(parameter);
+            }
+
+            return parser;
         }
 
         // If it doesn't exist, but there's a try-parse delegate, add a new primitive type parser.
@@ -109,7 +130,7 @@ public class DefaultTypeParserProvider : ITypeParserProvider
             Debug.Assert(parser != null);
 
             this.AddParser(parser);
-            return parser;
+            return CheckCustomParser(parameter, parser);
         }
 
         // If the type is an enum - add a new enum type parser.
@@ -119,7 +140,7 @@ public class DefaultTypeParserProvider : ITypeParserProvider
             Debug.Assert(parser != null);
 
             this.AddParser(parser);
-            return parser;
+            return CheckCustomParser(parameter, parser);
         }
 
         return null;
