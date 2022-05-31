@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Qommon;
@@ -10,8 +9,6 @@ namespace Qmmands;
 public class ReflectionCommandCallback : ICommandCallback
 {
     public static ReflectionCommandCallback Instance { get; } = new();
-
-    private static readonly MethodInfo _valueTaskAsTaskMethod = typeof(ValueTask<>).GetMethod("AsTask")!;
 
     private ReflectionCommandCallback()
     { }
@@ -33,7 +30,8 @@ public class ReflectionCommandCallback : ICommandCallback
         var moduleBase = ActivatorUtilities.CreateInstance(context.Services, typeInfo) as IModuleBase;
         Guard.IsNotNull(moduleBase);
 
-        await using (RuntimeDisposal.WrapAsync(moduleBase).ConfigureAwait(false))
+        IResult? returnResult = null;
+        try
         {
             moduleBase.Context = context;
             context.ModuleBase = moduleBase;
@@ -57,7 +55,6 @@ public class ReflectionCommandCallback : ICommandCallback
             }
 
             var methodResult = methodInfo.Invoke(moduleBase, argumentArray);
-            IResult? returnResult = null;
             if (methodResult != null)
             {
                 if (methodResult is IResult result)
@@ -76,7 +73,8 @@ public class ReflectionCommandCallback : ICommandCallback
                     if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ValueTask<>))
                     {
                         // ValueTask<T> -> Task<T>
-                        methodResult = _valueTaskAsTaskMethod.MakeGenericMethod(type.GenericTypeArguments[0]).Invoke(methodResult, null);
+                        methodResult = methodResult.GetType().GetMethod("AsTask")!.Invoke(methodResult, null)!;
+                        type = methodResult.GetType();
                     }
 
                     if (methodResult is Task taskResult)
@@ -97,11 +95,15 @@ public class ReflectionCommandCallback : ICommandCallback
                         }
                     }
                 }
+
+                await moduleBase.OnAfterExecuted().ConfigureAwait(false);
             }
-
-            await moduleBase.OnAfterExecuted().ConfigureAwait(false);
-
-            return returnResult ?? Results.Success;
         }
+        finally
+        {
+            await RuntimeDisposal.WrapAsync(moduleBase).DisposeAsync().ConfigureAwait(false);
+        }
+
+        return returnResult ?? Results.Success;
     }
 }
