@@ -49,10 +49,12 @@ public class DefaultArgumentBinder : IArgumentBinder
             missingParameterCount -= optionalParameters.Count;
             if (missingParameterCount != 0)
                 return Results.Failure("Failed to resolve all missing parameters.");
+
+            context.Arguments = arguments;
         }
 
-        if (missingParameterCount != 0)
-        { }
+        // if (missingParameterCount != 0)
+        // { }
 
         return Results.Success;
     }
