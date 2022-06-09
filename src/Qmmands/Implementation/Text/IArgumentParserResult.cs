@@ -11,5 +11,10 @@ public interface IArgumentParserResult : IResult
     /// <summary>
     ///     Gets the parsed raw arguments.
     /// </summary>
-    IReadOnlyDictionary<ITextParameter, MultiString> Arguments { get; }
+    IDictionary<IParameter, object?>? Arguments { get; }
+
+    /// <summary>
+    ///     Gets the parsed raw arguments.
+    /// </summary>
+    IDictionary<IParameter, MultiString>? RawArguments { get; }
 }

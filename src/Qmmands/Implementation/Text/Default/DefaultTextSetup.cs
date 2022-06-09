@@ -19,5 +19,6 @@ public static class DefaultTextSetup
 
         var argumentParserProvider = services.GetRequiredService<IArgumentParserProvider>() as DefaultArgumentParserProvider;
         argumentParserProvider?.Add(ActivatorUtilities.CreateInstance<DefaultArgumentParser>(services));
+        argumentParserProvider?.Add(ActivatorUtilities.CreateInstance<ClassicArgumentParser>(services));
     }
 }

@@ -33,12 +33,15 @@ public class DefaultArgumentParserProvider : IArgumentParserProvider
         Interlocked.CompareExchange(ref _defaultParser, parser, null);
     }
 
+    /// <inheritdoc/>
     public IArgumentParser? GetParser(ITextCommand command)
     {
         var specificArgumentParserType = command.CustomArgumentParserType;
-        if (specificArgumentParserType == null)
-            return _defaultParser;
+        var parser = specificArgumentParserType == null
+            ? _defaultParser
+            : _argumentParsers.GetValueOrDefault(specificArgumentParserType);
 
-        return _argumentParsers.GetValueOrDefault(specificArgumentParserType);
+        parser?.Validate(command);
+        return parser;
     }
 }

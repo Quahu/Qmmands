@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Qommon;
@@ -44,18 +43,8 @@ public static partial class DefaultTextExecutionSteps
             if (!result.IsSuccessful)
                 return result;
 
-            var parameters = command.Parameters;
-            var parameterCount = parameters.Count;
-            if (parameterCount > 0)
-            {
-                var rawArguments = new Dictionary<IParameter, MultiString>(result.Arguments.Count);
-                foreach (var (parameter, rawArgument) in result.Arguments)
-                {
-                    rawArguments[parameter] = rawArgument;
-                }
-
-                context.RawArguments = rawArguments;
-            }
+            context.Arguments = result.Arguments;
+            context.RawArguments = result.RawArguments;
 
             return await Next.ExecuteAsync(context).ConfigureAwait(false);
         }

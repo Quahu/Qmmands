@@ -1,11 +1,8 @@
-﻿using System;
-
-namespace Qmmands.Text.Default;
+﻿namespace Qmmands.Text.Default;
 
 /// <summary>
 ///     Represents the reason why the argument parsing failed.
 /// </summary>
-[Obsolete(ClassicArgumentParser.ObsoletionReason)]
 public enum ClassicArgumentParserFailure
 {
     /// <summary>

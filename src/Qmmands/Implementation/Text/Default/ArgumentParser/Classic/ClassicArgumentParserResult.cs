@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Qommon;
-using Qommon.Collections.ReadOnly;
 
 namespace Qmmands.Text.Default;
 
 /// <summary>
 ///     Represents a <see cref="ClassicArgumentParser.ParseAsync"/> result.
 /// </summary>
-[Obsolete(ClassicArgumentParser.ObsoletionReason)]
 public class ClassicArgumentParserResult : IArgumentParserResult
 {
     /// <inheritdoc/>
@@ -51,8 +49,15 @@ public class ClassicArgumentParserResult : IArgumentParserResult
         }
     }
 
-    /// <inheritdoc/>
-    public IReadOnlyDictionary<ITextParameter, MultiString> Arguments { get; }
+    /// <summary>
+    ///     Gets the parsed raw arguments.
+    /// </summary>
+    public IDictionary<IParameter, object?>? Arguments => null;
+
+    /// <summary>
+    ///     Gets the parsed raw arguments.
+    /// </summary>
+    public IDictionary<IParameter, MultiString>? RawArguments { get; }
 
     /// <summary>
     ///     Gets the <see cref="ClassicArgumentParserFailure"/>.
@@ -60,7 +65,7 @@ public class ClassicArgumentParserResult : IArgumentParserResult
     public ClassicArgumentParserFailure? Failure { get; }
 
     /// <summary>
-    ///     Gets the <see cref="ITextParameter"/> the parse failed on.
+    ///     Gets the parameter the parse failed on.
     ///     Can return <see langword="null"/> depending on the <see cref="Failure"/>.
     /// </summary>
     public IPositionalParameter? FailureParameter { get; }
@@ -73,24 +78,24 @@ public class ClassicArgumentParserResult : IArgumentParserResult
     /// <summary>
     ///     Initialises a new successful <see cref="ClassicArgumentParserResult"/>.
     /// </summary>
-    /// <param name="arguments"> The parsed arguments. </param>
+    /// <param name="rawArguments"> The parsed arguments. </param>
     public ClassicArgumentParserResult(
-        IReadOnlyDictionary<ITextParameter, MultiString>? arguments)
+        IDictionary<IParameter, MultiString>? rawArguments)
     {
-        Arguments = arguments ?? ReadOnlyDictionary<ITextParameter, MultiString>.Empty;
+        RawArguments = rawArguments;
     }
 
     /// <summary>
     ///     Initialises a new unsuccessful <see cref="ClassicArgumentParserResult"/>.
     /// </summary>
-    /// <param name="arguments"> The parsed arguments. </param>
+    /// <param name="rawArguments"> The parsed arguments. </param>
     /// <param name="failureParameter"> The <see cref="ITextParameter"/> the parse failed for. </param>
     /// <param name="failure"> The <see cref="ClassicArgumentParserFailure"/>. </param>
     /// <param name="failurePosition"> The failure position. </param>
     public ClassicArgumentParserResult(
-        IReadOnlyDictionary<ITextParameter, MultiString>? arguments, IPositionalParameter? failureParameter,
+        IDictionary<IParameter, MultiString>? rawArguments, IPositionalParameter? failureParameter,
         ClassicArgumentParserFailure failure, int? failurePosition)
-        : this(arguments)
+        : this(rawArguments)
     {
         Guard.IsDefined(failure);
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -9,14 +8,13 @@ using Qommon;
 namespace Qmmands.Text.Default;
 
 /// <summary>
-///     Represents the default argument parser implementation.
+///     Represents the original Qmmands argument parser implementation.
 /// </summary>
-[Obsolete(ObsoletionReason)]
+/// <remarks>
+///     Supports only positional parameters.
+/// </remarks>
 public class ClassicArgumentParser : IArgumentParser
 {
-    internal const string ObsoletionReason = "ClassicArgumentParser is the outdated implementation. "
-        + "DefaultArgumentParser supports the same feature set and more.";
-
     public bool SupportsOptionalParameters => false;
 
     /// <summary>
@@ -35,6 +33,7 @@ public class ClassicArgumentParser : IArgumentParser
         QuotationMarks = configuration.QuotationMarks;
     }
 
+    /// <inheritdoc/>
     public void Validate(ITextCommand command)
     {
         var parameters = command.Parameters;
@@ -43,7 +42,7 @@ public class ClassicArgumentParser : IArgumentParser
         {
             var parameter = parameters[i];
             if (parameter is not IPositionalParameter)
-                Throw.ArgumentException($"The command {command.Name} can not be parsed by the default argument parser because it contains non-positional parameters.", nameof(command));
+                Throw.ArgumentException($"The command {command.Name} can not be parsed by the classic argument parser because it contains non-positional parameters.", nameof(command));
         }
     }
 
@@ -59,7 +58,7 @@ public class ClassicArgumentParser : IArgumentParser
         IPositionalParameter? currentParameter = null;
         IPositionalParameter? enumerableParameter = null;
         var argumentBuilder = new StringBuilder();
-        Dictionary<ITextParameter, MultiString>? arguments = null;
+        Dictionary<IParameter, MultiString>? arguments = null;
         var currentQuote = '\0';
         var expectedQuote = '\0';
         var whitespaceSeparated = false;
@@ -179,7 +178,7 @@ public class ClassicArgumentParser : IArgumentParser
             NextParameter(command, ref currentParameter, argumentBuilder, ref arguments);
 
         if (arguments == null && command.Parameters.Count > 0)
-            arguments = new Dictionary<ITextParameter, MultiString>(command.Parameters.Count);
+            arguments = new Dictionary<IParameter, MultiString>(command.Parameters.Count);
 
         if (arguments != null && arguments.Count != command.Parameters.Count)
         {
@@ -195,9 +194,9 @@ public class ClassicArgumentParser : IArgumentParser
     }
 
     private static void NextParameter(ITextCommand command, ref IPositionalParameter currentParameter, StringBuilder argumentBuilder,
-        ref Dictionary<ITextParameter, MultiString>? arguments)
+        ref Dictionary<IParameter, MultiString>? arguments)
     {
-        arguments ??= new Dictionary<ITextParameter, MultiString>(command.Parameters.Count);
+        arguments ??= new Dictionary<IParameter, MultiString>(command.Parameters.Count);
 
         var argument = argumentBuilder.ToString();
         argumentBuilder.Clear();
