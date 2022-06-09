@@ -208,6 +208,7 @@ public static partial class DefaultExecutionSteps
                     }
                 }
 
+                // TODO: scrap optionals
                 arguments[parameter] = typeInformation.IsOptionalType
                     ? Activator.CreateInstance(parameter.ReflectedType, value)
                     : value;
