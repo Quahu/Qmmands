@@ -10,13 +10,10 @@ public class DefaultArgumentParserConfiguration
     /// <summary>
     ///     Gets the default quotation mark pairs.
     /// </summary>
-    public static Dictionary<char, char> DefaultQuotationMarks => new(6)
+    public static Dictionary<char, char> DefaultQuotationMarks => new(7)
     {
         // double
         ['"'] = '"',
-
-        // single
-        ['\''] = '\'',
 
         // left/right
         ['“'] = '”',
