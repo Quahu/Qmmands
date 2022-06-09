@@ -22,15 +22,6 @@ public class DefaultArgumentBinder : IArgumentBinder
 
         var command = context.Command;
         var arguments = context.Arguments;
-        if (arguments != null)
-        {
-            foreach (var (parameter, argument) in arguments)
-            {
-                if (argument != null && !parameter.ReflectedType.IsInstanceOfType(argument))
-                    throw new InvalidOperationException($"Value of type {argument.GetType()} is not assignable to the parameter {parameter.Name} ({parameter.ReflectedType}).");
-            }
-        }
-
         var missingParameters = arguments != null ? command.Parameters.Except(arguments.Keys).ToList() : command.Parameters.ToList();
         var missingParameterCount = missingParameters.Count;
         if (missingParameterCount != 0)
@@ -55,6 +46,15 @@ public class DefaultArgumentBinder : IArgumentBinder
 
         // if (missingParameterCount != 0)
         // { }
+
+        if (arguments != null)
+        {
+            foreach (var (parameter, argument) in arguments)
+            {
+                if (argument != null && !parameter.ReflectedType.IsInstanceOfType(argument))
+                    throw new InvalidOperationException($"Value of type {argument.GetType()} is not assignable to the parameter {parameter.Name} ({parameter.ReflectedType}).");
+            }
+        }
 
         return Results.Success;
     }
