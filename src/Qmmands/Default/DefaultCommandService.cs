@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -96,10 +97,11 @@ public class DefaultCommandService : ICommandService
 
         var moduleType = module.GetType();
         var map = MapProvider.GetRequiredMapForModuleType(moduleType);
-        if (!ModuleSets.TryGetValue(map.GetType(), out var moduleSet))
+        ref var moduleSet = ref CollectionsMarshal.GetValueRefOrAddDefault(ModuleSets, map.GetType(), out var exists);
+        if (!exists)
             moduleSet = new HashSet<IModule>();
 
-        if (!moduleSet.Add(module))
+        if (!moduleSet!.Add(module))
             throw new ArgumentException("This module has already been added.", nameof(module));
 
         map.MapModule(module);
