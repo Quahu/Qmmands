@@ -16,6 +16,11 @@ public class ExceptionResult : FailedResult
     /// </summary>
     public Exception Exception { get; }
 
+    /// <summary>
+    ///     Instantiates a new <see cref="ExceptionResult"/> with the given failure reason and exception.
+    /// </summary>
+    /// <param name="failureReason"> The failure reason. </param>
+    /// <param name="exception"> The exception. </param>
     public ExceptionResult(string failureReason, Exception exception)
     {
         Guard.IsNotNull(exception);

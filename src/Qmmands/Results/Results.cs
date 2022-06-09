@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using Qommon.Metadata;
 
 namespace Qmmands;
 
+/// <summary>
+///     Defines common results.
+/// </summary>
 public static class Results
 {
     /// <summary>
@@ -15,19 +16,7 @@ public static class Results
     /// <returns>
     ///     A singleton successful result.
     /// </returns>
-    public static Result Success { get; } = new SingletonSuccessfulResultImpl();
-
-    private sealed class SingletonSuccessfulResultImpl : Result, IMetadata
-    {
-        IDictionary<string, object?>? IMetadata.Metadata
-        {
-            get => null;
-            set => throw new InvalidOperationException("The singleton successful result cannot have metadata set.");
-        }
-
-        public SingletonSuccessfulResultImpl()
-        { }
-    }
+    public static SuccessfulResult Success => SuccessfulResult.Instance;
 
     /// <summary>
     ///     Returns a new unsuccessful result instance.

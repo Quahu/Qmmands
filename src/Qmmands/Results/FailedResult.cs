@@ -1,5 +1,8 @@
 ﻿namespace Qmmands;
 
+/// <summary>
+///     Represents a failed result.
+/// </summary>
 public abstract class FailedResult : IResult
 {
     bool IResult.IsSuccessful => false;
