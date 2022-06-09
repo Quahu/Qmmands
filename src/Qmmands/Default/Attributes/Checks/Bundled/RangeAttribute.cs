@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows.Markup;
 using Qommon;
 
 namespace Qmmands;
@@ -48,6 +47,8 @@ public class RangeAttribute : NumericConstraintParameterCheckAttribute
 
         Minimum = Guard.IsAssignableToType<IConvertible>(minimum);
         Maximum = Guard.IsAssignableToType<IConvertible>(maximum);
+
+        Guard.IsTrue(Minimum.GetTypeCode() == Maximum.GetTypeCode(), message: "The minimum and maximum must be of the same primitive type.");
     }
 
     /// <summary>
