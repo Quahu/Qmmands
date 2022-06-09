@@ -1,5 +1,4 @@
 ﻿using System;
-using Qmmands.Default;
 using Qommon;
 using Qommon.Collections;
 
@@ -29,7 +28,7 @@ public class OptionAttribute : Attribute,
     public object? Group { get; set; }
 
     /// <summary>
-    ///     Instantiates a new <see cref="OptionAttribute"/> which denotes that the short name and long name
+    ///     Instantiates a new <see cref="OptionAttribute"/> which denotes that the short and long name
     ///     should be based off of the parameter's name.
     /// </summary>
     /// <remarks>
@@ -60,7 +59,7 @@ public class OptionAttribute : Attribute,
     }
 
     /// <summary>
-    ///     Instantiates a new <see cref="OptionAttribute"/> with the specified short name and long name.
+    ///     Instantiates a new <see cref="OptionAttribute"/> with the specified short and long name.
     /// </summary>
     /// <param name="shortName"> The short name for the option. </param>
     /// <param name="longName"> The long name for the option. </param>
@@ -68,6 +67,19 @@ public class OptionAttribute : Attribute,
     {
         ShortNames = new[] { shortName };
         LongNames = new[] { longName };
+    }
+
+    /// <summary>
+    ///     Instantiates a new <see cref="OptionAttribute"/> with the specified short and long names.
+    /// </summary>
+    /// <param name="shortName1"> The first short name for the option. </param>
+    /// <param name="shortName2"> The second short name for the option. </param>
+    /// <param name="longName1"> The first long name for the option. </param>
+    /// <param name="longName2"> The second long name for the option. </param>
+    public OptionAttribute(char shortName1, char shortName2, string longName1, string longName2)
+    {
+        ShortNames = new[] { shortName1, shortName2 };
+        LongNames = new[] { longName1, longName2 };
     }
 
     /// <summary>
@@ -94,7 +106,7 @@ public class OptionAttribute : Attribute,
             Guard.IsNotNullOrWhiteSpace(builder.Name);
 
             var name = CommandUtilities.ToKebabCase(builder.Name);
-            builder.ShortNames.Add(name[1]);
+            builder.ShortNames.Add(name[0]);
 
             if (name.Length > 1)
                 builder.LongNames.Add(name);
