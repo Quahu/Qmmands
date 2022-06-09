@@ -6,24 +6,34 @@ using Qommon.Metadata;
 
 namespace Qmmands.Text;
 
+/// <inheritdoc cref="ITextParameter"/>
 public abstract class TextParameter : ITextParameter
 {
+    /// <inheritdoc/>
     public ITextCommand Command { get; }
 
+    /// <inheritdoc/>
     public string Name { get; }
 
+    /// <inheritdoc/>
     public string? Description { get; }
 
+    /// <inheritdoc/>
     public Type ReflectedType { get; }
 
+    /// <inheritdoc/>
     public Optional<object?> DefaultValue { get; }
 
+    /// <inheritdoc/>
     public Type? CustomTypeParserType { get; }
 
+    /// <inheritdoc/>
     public IReadOnlyList<IParameterCheck> Checks { get; }
 
+    /// <inheritdoc/>
     public IReadOnlyList<Attribute> CustomAttributes { get; }
 
+    /// <inheritdoc/>
     public ParameterInfo? ParameterInfo { get; }
 
     protected TextParameter(ITextCommand command, ITextParameterBuilder builder)

@@ -2,14 +2,19 @@
 
 namespace Qmmands.Text;
 
+/// <inheritdoc cref="IOptionParameter"/>
 public class OptionParameter : TextParameter, IOptionParameter
 {
+    /// <inheritdoc/>
     public IReadOnlyList<char> ShortNames { get; }
 
+    /// <inheritdoc/>
     public IReadOnlyList<string> LongNames { get; }
 
+    /// <inheritdoc/>
     public bool IsGreedy { get; }
 
+    /// <inheritdoc/>
     public object? Group { get; }
 
     public OptionParameter(ITextCommand command, IOptionParameterBuilder builder)

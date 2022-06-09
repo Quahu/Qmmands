@@ -6,30 +6,43 @@ using Qommon.Metadata;
 
 namespace Qmmands.Text;
 
+/// <inheritdoc cref="ITextCommand"/>
 public class TextCommand : ITextCommand
 {
+    /// <inheritdoc/>
     public ITextModule Module { get; }
 
+    /// <inheritdoc/>
     public IReadOnlyList<ITextParameter> Parameters { get; }
 
+    /// <inheritdoc/>
     public IReadOnlyList<string> Aliases { get; }
 
+    /// <inheritdoc/>
     public int OverloadPriority { get; }
 
+    /// <inheritdoc/>
     public bool IgnoresExtraArguments { get; }
 
+    /// <inheritdoc/>
     public Type? CustomArgumentParserType { get; }
 
+    /// <inheritdoc/>
     public string Name { get; }
 
+    /// <inheritdoc/>
     public string? Description { get; }
 
+    /// <inheritdoc/>
     public IReadOnlyList<ICheck> Checks { get; }
 
+    /// <inheritdoc/>
     public IReadOnlyList<Attribute> CustomAttributes { get; }
 
+    /// <inheritdoc/>
     public MethodInfo? MethodInfo { get; }
 
+    /// <inheritdoc/>
     public ICommandCallback Callback { get; }
 
     public TextCommand(ITextModule module, ITextCommandBuilder builder)

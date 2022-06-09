@@ -5,24 +5,34 @@ using Qommon.Metadata;
 
 namespace Qmmands.Text;
 
+/// <inheritdoc cref="ITextModule"/>
 public class TextModule : ITextModule
 {
+    /// <inheritdoc/>
     public ITextModule? Parent { get; }
 
+    /// <inheritdoc/>
     public IReadOnlyList<ITextModule> Submodules { get; }
 
+    /// <inheritdoc/>
     public IReadOnlyList<ITextCommand> Commands { get; }
 
+    /// <inheritdoc/>
     public IReadOnlyList<string> Aliases { get; }
 
+    /// <inheritdoc/>
     public string Name { get; }
 
+    /// <inheritdoc/>
     public string? Description { get; }
 
+    /// <inheritdoc/>
     public IReadOnlyList<ICheck> Checks { get; }
 
+    /// <inheritdoc/>
     public IReadOnlyList<Attribute> CustomAttributes { get; }
 
+    /// <inheritdoc/>
     public TypeInfo? TypeInfo { get; }
 
     public TextModule(ITextModule? parent, ITextModuleBuilder builder)
