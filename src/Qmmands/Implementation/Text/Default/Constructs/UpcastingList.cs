@@ -3,7 +3,12 @@ using Qommon.Collections.Proxied;
 
 namespace Qmmands.Text.Default;
 
-public class UpcastingList<T, TUp> : ProxiedList<T>, IList<TUp>, IReadOnlyList<TUp>
+/// <summary>
+///     Represents a list implementation for both <typeparamref name="T"/> and <typeparamref name="TUp"/>.
+/// </summary>
+/// <typeparam name="T"> The type of the items in the list. </typeparam>
+/// <typeparam name="TUp"> The upcasted to type. </typeparam>
+internal class UpcastingList<T, TUp> : ProxiedList<T>, IList<TUp>, IReadOnlyList<TUp>
     where T : class, TUp
     where TUp : class
 {
