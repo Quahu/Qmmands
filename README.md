@@ -14,6 +14,4 @@ For nightly builds add `https://www.myget.org/F/quahu/api/v3/index.json` (the ni
 
 
 ## Documentation
-There's currently no official documentation for Qmmands other than the community projects below and the bundled XML docstrings. For support you should join the Discord guild:
-
-[![Quahu's Lab](https://discordapp.com/api/guilds/416256456505950215/embed.png?style=banner2)](https://discord.gg/eUMSXGZ)
+Because this library is primarily is used for [Disqord](https://github.com/Quahu/Disqord) there is no standalone documentation asides from the bundled xmldocs.
