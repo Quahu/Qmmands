@@ -11,7 +11,19 @@ public abstract class CommandReflectorBase<TModuleBuilder, TCommandBuilder, TPar
     where TParameterBuilder : class, IParameterBuilder
     where TCommandContext : class, ICommandContext
 {
+    public ICommandReflectorCallbackProvider CallbackProvider { get; }
+
     Type ICommandReflector.ContextType => typeof(TCommandContext);
+
+    protected CommandReflectorBase(ICommandReflectorCallbackProvider callbackProvider)
+    {
+        CallbackProvider = callbackProvider;
+    }
+
+    protected virtual ICommandCallback GetCallback(MethodInfo methodInfo)
+    {
+        return CallbackProvider.GetCallback(methodInfo);
+    }
 
     protected abstract TModuleBuilder CreateModuleBuilder(TModuleBuilder? parent, TypeInfo typeInfo);
 

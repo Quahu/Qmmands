@@ -10,14 +10,8 @@ public static class ServiceCollectionExtensions
     {
         services.AddCommandService();
 
-        services.AddArgumentParserProvider();
-
-        return services;
-    }
-
-    public static IServiceCollection AddArgumentParserProvider(this IServiceCollection services)
-    {
         services.TryAddSingleton<IArgumentParserProvider, DefaultArgumentParserProvider>();
+
         return services;
     }
 }
