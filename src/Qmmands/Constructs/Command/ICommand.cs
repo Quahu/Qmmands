@@ -46,5 +46,8 @@ public interface ICommand : IMetadata
     /// </summary>
     MethodInfo? MethodInfo { get; }
 
+    /// <summary>
+    ///     Gets the callback of this command.
+    /// </summary>
     ICommandCallback Callback { get; }
 }

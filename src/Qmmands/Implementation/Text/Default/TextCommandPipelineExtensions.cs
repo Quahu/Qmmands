@@ -19,6 +19,7 @@ public static class TextCommandPipelineExtensions
             .Use<RunParameterChecks>()
             .Use<SetOverloadDeterminant>()
             .Use<RunRateLimits>()
+            .Use<CreateModuleBase>()
             .Use<ExecuteCommand>();
 
         pipelines.Add(pipeline);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Qommon;
@@ -6,13 +7,47 @@ using Qommon.Disposal;
 
 namespace Qmmands;
 
-public class ReflectionCommandCallback : ICommandCallback
+/// <summary>
+///     Represents an <see cref="ICommandCallback"/> implementation using reflection.
+/// </summary>
+public sealed class ReflectionCommandCallback : ICommandCallback
 {
+    /// <summary>
+    ///     Gets the singleton instance of <see cref="ReflectionCommandCallback"/>.
+    /// </summary>
     public static ReflectionCommandCallback Instance { get; } = new();
 
+    /// <summary>
+    ///     Instantiates a new <see cref="ReflectionCommandCallback"/>.
+    /// </summary>
     private ReflectionCommandCallback()
     { }
 
+    /// <inheritdoc />
+    public ValueTask<IModuleBase?> CreateModuleBase(ICommandContext context)
+    {
+        Guard.IsNotNull(context.Command);
+
+        var command = context.Command;
+        var module = command.Module;
+        Guard.IsNotNull(module.TypeInfo);
+
+        var typeInfo = module.TypeInfo;
+        IModuleBase moduleBase;
+        try
+        {
+            moduleBase = (ActivatorUtilities.CreateInstance(context.Services, typeInfo) as IModuleBase)!;
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Failed to instantiate module base '{typeInfo}'.", ex);
+        }
+
+        moduleBase.Context = context;
+        return new(moduleBase);
+    }
+
+    /// <inheritdoc/>
     public async ValueTask<IResult?> ExecuteAsync(ICommandContext context)
     {
         Guard.IsNotNull(context.Command);
@@ -23,18 +58,12 @@ public class ReflectionCommandCallback : ICommandCallback
         var methodInfo = command.MethodInfo;
         Guard.IsNotNull(command.Module);
 
-        var module = command.Module;
-        Guard.IsNotNull(module.TypeInfo);
+        Guard.IsNotNull(context.ModuleBase);
 
-        var typeInfo = module.TypeInfo;
-        var moduleBase = ActivatorUtilities.CreateInstance(context.Services, typeInfo) as IModuleBase;
-        Guard.IsNotNull(moduleBase);
-
+        var moduleBase = context.ModuleBase;
         IResult? returnResult = null;
         try
         {
-            moduleBase.Context = context;
-            context.ModuleBase = moduleBase;
             await moduleBase.OnBeforeExecuted().ConfigureAwait(false);
 
             var arguments = context.Arguments;
@@ -54,7 +83,7 @@ public class ReflectionCommandCallback : ICommandCallback
                 argumentArray = Array.Empty<object>();
             }
 
-            var methodResult = methodInfo.Invoke(moduleBase, argumentArray);
+            var methodResult = methodInfo.Invoke(moduleBase, BindingFlags.DoNotWrapExceptions | BindingFlags.ExactBinding, null, argumentArray, null);
             if (methodResult != null)
             {
                 if (methodResult is IResult result)

@@ -4,10 +4,20 @@ using Qommon;
 
 namespace Qmmands;
 
+/// <summary>
+///     Represents an <see cref="ICommandCallback"/> backed with a <see langword="delegate"/>.
+/// </summary>
 public class RuntimeCommandCallback : ICommandCallback
 {
+    /// <summary>
+    ///     Gets the <see langword="delegate"/> of this callback.
+    /// </summary>
     public Func<ICommandContext, ValueTask<IResult?>> Delegate { get; }
 
+    /// <summary>
+    ///     Instantiates a new <see cref="RuntimeCommandCallback"/>.
+    /// </summary>
+    /// <param name="delegate"> The <see langword="delegate"/>. </param>
     public RuntimeCommandCallback(Func<ICommandContext, ValueTask<IResult?>> @delegate)
     {
         Guard.IsNotNull(@delegate);
@@ -15,7 +25,14 @@ public class RuntimeCommandCallback : ICommandCallback
         Delegate = @delegate;
     }
 
-    public ValueTask<IResult?> ExecuteAsync(ICommandContext context)
+    /// <inheritdoc />
+    public virtual ValueTask<IModuleBase?> CreateModuleBase(ICommandContext context)
+    {
+        return new(result: null);
+    }
+
+    /// <inheritdoc/>
+    public virtual ValueTask<IResult?> ExecuteAsync(ICommandContext context)
     {
         return Delegate(context);
     }
