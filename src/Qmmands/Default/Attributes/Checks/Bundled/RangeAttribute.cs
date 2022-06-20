@@ -52,7 +52,7 @@ public class RangeAttribute : NumericConstraintParameterCheckAttribute
     {
         var minimum = (T) Minimum.ToType(typeof(T), locale);
         var maximum = (T) Maximum.ToType(typeof(T), locale);
-        if (minimum.CompareTo(value) <= 0 && value.CompareTo(maximum) <= 0)
+        if (value.CompareTo(minimum) >= 0 && value.CompareTo(maximum) <= 0)
             return Results.Success;
 
         return Results.Failure($"The provided argument{(isEnumerable ? " amount" : isString ? "'s length" : "'s value")} was outside of the range: [{minimum}, {maximum}].");
