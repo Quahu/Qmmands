@@ -14,7 +14,7 @@ public class RegexAttribute : StringConstraintParameterCheckAttribute
     /// <summary>
     ///     The regex cache.
     /// </summary>
-    public static ISynchronizedDictionary<(string Pattern, RegexOptions Options), Regex> Regexes = new SynchronizedDictionary<(string Pattern, RegexOptions Options), Regex>();
+    public static ISynchronizedDictionary<(string Pattern, RegexOptions Options), Regex> RegexCache = new SynchronizedDictionary<(string Pattern, RegexOptions Options), Regex>();
 
     /// <summary>
     ///     Gets the regex pattern of this attribute.
@@ -38,7 +38,9 @@ public class RegexAttribute : StringConstraintParameterCheckAttribute
     /// <inheritdoc/>
     protected override IResult CheckValue(CultureInfo locale, ReadOnlyMemory<char> value, bool isEnumerable)
     {
-        var regex = Regexes.GetOrAdd((Pattern, Options), tuple => new Regex(tuple.Pattern, tuple.Options));
+        var regex = RegexCache.GetOrAdd((Pattern, Options), key => new Regex(key.Pattern, key.Options));
+
+        // TODO: regex span match
         var match = MemoryMarshal.TryGetString(value, out var stringValue, out var startIndex, out var length)
             ? regex.Match(stringValue, startIndex, length)
             : regex.Match(new string(value.Span));
