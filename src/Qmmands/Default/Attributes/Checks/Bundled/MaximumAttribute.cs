@@ -30,6 +30,6 @@ public class MaximumAttribute : NumericConstraintParameterCheckAttribute
         if (value.CompareTo(maximum) <= 0)
             return Results.Success;
 
-        return Results.Failure($"The provided argument{(isEnumerable ? " amount" : isString ? "'s length" : "'s value")} must be a minimum of {maximum}.");
+        return Results.Failure($"The provided argument{(isEnumerable ? " amount" : isString ? "'s length" : "'s value")} must be a maximum of {maximum}.");
     }
 }
