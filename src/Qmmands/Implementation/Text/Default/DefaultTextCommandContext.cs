@@ -40,6 +40,7 @@ public class DefaultTextCommandContext : ITextCommandContext
         CancellationToken = cancellationToken;
     }
 
+    /// <inheritdoc/>
     public virtual ValueTask ResetAsync()
     {
         CommandUtilities.ResetContext(this);

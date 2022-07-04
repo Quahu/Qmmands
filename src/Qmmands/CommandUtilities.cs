@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
 using System.Text;
 using Qmmands.Text;
 using Qommon;
@@ -17,7 +15,7 @@ public static class CommandUtilities
 
     static CommandUtilities()
     {
-        FriendlyPrimitiveTypeNames = new Dictionary<Type, string>
+        FriendlyPrimitiveTypeNames = new Dictionary<Type, string>(17)
         {
             [typeof(char)] = "char",
             [typeof(bool)] = "bool",
@@ -44,16 +42,6 @@ public static class CommandUtilities
         context.RawArguments = default;
         context.Arguments = default;
         context.ModuleBase = default;
-    }
-
-    public static void ResetContext(ITextCommandContext context)
-    {
-        context.InputString = default;
-        context.RawArgumentString = default;
-        context.Path = default;
-        context.IsOverloadDeterminant = default;
-
-        ResetContext(context as ICommandContext);
     }
 
     public static bool HasPrefix(ReadOnlyMemory<char> input, ReadOnlySpan<char> prefix, StringComparison comparison, out ReadOnlyMemory<char> output)
@@ -175,10 +163,10 @@ public static class CommandUtilities
     }
 
     /// <summary>
-    ///     Recursively enumerates all of the checks the provided <see cref="Module"/>
-    ///     will require to pass before one of its <see cref="Command"/>s can be executed.
+    ///     Recursively enumerates all of the checks the provided <see cref="IModule"/>
+    ///     will require to pass before one of its <see cref="ICommand"/>s can be executed.
     /// </summary>
-    /// <param name="module"> The <see cref="Module"/> to get the checks for. </param>
+    /// <param name="module"> The <see cref="IModule"/> to get the checks for. </param>
     /// <returns>
     ///     An enumerator of all <see cref="CheckAttribute"/>s.
     /// </returns>
@@ -205,10 +193,10 @@ public static class CommandUtilities
     }
 
     /// <summary>
-    ///     Recursively enumerates all of the checks the provided <see cref="Command"/>
+    ///     Recursively enumerates all of the checks the provided <see cref="ICommand"/>
     ///     will require to pass before it can be executed.
     /// </summary>
-    /// <param name="command"> The <see cref="Command"/> to get the checks for. </param>
+    /// <param name="command"> The <see cref="ICommand"/> to get the checks for. </param>
     /// <returns>
     ///     An enumerator of all <see cref="CheckAttribute"/>s.
     /// </returns>
@@ -232,10 +220,10 @@ public static class CommandUtilities
     }
 
     /// <summary>
-    ///     Recursively enumerates all of the <see cref="Command"/>s in the provided <see cref="Module"/> and its submodules.
+    ///     Recursively enumerates all of the <see cref="ICommand"/>s in the provided <see cref="IModule"/> and its submodules.
     /// </summary>
     /// <returns>
-    ///     An enumerator of all <see cref="Command"/>s.
+    ///     An enumerator of all <see cref="ICommand"/>s.
     /// </returns>
     /// <exception cref="ArgumentNullException">
     ///     The module must not be null.
@@ -260,10 +248,10 @@ public static class CommandUtilities
     }
 
     /// <summary>
-    ///     Recursively enumerates all of the <see cref="CommandBuilder"/>s in the provided <see cref="ModuleBuilder"/> and its submodules.
+    ///     Recursively enumerates all of the <see cref="ICommandBuilder"/>s in the provided <see cref="IModuleBuilder"/> and its submodules.
     /// </summary>
     /// <returns>
-    ///     An enumerator of all <see cref="CommandBuilder"/>s.
+    ///     An enumerator of all <see cref="ICommandBuilder"/>s.
     /// </returns>
     /// <exception cref="ArgumentNullException">
     ///     The builder must not be null.
@@ -288,10 +276,10 @@ public static class CommandUtilities
     }
 
     /// <summary>
-    ///     Recursively enumerates all of the submodules in the provided <see cref="Module"/> and its submodules.
+    ///     Recursively enumerates all of the submodules in the provided <see cref="IModule"/> and its submodules.
     /// </summary>
     /// <returns>
-    ///     An enumerator of all <see cref="Module"/>s.
+    ///     An enumerator of all <see cref="IModule"/>s.
     /// </returns>
     /// <exception cref="ArgumentNullException">
     ///     The module must not be null.
@@ -317,10 +305,10 @@ public static class CommandUtilities
     }
 
     /// <summary>
-    ///     Recursively enumerates all of the submodules in the provided <see cref="ModuleBuilder"/> and its submodules.
+    ///     Recursively enumerates all of the submodules in the provided <see cref="IModuleBuilder"/> and its submodules.
     /// </summary>
     /// <returns>
-    ///     An enumerator of all <see cref="ModuleBuilder"/>s.
+    ///     An enumerator of all <see cref="IModuleBuilder"/>s.
     /// </returns>
     /// <exception cref="ArgumentNullException">
     ///     The builder must not be null.

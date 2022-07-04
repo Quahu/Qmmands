@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace Qmmands;
 
+/// <inheritdoc/>
 public abstract class CommandExecutionStep : ICommandExecutionStep
 {
     /// <inheritdoc/>
@@ -26,6 +27,7 @@ public abstract class CommandExecutionStep : ICommandExecutionStep
     /// <inheritdoc cref="ICommandExecutionStep.ExecuteAsync"/>
     protected abstract ValueTask<IResult> OnExecuted(ICommandContext context);
 
+    /// <inheritdoc/>
     public ValueTask<IResult> ExecuteAsync(ICommandContext context)
     {
         if (CanBeSkipped(context))
