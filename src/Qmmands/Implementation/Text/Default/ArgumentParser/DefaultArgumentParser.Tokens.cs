@@ -333,28 +333,33 @@ public partial class DefaultArgumentParser
                 var splitValue = split.Text;
                 var splitValueSpan = splitValue.Span;
                 var firstCharacter = splitValueSpan[0];
-                if (firstCharacter == '-')
+                if (splitValueSpan.Length > 1)
                 {
-                    if (splitValueSpan.Length > 1 && splitValueSpan[1] == '-')
+                    if (firstCharacter == '-')
                     {
-                        if (splitValueSpan.Length == 2)
+                        if (splitValueSpan[1] == '-')
                         {
-                            _isTerminated = true;
-                            continue;
+                            if (splitValueSpan.Length == 2)
+                            {
+                                _isTerminated = true;
+                                continue;
+                            }
+
+                            _current = Token.LongOption(splitValue[2..]);
+                            return true;
                         }
 
-                        _current = Token.LongOption(splitValue[2..]);
+                        if (!char.IsDigit(splitValueSpan[1]))
+                        {
+                            _current = Token.ShortOption(splitValue[1..]);
+                            return true;
+                        }
+                    }
+                    else if (firstCharacter == '\\' && splitValueSpan[1] == '-')
+                    {
+                        _current = Token.Value(splitValue[1..]);
                         return true;
                     }
-
-                    _current = Token.ShortOption(splitValue[1..]);
-                    return true;
-                }
-
-                if (firstCharacter == '\\' && splitValueSpan.Length > 1 && splitValueSpan[1] == '-')
-                {
-                    _current = Token.Value(splitValue[1..]);
-                    return true;
                 }
 
                 _current = Token.Value(splitValue);
