@@ -7,7 +7,7 @@ namespace Qmmands;
 /// <summary>
 ///     Represents an <see cref="ICommandCallback"/> backed with a <see langword="delegate"/>.
 /// </summary>
-public class RuntimeCommandCallback : ICommandCallback
+public class DelegateCommandCallback : ICommandCallback
 {
     /// <summary>
     ///     Gets the <see langword="delegate"/> of this callback.
@@ -15,10 +15,10 @@ public class RuntimeCommandCallback : ICommandCallback
     public Func<ICommandContext, ValueTask<IResult?>> Delegate { get; }
 
     /// <summary>
-    ///     Instantiates a new <see cref="RuntimeCommandCallback"/>.
+    ///     Instantiates a new <see cref="DelegateCommandCallback"/>.
     /// </summary>
     /// <param name="delegate"> The <see langword="delegate"/>. </param>
-    public RuntimeCommandCallback(Func<ICommandContext, ValueTask<IResult?>> @delegate)
+    public DelegateCommandCallback(Func<ICommandContext, ValueTask<IResult?>> @delegate)
     {
         Guard.IsNotNull(@delegate);
 

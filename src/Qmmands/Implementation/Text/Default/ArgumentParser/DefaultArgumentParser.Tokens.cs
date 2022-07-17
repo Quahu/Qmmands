@@ -237,7 +237,9 @@ public partial class DefaultArgumentParser
         ///     A new <see cref="Token"/>.
         /// </returns>
         public static Token Value(ReadOnlyMemory<char> text)
-            => new(text, TokenType.Value);
+        {
+            return new(text, TokenType.Value);
+        }
 
         /// <summary>
         ///     Returns a new <see cref="Token"/> of type <see cref="TokenType.ShortOption"/>.
@@ -247,7 +249,9 @@ public partial class DefaultArgumentParser
         ///     A new <see cref="Token"/>.
         /// </returns>
         public static Token ShortOption(ReadOnlyMemory<char> text)
-            => new(text, TokenType.ShortOption);
+        {
+            return new(text, TokenType.ShortOption);
+        }
 
         /// <summary>
         ///     Returns a new <see cref="Token"/> of type <see cref="TokenType.LongOption"/>.
@@ -257,7 +261,9 @@ public partial class DefaultArgumentParser
         ///     A new <see cref="Token"/>.
         /// </returns>
         public static Token LongOption(ReadOnlyMemory<char> text)
-            => new(text, TokenType.LongOption);
+        {
+            return new(text, TokenType.LongOption);
+        }
     }
 
     /// <summary>
