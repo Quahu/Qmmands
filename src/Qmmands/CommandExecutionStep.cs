@@ -22,7 +22,9 @@ public abstract class CommandExecutionStep : ICommandExecutionStep
     ///     <see langword="true"/> if this command execution step can be skipped.
     /// </returns>
     protected virtual bool CanBeSkipped(ICommandContext context)
-        => false;
+    {
+        return false;
+    }
 
     /// <inheritdoc cref="ICommandExecutionStep.ExecuteAsync"/>
     protected abstract ValueTask<IResult> OnExecuted(ICommandContext context);

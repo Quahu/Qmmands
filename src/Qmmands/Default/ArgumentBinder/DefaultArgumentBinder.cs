@@ -47,15 +47,6 @@ public class DefaultArgumentBinder : IArgumentBinder
         // if (missingParameterCount != 0)
         // { }
 
-        if (arguments != null)
-        {
-            foreach (var (parameter, argument) in arguments)
-            {
-                if (argument != null && !parameter.ReflectedType.IsInstanceOfType(argument))
-                    throw new InvalidOperationException($"Value of type {argument.GetType()} is not assignable to the parameter {parameter.Name} ({parameter.ReflectedType}).");
-            }
-        }
-
         return Results.Success;
     }
 }

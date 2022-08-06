@@ -17,6 +17,7 @@ public static class TextCommandPipelineExtensions
             .Use<TypeParse>()
             .Use<BindArguments>()
             .Use<RunParameterChecks>()
+            .Use<ValidateArguments>()
             .Use<SetOverloadDeterminant>()
             .Use<RunRateLimits>()
             .Use<CreateModuleBase>()
