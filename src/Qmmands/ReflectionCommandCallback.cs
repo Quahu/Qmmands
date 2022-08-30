@@ -106,16 +106,16 @@ public sealed class ReflectionCommandCallback : ICommandCallback
                         type = methodResult.GetType();
                     }
 
-                    if (methodResult is Task taskResult)
+                    if (methodResult is Task task)
                     {
                         // await Task
-                        await taskResult.ConfigureAwait(false);
+                        await task.ConfigureAwait(false);
 
-                        if (type.IsGenericType)
+                        while (type != null && (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(Task<>)))
+                            type = type.BaseType;
+
+                        if (type != null)
                         {
-                            while (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(Task<>))
-                                type = type.BaseType!;
-
                             if (type.GenericTypeArguments[0].IsAssignableTo(typeof(IResult)))
                             {
                                 // Task<T>.Result
@@ -124,15 +124,15 @@ public sealed class ReflectionCommandCallback : ICommandCallback
                         }
                     }
                 }
-
-                await moduleBase.OnAfterExecuted().ConfigureAwait(false);
             }
+
+            await moduleBase.OnAfterExecuted().ConfigureAwait(false);
         }
         finally
         {
-            await RuntimeDisposal.WrapAsync(moduleBase).DisposeAsync().ConfigureAwait(false);
+            await RuntimeDisposal.DisposeAsync(moduleBase).ConfigureAwait(false);
         }
 
-        return returnResult ?? Results.Success;
+        return returnResult;
     }
 }
