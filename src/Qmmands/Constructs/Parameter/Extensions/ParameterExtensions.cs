@@ -140,13 +140,20 @@ public static class ParameterExtensions
                 else
                 {
                     Type? innerType = null;
-                    var interfaces = parameterType.GetInterfaces();
-                    foreach (var @interface in interfaces)
+                    if (parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
                     {
-                        if (@interface.IsGenericType && @interface.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                        innerType = parameterType.GenericTypeArguments[0];
+                    }
+                    else
+                    {
+                        var interfaces = parameterType.GetInterfaces();
+                        foreach (var @interface in interfaces)
                         {
-                            innerType = @interface.GenericTypeArguments[0];
-                            break;
+                            if (@interface.IsGenericType && @interface.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                            {
+                                innerType = @interface.GenericTypeArguments[0];
+                                break;
+                            }
                         }
                     }
 
