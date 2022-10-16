@@ -143,7 +143,7 @@ public static partial class DefaultExecutionSteps
                     }
                     else
                     {
-                        throw new InvalidOperationException($"No type parser found for parameter {parameter.Name} ({actualType}.");
+                        throw new InvalidOperationException($"No type parser found for parameter {parameter.Name} ({actualType}).");
                     }
                 }
                 else

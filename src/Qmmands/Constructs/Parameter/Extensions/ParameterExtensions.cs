@@ -139,29 +139,37 @@ public static class ParameterExtensions
                 }
                 else
                 {
+                    Type? innerType = null;
                     var interfaces = parameterType.GetInterfaces();
                     foreach (var @interface in interfaces)
                     {
                         if (@interface.IsGenericType && @interface.GetGenericTypeDefinition() == typeof(IEnumerable<>))
                         {
-                            actualType = @interface.GenericTypeArguments[0];
-                            if (nullabilityInfo != null)
-                            {
-                                var index = Array.IndexOf(nullabilityInfo.GenericTypeArguments, actualType);
-                                Guard.IsNotEqualTo(index, -1);
-                                AllowsNull = nullabilityInfo.GenericTypeArguments[index].WriteState != NullabilityState.NotNull;
-                            }
-                            else
-                            {
-                                AllowsNull = true;
-                            }
-
+                            innerType = @interface.GenericTypeArguments[0];
                             break;
                         }
                     }
 
-                    actualType = typeof(object);
-                    AllowsNull = true;
+                    if (innerType != null)
+                    {
+                        actualType = innerType;
+
+                        if (nullabilityInfo != null)
+                        {
+                            var index = Array.IndexOf(nullabilityInfo.GenericTypeArguments, actualType);
+                            Guard.IsNotEqualTo(index, -1);
+                            AllowsNull = nullabilityInfo.GenericTypeArguments[index].WriteState != NullabilityState.NotNull;
+                        }
+                        else
+                        {
+                            AllowsNull = true;
+                        }
+                    }
+                    else
+                    {
+                        actualType = typeof(object);
+                        AllowsNull = true;
+                    }
                 }
             }
             else
