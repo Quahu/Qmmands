@@ -4,17 +4,17 @@ using Qommon;
 
 namespace Qmmands;
 
-public class RuntimeCheck : ICheck
+public class DelegateCheck : ICheck
 {
     public object? Group { get; }
 
     private readonly Func<ICommandContext, ValueTask<IResult>> _predicate;
 
-    public RuntimeCheck(Func<ICommandContext, bool> predicate, object? group = null)
+    public DelegateCheck(Func<ICommandContext, bool> predicate, object? group = null)
         : this(context => new(predicate(context) ? Results.Success : Results.Failure("Failed to pass the execution check.")), group)
     { }
 
-    public RuntimeCheck(Func<ICommandContext, ValueTask<IResult>> predicate, object? group = null)
+    public DelegateCheck(Func<ICommandContext, ValueTask<IResult>> predicate, object? group = null)
     {
         Guard.IsNotNull(predicate);
 

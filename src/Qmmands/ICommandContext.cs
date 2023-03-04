@@ -11,7 +11,7 @@ namespace Qmmands;
 /// <summary>
 ///     Represents a command execution context.
 /// </summary>
-public interface ICommandContext : ISynchronizedMetadata
+public interface ICommandContext : IThreadSafeMetadata
 {
     /// <summary>
     ///     Gets or sets the services of this context.

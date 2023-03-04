@@ -30,5 +30,7 @@ public class ExceptionResult : FailedResult
     }
 
     public static ExceptionResult FromOperation(string operation, Exception exception)
-        => new($"An exception occurred while {operation}.", exception);
+    {
+        return new($"An exception occurred while {operation}.", exception);
+    }
 }

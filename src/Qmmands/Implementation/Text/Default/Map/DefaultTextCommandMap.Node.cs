@@ -184,7 +184,7 @@ public partial class DefaultTextCommandMap
                 {
                     path = path.Push(segment);
 
-                    matches ??= new FastList<ITextCommandMatch>(commands.Count);
+                    matches ??= new List<ITextCommandMatch>(commands.Count);
 
                     for (var i = 0; i < commands.Count; i++)
                         matches.Add(new DefaultTextCommandMatch(commands[i], path, remainingText));

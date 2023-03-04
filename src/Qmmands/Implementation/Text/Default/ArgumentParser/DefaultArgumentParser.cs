@@ -70,9 +70,9 @@ public partial class DefaultArgumentParser : IArgumentParser
         var parameterInformation = GetParameterInformation(command);
         Dictionary<IParameter, object?>? arguments = null;
         Dictionary<IParameter, MultiString>? rawArguments = null;
-        FastList<IOptionParameter>? groupParameters = null;
+        List<IOptionParameter>? groupParameters = null;
 
-        static bool CheckGroup(ref FastList<IOptionParameter>? groupParameters, IOptionParameter optionParameter)
+        static bool CheckGroup(ref List<IOptionParameter>? groupParameters, IOptionParameter optionParameter)
         {
             if (optionParameter.Group == null)
                 return true;
@@ -97,7 +97,7 @@ public partial class DefaultArgumentParser : IArgumentParser
             return true;
         }
 
-        var remainingPositionalParameters = new FastList<IPositionalParameter>(parameterInformation.PositionalParameters.Length);
+        var remainingPositionalParameters = new List<IPositionalParameter>(parameterInformation.PositionalParameters.Length);
         for (var i = parameterInformation.PositionalParameters.Length - 1; i >= 0; i--)
             remainingPositionalParameters.Add(parameterInformation.PositionalParameters[i]);
 

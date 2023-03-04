@@ -26,7 +26,9 @@ public static class Results
     ///     An unsuccessful result.
     /// </returns>
     public static Result Failure(string failureReason)
-        => new(failureReason);
+    {
+        return new(failureReason);
+    }
 
     /// <summary>
     ///     Returns a new <see cref="ExceptionResult"/>.
@@ -37,5 +39,7 @@ public static class Results
     ///     An unsuccessful result.
     /// </returns>
     public static ExceptionResult Exception(string operation, Exception exception)
-        => ExceptionResult.FromOperation(operation, exception);
+    {
+        return ExceptionResult.FromOperation(operation, exception);
+    }
 }

@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using Qommon.Collections.Synchronized;
+using Qommon.Collections.ThreadSafe;
 
 namespace Qmmands;
 
@@ -14,7 +14,7 @@ public class RegexAttribute : StringConstraintParameterCheckAttribute
     /// <summary>
     ///     The regex cache.
     /// </summary>
-    public static ISynchronizedDictionary<(string Pattern, RegexOptions Options), Regex> RegexCache = new SynchronizedDictionary<(string Pattern, RegexOptions Options), Regex>();
+    public static IThreadSafeDictionary<(string Pattern, RegexOptions Options), Regex> RegexCache = ThreadSafeDictionary.Monitor.Create<(string Pattern, RegexOptions Options), Regex>();
 
     /// <summary>
     ///     Gets the regex pattern of this attribute.

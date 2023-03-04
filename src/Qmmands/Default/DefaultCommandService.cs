@@ -42,7 +42,7 @@ public class DefaultCommandService : ICommandService
 
     public IReadOnlyList<IModule> AddModules(Assembly assembly, Action<IModuleBuilder>? builderAction = null, Predicate<TypeInfo>? predicate = null)
     {
-        var modules = new FastList<IModule>();
+        var modules = new List<IModule>();
         var moduleBaseType = typeof(IModuleBase);
         foreach (var type in assembly.GetExportedTypes())
         {

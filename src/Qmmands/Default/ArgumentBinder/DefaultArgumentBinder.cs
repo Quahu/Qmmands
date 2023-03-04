@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Qommon;
-using Qommon.Collections.Synchronized;
+using Qommon.Collections.ThreadSafe;
 
 namespace Qmmands.Default;
 
 public class DefaultArgumentBinder : IArgumentBinder
 {
-    public IDictionary<Type, IArgumentResolver> Resolvers { get; }
+    public IThreadSafeDictionary<Type, IArgumentResolver> Resolvers { get; }
 
     public DefaultArgumentBinder()
     {
-        Resolvers = new SynchronizedDictionary<Type, IArgumentResolver>();
+        Resolvers = ThreadSafeDictionary.ConcurrentDictionary.Create<Type, IArgumentResolver>();
     }
 
     public async ValueTask<IResult> BindAsync(ICommandContext context)

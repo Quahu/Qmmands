@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Qommon;
-using Qommon.Collections.Synchronized;
+using Qommon.Collections.ThreadSafe;
 
 namespace Qmmands.Default;
 
@@ -14,7 +15,7 @@ public class DefaultTypeParserProvider : ITypeParserProvider
     /// <summary>
     ///     Gets the dictionary of <see cref="TryParseDelegate{T}"/>s keyed by the parsed types.
     /// </summary>
-    public ISynchronizedDictionary<Type, Delegate> TryParseDelegates { get; }
+    public IThreadSafeDictionary<Type, Delegate> TryParseDelegates { get; }
 
     /// <summary>
     ///     Gets the type parsers keyed by the parsed types.
@@ -23,15 +24,15 @@ public class DefaultTypeParserProvider : ITypeParserProvider
     ///     If a parameter does not have a custom type parser set
     ///     the <b>first</b> parser from the list will be used.
     /// </remarks>
-    public ISynchronizedDictionary<Type, ISynchronizedList<ITypeParser>> TypeParsers { get; }
+    public IThreadSafeDictionary<Type, IList<ITypeParser>> TypeParsers { get; }
 
     public DefaultTypeParserProvider(
         IOptions<DefaultTypeParserServiceConfiguration> options,
         ILogger<DefaultTypeParserProvider> logger)
     {
         var configuration = options.Value;
-        TryParseDelegates = new SynchronizedDictionary<Type, Delegate>(32);
-        TypeParsers = new SynchronizedDictionary<Type, ISynchronizedList<ITypeParser>>(64);
+        TryParseDelegates = ThreadSafeDictionary.Monitor.Create<Type, Delegate>(32);
+        TypeParsers = ThreadSafeDictionary.ConcurrentDictionary.Create<Type, IList<ITypeParser>>();
 
         static bool TryParseChar(ReadOnlySpan<char> value, out char result)
         {
@@ -82,9 +83,9 @@ public class DefaultTypeParserProvider : ITypeParserProvider
             var customParserType = parameter.CustomTypeParserType;
             if (customParserType != null)
             {
-                var count = parsers.Count;
                 lock (parsers)
                 {
+                    var count = parsers.Count;
                     for (var i = 0; i < count; i++)
                     {
                         var parser = parsers[i];

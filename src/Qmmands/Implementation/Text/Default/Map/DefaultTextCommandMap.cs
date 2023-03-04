@@ -37,7 +37,7 @@ public partial class DefaultTextCommandMap : ITextCommandMap
 
         try
         {
-            var path = new FastList<ReadOnlyMemory<char>>();
+            var path = new List<ReadOnlyMemory<char>>();
             MapModule((module as ITextModule)!, path);
         }
         catch
@@ -51,7 +51,7 @@ public partial class DefaultTextCommandMap : ITextCommandMap
     {
         Guard.IsAssignableToType<ITextModule>(module);
 
-        var path = new FastList<ReadOnlyMemory<char>>();
+        var path = new List<ReadOnlyMemory<char>>();
         UnmapModule((module as ITextModule)!, path);
     }
 

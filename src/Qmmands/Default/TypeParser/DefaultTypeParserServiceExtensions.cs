@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Qommon;
-using Qommon.Collections.Synchronized;
 
 namespace Qmmands.Default;
 
@@ -13,14 +13,20 @@ public static class DefaultTypeParserServiceExtensions
 {
     public static void AddParser(this DefaultTypeParserProvider provider, ITypeParser parser)
     {
-        var parsers = provider.TypeParsers.GetOrAdd(parser.ParsedType, _ => new SynchronizedList<ITypeParser>());
-        parsers.Add(parser);
+        var parsers = provider.TypeParsers.GetOrAdd(parser.ParsedType, _ => new List<ITypeParser>());
+        lock (parsers)
+        {
+            parsers.Add(parser);
+        }
     }
 
     public static void AddParserAsDefault(this DefaultTypeParserProvider provider, ITypeParser parser)
     {
-        var parsers = provider.TypeParsers.GetOrAdd(parser.ParsedType, _ => new SynchronizedList<ITypeParser>());
-        parsers.Insert(0, parser);
+        var parsers = provider.TypeParsers.GetOrAdd(parser.ParsedType, _ => new List<ITypeParser>());
+        lock (parsers)
+        {
+            parsers.Insert(0, parser);
+        }
     }
 
     /// <summary>

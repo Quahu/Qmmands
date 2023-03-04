@@ -27,7 +27,7 @@ public partial class DefaultArgumentParser
         /// <param name="text"> The text of the slice. </param>
         /// <param name="isQuoted"> Whether the slice is quoted. </param>
         /// <param name="escapeIndices"> The indices of escape characters to skip. </param>
-        public Slice(ReadOnlyMemory<char> text, bool isQuoted, FastList<int>? escapeIndices)
+        public Slice(ReadOnlyMemory<char> text, bool isQuoted, List<int>? escapeIndices)
         {
             IsQuoted = isQuoted;
             if (escapeIndices == null)
@@ -107,7 +107,7 @@ public partial class DefaultArgumentParser
                 return false;
 
             var isEscaping = false;
-            FastList<int>? escapeIndices = null;
+            List<int>? escapeIndices = null;
             for (var currentCharacterIndex = 0; currentCharacterIndex < textSpan.Length; currentCharacterIndex++)
             {
                 var currentCharacter = textSpan[currentCharacterIndex];
