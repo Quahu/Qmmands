@@ -37,7 +37,7 @@
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0"/>
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0"/>
         <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0"/>
-        <PackageReference Include="Qommon" Version="4.0.0"/>
+        <PackageReference Include="Qommon" Version="4.0.1"/>
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Constructs\Module\Extensions"/>
