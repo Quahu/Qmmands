@@ -1,5 +1,6 @@
 # Qmmands
-[![Workflow](https://img.shields.io/github/workflow/status/quahu/Qmmands/Nightly%20Build/main?style=flat-square&label=Workflow&logo=github)](https://github.com/Quahu/Qmmands/actions/workflows/nightly.yml)
+
+[![Workflow](https://img.shields.io/github/actions/workflow/status/Quahu/Qmmands/myget.yml?branch=main&style=flat-square&label=Workflow&logo=github)](https://github.com/Quahu/Qmmands/actions/workflows/nightly.yml?branch=main)
 [![NuGet](https://img.shields.io/nuget/v/Qmmands.svg?style=flat-square&label=NuGet&logo=nuget&color=blue)](https://www.nuget.org/packages/Qmmands/)
 [![MyGet](https://img.shields.io/myget/quahu/vpre/Qmmands.svg?style=flat-square&label=MyGet&logo=nuget&color=darkorchid)](https://www.myget.org/feed/quahu/package/nuget/Qmmands)
 [![Discord](https://img.shields.io/discord/416256456505950215.svg?style=flat-square&label=Discord&logo=discord&color=738ADB)](https://discord.gg/eUMSXGZ)
